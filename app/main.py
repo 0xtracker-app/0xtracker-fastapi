@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
-from sol.main import local_balances
+from sol import funcs as sol
 from api.v1.api import router as api_router
 
 app = FastAPI(title='Serverless Lambda FastAPI')
@@ -22,7 +22,7 @@ def main_endpoint_test():
 
 @app.get('/solana-wallet/{wallet}')
 async def read_results(wallet):
-    results = await local_balances(wallet)
+    results = await sol.local_balances(wallet)
     return results
 
 # to make it work with Amazon Lambda, we create a handler object
