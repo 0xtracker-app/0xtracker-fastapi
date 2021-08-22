@@ -1,0 +1,2 @@
+moonpot_contracts = [{'contract': '0x35ebb629b6e65Cb7705B5E0695982D206898f195', 'token_function': 'stakeToken'}, {
+    'contract': '0x30d55CE74E2dcd1B0Ff37214a6978FCFc06aA499', 'token_function': 'underlying'}]

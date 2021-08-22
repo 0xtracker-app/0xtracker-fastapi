@@ -1,0 +1,2571 @@
+[
+  {
+      "name": "RAY-SRM",
+      "lp": {
+          "symbol": "RAY-SRM",
+          "name": "RAY-SRM LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "SRM",
+              "name": "Serum",
+              "mintAddress": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+              "decimals": 6,
+              "referrer": "HYxa4Ea1dz7ya17Cx18rEGUA1WbCvKjXjFKrnu8CwugH",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "7P5Thr9Egi2rvMmEuQkLn8x8e8Qro7u2U7yLD2tU2Hbe",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": false,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "5DFbcYNLLy5SJiBpCCDzNSs7cWCsUbYnCkLXzcPQiKnR",
+      "poolAuthority": "DdFXxCbn5vpxPRaGmurmefCTTSUa5XZ9Kh6Noc4bvrU9",
+      "poolLpTokenAccount": "792c58UHPPuLJcYZ6nawcD5F5NQXGbBos9ZGczTrLSdb",
+      "poolRewardTokenAccount": "5ihtMmeTAx3kdf459Yt3bqos5zDe4WBBcSZSB6ooNxLt"
+  },
+  {
+      "name": "RAY-ETH",
+      "lp": {
+          "symbol": "RAY-ETH",
+          "name": "RAY-ETH LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "ETH",
+              "name": "Wrapped Ethereum",
+              "mintAddress": "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk",
+              "decimals": 6,
+              "referrer": "CXPTcSxxh4AT38gtv3SPbLS7oZVgXzLbMb83o4ziXjjN",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "mjQH33MqZv5aKAbKHi8dG3g3qXeRQqq1GFcXceZkNSr",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": false,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "B6fbnZZ7sbKHR18ffEDD5Nncgp54iKN1GbCgjTRdqhS1",
+      "poolAuthority": "6amoZ7YBbsz3uUUbkeEH4vDTNwjvgjxTiu6nGi9z1JGe",
+      "poolLpTokenAccount": "BjAfXpHTHz2kipraNddS6WwQvGGtbvyobn7MxLEEYfrH",
+      "poolRewardTokenAccount": "7YfTgYQFGEJ4kb8jCF8cBrrUwEFskLin3EbvE1crqiQh"
+  },
+  {
+      "name": "RAY-USDC",
+      "lp": {
+          "symbol": "RAY-USDC",
+          "name": "RAY-USDC LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "FbC6K13MzHvN42bXrtGaWsvZY9fxrackRSZcBGfjPc7m",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": false,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "CHYrUBX2RKX8iBg7gYTkccoGNBzP44LdaazMHCLcdEgS",
+      "poolAuthority": "5KQFnDd33J5NaMC9hQ64P5XzaaSz8Pt7NBCkZFYn1po",
+      "poolLpTokenAccount": "BNnXLFGva3K8ACruAc1gaP49NCbLkyE6xWhGV4G2HLrs",
+      "poolRewardTokenAccount": "DpRueBHHhrQNvrjZX7CwGitJDJ8eZc3AHcyFMG4LqCQR"
+  },
+  {
+      "name": "RAY-SOL",
+      "lp": {
+          "symbol": "RAY-SOL",
+          "name": "RAY-SOL LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "SOL",
+              "name": "Native Solana",
+              "mintAddress": "11111111111111111111111111111111",
+              "decimals": 9,
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "89ZKE4aoyfLBe2RuV6jM3JGNhaV18Nxh8eNtjRcndBip",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": false,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "HUDr9BDaAGqi37xbQHzxCyXvfMCKPTPNF8g9c9bPu1Fu",
+      "poolAuthority": "9VbmvaaPeNAke2MAL3h2Fw82VubH1tBCzwBzaWybGKiG",
+      "poolLpTokenAccount": "A4xQv2BQPB1WxsjiCC7tcMH7zUq255uCBkevFj8qSCyJ",
+      "poolRewardTokenAccount": "6zA5RAQYgazm4dniS8AigjGFtRi4xneqjL7ehrSqCmhr"
+  },
+  {
+      "name": "RAY",
+      "lp": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": true,
+      "fusion": false,
+      "legacy": false,
+      "dual": false,
+      "version": 2,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "4EwbZo8BZXP5313z5A2H11MRBP15M5n6YxfmkjXESKAW",
+      "poolAuthority": "4qD717qKoj3Sm8YfHMSR7tSKjWn5An817nArA6nGdcUR",
+      "poolLpTokenAccount": "8tnpAECxAT9nHBqR1Ba494Ar5dQMPGhL31MmPJz1zZvY",
+      "poolRewardTokenAccount": "BihEG2r7hYax6EherbRmuLLrySBuSXx4PYGd9gAsktKY"
+  },
+  {
+      "name": "RAY-SRM",
+      "lp": {
+          "symbol": "RAY-SRM",
+          "name": "RAY-SRM V2 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "SRM",
+              "name": "Serum",
+              "mintAddress": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+              "decimals": 6,
+              "referrer": "HYxa4Ea1dz7ya17Cx18rEGUA1WbCvKjXjFKrnu8CwugH",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "5QXBMXuCL7zfAk39jEVVEvcrz1AvBGgT9wAhLLHLyyUJ",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 2,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "GLQwyMF1txnAdEnoYuPTPsWdXqUuxgTMsWEV38njk48C",
+      "poolAuthority": "5ddsMftKDoaT5qHnHKnfkGCexJhiaNz1E4mMagy6qMku",
+      "poolLpTokenAccount": "HFYPGyBW5hsQnrtQntg4d6Gzyg6iaehVTAVNqQ6f5f28",
+      "poolRewardTokenAccount": "ETwFtP1dYCbvbARNPfKuJFxoGFDTTsqB6j3pRquPE7Fq"
+  },
+  {
+      "name": "RAY-USDC",
+      "lp": {
+          "symbol": "RAY-USDC",
+          "name": "RAY-USDC V2 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "FgmBnsF5Qrnv8X9bomQfEtQTQjNNiBCWRKGpzPnE5BDg",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 2,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "3j7qWosyu3cVNgbwdWRxEf4SxJKNWoWqgpAEn4RLpMrR",
+      "poolAuthority": "BZhcMxjRy9oXSgghLN52uhsML5ooXS377yTJhkw96bYX",
+      "poolLpTokenAccount": "6qsk4PmATtiu132YJuUgVt4zekbTYV3xRZWxoc1rAg9U",
+      "poolRewardTokenAccount": "Aucgi2G2ufXTGGYf2ng3ZyQXLu6RH6ioL1R7mGfhUcbQ"
+  },
+  {
+      "name": "RAY-WUSDT",
+      "lp": {
+          "symbol": "RAY-WUSDT",
+          "name": "RAY-WUSDT V2 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "WUSDT",
+              "name": "Wrapped USDT",
+              "mintAddress": "BQcdHdAQW1hczDbBi9hiegXAR7A98Q9jx3X3iBBBDiq4",
+              "decimals": 6,
+              "referrer": "CA98hYunCLKgBuD6N8MJSgq1GbW9CXdksLf5mw736tS3",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "CzPDyvotTcxNqtPne32yUiEVQ6jk42HZi1Y3hUu7qf7f",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 2,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "5w3itB5PVAPAiPFpBcMyGZJWukmcuRtwFRkQJF3WzHdj",
+      "poolAuthority": "4qgEHMtCAA4Z3rY4C1ihz9JHETHFhQVqj81Q1qyB83WP",
+      "poolLpTokenAccount": "n1gotGPqeUxJnA4yE7QCCsNG8AVqQ1HuATkAhAfVMVV",
+      "poolRewardTokenAccount": "h8uQ293dPdJd7qFRFE1pvMbpFmxrtD64QaxUWwis4Wv"
+  },
+  {
+      "name": "RAY-USDT",
+      "lp": {
+          "symbol": "RAY-USDT",
+          "name": "RAY-USDT LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDT",
+              "name": "USDT",
+              "mintAddress": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+              "decimals": 6,
+              "referrer": "8DwwDNagph8SdwMUdcXS5L9YAyutTyDJmK6cTKrmNFk3",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "C3sT1R3nsw4AVdepvLTLKr5Gvszr7jufyBWUCvy4TUvT",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": false,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "AvbVWpBi2e4C9HPmZgShGdPoNydG4Yw8GJvG9HUcLgce",
+      "poolAuthority": "8JYVFy3pYsPSpPRsqf43KSJFnJzn83nnRLQgG88XKB8q",
+      "poolLpTokenAccount": "4u4AnMBHXehdpP5tbD6qzB5Q4iZmvKKR5aUr2gavG7aw",
+      "poolRewardTokenAccount": "HCHNuGzkqSnw9TbwpPv1gTnoqnqYepcojHw9DAToBrUj"
+  },
+  {
+      "name": "RAY-WUSDT",
+      "lp": {
+          "symbol": "RAY-WUSDT",
+          "name": "RAY-WUSDT V3 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "WUSDT",
+              "name": "Wrapped USDT",
+              "mintAddress": "BQcdHdAQW1hczDbBi9hiegXAR7A98Q9jx3X3iBBBDiq4",
+              "decimals": 6,
+              "referrer": "CA98hYunCLKgBuD6N8MJSgq1GbW9CXdksLf5mw736tS3",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "FdhKXYjCou2jQfgKWcNY7jb8F2DPLU1teTTTRfLBD2v1",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "6d3vDYvk6VFVacEAGA1NDyxkQPRiNxXQRkeKpTPMJwe4",
+      "poolAuthority": "EcPc2KUDFMyPNAVPE6PsMkzneBFKNqRjUhfhyM2da9go",
+      "poolLpTokenAccount": "Gx4kLpTirc3Lr3GEYojYt1zUmsCcWajjBZTFVA3tzyDg",
+      "poolRewardTokenAccount": "J144vsbPdLa9V6JpvGFH63bQw8QhQckUNe48YjPKwcZo"
+  },
+  {
+      "name": "RAY-ETH",
+      "lp": {
+          "symbol": "RAY-ETH",
+          "name": "RAY-ETH V3 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "ETH",
+              "name": "Wrapped Ethereum",
+              "mintAddress": "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk",
+              "decimals": 6,
+              "referrer": "CXPTcSxxh4AT38gtv3SPbLS7oZVgXzLbMb83o4ziXjjN",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "8Q6MKy5Yxb9vG1mWzppMtMb2nrhNuCRNUkJTeiE3fuwD",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "CYKDTwojSLVFEShB3tcTTfMjtBxUNtYfCTM4PiMFGkio",
+      "poolAuthority": "Azmucec2jdgWagFkbnqmwYcsrtKPf1v1kcM95v6s1zxu",
+      "poolLpTokenAccount": "EncPBQhpc5KLmcgRD2PutQz7wBBNQkVN2s8jjFWEw9no",
+      "poolRewardTokenAccount": "8q8BHw7fP7mitLrb2jzw78qcSEgCvM7GTB5PzbSQobUt"
+  },
+  {
+      "name": "RAY-SOL",
+      "lp": {
+          "symbol": "RAY-SOL",
+          "name": "RAY-SOL V3 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "SOL",
+              "name": "Native Solana",
+              "mintAddress": "11111111111111111111111111111111",
+              "decimals": 9,
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "F5PPQHGcznZ2FxD9JaxJMXaf7XkaFFJ6zzTBcW8osQjw",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "ECqG3sxwJiq9TTYsRBd7fPGsBKYF4fyogo6Df7c13qdJ",
+      "poolAuthority": "4Wf4om12g9xzEeeD139ffCuXn4W2huMcXziiSAzf7Nig",
+      "poolLpTokenAccount": "9kWnkQtMAW2bzKeLQsTdan1rEoypDHaAVnZRcoBPDBfQ",
+      "poolRewardTokenAccount": "8z4kQbgQFe4zXE4NSozWJTJV14gD4evNq4CKn5ryB6S3"
+  },
+  {
+      "name": "RAY-SRM",
+      "lp": {
+          "symbol": "RAY-SRM",
+          "name": "RAY-SRM V3 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "SRM",
+              "name": "Serum",
+              "mintAddress": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+              "decimals": 6,
+              "referrer": "HYxa4Ea1dz7ya17Cx18rEGUA1WbCvKjXjFKrnu8CwugH",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "DSX5E21RE9FB9hM8Nh8xcXQfPK6SzRaJiywemHBSsfup",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "HwEgvS79S53yzYUTRHShU6EuNmhR3WTX5tTZPUzBmwky",
+      "poolAuthority": "9B3XWm89zX7NwaBB8VmT5mrWvxVpd9eyfQMeqkuLkcCF",
+      "poolLpTokenAccount": "F4zXXzqkyT1GP5CVdEgC7qTcDfR8ox5Akm6RCbBdBsRp",
+      "poolRewardTokenAccount": "FW7omPaCCvgBgUFKwvwU2jf1w1wJGjDrJqurr3SeXn14"
+  },
+  {
+      "name": "RAY-USDC",
+      "lp": {
+          "symbol": "RAY-USDC",
+          "name": "RAY-USDC V3 LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "BZFGfXMrjG2sS7QT2eiCDEevPFnkYYF7kzJpWfYxPbcx",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "isStake": false,
+      "fusion": false,
+      "legacy": true,
+      "dual": false,
+      "version": 3,
+      "programId": "EhhTKczWMGQt46ynNeRX1WfeagwwJd7ufHvCDjRxjo5Q",
+      "poolId": "8nEWqxeDNZ2yo1izbPzY4nwR55isBZRaQk7CM8ntwUwR",
+      "poolAuthority": "6vQGZLsHgpJdqh1ER7q2q6mjZ43QwzhtTofTzb2sUhNh",
+      "poolLpTokenAccount": "77ujS15hjUfFZkM8QAw4HMLvMGZg95Gcm6ixjA1bnk3M",
+      "poolRewardTokenAccount": "3ejmkn5HpXR9KdVWkai1Ngo87sQSUyKXrx8wSakipkno"
+  },
+  {
+      "name": "RAY-SRM",
+      "lp": {
+          "symbol": "RAY-SRM",
+          "name": "RAY-SRM LP",
+          "coin": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "SRM",
+              "name": "Serum",
+              "mintAddress": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+              "decimals": 6,
+              "referrer": "HYxa4Ea1dz7ya17Cx18rEGUA1WbCvKjXjFKrnu8CwugH",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "7P5Thr9Egi2rvMmEuQkLn8x8e8Qro7u2U7yLD2tU2Hbe",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "SRM",
+          "name": "Serum",
+          "mintAddress": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+          "decimals": 6,
+          "referrer": "HYxa4Ea1dz7ya17Cx18rEGUA1WbCvKjXjFKrnu8CwugH",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "BnYoq5y2MoH4TsBHeEZrEPowhwebHxQq7nJW1vTjPTWu",
+      "poolAuthority": "8JMnGryLkzSYdnTUPGRgxHoAmP5soH8L8TRre91Gjgni",
+      "poolLpTokenAccount": "6tuhozgcTA25fq5Lp11QX9HsG8MVspUjtcn7EgYP1cs5",
+      "poolRewardTokenAccount": "ED6Ak5wnnegeVz6jWMzGEEnFQ7HY55uPdxR8Ha6hk7gz",
+      "poolRewardTokenAccountB": "G4zqVtnHSK9Sp3SVdiQ5K56m46BdAoE2uQqpgVsmRG9d"
+  },
+  {
+      "name": "ALEPH-RAY",
+      "lp": {
+          "symbol": "ALEPH-RAY",
+          "name": "ALEPH-RAY LP",
+          "coin": {
+              "symbol": "ALEPH",
+              "name": "Wrapped ALEPH",
+              "mintAddress": "CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K",
+              "decimals": 6,
+              "referrer": "8FKAKrenJMDd7V6cxnM5BsymHTjqxgodtHbLwZReMnWW",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "n76skjqv4LirhdLok2zJELXNLdRpYDgVJQuQFbamscy",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "ALEPH",
+          "name": "Wrapped ALEPH",
+          "mintAddress": "CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K",
+          "decimals": 6,
+          "referrer": "8FKAKrenJMDd7V6cxnM5BsymHTjqxgodtHbLwZReMnWW",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "4wvZ9SwWaHKTpshQbCSKQoPosZp9KGwUzuQdESi39qPn",
+      "poolAuthority": "G3tniqor4UrtE29UQLGcBBuk4ScvonDpXiPSDTK3RioJ",
+      "poolLpTokenAccount": "Fx32reDAB5MyJJwr8CjCM1fNgFsmnjhaxjC9pJswpUok",
+      "poolRewardTokenAccount": "34gWdzwgj1zWQG4iwSbTeUDbQkoR8DXzLFQJsSpPDXLa",
+      "poolRewardTokenAccountB": "Gm4v69FCZ33HZsHAgtdezAUJK6n5fQ3zHpTZxAAzeyoJ"
+  },
+  {
+      "name": "TULIP-RAY",
+      "lp": {
+          "symbol": "TULIP-RAY",
+          "name": "TULIP-RAY LP",
+          "coin": {
+              "symbol": "TULIP",
+              "name": "TULIP",
+              "mintAddress": "TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs",
+              "decimals": 6,
+              "referrer": "Bcw1TvX8jUj6CtY2a7GU2THeYVAudvmT8yzRypVMVsSH",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "3AZTviji5qduMG2s4FfWGR3SSQmNUCyx8ao6UKCPg3oJ",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "TULIP",
+          "name": "TULIP",
+          "mintAddress": "TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs",
+          "decimals": 6,
+          "referrer": "Bcw1TvX8jUj6CtY2a7GU2THeYVAudvmT8yzRypVMVsSH",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs/logo.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "BmbG9hv5PazcW3rYWvatA6HpNPkozEdkWBiU64pZxuwr",
+      "poolAuthority": "956MvcyRBPMZ6waK3bdD4dn3XfaganoKed1NUQ9NaFAg",
+      "poolLpTokenAccount": "HMgHKCLetHYDUJZEXKRJCiSeQs4Udwy6MNXHoLruMctH",
+      "poolRewardTokenAccount": "5ih22SsrffDjygZHF8ADyJa4TNKQZqANg7dXyBJN9V8P",
+      "poolRewardTokenAccountB": "3zK56FmEqeH93BuH5K7JY9ZaEfFMdo3YjAasFikCmDB1"
+  },
+  {
+      "name": "SNY-RAY",
+      "lp": {
+          "symbol": "SNY-RAY",
+          "name": "SNY-RAY LP",
+          "coin": {
+              "symbol": "SNY",
+              "name": "SNY",
+              "mintAddress": "4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y",
+              "decimals": 6,
+              "referrer": "G7gyaTNn2hgjF67SWs4Ee9PEaFU2xadhtXL8HmkJ2cNL",
+              "detailLink": "https://raydium.medium.com/synthetify-launching-on-acceleraytor-3755b4903f88",
+              "details": "Synthetify is a decentralized protocol that allows for the creation and exchange of synthetic assets that closely track the price of underlying assets. Synthetify’s synthetics adhere to the SPL token standard, allowing them to be easily integrated with DeFi applications across the Solana ecosystem.\n\nSynthetify leverages Solana to enable a fast, cheap and intuitive trading experience for users of the platform while staying fully decentralized thanks to an infrastructure that relies on smart contracts and blockchain oracles.\n\nThe Synthetify Token (SNY) gives the ability to participate in the protocol through staking. Stakers receive a pro rata share of fees generated by the exchange as well as additional rewards. SNY acts as a collateral token for all synthetic assets created on the platform and each token will have voting power on future governance proposals.",
+              "docs": {
+                  "website": "https://synthetify.io/",
+                  "whitepaper": "https://resources.synthetify.io/synthetify-whitepaper.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/synthetify",
+                  "Telegram": "https://t.me/synthetify",
+                  "Medium": "https://synthetify.medium.com/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "2k4quTuuLUxrSEhFH99qcoZzvgvVEc3b5sz3xz3qstfS",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "SNY",
+          "name": "SNY",
+          "mintAddress": "4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y",
+          "decimals": 6,
+          "referrer": "G7gyaTNn2hgjF67SWs4Ee9PEaFU2xadhtXL8HmkJ2cNL",
+          "detailLink": "https://raydium.medium.com/synthetify-launching-on-acceleraytor-3755b4903f88",
+          "details": "Synthetify is a decentralized protocol that allows for the creation and exchange of synthetic assets that closely track the price of underlying assets. Synthetify’s synthetics adhere to the SPL token standard, allowing them to be easily integrated with DeFi applications across the Solana ecosystem.\n\nSynthetify leverages Solana to enable a fast, cheap and intuitive trading experience for users of the platform while staying fully decentralized thanks to an infrastructure that relies on smart contracts and blockchain oracles.\n\nThe Synthetify Token (SNY) gives the ability to participate in the protocol through staking. Stakers receive a pro rata share of fees generated by the exchange as well as additional rewards. SNY acts as a collateral token for all synthetic assets created on the platform and each token will have voting power on future governance proposals.",
+          "docs": {
+              "website": "https://synthetify.io/",
+              "whitepaper": "https://resources.synthetify.io/synthetify-whitepaper.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/synthetify",
+              "Telegram": "https://t.me/synthetify",
+              "Medium": "https://synthetify.medium.com/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "JEC3P83x2GEijYDwXiksuh5H6YrQt5xW6MC2GDKkMoe",
+      "poolAuthority": "9qwnkx2gRMLVoYkJVkyH2Yza5e5E7LoZEpx9jZ9r3CBY",
+      "poolLpTokenAccount": "7JrCLqrhH9kb78St4dAncBYE9VhZdB4P1tFAdxwzDrH5",
+      "poolRewardTokenAccount": "HmovkXKsso8xHwPYmMYF5bmP5CCwCtReQVb8ETTSSoyN",
+      "poolRewardTokenAccountB": "GXJSX1JNjjAK6jEEjujvzhCjMeVnZmpJ5fng3daynCnY"
+  },
+  {
+      "name": "SLRS-RAY",
+      "lp": {
+          "symbol": "SLRS-RAY",
+          "name": "SLRS-RAY LP",
+          "coin": {
+              "symbol": "SLRS",
+              "name": "SLRS",
+              "mintAddress": "SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr",
+              "decimals": 6,
+              "referrer": "AmqeHgTdm6kBzy5ewZFKuMAfbynZmhve1GQxbJzQFLbP",
+              "detailLink": "https://raydium.medium.com/solrise-is-launching-on-acceleraytor-c2c980362037",
+              "details": "Solrise Finance is a fully decentralized and non-custodial protocol for investment funds on Solana. What this means in practice is that anyone can open a fund, and anyone can invest in it.\n\nSolrise’s platform allows fund managers from all across the globe — whether they are well-established and looking for a new channel, or ambitious rookies with something to prove — to open a fund, with performance kept completely transparent.\n\nExisting decentralized fund management platforms on Ethereum are suffering from brutally high transaction fees. With Solrise, you can create, enter, and exit funds all for under $0.01.",
+              "docs": {
+                  "website": "https://solrise.finance/",
+                  "docs": "https://docs.solrise.finance/"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/SolriseFinance",
+                  "Telegram": "https://t.me/solrisefinance",
+                  "Medium": "https://blog.solrise.finance/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "2pk78vsKT3jfJAcN2zbpMUnrR57SZrxHqaZYyFgp92mM",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "SLRS",
+          "name": "SLRS",
+          "mintAddress": "SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr",
+          "decimals": 6,
+          "referrer": "AmqeHgTdm6kBzy5ewZFKuMAfbynZmhve1GQxbJzQFLbP",
+          "detailLink": "https://raydium.medium.com/solrise-is-launching-on-acceleraytor-c2c980362037",
+          "details": "Solrise Finance is a fully decentralized and non-custodial protocol for investment funds on Solana. What this means in practice is that anyone can open a fund, and anyone can invest in it.\n\nSolrise’s platform allows fund managers from all across the globe — whether they are well-established and looking for a new channel, or ambitious rookies with something to prove — to open a fund, with performance kept completely transparent.\n\nExisting decentralized fund management platforms on Ethereum are suffering from brutally high transaction fees. With Solrise, you can create, enter, and exit funds all for under $0.01.",
+          "docs": {
+              "website": "https://solrise.finance/",
+              "docs": "https://docs.solrise.finance/"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/SolriseFinance",
+              "Telegram": "https://t.me/solrisefinance",
+              "Medium": "https://blog.solrise.finance/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "J61AnYYSwjtJ4wDqEqqWSBuZbiR2SDDrtF7FFobutM6a",
+      "poolAuthority": "BHGHqkJomVD5tKNMZFajA1PZEJaZW5Yywyp6UAcvf1Wq",
+      "poolLpTokenAccount": "H8NEHvqm43DxWbMfvLMvUqoKrjG4B4EJXEYBz2DYhRHd",
+      "poolRewardTokenAccount": "5g1ox4cwcfNFsqPiGH2zhsHYpaBf6rkigL6YR5ZBQA5k",
+      "poolRewardTokenAccountB": "95b2zMqRGsovcR69XXfRPcvLdyvLCH5M5nd4z27yC8Q1"
+  },
+  {
+      "name": "MER-RAY",
+      "lp": {
+          "symbol": "MER-RAY",
+          "name": "MER-RAY LP",
+          "coin": {
+              "symbol": "MER",
+              "name": "Mercurial",
+              "mintAddress": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
+              "decimals": 6,
+              "referrer": "36F4ryvqaNW2yKQsAry4ZHCZ3j7tz3gtEz7NEwv7pSRu",
+              "details": "Mercurial Finance\nMercurial is building DeFi’s first dynamic vaults for stable assets on Solana, providing the technical tools for users to easily deposit, swap and mint stable assets.\n\nInnovations\nMercurial will be introducing several key new technical innovations, including on-chain algorithms to regulate the flow of assets and dynamic fees that tap on the market and price data to assist LPs in optimizing performance. We will also be developing a unique pricing curve that will be the first to combine high efficiency, multi-token support, and generalizability for all types of token sets.\n\nMaximizing Capital Utlilization\nMercurial vaults will dynamically utilize assets for a wide range of use cases, like low slippage swaps, lending, flash loans, and external third-party decentralized protocols. To increase pegged assets availability on Solana, we will allow the creation of synthetics, like mUSD or mBTC, which can be added to our vaults to improve liquidity for other stables and facilitate interaction with other third-party decentralized protocols.\n\nStarting with a vault for the most common stables, for example, USDC, USDT, wUSDC, and wDAI, we will be facilitating low slippage swaps with dynamic fees. Features will be added as key technical and ecosystem pieces become available on Solana, i.e. inter-program composability, price oracles, etc.\n\nMER\nThe MER token will be used to accrue value for the holder via fees from swaps, commission from yield farms, and as collateral for synthetic stables like mUSD. MER will also be intrinsically linked to the governance and growth of Mercurial, playing a crucial role in regulating the system across governance, insurance, and bootstrapping.",
+              "docs": {
+                  "website": "https://www.mercurial.finance/",
+                  "whitepaper": "https://www.mercurial.finance/Mercurial-Lite-Paper-v1.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/MercurialFi",
+                  "Telegram": "https://t.me/MercurialFi",
+                  "Medium": "https://mercurialfi.medium.com/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "214hxy3AbKoaEKgqcg2aC1cP5R67cGGAyDEg5GDwC7Ub",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "MER",
+          "name": "Mercurial",
+          "mintAddress": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
+          "decimals": 6,
+          "referrer": "36F4ryvqaNW2yKQsAry4ZHCZ3j7tz3gtEz7NEwv7pSRu",
+          "details": "Mercurial Finance\nMercurial is building DeFi’s first dynamic vaults for stable assets on Solana, providing the technical tools for users to easily deposit, swap and mint stable assets.\n\nInnovations\nMercurial will be introducing several key new technical innovations, including on-chain algorithms to regulate the flow of assets and dynamic fees that tap on the market and price data to assist LPs in optimizing performance. We will also be developing a unique pricing curve that will be the first to combine high efficiency, multi-token support, and generalizability for all types of token sets.\n\nMaximizing Capital Utlilization\nMercurial vaults will dynamically utilize assets for a wide range of use cases, like low slippage swaps, lending, flash loans, and external third-party decentralized protocols. To increase pegged assets availability on Solana, we will allow the creation of synthetics, like mUSD or mBTC, which can be added to our vaults to improve liquidity for other stables and facilitate interaction with other third-party decentralized protocols.\n\nStarting with a vault for the most common stables, for example, USDC, USDT, wUSDC, and wDAI, we will be facilitating low slippage swaps with dynamic fees. Features will be added as key technical and ecosystem pieces become available on Solana, i.e. inter-program composability, price oracles, etc.\n\nMER\nThe MER token will be used to accrue value for the holder via fees from swaps, commission from yield farms, and as collateral for synthetic stables like mUSD. MER will also be intrinsically linked to the governance and growth of Mercurial, playing a crucial role in regulating the system across governance, insurance, and bootstrapping.",
+          "docs": {
+              "website": "https://www.mercurial.finance/",
+              "whitepaper": "https://www.mercurial.finance/Mercurial-Lite-Paper-v1.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/MercurialFi",
+              "Telegram": "https://t.me/MercurialFi",
+              "Medium": "https://mercurialfi.medium.com/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "21xhrT4j8QnaBvj3QjhP5kZu8sXJMCE7hzHKGtWEkdKr",
+      "poolAuthority": "6GrjogDgJ56mPcNu1nFw7MVLMALoNzd6RsZiXrQAuTvh",
+      "poolLpTokenAccount": "Ee4zr6okPiyG6ia8kZfPwoNRDtNsrn4YfPc7MMmTqufR",
+      "poolRewardTokenAccount": "FnSG5cBXyEqo3DxKrcjhj7wo8un3HrxABQrxfA5uKWsg",
+      "poolRewardTokenAccountB": "8yL9QK96Ag3NnvqZmcaupb7c4NeP5hJXraGS3jCzMzT"
+  },
+  {
+      "name": "MEDIA-RAY",
+      "lp": {
+          "symbol": "MEDIA-RAY",
+          "name": "MEDIA-RAY LP",
+          "coin": {
+              "symbol": "MEDIA",
+              "name": "MEDIA",
+              "mintAddress": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
+              "decimals": 6,
+              "referrer": "AYnaG3AidNWFzjq9U3BJSsQ9DShE8g7FszriBDtRFvsx",
+              "details": "Media Network is a new protocol that bypasses traditional CDN providers’ centralized approach for a self-governed and open source solution where everyone can participate. Media Network creates a distributed bandwidth market that enables service providers such as media platforms to hire resources from the network and dynamically come and go as the demand for last-mile data delivery shifts. It allows anyone to organically serve content without introducing any trust assumptions or pre-authentication requirements. Participants earn MEDIA rewards for their bandwidth contributions, a fixed supply SPL token minted on Solana’s Blockchain.",
+              "docs": {
+                  "website": "https://media.network/",
+                  "whitepaper": "https://media.network/whitepaper.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/Media_FDN",
+                  "Telegram": "https://t.me/Media_FDN",
+                  "Medium": "https://mediafoundation.medium.com/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "9Aseg5A1JD1yCiFFdDaNNxCiJ7XzrpZFmcEmLjXFdPaH",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "MEDIA",
+          "name": "MEDIA",
+          "mintAddress": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
+          "decimals": 6,
+          "referrer": "AYnaG3AidNWFzjq9U3BJSsQ9DShE8g7FszriBDtRFvsx",
+          "details": "Media Network is a new protocol that bypasses traditional CDN providers’ centralized approach for a self-governed and open source solution where everyone can participate. Media Network creates a distributed bandwidth market that enables service providers such as media platforms to hire resources from the network and dynamically come and go as the demand for last-mile data delivery shifts. It allows anyone to organically serve content without introducing any trust assumptions or pre-authentication requirements. Participants earn MEDIA rewards for their bandwidth contributions, a fixed supply SPL token minted on Solana’s Blockchain.",
+          "docs": {
+              "website": "https://media.network/",
+              "whitepaper": "https://media.network/whitepaper.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/Media_FDN",
+              "Telegram": "https://t.me/Media_FDN",
+              "Medium": "https://mediafoundation.medium.com/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "DJfvL6srBht8XFMWYuuKHYGainqvwXyA5icVsDne3pwN",
+      "poolAuthority": "69PxTdPaRSofBJkwT9mYW14cPUEe7fU2AYEDvt3q5Fkt",
+      "poolLpTokenAccount": "3Kaibb6xYpKjFejtkgH8tBrMWShWzwBd7WfcGygZ4Vcw",
+      "poolRewardTokenAccount": "28kE8Erc2uFThiUr8RifoUEc9Kv8V54To6DJLgCuJEPp",
+      "poolRewardTokenAccountB": "3kofbYH2hPefwHSgMburaGN5XmJx7sD94jo5CsMCXzLE"
+  },
+  {
+      "name": "LIKE-RAY",
+      "lp": {
+          "symbol": "LIKE-RAY",
+          "name": "LIKE-RAY LP",
+          "coin": {
+              "symbol": "LIKE",
+              "name": "LIKE",
+              "mintAddress": "3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR",
+              "decimals": 9,
+              "referrer": "2rnVeVGfM88XqyNyBzGWEb7JViYKqncFzjWq5h1ujS9A",
+              "detailLink": "https://raydium.medium.com/only1-is-launching-on-acceleraytor-41ecb89dcc4e",
+              "details": "Only1 is the first NFT-powered social platform built on the Solana blockchain. Mixing social media, an NFT marketplace, a scalable blockchain, and the native token — $LIKE, Only1 offers fans a unique way of connecting with the creators they love.\n\nBy using the Only1 platform, fans will have the ability to invest, access, and earn from the limited edition contents created by the world’s largest influencers/celebrities, all powered by NFTs.",
+              "docs": {
+                  "website": "https://only1.io/",
+                  "whitepaper": "https://only1.io/pitch-deck.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/only1nft",
+                  "Telegram": "https://t.me/only1nft",
+                  "Medium": "https://medium.com/@only1nft",
+                  "Discord": "https://discord.gg/sUu7KZwNCB"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "7xqDycbFSCpUpzkYapFeyPJWPwEpV7zdWbYf2MVHTNjv",
+          "decimals": 9
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "LIKE",
+          "name": "LIKE",
+          "mintAddress": "3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR",
+          "decimals": 9,
+          "referrer": "2rnVeVGfM88XqyNyBzGWEb7JViYKqncFzjWq5h1ujS9A",
+          "detailLink": "https://raydium.medium.com/only1-is-launching-on-acceleraytor-41ecb89dcc4e",
+          "details": "Only1 is the first NFT-powered social platform built on the Solana blockchain. Mixing social media, an NFT marketplace, a scalable blockchain, and the native token — $LIKE, Only1 offers fans a unique way of connecting with the creators they love.\n\nBy using the Only1 platform, fans will have the ability to invest, access, and earn from the limited edition contents created by the world’s largest influencers/celebrities, all powered by NFTs.",
+          "docs": {
+              "website": "https://only1.io/",
+              "whitepaper": "https://only1.io/pitch-deck.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/only1nft",
+              "Telegram": "https://t.me/only1nft",
+              "Medium": "https://medium.com/@only1nft",
+              "Discord": "https://discord.gg/sUu7KZwNCB"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://only1.io/like-token.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "AMcVWK66iexwwCHn8drxywdNr2UgH3vmRzLXQFdErGmL",
+      "poolAuthority": "32yVBkvq29AmXKu1A3xUtgHrMGFnLvxF18fhd4JLKfJs",
+      "poolLpTokenAccount": "6f72fpk4WDeqpTJZ4dLSvAacfwmCAfEk7RtuPQ5oyNd7",
+      "poolRewardTokenAccount": "4oPdHXXdRmjtKMLCcK8rtp3vMmq9y9LJ6W83mqrqMjCt",
+      "poolRewardTokenAccountB": "E49fLhK6Wv43FySZB1xybPghzK2cjr9hgfpcmcVSLeYm"
+  },
+  {
+      "name": "COPE-RAY",
+      "lp": {
+          "symbol": "COPE-RAY",
+          "name": "COPE-RAY LP",
+          "coin": {
+              "symbol": "COPE",
+              "name": "COPE",
+              "mintAddress": "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+              "decimals": 6,
+              "referrer": "G7UYwWhkmgeL57SUKFF45K663V9TdXZw6Ho6ZLQ7p4p",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "A7GCVHA8NSsbdFscHdoNU41tL1TRKNmCH4K94CgcLK9F",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "COPE",
+          "name": "COPE",
+          "mintAddress": "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+          "decimals": 6,
+          "referrer": "G7UYwWhkmgeL57SUKFF45K663V9TdXZw6Ho6ZLQ7p4p",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "CM9XTJfXEHceGPXhmXxheR87Ng9CZ4jiBoTVQHhs9DVN",
+      "poolAuthority": "AWYeNgCErUafmBU2TtZgzNwixpKd3BxRTmvYDw7U1jgN",
+      "poolLpTokenAccount": "FLqRe3W9Lp59uNgzkACsXpEZkWUxBBstMtUyGSzqFhXD",
+      "poolRewardTokenAccount": "Ex23TUPEarZepXdHgjm7LVy35HDWY2VgeKao5kjYRZGE",
+      "poolRewardTokenAccountB": "JDjSMCSK9s9dDsiiXeT3HVaX48k7WewyKBoMPax3TZxL"
+  },
+  {
+      "name": "MNGO-USDC",
+      "lp": {
+          "symbol": "MNGO-USDC",
+          "name": "MNGO-USDC LP",
+          "coin": {
+              "symbol": "MNGO",
+              "name": "Mango",
+              "mintAddress": "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
+              "decimals": 6,
+              "referrer": "CijuvE6qDpxZ5WqdEQEe7mS11fXEKiiHc7RR8wRiGzjY",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "DkiqCQ792n743xjWQVCbBUaVtkdiuvQeYndM53ReWnCC",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "MNGO",
+          "name": "Mango",
+          "mintAddress": "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
+          "decimals": 6,
+          "referrer": "CijuvE6qDpxZ5WqdEQEe7mS11fXEKiiHc7RR8wRiGzjY",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac/token.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "GzEDEkHSFFfxKMu3Toww1nrEjtbQGJKRPNRK1Pfd59Zn",
+      "poolAuthority": "9AMvw1TUJ9gX1kUAvcmHt2ZjokBLepXQbN8EJxBVZu2s",
+      "poolLpTokenAccount": "gjrMLKsNwXYzJnX9DT8Lc7HeC1AT52jQKtDkPiRRuEP",
+      "poolRewardTokenAccount": "4czqUC2ebdvqxPXfRniknLk7Cr2TosTabQSRnUeFia9v",
+      "poolRewardTokenAccountB": "6K1AE1wnTNaMgcAgQPvrTbnWEHB7nW6uTtv7ZbXWgMtn"
+  },
+  {
+      "name": "LIKE-USDC",
+      "lp": {
+          "symbol": "LIKE-USDC",
+          "name": "LIKE-USDC LP",
+          "coin": {
+              "symbol": "LIKE",
+              "name": "LIKE",
+              "mintAddress": "3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR",
+              "decimals": 9,
+              "referrer": "2rnVeVGfM88XqyNyBzGWEb7JViYKqncFzjWq5h1ujS9A",
+              "detailLink": "https://raydium.medium.com/only1-is-launching-on-acceleraytor-41ecb89dcc4e",
+              "details": "Only1 is the first NFT-powered social platform built on the Solana blockchain. Mixing social media, an NFT marketplace, a scalable blockchain, and the native token — $LIKE, Only1 offers fans a unique way of connecting with the creators they love.\n\nBy using the Only1 platform, fans will have the ability to invest, access, and earn from the limited edition contents created by the world’s largest influencers/celebrities, all powered by NFTs.",
+              "docs": {
+                  "website": "https://only1.io/",
+                  "whitepaper": "https://only1.io/pitch-deck.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/only1nft",
+                  "Telegram": "https://t.me/only1nft",
+                  "Medium": "https://medium.com/@only1nft",
+                  "Discord": "https://discord.gg/sUu7KZwNCB"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "cjZmbt8sJgaoyWYUttomAu5LJYU44ZrcKTbzTSEPDVw",
+          "decimals": 9
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "LIKE",
+          "name": "LIKE",
+          "mintAddress": "3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR",
+          "decimals": 9,
+          "referrer": "2rnVeVGfM88XqyNyBzGWEb7JViYKqncFzjWq5h1ujS9A",
+          "detailLink": "https://raydium.medium.com/only1-is-launching-on-acceleraytor-41ecb89dcc4e",
+          "details": "Only1 is the first NFT-powered social platform built on the Solana blockchain. Mixing social media, an NFT marketplace, a scalable blockchain, and the native token — $LIKE, Only1 offers fans a unique way of connecting with the creators they love.\n\nBy using the Only1 platform, fans will have the ability to invest, access, and earn from the limited edition contents created by the world’s largest influencers/celebrities, all powered by NFTs.",
+          "docs": {
+              "website": "https://only1.io/",
+              "whitepaper": "https://only1.io/pitch-deck.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/only1nft",
+              "Telegram": "https://t.me/only1nft",
+              "Medium": "https://medium.com/@only1nft",
+              "Discord": "https://discord.gg/sUu7KZwNCB"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://only1.io/like-token.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "BRM5bdX2mjmFGg2RAent1Whd61o9asQD16BXsC6QvEni",
+      "poolAuthority": "9rThpjxEgNR5xi2z2QgXenS2RwRrrN1GqrudegT32Ygy",
+      "poolLpTokenAccount": "FzVu8n4UCf3o1KH4X8khM9KgKA96dJQdQMPtLvmbHyNi",
+      "poolRewardTokenAccount": "3G1cbktUU79CT3zskP16VYmEhwVQq2RYxVWV7fcjmkTX",
+      "poolRewardTokenAccountB": "2Ks41qfN2GZffbd1cqrNGuXJYJbShHhz6aHQvq8SaYYr"
+  },
+  {
+      "name": "SAMO-RAY",
+      "lp": {
+          "symbol": "SAMO-RAY",
+          "name": "SAMO-RAY LP",
+          "coin": {
+              "symbol": "SAMO",
+              "name": "Samoyed Coin",
+              "mintAddress": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+              "decimals": 9,
+              "referrer": "FnMDNFL9t8EpbADSU3hLWBtx7SuwRBB6NM84U3PzSkUu",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "HwzkXyX8B45LsaHXwY8su92NoRBS5GQC32HzjQRDqPnr",
+          "decimals": 9
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "SAMO",
+          "name": "Samoyed Coin",
+          "mintAddress": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "decimals": 9,
+          "referrer": "FnMDNFL9t8EpbADSU3hLWBtx7SuwRBB6NM84U3PzSkUu",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "Bw932pURVJRYjEJwRZGWjfUNpeyz18kjMNdb833eMxoj",
+      "poolAuthority": "FzTbGLdzgWCRkq8hbS8tLf5HjfU7JzUbtRmTkjGQB9Vz",
+      "poolLpTokenAccount": "GUVKfYMiGEyp41CUw2j2NsoQJ5zDQ3Q6uSdApM8W46Ba",
+      "poolRewardTokenAccount": "J99YW5wnfgBJcG17BgSbp1S8RNJ39JAb7kg9RGHyb3Hq",
+      "poolRewardTokenAccountB": "GhctEMRSwvdZF7aFeCLdK9X1sAAeGVPjr12iVLjQNvhy"
+  },
+  {
+      "name": "SLRS-USDC",
+      "lp": {
+          "symbol": "SLRS-USDC",
+          "name": "SLRS-USDC LP",
+          "coin": {
+              "symbol": "SLRS",
+              "name": "SLRS",
+              "mintAddress": "SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr",
+              "decimals": 6,
+              "referrer": "AmqeHgTdm6kBzy5ewZFKuMAfbynZmhve1GQxbJzQFLbP",
+              "detailLink": "https://raydium.medium.com/solrise-is-launching-on-acceleraytor-c2c980362037",
+              "details": "Solrise Finance is a fully decentralized and non-custodial protocol for investment funds on Solana. What this means in practice is that anyone can open a fund, and anyone can invest in it.\n\nSolrise’s platform allows fund managers from all across the globe — whether they are well-established and looking for a new channel, or ambitious rookies with something to prove — to open a fund, with performance kept completely transparent.\n\nExisting decentralized fund management platforms on Ethereum are suffering from brutally high transaction fees. With Solrise, you can create, enter, and exit funds all for under $0.01.",
+              "docs": {
+                  "website": "https://solrise.finance/",
+                  "docs": "https://docs.solrise.finance/"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/SolriseFinance",
+                  "Telegram": "https://t.me/solrisefinance",
+                  "Medium": "https://blog.solrise.finance/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "2Xxbm1hdv5wPeen5ponDSMT3VqhGMTQ7mH9stNXm9shU",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "SLRS",
+          "name": "SLRS",
+          "mintAddress": "SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr",
+          "decimals": 6,
+          "referrer": "AmqeHgTdm6kBzy5ewZFKuMAfbynZmhve1GQxbJzQFLbP",
+          "detailLink": "https://raydium.medium.com/solrise-is-launching-on-acceleraytor-c2c980362037",
+          "details": "Solrise Finance is a fully decentralized and non-custodial protocol for investment funds on Solana. What this means in practice is that anyone can open a fund, and anyone can invest in it.\n\nSolrise’s platform allows fund managers from all across the globe — whether they are well-established and looking for a new channel, or ambitious rookies with something to prove — to open a fund, with performance kept completely transparent.\n\nExisting decentralized fund management platforms on Ethereum are suffering from brutally high transaction fees. With Solrise, you can create, enter, and exit funds all for under $0.01.",
+          "docs": {
+              "website": "https://solrise.finance/",
+              "docs": "https://docs.solrise.finance/"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/SolriseFinance",
+              "Telegram": "https://t.me/solrisefinance",
+              "Medium": "https://blog.solrise.finance/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "5PVVwSqwzkCvuiKEZwWkM35ApBnoWqF8XopsVZjPwA8z",
+      "poolAuthority": "7jNUxDiLLyke8ECShavvPPQz4D1abj4aCZwQfZ3TCTAX",
+      "poolLpTokenAccount": "HTr2pYDBQZP13YTzLdsPzmh6e4hsNeqoGy3B777ejqTT",
+      "poolRewardTokenAccount": "Ef1tQ2E2Fe92xPVpQGzZFHmT7g7dh2hzVfWYVJJQPdbu",
+      "poolRewardTokenAccountB": "Ffmv9Ximzk8D9oKwHkkgdq9cVxv5P5Y9LxEJdu1N1jSJ"
+  },
+  {
+      "name": "BOP-RAY",
+      "lp": {
+          "symbol": "BOP-RAY",
+          "name": "BOP-RAY LP",
+          "coin": {
+              "symbol": "BOP",
+              "name": "Boring Protocol",
+              "mintAddress": "BLwTnYKqf7u4qjgZrrsKeNs2EzWkMLqVCu6j8iHyrNA3",
+              "decimals": 8,
+              "referrer": "FWxBZmNsvNckx8DnaL2NuyMtiQmT1x529WwV4e1UWiGk",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "9nQPYJvysyfnXhQ6nkK5V7sZG26hmDgusfdNQijRk5LD",
+          "decimals": 8
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "BOP",
+          "name": "Boring Protocol",
+          "mintAddress": "BLwTnYKqf7u4qjgZrrsKeNs2EzWkMLqVCu6j8iHyrNA3",
+          "decimals": 8,
+          "referrer": "FWxBZmNsvNckx8DnaL2NuyMtiQmT1x529WwV4e1UWiGk",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/BLwTnYKqf7u4qjgZrrsKeNs2EzWkMLqVCu6j8iHyrNA3/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "EEe8b72w5q6T86nYRNJdFcY25tznPzrd1jGjuxZ7f9mX",
+      "poolAuthority": "7d99wJT2nRjWe2eKF7FpzMFb7934KoRhLP7pp2bjRm9m",
+      "poolLpTokenAccount": "FWMHgA5iUxz3zMYf7jRJk8Z9ebWNWpvd7358rGCPFr7M",
+      "poolRewardTokenAccount": "DhvRSrQUio8LpCJH4uFCvvK4MEYVrBA6xaj1hu9jVxZn",
+      "poolRewardTokenAccountB": "3c6552swYV5nBTKTCWfKURjN1uGjtceanfb3vRbHNXpN"
+  },
+  {
+      "name": "SNY-USDC",
+      "lp": {
+          "symbol": "SNY-USDC",
+          "name": "SNY-USDC LP",
+          "coin": {
+              "symbol": "SNY",
+              "name": "SNY",
+              "mintAddress": "4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y",
+              "decimals": 6,
+              "referrer": "G7gyaTNn2hgjF67SWs4Ee9PEaFU2xadhtXL8HmkJ2cNL",
+              "detailLink": "https://raydium.medium.com/synthetify-launching-on-acceleraytor-3755b4903f88",
+              "details": "Synthetify is a decentralized protocol that allows for the creation and exchange of synthetic assets that closely track the price of underlying assets. Synthetify’s synthetics adhere to the SPL token standard, allowing them to be easily integrated with DeFi applications across the Solana ecosystem.\n\nSynthetify leverages Solana to enable a fast, cheap and intuitive trading experience for users of the platform while staying fully decentralized thanks to an infrastructure that relies on smart contracts and blockchain oracles.\n\nThe Synthetify Token (SNY) gives the ability to participate in the protocol through staking. Stakers receive a pro rata share of fees generated by the exchange as well as additional rewards. SNY acts as a collateral token for all synthetic assets created on the platform and each token will have voting power on future governance proposals.",
+              "docs": {
+                  "website": "https://synthetify.io/",
+                  "whitepaper": "https://resources.synthetify.io/synthetify-whitepaper.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/synthetify",
+                  "Telegram": "https://t.me/synthetify",
+                  "Medium": "https://synthetify.medium.com/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "G8qcfeFqxwbCqpxv5LpLWxUCd1PyMB5nWb5e5YyxLMKg",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "SNY",
+          "name": "SNY",
+          "mintAddress": "4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y",
+          "decimals": 6,
+          "referrer": "G7gyaTNn2hgjF67SWs4Ee9PEaFU2xadhtXL8HmkJ2cNL",
+          "detailLink": "https://raydium.medium.com/synthetify-launching-on-acceleraytor-3755b4903f88",
+          "details": "Synthetify is a decentralized protocol that allows for the creation and exchange of synthetic assets that closely track the price of underlying assets. Synthetify’s synthetics adhere to the SPL token standard, allowing them to be easily integrated with DeFi applications across the Solana ecosystem.\n\nSynthetify leverages Solana to enable a fast, cheap and intuitive trading experience for users of the platform while staying fully decentralized thanks to an infrastructure that relies on smart contracts and blockchain oracles.\n\nThe Synthetify Token (SNY) gives the ability to participate in the protocol through staking. Stakers receive a pro rata share of fees generated by the exchange as well as additional rewards. SNY acts as a collateral token for all synthetic assets created on the platform and each token will have voting power on future governance proposals.",
+          "docs": {
+              "website": "https://synthetify.io/",
+              "whitepaper": "https://resources.synthetify.io/synthetify-whitepaper.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/synthetify",
+              "Telegram": "https://t.me/synthetify",
+              "Medium": "https://synthetify.medium.com/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "31QSh1TwgoA9GbvkgfEEwKEm11t8CR4KiQr6WCyJr7EN",
+      "poolAuthority": "BbebocNt4ySwkufrY1X3wRG8PVefCRLFR2E2TGzZPkne",
+      "poolLpTokenAccount": "2t1qozn7xtWjuCqnnTx4PaKikajN2AQK3CVH6A5JqagY",
+      "poolRewardTokenAccount": "GXZq2zNPZ9odPWAPinxXK8B7cMaAN9CpbcaLicksJsbt",
+      "poolRewardTokenAccountB": "DdSL2stD9UXfY2nj9MKrNPx8QTro1GGAY6rsBd9kJXMX"
+  },
+  {
+      "name": "TULIP-USDC",
+      "lp": {
+          "symbol": "TULIP-USDC",
+          "name": "TULIP-USDC LP",
+          "coin": {
+              "symbol": "TULIP",
+              "name": "TULIP",
+              "mintAddress": "TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs",
+              "decimals": 6,
+              "referrer": "Bcw1TvX8jUj6CtY2a7GU2THeYVAudvmT8yzRypVMVsSH",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "2doeZGLJyACtaG9DCUyqMLtswesfje1hjNA11hMdj6YU",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "TULIP",
+          "name": "TULIP",
+          "mintAddress": "TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs",
+          "decimals": 6,
+          "referrer": "Bcw1TvX8jUj6CtY2a7GU2THeYVAudvmT8yzRypVMVsSH",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs/logo.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "7U8Z6TWQMtsMcHV2htALnF9VQonnD1MrVm17YtmGEGEw",
+      "poolAuthority": "9ZVNLEiBZ2u23P7rEJf5sXY7TZK723cmVs46pBRSbRnU",
+      "poolLpTokenAccount": "B6xn6doS3Qfy1LJLbdcJa5MpJ4po2bgut1rKFvmmq6Ut",
+      "poolRewardTokenAccount": "GtPTgCr6nXiogRCWqGvLa8P6dJgZpHfAX3KxGMpxnGMJ",
+      "poolRewardTokenAccountB": "8qgijAifBGx2EAJ7zKAzk6z7dVpcDV9eHvTBwofmdTP5"
+  },
+  {
+      "name": "ALEPH-USDC",
+      "lp": {
+          "symbol": "ALEPH-USDC",
+          "name": "ALEPH-USDC LP",
+          "coin": {
+              "symbol": "ALEPH",
+              "name": "Wrapped ALEPH",
+              "mintAddress": "CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K",
+              "decimals": 6,
+              "referrer": "8FKAKrenJMDd7V6cxnM5BsymHTjqxgodtHbLwZReMnWW",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "iUDasAP2nXm5wvTukAHEKSdSXn8vQkRtaiShs9ceGB7",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "ALEPH",
+          "name": "Wrapped ALEPH",
+          "mintAddress": "CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K",
+          "decimals": 6,
+          "referrer": "8FKAKrenJMDd7V6cxnM5BsymHTjqxgodtHbLwZReMnWW",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/CsZ5LZkDS7h9TDKjrbL7VAwQZ9nsRu8vJLhRYfmGaN8K/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "JAP8SFagJBm6vt2LoFGNeSJ1hKDZ2p3yXb3CvBx11How",
+      "poolAuthority": "DVtR63sAnJPM9wdt1hYBqA5GTyFzjfcfdLTfsSzV85Ss",
+      "poolLpTokenAccount": "feCzxSvVX4EboJV4cubjqoPTK41noaHUanz8ZNJmiBp",
+      "poolRewardTokenAccount": "4mAhgUY8XGMY4743wuzVbLw7d5bqqTaxME8jmbC2YfH4",
+      "poolRewardTokenAccountB": "3sGDa8ir8GrkKbnBH6HP63JaYSs7nskmmVHpF2vuzaZr"
+  },
+  {
+      "name": "ROPE-USDC",
+      "lp": {
+          "symbol": "ROPE-USDC",
+          "name": "ROPE-USDC LP",
+          "coin": {
+              "symbol": "ROPE",
+              "name": "ROPE",
+              "mintAddress": "8PMHT4swUMtBzgHnh5U564N5sjPSiUz2cjEQzFnnP1Fo",
+              "decimals": 9,
+              "referrer": "5sGVVniBSPLTwRHDETShovq7STRH2rJwbvdvvH3NcVTF",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "Cq4HyW5xia37tKejPF2XfZeXQoPYW6KfbPvxvw5eRoUE",
+          "decimals": 9
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "ROPE",
+          "name": "ROPE",
+          "mintAddress": "8PMHT4swUMtBzgHnh5U564N5sjPSiUz2cjEQzFnnP1Fo",
+          "decimals": 9,
+          "referrer": "5sGVVniBSPLTwRHDETShovq7STRH2rJwbvdvvH3NcVTF",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/8PMHT4swUMtBzgHnh5U564N5sjPSiUz2cjEQzFnnP1Fo/logo.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "BLy8KuRck5bcJkQdMDLSZnL1Ka4heAZSGiwTJfEfY727",
+      "poolAuthority": "8xPzoFPHKWZHWmwKaxFUyVBf2V13HMbCrMDgaCZCLjgx",
+      "poolLpTokenAccount": "DiebAVak6cub1Mn3yhhvgSvGhkAP1JTtyRGoAei4wrWE",
+      "poolRewardTokenAccount": "4F9FaFewwsSF8Bsxukyj9NiEdPFQQ38dNKEDpZugYfdi",
+      "poolRewardTokenAccountB": "4tvLbnZEPZLuDf636DHEzrUxW8bDoZ5XyfVwk7ppDhbC"
+  },
+  {
+      "name": "MER-USDC",
+      "lp": {
+          "symbol": "MER-USDC",
+          "name": "MER-USDC LP",
+          "coin": {
+              "symbol": "MER",
+              "name": "Mercurial",
+              "mintAddress": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
+              "decimals": 6,
+              "referrer": "36F4ryvqaNW2yKQsAry4ZHCZ3j7tz3gtEz7NEwv7pSRu",
+              "details": "Mercurial Finance\nMercurial is building DeFi’s first dynamic vaults for stable assets on Solana, providing the technical tools for users to easily deposit, swap and mint stable assets.\n\nInnovations\nMercurial will be introducing several key new technical innovations, including on-chain algorithms to regulate the flow of assets and dynamic fees that tap on the market and price data to assist LPs in optimizing performance. We will also be developing a unique pricing curve that will be the first to combine high efficiency, multi-token support, and generalizability for all types of token sets.\n\nMaximizing Capital Utlilization\nMercurial vaults will dynamically utilize assets for a wide range of use cases, like low slippage swaps, lending, flash loans, and external third-party decentralized protocols. To increase pegged assets availability on Solana, we will allow the creation of synthetics, like mUSD or mBTC, which can be added to our vaults to improve liquidity for other stables and facilitate interaction with other third-party decentralized protocols.\n\nStarting with a vault for the most common stables, for example, USDC, USDT, wUSDC, and wDAI, we will be facilitating low slippage swaps with dynamic fees. Features will be added as key technical and ecosystem pieces become available on Solana, i.e. inter-program composability, price oracles, etc.\n\nMER\nThe MER token will be used to accrue value for the holder via fees from swaps, commission from yield farms, and as collateral for synthetic stables like mUSD. MER will also be intrinsically linked to the governance and growth of Mercurial, playing a crucial role in regulating the system across governance, insurance, and bootstrapping.",
+              "docs": {
+                  "website": "https://www.mercurial.finance/",
+                  "whitepaper": "https://www.mercurial.finance/Mercurial-Lite-Paper-v1.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/MercurialFi",
+                  "Telegram": "https://t.me/MercurialFi",
+                  "Medium": "https://mercurialfi.medium.com/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "3H9NxvaZoxMZZDZcbBDdWMKbrfNj7PCF5sbRwDr7SdDW",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "MER",
+          "name": "Mercurial",
+          "mintAddress": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
+          "decimals": 6,
+          "referrer": "36F4ryvqaNW2yKQsAry4ZHCZ3j7tz3gtEz7NEwv7pSRu",
+          "details": "Mercurial Finance\nMercurial is building DeFi’s first dynamic vaults for stable assets on Solana, providing the technical tools for users to easily deposit, swap and mint stable assets.\n\nInnovations\nMercurial will be introducing several key new technical innovations, including on-chain algorithms to regulate the flow of assets and dynamic fees that tap on the market and price data to assist LPs in optimizing performance. We will also be developing a unique pricing curve that will be the first to combine high efficiency, multi-token support, and generalizability for all types of token sets.\n\nMaximizing Capital Utlilization\nMercurial vaults will dynamically utilize assets for a wide range of use cases, like low slippage swaps, lending, flash loans, and external third-party decentralized protocols. To increase pegged assets availability on Solana, we will allow the creation of synthetics, like mUSD or mBTC, which can be added to our vaults to improve liquidity for other stables and facilitate interaction with other third-party decentralized protocols.\n\nStarting with a vault for the most common stables, for example, USDC, USDT, wUSDC, and wDAI, we will be facilitating low slippage swaps with dynamic fees. Features will be added as key technical and ecosystem pieces become available on Solana, i.e. inter-program composability, price oracles, etc.\n\nMER\nThe MER token will be used to accrue value for the holder via fees from swaps, commission from yield farms, and as collateral for synthetic stables like mUSD. MER will also be intrinsically linked to the governance and growth of Mercurial, playing a crucial role in regulating the system across governance, insurance, and bootstrapping.",
+          "docs": {
+              "website": "https://www.mercurial.finance/",
+              "whitepaper": "https://www.mercurial.finance/Mercurial-Lite-Paper-v1.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/MercurialFi",
+              "Telegram": "https://t.me/MercurialFi",
+              "Medium": "https://mercurialfi.medium.com/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "D4pYuD4tbir9KBsb7Kr63v9e86JY2UoUZeFK9eHKQFZM",
+      "poolAuthority": "2T46saTyTYeEFWyesRzLWj6y1ha9ngwcyWyGNn9q4zu4",
+      "poolLpTokenAccount": "EV3wsqiMiNcBmo2mFkUuCtib36NpBCsC2vfkW3By1sSu",
+      "poolRewardTokenAccount": "5gEH5Uq2QrqiEhdZ8YFAMY1HoYnKMiuu71f6BC25UXee",
+      "poolRewardTokenAccountB": "FTP4hnN5GPtPYvkrscTkKWYVVQ56hV3f4wGgpEXgrDUD"
+  },
+  {
+      "name": "COPE-USDC",
+      "lp": {
+          "symbol": "COPE-USDC",
+          "name": "COPE-USDC LP",
+          "coin": {
+              "symbol": "COPE",
+              "name": "COPE",
+              "mintAddress": "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+              "decimals": 6,
+              "referrer": "G7UYwWhkmgeL57SUKFF45K663V9TdXZw6Ho6ZLQ7p4p",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "Cz1kUvHw98imKkrqqu95GQB9h1frY8RikxPojMwWKGXf",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "COPE",
+          "name": "COPE",
+          "mintAddress": "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+          "decimals": 6,
+          "referrer": "G7UYwWhkmgeL57SUKFF45K663V9TdXZw6Ho6ZLQ7p4p",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "AxVvbT9fDFEkmdLwKUJRY5HsG2RXAZbe1dRAgJ2bDDwg",
+      "poolAuthority": "3n1Vdmqu1MBUpBYMpYbpJAVFv4MeNMEa82waruLy7BDu",
+      "poolLpTokenAccount": "BHLzrd5MgQy4NgmUsn542yXRZWkz1iV5bfWg8s8D4tVL",
+      "poolRewardTokenAccount": "7nGY6xHCUR2MxJnHT1qvArRUEnpo2DsGGf6Pdu3tt9gv",
+      "poolRewardTokenAccountB": "6ezx1EivkxsJcZLYhSJFLc3nUs25iyubf8PPyRNEX3pL"
+  },
+  {
+      "name": "MEDIA-USDC",
+      "lp": {
+          "symbol": "MEDIA-USDC",
+          "name": "MEDIA-USDC LP",
+          "coin": {
+              "symbol": "MEDIA",
+              "name": "MEDIA",
+              "mintAddress": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
+              "decimals": 6,
+              "referrer": "AYnaG3AidNWFzjq9U3BJSsQ9DShE8g7FszriBDtRFvsx",
+              "details": "Media Network is a new protocol that bypasses traditional CDN providers’ centralized approach for a self-governed and open source solution where everyone can participate. Media Network creates a distributed bandwidth market that enables service providers such as media platforms to hire resources from the network and dynamically come and go as the demand for last-mile data delivery shifts. It allows anyone to organically serve content without introducing any trust assumptions or pre-authentication requirements. Participants earn MEDIA rewards for their bandwidth contributions, a fixed supply SPL token minted on Solana’s Blockchain.",
+              "docs": {
+                  "website": "https://media.network/",
+                  "whitepaper": "https://media.network/whitepaper.pdf"
+              },
+              "socials": {
+                  "Twitter": "https://twitter.com/Media_FDN",
+                  "Telegram": "https://t.me/Media_FDN",
+                  "Medium": "https://mediafoundation.medium.com/"
+              },
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "A5zanvgtioZGiJMdEyaKN4XQmJsp1p7uVxaq2696REvQ",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "MEDIA",
+          "name": "MEDIA",
+          "mintAddress": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
+          "decimals": 6,
+          "referrer": "AYnaG3AidNWFzjq9U3BJSsQ9DShE8g7FszriBDtRFvsx",
+          "details": "Media Network is a new protocol that bypasses traditional CDN providers’ centralized approach for a self-governed and open source solution where everyone can participate. Media Network creates a distributed bandwidth market that enables service providers such as media platforms to hire resources from the network and dynamically come and go as the demand for last-mile data delivery shifts. It allows anyone to organically serve content without introducing any trust assumptions or pre-authentication requirements. Participants earn MEDIA rewards for their bandwidth contributions, a fixed supply SPL token minted on Solana’s Blockchain.",
+          "docs": {
+              "website": "https://media.network/",
+              "whitepaper": "https://media.network/whitepaper.pdf"
+          },
+          "socials": {
+              "Twitter": "https://twitter.com/Media_FDN",
+              "Telegram": "https://t.me/Media_FDN",
+              "Medium": "https://mediafoundation.medium.com/"
+          },
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "Ef1gD9JMzWF6PNw2uc4744zouh57GyWAeVTjHHbQ2nsu",
+      "poolAuthority": "3dhU2g3MSHK3LwjuE1VsEJCsNeWKyBJUMHt4EUXepTjs",
+      "poolLpTokenAccount": "DGjRtqsjeubLCLPD3yH8fj1d7TnrD3jKBpwa1UbVk7E6",
+      "poolRewardTokenAccount": "Uen8f9Rn42i8sDTK5vEttrnX9AUwXV3yf6DFU63mKDb",
+      "poolRewardTokenAccountB": "Ek6n7Myojb6pSpQuqk5AyS7KXQdXkJyZT7ki9baYCxds"
+  },
+  {
+      "name": "STEP-USDC",
+      "lp": {
+          "symbol": "STEP-USDC",
+          "name": "STEP-USDC LP",
+          "coin": {
+              "symbol": "STEP",
+              "name": "STEP",
+              "mintAddress": "StepAscQoEioFxxWGnh2sLBDFp9d8rvKz2Yp39iDpyT",
+              "decimals": 9,
+              "referrer": "EFQVX1S6dFroDDhJDAnMTX4fCfjt4fJXHdk1eEtJ2uRY",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "3k8BDobgihmk72jVmXYLE168bxxQUhqqyESW4dQVktqC",
+          "decimals": 9
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "STEP",
+          "name": "STEP",
+          "mintAddress": "StepAscQoEioFxxWGnh2sLBDFp9d8rvKz2Yp39iDpyT",
+          "decimals": 9,
+          "referrer": "EFQVX1S6dFroDDhJDAnMTX4fCfjt4fJXHdk1eEtJ2uRY",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/StepAscQoEioFxxWGnh2sLBDFp9d8rvKz2Yp39iDpyT/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "8xhjCzfzVcP79jE7jXR2xtNaSL6aJYoDRLVT9FMjpRTC",
+      "poolAuthority": "6wRMPrHKFzj3qB4j5yj4y9mDF89fZ6w7gD1cEzCJwT9B",
+      "poolLpTokenAccount": "CP3wdgdSygYGLJMjKfbJMiANnYuAxXHPiLTtB124tzVX",
+      "poolRewardTokenAccount": "3zSiR4XrrRPhsom2hh9iigYZZ7uCpMucfJnZRgREgH8j",
+      "poolRewardTokenAccountB": "4n3vRUk3wdtbGWgMFSaxUcnGLKwa2wiWVhqw7kv9JDVS"
+  },
+  {
+      "name": "xCOPE-USDC",
+      "lp": {
+          "symbol": "xCOPE-USDC",
+          "name": "xCOPE-USDC LP",
+          "coin": {
+              "symbol": "xCOPE",
+              "name": "xCOPE",
+              "mintAddress": "3K6rftdAaQYMPunrtNRHgnK2UAtjm2JwyT2oCiTDouYE",
+              "decimals": 0,
+              "referrer": "8DTehuES4tfnd2SrqcjN52XofxWXGjiLZRgM12U9pB6f",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "USDC",
+              "name": "USDC",
+              "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "decimals": 6,
+              "referrer": "92vdtNjEg6Zth3UU1MgPgTVFjSEzTHx66aCdqWdcRkrg",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "2Vyyeuyd15Gp8aH6uKE72c4hxc8TVSLibxDP9vzspQWG",
+          "decimals": 0
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "xCOPE",
+          "name": "xCOPE",
+          "mintAddress": "3K6rftdAaQYMPunrtNRHgnK2UAtjm2JwyT2oCiTDouYE",
+          "decimals": 0,
+          "referrer": "8DTehuES4tfnd2SrqcjN52XofxWXGjiLZRgM12U9pB6f",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/3K6rftdAaQYMPunrtNRHgnK2UAtjm2JwyT2oCiTDouYE/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": true,
+      "dual": false,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "XnRBbNMf6YcWvC1u2vBXXuMcagmRBRLu1y84mpqnKwW",
+      "poolAuthority": "AnYvA5H7oBeA1otnWHSu8ud3waFsEmfUbdAoM1VzdVvt",
+      "poolLpTokenAccount": "6tXWzm8nLVtNtvqDH8bZNfUwpSjEcKZoJFpcV4hC5rLD",
+      "poolRewardTokenAccount": "8GoDpozsDk3U3J36vvPiq3YpnA6MeJb1QPVJFiupe2wR",
+      "poolRewardTokenAccountB": "7niS4ngxgZ3oynHwH82PnwJXicTnY3fo9Vubi1PnjzJq"
+  },
+  {
+      "name": "KIN-RAY",
+      "lp": {
+          "symbol": "KIN-RAY",
+          "name": "KIN-RAY LP",
+          "coin": {
+              "symbol": "KIN",
+              "name": "KIN",
+              "mintAddress": "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6",
+              "decimals": 5,
+              "referrer": "AevFXmApVxN2yk1iemSxXc6Wy7Z1udUEfST11kuYKmr9",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "CHT8sft3h3gpLYbCcZ9o27mT5s3Z6VifBVbUiDvprHPW",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "KIN",
+          "name": "KIN",
+          "mintAddress": "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6",
+          "decimals": 5,
+          "referrer": "AevFXmApVxN2yk1iemSxXc6Wy7Z1udUEfST11kuYKmr9",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6/logo.png"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 5,
+      "programId": "9KEPoZmtHUrBbhWN1v1KWLMkkvwY6WLtAVUCPRtRjP4z",
+      "poolId": "FgApVk6mASrkuWNxmsFvsaAYkFKqdiwMTvYZK36A2DaC",
+      "poolAuthority": "7kEx8qnkZPkRXV6f4ztf27zYjCACBHY3PUMfuiYJsoML",
+      "poolLpTokenAccount": "7fgDjhZn9GqRZbbCregr9tpkbWSKjibdCsJNBYbLhLir",
+      "poolRewardTokenAccount": "5XZjRyEo8Wr2CtSE5bpoKioThT9czK1dUebbK87Lqkaa",
+      "poolRewardTokenAccountB": "8jGJ3ST1j9eemfC6N2qQevtUdwxT7TpXW1NmvWyvLLVs"
+  },
+  {
+      "name": "MAPS-RAY",
+      "lp": {
+          "symbol": "MAPS-RAY",
+          "name": "MAPS-RAY LP",
+          "coin": {
+              "symbol": "MAPS",
+              "name": "MAPS",
+              "mintAddress": "MAPS41MDahZ9QdKXhVa4dWB9RuyfV4XqhyAZ8XcYepb",
+              "decimals": 6,
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "CcKK8srfVdTSsFGV3VLBb2YDbzF4T4NM2C3UEjC39RLP",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "MAPS",
+          "name": "MAPS",
+          "mintAddress": "MAPS41MDahZ9QdKXhVa4dWB9RuyfV4XqhyAZ8XcYepb",
+          "decimals": 6,
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/MAPS41MDahZ9QdKXhVa4dWB9RuyfV4XqhyAZ8XcYepb/logo.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 4,
+      "programId": "CBuCnLe26faBpcBP2fktp4rp8abpcAnTWft6ZrP5Q4T",
+      "poolId": "Chb6atEWGmH2NitCqrCEMHB8uKWYQiiVaBnmJQDudm87",
+      "poolAuthority": "BcmgQZXCDPCduv3reT8LDQNqvGeGMZtFhBxyLYdrnCjE",
+      "poolLpTokenAccount": "5uaBAwu1Sff58KNKGTwfacsjsrMU3wg6jtGtMWwiZd5B",
+      "poolRewardTokenAccount": "4LVikvk3gZEHaTUNh7L8bsx5By6NNnkqpKfcdJTWTD7Z",
+      "poolRewardTokenAccountB": "3UWGpEe2NLD9oWPW1zdXGZRCvJxkNSC2puUWooNEugdS"
+  },
+  {
+      "name": "OXY-RAY",
+      "lp": {
+          "symbol": "OXY-RAY",
+          "name": "OXY-RAY LP",
+          "coin": {
+              "symbol": "OXY",
+              "name": "OXY",
+              "mintAddress": "z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M",
+              "decimals": 6,
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "FwaX9W7iThTZH5MFeasxdLpxTVxRcM7ZHieTCnYog8Yb",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "OXY",
+          "name": "OXY",
+          "mintAddress": "z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M",
+          "decimals": 6,
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M/logo.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 4,
+      "programId": "CBuCnLe26faBpcBP2fktp4rp8abpcAnTWft6ZrP5Q4T",
+      "poolId": "7Hug9fKfTrasG3hHonXTfSnvv37mDeyoBHbVwyDjw693",
+      "poolAuthority": "CcD7KXVhjoeFpbkXeBgPpZChafEfTZ4zJL47LqmKdqwz",
+      "poolLpTokenAccount": "GtXoFnVRATaasBP6sroNaC54uLQfVAwGXsfKzgFqNiUc",
+      "poolRewardTokenAccount": "GKC7BcGs1515CQx6hiK562u29dFQxBw8HWwJUxqi7xf1",
+      "poolRewardTokenAccountB": "DXDjRiC7EUUh9cj93tgBtX2jRkmnwtCMEAQD9GrYK2f6"
+  },
+  {
+      "name": "FIDA-RAY",
+      "lp": {
+          "symbol": "FIDA-RAY",
+          "name": "FIDA-RAY LP",
+          "coin": {
+              "symbol": "FIDA",
+              "name": "Bonfida",
+              "mintAddress": "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
+              "decimals": 6,
+              "referrer": "AeAsG75UmyPDB271c6NHonHxXAPXfkvhcf2xjfJhReS8",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "pc": {
+              "symbol": "RAY",
+              "name": "Raydium",
+              "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+              "decimals": 6,
+              "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+              "tags": [
+                  "raydium"
+              ]
+          },
+          "mintAddress": "DsBuznXRTmzvEdb36Dx3aVLVo1XmH7r1PRZUFugLPTFv",
+          "decimals": 6
+      },
+      "reward": {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "mintAddress": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "decimals": 6,
+          "referrer": "33XpMmMQRf6tSPpmYyzpwU4uXpZHkFwCZsusD9dMYkjy",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png"
+      },
+      "rewardB": {
+          "symbol": "FIDA",
+          "name": "Bonfida",
+          "mintAddress": "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
+          "decimals": 6,
+          "referrer": "AeAsG75UmyPDB271c6NHonHxXAPXfkvhcf2xjfJhReS8",
+          "tags": [
+              "raydium"
+          ],
+          "picUrl": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp/logo.svg"
+      },
+      "isStake": false,
+      "fusion": true,
+      "legacy": false,
+      "dual": true,
+      "version": 4,
+      "programId": "CBuCnLe26faBpcBP2fktp4rp8abpcAnTWft6ZrP5Q4T",
+      "poolId": "8rAdapvcC5vYNLXzChMgt56s6HCQGE6Lbo469g3WRTUh",
+      "poolAuthority": "EcCKf3mgPtL6dNNAVG4gQQtLkAoTAUdf5vzFukkrviWq",
+      "poolLpTokenAccount": "H6kzwNNg9zbgC1YBjvCN4BdebtA4NusvgUhUSDZoz8rP",
+      "poolRewardTokenAccount": "7vnPTB2HAXFUAV5iiVZTNHgAnVYjgXcdumbbqfeK6ugp",
+      "poolRewardTokenAccountB": "EGHdQm9KGLz6nw7W4rK13DyAMMJcGP9RpzCJaXiq75kQ"
+  }
+]

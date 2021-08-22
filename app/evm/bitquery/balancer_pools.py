@@ -1,0 +1,1 @@
+query = "{\n  pools {\n    address\n  }\n}\n\n"
