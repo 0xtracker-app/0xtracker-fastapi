@@ -14,8 +14,9 @@ async def get_evm_positions(wallet,farm_id):
 
     if farm_configuraiton['stakedFunction'] is not None:
         masterchef = await farm_templates.get_traditional_masterchef(wallet, masterchef_pool_list, farm_network, farm_configuraiton, returned_object[1])
-        print(masterchef)
-
+        if masterchef is not None:
+            returned_object[0].update(masterchef[0])
+            returned_object[1][farm_id]['userData'].update(masterchef[1][farm_id]['userData'])
     if 'extraFunctions' in farm_configuraiton:
 
         if farm_configuraiton['extraFunctions']['vaults'] is not None:
