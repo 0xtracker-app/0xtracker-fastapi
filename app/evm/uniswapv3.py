@@ -1,8 +1,8 @@
 import decimal
 import math
-from networks import WEB3_NETWORKS
-from multicall import Call, Multicall
-import multicall.parsers as parser
+from evm.networks import WEB3_NETWORKS
+from evm.multicall import Call, Multicall
+import evm.multicall.parsers as parser
 from web3 import Web3
 
 #Constants

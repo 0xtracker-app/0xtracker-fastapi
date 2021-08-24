@@ -1,3 +1,7 @@
+
+from . import farm_templates, template_helpers, external_contracts
+
+
 farms = {
     '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A' : {
         'name' : 'eleven.finance',
@@ -193,7 +197,11 @@ farms = {
         'pendingFunction' : None,
         'masterChef' : '0xBeefy',
         'featured' : 2,
-        'network' : 'bsc'
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_beefy_bsc],
+            'args' : {'farm_id' : '0xBeefy', 'network' : 'bsc'} }
     },
                 '0x8cf7044DDedbE502892B120aAf8692FeCFb71420' : {
         'name' : 'dragonballfinance.org',
@@ -776,6 +784,7 @@ farms = {
         'pendingFunction' : 'pendingPolis',
         'masterChef' : '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7',
         'perBlock' : 'polisPerBlock',
+        'poolLength' : 'getRewardsLength',
         'featured' : 2,
         'network' : 'bsc'
     },

@@ -1,14 +1,25 @@
-from web3 import Web3
+from web3 import Web3, eth
 
-WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/')), 'id' : 56},
-                'matic':  {'connection' : Web3(Web3.HTTPProvider('https://polygon-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 137},
-                'ftm' : {'connection' : Web3(Web3.HTTPProvider('https://rpc.ftm.tools/')), 'id': 250},
-                'kcc' : {'connection' : Web3(Web3.HTTPProvider('https://rpc-mainnet.kcc.network')), 'id': 321}, 
-                'optimism': { 'connection' : Web3(Web3.HTTPProvider('https://optimism-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 10},
-                'eth': { 'connection' : Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 1},
-                'oke': { 'connection' : Web3(Web3.HTTPProvider('https://exchainrpc.okex.org')), 'id' : 66},
-                'harmony': { 'connection' : Web3(Web3.HTTPProvider('https://api.harmony.one')), 'id' : 1666600000},
-                'avax': { 'connection' : Web3(Web3.HTTPProvider('https://api.avax.network/ext/bc/C/rpc')), 'id' : 43114},                
+# WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/')), 'id' : 56},
+#                 'matic':  {'connection' : Web3(Web3.HTTPProvider('https://polygon-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 137},
+#                 'ftm' : {'connection' : Web3(Web3.HTTPProvider('https://rpc.ftm.tools/')), 'id': 250},
+#                 'kcc' : {'connection' : Web3(Web3.HTTPProvider('https://rpc-mainnet.kcc.network')), 'id': 321}, 
+#                 'optimism': { 'connection' : Web3(Web3.HTTPProvider('https://optimism-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 10},
+#                 'eth': { 'connection' : Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 1},
+#                 'oke': { 'connection' : Web3(Web3.HTTPProvider('https://exchainrpc.okex.org')), 'id' : 66},
+#                 'harmony': { 'connection' : Web3(Web3.HTTPProvider('https://api.harmony.one')), 'id' : 1666600000},
+#                 'avax': { 'connection' : Web3(Web3.HTTPProvider('https://api.avax.network/ext/bc/C/rpc')), 'id' : 43114},                
+#                 }
+
+WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://bsc-dataseed.binance.org/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
+                'matic':  {'connection' : Web3(Web3.AsyncHTTPProvider('https://polygon-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 137},
+                'ftm' : {'connection' : Web3(Web3.AsyncHTTPProvider('https://rpc.ftm.tools/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id': 250},
+                'kcc' : {'connection' : Web3(Web3.AsyncHTTPProvider('https://rpc-mainnet.kcc.network'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id': 321}, 
+                'optimism': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://optimism-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 10},
+                'eth': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1},
+                'oke': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://exchainrpc.okex.org'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 66},
+                'harmony': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://api.harmony.one'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1666600000},
+                'avax': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://api.avax.network/ext/bc/C/rpc'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 43114},                
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : '4VRVI4YKCSN4YN33MQ2BDCWXAQPHMBCZ4D', 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

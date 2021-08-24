@@ -1,9 +1,6 @@
 from os import replace
 from platform import dist
 from types import MethodDescriptorType
-from gevent import monkey
-from grequests import request
-monkey.patch_all() # we need to patch very early
 from eth_utils import address
 from oracles import coingecko_by_address_network, get_price_from_router, kcc_router_prices
 from toolz.itertoolz import last
@@ -33,8 +30,8 @@ from abi.balancer_vault import balancer_vault_abi
 from abi.farmhero import multi_fee_v2
 import bitquery.quickswap_lps
 import bitquery.balancer_pools
-from multicall import Call, Multicall
-import multicall.parsers as parsers
+from evm.multicall import Call, Multicall
+import evm.multicall.parsers as parsers
 from web3 import Web3
 from farms import farms
 import abi.uni_nft as uniNFT
@@ -211,20 +208,10 @@ moonpot_contracts = [{'contract': '0x35ebb629b6e65Cb7705B5E0695982D206898f195', 
     'contract': '0x30d55CE74E2dcd1B0Ff37214a6978FCFc06aA499', 'token_function': 'underlying'}]
 
 
-def get_lending_protocol(wallet,lending_vaults,farm_id,network):
+async def test_async():
+    x = await Call('0x35ebb629b6e65Cb7705B5E0695982D206898f195', [f'rewardTokenLength()(uint256)'], [['test', None]], WEB3_NETWORKS['bsc'])()
+    print(x)
 
-    poolKey = farm_id
-    calls = []
+asyncio.run(test_async())
 
-    for vault in lending_vaults:
-
-        vault_address = vault['address']
-        print(vault_address)
-        calls.append(Call(vault_address, [f'getAccountSnapshot(address)((uint256,uint256,uint256,uint256))', wallet], [[f'{vault_address}_accountSnapshot', None ]]))
-        
-        stakes=Multicall(calls, WEB3_NETWORKS[network])()
-
-import poolext.benqi as benqi
-
-get_lending_protocol(wallet,benqi.vaults,'0xBenqi','avax')
 

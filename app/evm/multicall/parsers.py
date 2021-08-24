@@ -55,6 +55,9 @@ def parseReserves(value):
 def parseWanted(value):
     return value[0]
 
+def parse_wanted_slot_two(value):
+    return value[1]
+
 def from_custom(value, decimal):
     return value / (10**decimal)
 

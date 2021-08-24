@@ -1,85 +1,85 @@
-from oracles import coingecko_by_address_network, fantom_router_prices, get_price_from_router,kcc_router_prices,oke_router_prices,harmony_router_prices, avax_router_prices
-from multicall import Call, Multicall
-from farms import farms
+from evm.oracles import coingecko_by_address_network, fantom_router_prices, get_price_from_router,kcc_router_prices,oke_router_prices,harmony_router_prices, avax_router_prices
+from evm.multicall import Call, Multicall
+from evm.farms import farms
 import json
 import asyncio
 import requests
 import hjson
 from aiohttp import ClientSession, ClientTimeout
-from poolext.elevenpools import pools as e11pools
-from poolext.fulcrumpools import pools as fulcrumpools
-from poolext.elevennerve import extNerve
-from poolext.horizon import extHorizon
-from poolext.ironfoundry import foundry
-from poolext.diamondhand import diamonds
-from poolext.apoyield import thirdParty
-from poolext.jetfuelVaults import fuelVaults
-from poolext.pancakebunny import bunnies
-from poolext.gambit import gambits
-from poolext.taodao import dao
-from poolext.fortress import forts
-from poolext.dyp import dypPools
-from poolext.alpacaTokens import alpacas
-from poolext.merlin import magic
-from poolext.beefy_new import beefy_v6
-from poolext.squirrel import nuts
-from poolext.adamant import adamant_deployers
-from poolext.kogefarm import koge_vaults
-from poolext.aperocket import ape_rockets, ape_rockets_matic
-from poolext.thoreum import thunder_pools
-from poolext.pyq import pyq_farm_list
-from poolext.pancake_bunny_matic import bunny_matic_vaults
-import poolext.png as png
-import poolext.curve
-import poolext.boneswap
-import poolext.telx as telx
-import poolext.paprprintr as papr
-import poolext.dinoswap as dino
-import poolext.superfarm as superfarm
-import poolext.pandaswap as pandaswap
-import poolext.feeder as feeder
-import poolext.polygonfarm as polygonfarm
-import poolext.ironlend as ironlend
-import poolext.farmhero as farmhero
-import poolext.rugzombie as rugzombie
-import poolext.jetswap_vaults as jetswapvaults
-import poolext.ext_masterchef as ext_masterchef
-import poolext.moonpot as moonpot
-import poolext.yak as yak
-import poolext.benqi as benqi
-import uniswapv3
-import multicall.parsers as parser
-import farm_templates
-import template_helpers
-from thegraph import call_graph
+from evm.poolext.elevenpools import pools as e11pools
+from evm.poolext.fulcrumpools import pools as fulcrumpools
+from evm.poolext.elevennerve import extNerve
+from evm.poolext.horizon import extHorizon
+from evm.poolext.ironfoundry import foundry
+from evm.poolext.diamondhand import diamonds
+from evm.poolext.apoyield import thirdParty
+from evm.poolext.jetfuelVaults import fuelVaults
+from evm.poolext.pancakebunny import bunnies
+from evm.poolext.gambit import gambits
+from evm.poolext.taodao import dao
+from evm.poolext.fortress import forts
+from evm.poolext.dyp import dypPools
+from evm.poolext.alpacaTokens import alpacas
+from evm.poolext.merlin import magic
+from evm.poolext.beefy_new import beefy_v6
+from evm.poolext.squirrel import nuts
+from evm.poolext.adamant import adamant_deployers
+from evm.poolext.kogefarm import koge_vaults
+from evm.poolext.aperocket import ape_rockets, ape_rockets_matic
+from evm.poolext.thoreum import thunder_pools
+from evm.poolext.pyq import pyq_farm_list
+from evm.poolext.pancake_bunny_matic import bunny_matic_vaults
+import evm.poolext.png as png
+import evm.poolext.curve
+import evm.poolext.boneswap
+import evm.poolext.telx as telx
+import evm.poolext.paprprintr as papr
+import evm.poolext.dinoswap as dino
+import evm.poolext.superfarm as superfarm
+import evm.poolext.pandaswap as pandaswap
+import evm.poolext.feeder as feeder
+import evm.poolext.polygonfarm as polygonfarm
+import evm.poolext.ironlend as ironlend
+import evm.poolext.farmhero as farmhero
+import evm.poolext.rugzombie as rugzombie
+import evm.poolext.jetswap_vaults as jetswapvaults
+import evm.poolext.ext_masterchef as ext_masterchef
+import evm.poolext.moonpot as moonpot
+import evm.poolext.yak as yak
+import evm.poolext.benqi as benqi
+import evm.uniswapv3 as uniswapv3
+import evm.multicall.parsers as parser
+import evm.farm_templates as farm_templates
+import evm.template_helpers as template_helpers
+from evm.thegraph import call_graph
 from web3 import Web3
-from abi.uranium import uraniumABI
-from abi.nrveth import nrvethABI
-from abi.wswap import wSwapABI
-from abi.gambit import gambitABI
-from abi.pcs1 import pcsRouter
-from abi.pcs2 import pcs2Router
-from abi.jets import jetsRouter
-from abi.biswap import biswap_router
-from abi.firebird import firebird_abi
-from abi.add_rewards import reward_abi
-from abi.farmhero import multi_fee_v2
-from abi.balancer_vault import balancer_vault_abi
-import bitquery.balancer_pools
-from bitquery.walletquery import query, variables
-import bitquery.quickswap_lps
+from evm.abi.uranium import uraniumABI
+from evm.abi.nrveth import nrvethABI
+from evm.abi.wswap import wSwapABI
+from evm.abi.gambit import gambitABI
+from evm.abi.pcs1 import pcsRouter
+from evm.abi.pcs2 import pcs2Router
+from evm.abi.jets import jetsRouter
+from evm.abi.biswap import biswap_router
+from evm.abi.firebird import firebird_abi
+from evm.abi.add_rewards import reward_abi
+from evm.abi.farmhero import multi_fee_v2
+from evm.abi.balancer_vault import balancer_vault_abi
+import evm.bitquery.balancer_pools as balancer_pools_query
+from evm.bitquery.walletquery import query, variables
+import evm.bitquery.quickswap_lps as quickswap_lps
 import time
-import nest_asyncio
+#import nest_asyncio
 from pymongo import MongoClient
-import grequests
+#import grequests
 import os
-import routers
+import evm.routers as routers
 import ast
 import cloudscraper
 import re
-from networks import WEB3_NETWORKS
+from evm.networks import WEB3_NETWORKS
 
-nest_asyncio.apply()
+#nest_asyncio.apply()
 
 ## Constants
 DUST_FILTER = 0.00000000001
@@ -93,325 +93,6 @@ tokenDB = mongo.full_tokens
 # Used For Testing
 # selectedPools = ['0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A', '0x7f7Bf15B9c68D23339C31652C8e860492991760d', '0x2EBe8CDbCB5fB8564bC45999DAb8DA264E31f24E', '0x0895196562C7868C5Be92459FaE7f877ED450452']
 # wallet = '0x72Dc7f18ff4B59143ca3D21d73fA6e40D286751f'
-
-## Get Outside Farms
-def getBeefyVaults():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/bsc_pools.js')
-    data = r.text
-    try:
-        return hjson.loads(data[24:-2])
-    except:
-        return hjson.loads(data[79:-2])
-        
-def getBeefyBoosts():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
-    data = r.text.replace('_', '-')
-    return hjson.loads(data[67:-2])
-
-def getvSafes():
-    r = requests.get('https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
-    return json.loads(r.text)['data']
-
-def get_firebird_vaults():
-    r = requests.get('https://farm-api-polygon.firebird.finance/api/farming-scan/get-farming-scans?group=fvault')
-    return json.loads(r.text)['data']
-
-def get_ele_tokens(network=None):
-    skip_tokens = ['0x3Ed531BfB3FAD41111f6dab567b33C4db897f991', '0x5C0E7b820fCC7cC66b787A204B2B31cbc027843f', '0x0D5BaE8f5232820eF56D98c04B8F531d2742555F', '0xDF098493bB4eeE18BB56BE45DC43BD655a27E1A9', '0x27DD6E51BF715cFc0e2fe96Af26fC9DED89e4BE8', '0x025E2e9113dC1f6549C83E761d70E647c8CDE187']
-    token = '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'
-    headers = {'accept': 'application/vnd.github.v3.raw',
-                'authorization': 'token {}'.format(token)}
-    r = requests.get('https://raw.githubusercontent.com/Eleven-Finance/elevenfinance/main/src/features/configure/pools.js', headers=headers)
-    r = r.text
-    s2 = "export const pools = "
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    data = data.replace("+","")
-    data = data.replace("depositWarning: '<p>Be aware of <b>4% Deposit fee</b> on this pool.</p>'", "")
-    data = data.replace("'<p>The fee is charged by Polycat, Eleven doesn\\'t charge you on the deposit</p>',", "")
-    data = hjson.loads(data.replace("\\",""))
-    response = json.loads(json.dumps(data))
-    if network is None:
-        return response
-    else:
-        return [x['earnedTokenAddress'] for x in response if '11' in x['earnedToken'] and x['network'] == network and x['earnedTokenAddress'] not in skip_tokens]
-
-def get_beefy_matic_pools():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/polygon_pools.js')
-    r = r.text
-    s2 = "export const polygonPools = "
-    
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    
-    return hjson.loads(data.replace("\\",""))
-
-def get_beefy_fantom_pools():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fantom_pools.js')
-    r = r.text
-    s2 = "export const fantomPools = "
-    
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
-
-    return [x['earnedTokenAddress'] for x in cleaned_up]
-
-def get_beefy_avax_pools():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/avalanche_pools.js')
-    r = r.text
-    s2 = "export const avalanchePools = "
-    
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
-
-    return [x['earnedTokenAddress'] for x in cleaned_up]
-
-def get_quickswap_vaults():
-    try:
-        scraper = cloudscraper.create_scraper()
-        r = scraper.get('https://quickswap.exchange/staking.json')
-        cleaner = r.text[1:-1].replace("\\","")
-        cleaned = json.loads(cleaner)
-        return [each['stakingRewardAddress'] for each in cleaned if each['ended'] == False]
-    except:
-        file_path = os.path.join('poolext', 'quick_swap.json')
-        r = open(file_path, 'r').read()
-        cleaner = r[1:-1].replace("\\","")
-        cleaned = json.loads(cleaner)
-        return [each['stakingRewardAddress'] for each in cleaned if each['ended'] == False]
-
-def convert_gevent_to_json(data):
-    data = data.text
-    return json.loads(json.dumps(hjson.loads(data)))
-
-def get_dfyn_vaults():
-    urls = ['https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/ecosystem-farms.js', 'https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/popular-farms.js']
-    rs = (grequests.get(u) for u in urls)
-    maping = map(convert_gevent_to_json, grequests.map(rs))
-
-    return_list = []
-
-    for each in maping:
-        for contract in each:
-            if contract['stakingRewardAddress'] not in ['0x98D7c004C54C47b7e65320Bd679CB897Aae6a6D']:
-                return_list.append(contract['stakingRewardAddress'])
-    
-    return return_list
-
-def get_dfyn_dual():
-    url = 'https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/dual-stake.js'
-    r = requests.get(url)
-    maping = convert_gevent_to_json(r)
-
-    return_list = []
-
-    for each in maping:
-        return_list.append(each['stakingRewardAddress'])
-    
-    return return_list
-
-def get_iron_vaults():
-    r = requests.get('https://api.iron.finance/farms')
-    r = json.loads(r.text)['pools']
-
-    data = { x['masterChef']+'_'+str(x['id']) : x for x in r }
-
-    return data
-
-def get_hyperjump_vaults():
-    r = requests.get('https://hyperjump.fi/configs/vaults/bsc_pools.js')
-    r = r.text
-    s2 = "export const bscPools = "
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    f = hjson.loads(data)
-    return json.loads(json.dumps(f))
-
-def get_hyperjump_vaults_ftm():
-    r = requests.get('https://hyperjump.fi/configs/vaults/ftm_pools.js')
-    r = r.text
-    s2 = "export const ftmPools = "
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    f = hjson.loads(data)
-    return json.loads(json.dumps(f))
-
-def get_autoshark_vaults(network):
-    r = json.loads(requests.get('https://old.autoshark.finance/api/v2/vaults').text)['data']
-    return [x['address'] for x in r if x['address'] != '0x85ff09374D1f59288b6978EB9254377a51BE0B7c' and x['network'] == network]
-
-def get_aperocket_vaults():
-    r = ape_rockets
-    return [x['address'] for x in r if x['address'] != '0xd79dc49Ed716832658ec28FE93dd733e0DFB8d58']
-
-def get_aperocket_vaults_matic():
-    r = ape_rockets_matic
-    return [x['address'] for x in r if x['address'] != '0xBa56A30ec2Ee2B4C3c7EE75e0CFEbcD1b22dE8cd']
-
-def get_acryptos_vaults():
-    r = json.loads(requests.get('https://api.unrekt.net/api/v1/acryptos-asset').text)
-    return [r['assets'][x]['addressvault'] for x in r['assets'] if r['assets'][x]['addressvault'] != '0xa82f327bbbf0667356d2935c6532d164b06ceced']
-
-def pull_koge_vaults():
-    r = requests.get('https://raw.githubusercontent.com/kogecoin/vault-contracts/main/vaultaddresses').text
-    return r
-
-def get_pancakebunny_pools(network):
-    urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
-    r = json.loads(requests.get(urls[network]).text)['apy']
-    return [x for x in r if x not in ['0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920']]
-
-def get_balancer_pools():
-    balancer_pools = call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None})
-
-    return [x['address'] for x in balancer_pools['data']['pools']]
-
-def get_apeswap_pools():
-    r = json.loads(requests.get('https://api.apeswap.finance/stats').text)
-    return ([x['address'] for x in r['incentivizedPools'] if x['active'] is True and x['id'] < 52], [x['address'] or x['id'] == 76 for x in r['incentivizedPools'] if x['active'] is True and x['id'] > 52 and x['id'] != 76])
-
-def get_beefy_boosts_poly():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/polygon_stake.js').text
-    s2 = "export const polygonStakePools = ["
-    data = r[r.index(s2) + len(s2) :len(r)-3].strip()
-    regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
-    hson = hjson.loads(f'[{regex}]'.replace('partners: ,',''))
-    t = json.loads(json.dumps(hson))
-
-    return [x['earnContractAddress'] for x in t if x['status'] == 'active']
-
-def get_pcs_pools():
-    r = requests.get('https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.ts').text
-    s2 = "const pools: PoolConfig[] = "
-    s_end = "export default pools"
-    data = r[r.index(s2) + len(s2) :r.index(s_end)]
-    hson = hjson.loads(data)
-    t = json.loads(json.dumps(hson))
-    pcs_pools = []
-    pcs_older = []
-    for each in t:
-        contract_address = each['contractAddress']['56']
-        if contract_address not in ['0x73feaa1eE314F8c655E354234017bE2193C9E24E']:
-            if 'isFinished' in each:
-                if each['isFinished'] is False and each['sousId'] > 116:
-                    pcs_pools.append(contract_address)
-                elif each['isFinished'] is False and each['sousId'] < 116:
-                    pcs_older.append(contract_address)        
-            elif each['sousId'] > 116:
-                pcs_pools.append(contract_address)
-            else:
-                pcs_older.append(contract_address)
-
-    
-    return pcs_pools,pcs_older
-
-def get_pickle_addresses(network):
-    r = json.loads(requests.get('https://d38jrn41whs0ud.cloudfront.net/prod/protocol/pools').text)
-    
-    return [x['jarAddress'] for x in r if x['network'] == network]
-
-def get_wault_pool_contracts():
-    r = requests.get('https://api.wault.finance/wpoolsData.js?ts=%s' % (round(time.time()))).text
-    s2 = "var wpoolsData = "
-    data = r[r.index(s2) + len(s2) :len(r)]
-    r = json.loads(data)
-    r = [x['contractAddress'] for x in r]
-    return r
-
-def get_paprprintr_vaults(network):
-    r = json.loads(requests.get('https://paprprintr-api.herokuapp.com/api/vaults').text)
-    r = [r[x]['config']['vault'] for x in r if r[x]['network'] == network and r[x]['config']['vault'] is not None]
-    return r
-
-def get_superfarm_pools():
-    r = json.loads(requests.get('https://superlauncher.io/farms/farms.json').text)
-    return [x['farmAddresses'] for x in r]
-
-
-qs_vaults = get_quickswap_vaults()
-dfyn_regular = get_dfyn_vaults()
-dfyn_dual_vaults = get_dfyn_dual()
-
-beefy_matic_pools = json.loads(json.dumps(get_beefy_matic_pools()))
-hyperjump_vault_list = [x['earnedTokenAddress'] for x in get_hyperjump_vaults()]
-
-beefyVaults = json.loads(json.dumps(getBeefyVaults()))
-beefyCheck = {x['earnedTokenAddress'].lower() : x for x in beefyVaults}
-
-beefyBoosts = json.loads(json.dumps(getBeefyBoosts()))
-bBoostsCheck = {x['id'].lower() : x for x in beefyBoosts if x['status'] == 'active'}
-
-catchENRV = {x['earnedTokenAddress'] : x for x in extNerve}
-### MultiCall Returns
-def from_wei(value):
-    return value / 1e18
-
-def from_ele(value):
-    return '0xAcD7B3D9c10e97d0efA418903C0c7669E702E4C0'
-
-def parseReserves(value):
-    return [ str(value[0]), str(value[1])]
-
-def parseWanted(value):
-    return value[0]
-
-def from_custom(value, decimal):
-    return value / (10**decimal)
-
-def parseBunny(data):
-    response = { 'userInfo' : {
-        'staked': from_wei(data[2]),
-        'ppShare' : from_wei(data[9]),
-        'pending' : from_wei(data[7]),
-        'pendingBunny' : from_wei(data[8])
-    } }
-
-    return response
-
-def from_tao(value):
-    return value / 1e9
-
-def parseAccountSnapshot(data):
-    staked = from_wei(int(data[1]))
-    borrow = from_wei(int(data[2]))
-    rate = from_wei(int(data[3]))
-    return staked * rate
-
-def parseMerlin(data):
-    response = { 'userInfo' : {
-        'staked': from_wei(data[1]),
-        'ppShare' : data[9],
-        'pending' : from_wei(data[7]),
-        'pendingMerlin' : from_wei(data[8])
-    } }
-
-    return response
-
-def from_six(value):
-    return value / 1e6
-
-def parse_pancake_bunny_info(data):
-    r = {
-        'poolID' : data[0],
-        'balance' : from_wei(data[1]),
-        'principal' : from_wei(data[2]),
-        'available' : from_wei(data[3]),
-        'pending_base' : from_wei(data[7]),
-        'pending_native' : from_wei(data[8])
-    }
-    return r
-
-def parse_profit_of_pool(data):
-    r = [from_wei(data[0]), from_wei(data[1])]
-    return r
-
-def parse_value_of_asset(data):
-    return from_wei(data[1])
-
-def parse_spacepool(data,offset):
-    return data[offset]
-
-def parse_pool_weights(data):
-    r = []
-    for each in data:
-        r.append(from_wei(each))
-    return r
 
 ### MultiCalls
 
@@ -773,7 +454,7 @@ def get_picklejars(token, farm_id):
 
         return {**wrappedCalls, **calls}
 
-def getPoolLengths(pools, wallet):
+async def getPoolLengths(pools, wallet):
 
     bsc_calls = []
     matic_calls = []
@@ -820,30 +501,30 @@ def getPoolLengths(pools, wallet):
         final[pool] = {'name' : farms[pool]['name'], 'network' : farms[pool]['network'], 'wallet' : wallet, 'userData' : {}}
 
     if '0x97bdB4071396B7f60b65E0EB62CE212a699F4B08' in pools:
-        poolLengths = {**Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
-        **Multicall(matic_calls, WEB3_NETWORKS['matic'])(), 
+        poolLengths = {**await Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
+        **await Multicall(matic_calls, WEB3_NETWORKS['matic'])(), 
         **{'0x97bdB4071396B7f60b65E0EB62CE212a699F4B08' : 3}, 
-        **Multicall(ftm_calls, WEB3_NETWORKS['ftm'])(), 
-        **Multicall(kcc_calls, WEB3_NETWORKS['kcc'])(), 
-        **Multicall(oke_calls, WEB3_NETWORKS['oke'])(),
-        **Multicall(eth_calls, WEB3_NETWORKS['eth'])(),
-        **Multicall(harmony_calls, WEB3_NETWORKS['harmony'])(),
-        **Multicall(avax_calls, WEB3_NETWORKS['avax'])()
+        **await Multicall(ftm_calls, WEB3_NETWORKS['ftm'])(), 
+        **await Multicall(kcc_calls, WEB3_NETWORKS['kcc'])(), 
+        **await Multicall(oke_calls, WEB3_NETWORKS['oke'])(),
+        **await Multicall(eth_calls, WEB3_NETWORKS['eth'])(),
+        **await Multicall(harmony_calls, WEB3_NETWORKS['harmony'])(),
+        **await Multicall(avax_calls, WEB3_NETWORKS['avax'])()
         }
     else:
-        poolLengths = {**Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
-        **Multicall(matic_calls, WEB3_NETWORKS['matic'])(),
-        **Multicall(ftm_calls, WEB3_NETWORKS['ftm'])(),
-        **Multicall(kcc_calls, WEB3_NETWORKS['kcc'])(), 
-        **Multicall(oke_calls, WEB3_NETWORKS['oke'])(),
-        **Multicall(eth_calls, WEB3_NETWORKS['eth'])(),
-        **Multicall(harmony_calls, WEB3_NETWORKS['harmony'])(),
-        **Multicall(avax_calls, WEB3_NETWORKS['avax'])()         
+        poolLengths = {**await Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
+        **await Multicall(matic_calls, WEB3_NETWORKS['matic'])(),
+        **await Multicall(ftm_calls, WEB3_NETWORKS['ftm'])(),
+        **await Multicall(kcc_calls, WEB3_NETWORKS['kcc'])(), 
+        **await Multicall(oke_calls, WEB3_NETWORKS['oke'])(),
+        **await Multicall(eth_calls, WEB3_NETWORKS['eth'])(),
+        **await Multicall(harmony_calls, WEB3_NETWORKS['harmony'])(),
+        **await Multicall(avax_calls, WEB3_NETWORKS['avax'])()         
          }
 
     return poolLengths, final
 
-def getOnlyStaked(pools, wallet):
+async def getOnlyStaked(pools, wallet):
     
     bsc_calls = []
     matic_calls = []
@@ -894,7 +575,7 @@ def getOnlyStaked(pools, wallet):
                     calls.append(Call(pool, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
                 else:
                     calls.append(Call(pool, ['%s(uint256,address)(uint256)' % (stakedFunction), i, wallet], [['%s_%s' % (pool, i), None]]))
-    stakes = {**Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
+    stakes = await {**Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
     **Multicall(matic_calls, WEB3_NETWORKS['matic'])(),
     **Multicall(ftm_calls, WEB3_NETWORKS['ftm'])(),
     **Multicall(kcc_calls, WEB3_NETWORKS['kcc'])(), 
@@ -910,7 +591,7 @@ def getOnlyStaked(pools, wallet):
         for i, pool in enumerate(beefyCheck):
             beefy.append(Call(beefyCheck[pool]['earnedTokenAddress'], ['balanceOf(address)(uint256)', wallet], [['%s_%s_%s' % ('0xBeefy', i, beefyCheck[pool]['earnedTokenAddress']), None]]))
         
-        beefyStakes = Multicall(beefy)()
+        beefyStakes = await Multicall(beefy)()
 
         stakes = {**stakes, **beefyStakes}
         
@@ -929,7 +610,7 @@ def getOnlyStaked(pools, wallet):
     #print(filteredStakes)
     return filteredStakes, final
 
-def getPendingWant(stakes, wallet):
+async def getPendingWant(stakes, wallet):
     bsc_calls = []
     matic_calls = []
     ftm_calls = []
@@ -993,7 +674,7 @@ def getPendingWant(stakes, wallet):
             dictKey = '%s_%s_want' % (address, poolID)
             beefy_stakes.update({dictKey : key.split('_')[2] })
 
-    stakes = {**Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
+    stakes = await {**Multicall(bsc_calls, WEB3_NETWORKS['bsc'])(),
     **Multicall(matic_calls, WEB3_NETWORKS['matic'])(),
     **beefy_stakes,
     **Multicall(ftm_calls, WEB3_NETWORKS['ftm'])(),
@@ -3033,7 +2714,7 @@ def get_quickswap_lps(wallet,farm_id):
 
     poolKey = farm_id
 
-    liquidityPositions = call_graph('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03', {'operationName' : 'liquidityPositions', 'query' : bitquery.quickswap_lps.query, 'variables' : {'user': wallet.lower()}})
+    liquidityPositions = call_graph('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03', {'operationName' : 'liquidityPositions', 'query' : quickswap_lps.query, 'variables' : {'user': wallet.lower()}})
 
     poolNest = {poolKey: 
     { 'userData': { } } }
@@ -3926,9 +3607,12 @@ def getWallet(wallet):
     for d in wBalances:
         tokens += [{'token' : d['currency']['address'], 'decimal' : d['currency']['decimals']} ]
 
-    loop = get_or_create_eventloop()
-    future = asyncio.ensure_future(multiCallPrice(tokens))
-    prices = loop.run_until_complete(future)
+    # loop = get_or_create_eventloop()
+    # future = asyncio.ensure_future(multiCallPrice(tokens))
+    # prices = loop.run_until_complete(future)
+
+    #prices = await multiCallPrice(tokens)
+
     prices = {x['token'] : x['price'] for x in prices}
 
     for i,token in enumerate(wBalances):
@@ -3939,7 +3623,7 @@ def getWallet(wallet):
     return wBalances, grandTotal
 
 ### Run From Flask
-def runFlask(selectedPools, wallet):
+async def runFlask(selectedPools, wallet):
 
     ##Add Layered Farms
 
@@ -3992,11 +3676,11 @@ def runFlask(selectedPools, wallet):
         selectedPools += ['0x4e864E36Bb552BD1Bf7bcB71A25d8c96536Af7e3', '0x0B29065f0C5B9Db719f180149F0251598Df2F1e4']
 
 
-    poolLen = getPoolLengths(selectedPools, wallet)
+    poolLen = await getPoolLengths(selectedPools, wallet)
     #print(poolLen)
-    stakes = getOnlyStaked(poolLen, wallet)
+    stakes = await getOnlyStaked(poolLen, wallet)
     #print(stakes)
-    pendingWants = getPendingWant(stakes, wallet)
+    pendingWants = await getPendingWant(stakes, wallet)
 
     
     if '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A' in selectedPools:
@@ -4440,13 +4124,13 @@ def runFlask(selectedPools, wallet):
 
     if '0x0d17C30aFBD4d29EEF3639c7B1F009Fd6C9f1F72' in selectedPools:
         farm_id = '0x0d17C30aFBD4d29EEF3639c7B1F009Fd6C9f1F72'
-        extension = get_vault_style(wallet,poolext.boneswap.vaults,farm_id,WEB3_NETWORKS['matic'],'getPricePerFullShare','userInfo')
+        extension = get_vault_style(wallet,evm.poolext.boneswap.vaults,farm_id,WEB3_NETWORKS['matic'],'getPricePerFullShare','userInfo')
 
         if extension is not None:
             pendingWants[0].update(extension[0])
             pendingWants[1][farm_id]['userData'].update(extension[1][farm_id]['userData'])
 
-        extension = get_syrup_pools(wallet,poolext.boneswap.pools,'matic',farm_id,'stakeToken')
+        extension = get_syrup_pools(wallet,evm.poolext.boneswap.pools,'matic',farm_id,'stakeToken')
 
         if extension is not None:
             pendingWants[0].update(extension[0])
@@ -4507,7 +4191,7 @@ def runFlask(selectedPools, wallet):
     if '0xCurvePolygon' in selectedPools:
         farm_id = '0xCurvePolygon'
 
-        extension = get_curve_gauage(wallet,'0xCurvePolygon','matic', poolext.curve.polygon_gauges)
+        extension = get_curve_gauage(wallet,'0xCurvePolygon','matic', evm.poolext.curve.polygon_gauges)
 
 
         if extension is not None:
@@ -4517,7 +4201,7 @@ def runFlask(selectedPools, wallet):
     if '0xCurveFTM' in selectedPools:
         farm_id = '0xCurveFTM'
 
-        extension = get_curve_gauage(wallet,'0xCurveFTM','ftm', poolext.curve.ftm_gauges, ['0x1E4F97b9f9F913c46F1632781732927B9019C68b'])
+        extension = get_curve_gauage(wallet,'0xCurveFTM','ftm', evm.poolext.curve.ftm_gauges, ['0x1E4F97b9f9F913c46F1632781732927B9019C68b'])
 
 
         if extension is not None:
@@ -4963,9 +4647,11 @@ def runFlask(selectedPools, wallet):
     tokentemp = [i for n, i in enumerate(tokens) if i not in tokens[n + 1:]]
 
     #Pull Prices
-    loop = get_or_create_eventloop()
-    future = asyncio.ensure_future(multiCallPrice(tokentemp))
-    prices = loop.run_until_complete(future)
+    # loop = get_or_create_eventloop()
+    # future = asyncio.ensure_future(multiCallPrice(tokentemp))
+    # prices = loop.run_until_complete(future)
+
+    prices = await multiCallPrice(tokentemp)
     prices = {x['token'] : x['price'] for x in prices}
 
     if '0xF3ca45633B2b2C062282ab38de74EAd2B76E8800' in selectedPools:

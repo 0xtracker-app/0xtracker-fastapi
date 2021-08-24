@@ -1,9 +1,8 @@
-from multicall import Call, Multicall
-import multicall.parsers as parsers
-from networks import WEB3_NETWORKS
+from .multicall import Call, Multicall
+from .networks import WEB3_NETWORKS
 
 
-def get_token_list_decimals(tokens,network_id,parse_wanted):
+async def get_token_list_decimals(tokens,network_id,parse_wanted):
     
     network = WEB3_NETWORKS[network_id]
     
@@ -15,7 +14,7 @@ def get_token_list_decimals(tokens,network_id,parse_wanted):
     for each in tokens:
         calls.append(Call(each, 'decimals()(uint8)', [[f'{each}', None]]))
 
-    return Multicall(calls, network, _strict=False)()
+    return await Multicall(calls, network, _strict=False)()
 
 
 def parse_out_want_contracts(data):

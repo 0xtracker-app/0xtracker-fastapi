@@ -1,10 +1,10 @@
 import requests
 import json
-from multicall import Call, Multicall
-from routers import FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
-from multicall_parser import parse_router, from_custom, from_wei
-from networks import WEB3_NETWORKS
-import native_tokens
+from evm.multicall import Call, Multicall
+from evm.routers import FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
+from evm.multicall_parser import parse_router, from_custom, from_wei
+from evm.networks import WEB3_NETWORKS
+import evm.native_tokens as native_tokens
 
 def coingecko_by_address_network(address,network):
     url = f'https://api.coingecko.com/api/v3/simple/token_price/{network}?contract_addresses={address}&vs_currencies=usd'

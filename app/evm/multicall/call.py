@@ -1,9 +1,9 @@
 from eth_utils import to_checksum_address
-from multicall import Signature
-from web3 import Web3
+from evm.multicall import Signature
+from web3 import Web3, eth
 from hexbytes import HexBytes
-w3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
-#w3 = Web3(Web3.HTTPProvider("http://af77e2e391d3a4e428c3a344bcbe588f-836707142.us-east-1.elb.amazonaws.com:8545"))
+w3 = Web3(Web3.AsyncHTTPProvider('https://bsc-dataseed.binance.org/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[])
+
 class Call:
     def __init__(self, target, function, returns=None, _w3=None, _block=None):
         self.target = to_checksum_address(target)
@@ -49,10 +49,10 @@ class Call:
         else:
             return decoded if len(decoded) > 1 else decoded[0]
 
-    def __call__(self, args=None):
+    async def __call__(self, args=None):
         args = args or self.args
         calldata = self.signature.encode_data(args)
-        output = self.w3.eth.call({'to': self.target, 'data': calldata}, block_identifier=self.block)
+        output = await self.w3.eth.call({'to': self.target, 'data': calldata}, block_identifier=self.block)
         return self.decode_output(output)
 
     def explorer_archive_calls(self, args=None):
