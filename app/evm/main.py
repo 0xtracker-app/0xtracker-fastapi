@@ -26,9 +26,6 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
         if farm_configuraiton['extraFunctions']['vaults'] is not None:
             vaults = await asyncio.gather(*[v(session=http_session) for v in farm_configuraiton['extraFunctions']['vaults']])
         
-        # if farm_configuraiton['extraFunctions']['args'] is not None:
-        #     args.update(farm_configuraiton['extraFunctions']['args'])
-        
         farm_infos = await asyncio.gather(*[f(vaults=vaults[i], **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
  
         for farm_info in farm_infos:
