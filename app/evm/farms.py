@@ -14,6 +14,17 @@ farms = {
         'featured' : 2,
         'network' : 'bsc'
     },
+    '0x52B8bb74Cde6602AB9e6540e25E0A97f5B3226D7' : {
+        'name' : 'eleven.finance',
+        'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingEleven',
+        'masterChef' : '0x52B8bb74Cde6602AB9e6540e25E0A97f5B3226D7',
+        'perBlock' : 'elevenPerBlock',
+        'featured' : 2,
+        'network' : 'avax'
+    },
     '0xElevenOKE' : {
         'name' : 'eleven.finance',
         'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
@@ -199,9 +210,10 @@ farms = {
         'featured' : 2,
         'network' : 'bsc',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_beefy_style_stakes],
-            'vaults' : [external_contracts.get_beefy_bsc],
-            'args' : {'farm_id' : '0xBeefy', 'network' : 'bsc'} }
+            'functions' : [farm_templates.get_beefy_style_stakes, farm_templates.get_fh_pools],
+            'vaults' : [external_contracts.get_beefy_bsc, external_contracts.get_beefy_boosts],
+            'args' : [{'farm_id' : '0xBeefy', 'network' : 'bsc'}, {'farm_id' : '0xBeefy', 'network' : 'bsc', 'stake_func' : 'stakedToken'}]
+        }
     },
                 '0x8cf7044DDedbE502892B120aAf8692FeCFb71420' : {
         'name' : 'dragonballfinance.org',

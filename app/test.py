@@ -1,5 +1,23 @@
 import asyncio
-from evm import return_farms_list, get_evm_positions
+from evm import return_farms_list, get_evm_positions, get_one_inch_quote
 
 
-asyncio.run(get_evm_positions('0x72Dc7f18ff4B59143ca3D21d73fA6e40D286751f', '0x0895196562C7868C5Be92459FaE7f877ED450452'))
+asyncio.run(get_one_inch_quote([
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0xf7069e41C57EcC5F122093811d8c75bdB5f7c14e', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    {'token' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'network' : 'bsc'},
+    ]))

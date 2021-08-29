@@ -1,10 +1,17 @@
 import requests
 import json
-from evm.multicall import Call, Multicall
-from evm.routers import FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
-from evm.multicall_parser import parse_router, from_custom, from_wei
-from evm.networks import WEB3_NETWORKS
-import evm.native_tokens as native_tokens
+from .multicall import Call, Multicall, parsers
+from .routers import FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
+from .networks import WEB3_NETWORKS
+from . import native_tokens
+from .utils import make_get_json
+import asyncio
+from aiohttp import ClientSession, ClientTimeout
+
+INCH_QUOTE_TOKENS = {
+    'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
+    'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
+    'eth' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6}}
 
 def coingecko_by_address_network(address,network):
     url = f'https://api.coingecko.com/api/v3/simple/token_price/{network}?contract_addresses={address}&vs_currencies=usd'
@@ -176,3 +183,39 @@ def avax_router_prices(tokens_in, router):
             prices[token] = looped_value
 
     return {**prices, **{'0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7' : native_price}}
+
+async def get_one_inch_quote(tokens, session):
+    tasks = []
+    network_ids={'bsc' : '56', 'matic' : '137', 'kcc' : '321', 'eth' : '1'}
+
+    for token in tokens:
+
+        SAFE_QUOTE = 1000
+        SAFE_QUOTE_USD = SAFE_QUOTE * 10 ** INCH_QUOTE_TOKENS[token['network']]['decimals']
+        network = network_ids[token['network']]
+        quote_token = INCH_QUOTE_TOKENS[token['network']]['token']
+
+        url = f'https://api.1inch.exchange/v3.0/{network}/quote'
+
+        payload = {
+            'fromTokenAddress' : quote_token,
+            'toTokenAddress' : token['token'],
+            'amount' : SAFE_QUOTE_USD
+        }
+
+        task = asyncio.ensure_future(make_get_json(session, url, {'params' : payload}))
+        tasks.append(task)
+
+    responses = await asyncio.gather(*tasks)
+
+    list_of_prices = { x['token'] : 0.1 for x in tokens}
+
+    for response in responses:
+        if 'toTokenAmount' in response:
+            to_token_amount = int(response['toTokenAmount'])
+            to_token_address = response['toToken']['address']
+            to_token_decimal = int(response['toToken']['decimals'])
+            usd_value = 1 / (( to_token_amount / 10**to_token_decimal ) / SAFE_QUOTE)
+            list_of_prices[to_token_address] = usd_value
+
+    return list_of_prices

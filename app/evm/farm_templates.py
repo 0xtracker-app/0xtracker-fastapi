@@ -1976,7 +1976,7 @@ def get_farmhero_staking(wallet,vault,network,farm_id):
     else:
         return None
 
-def get_fh_pools(wallet,list_of_pools,network,farm_id,stake_func=None,reward_func=None):
+async def get_fh_pools(wallet,vaults,network,farm_id,stake_func=None,reward_func=None):
     
     poolKey = farm_id
 
@@ -1988,13 +1988,20 @@ def get_fh_pools(wallet,list_of_pools,network,farm_id,stake_func=None,reward_fun
 
     
     calls = []
-    for pool in list_of_pools:
-        calls.append(Call(pool, ['balanceOf(address)(uint256)', wallet], [[f'{pool}_staked', from_wei]]))
-        calls.append(Call(pool, [f'earned(address)(uint256)', wallet], [[f'{pool}_pending', from_wei]]))
-        calls.append(Call(pool, [f'{stake_func}()(address)'], [[f'{pool}_want', None]]))
-        calls.append(Call(pool, [f'{reward_func}()(address)'], [[f'{pool}_rewardtoken', None]]))
+    for pool in vaults:
+        #Catch BIFI pool
+        if pool == '0x453D4Ba9a2D594314DF88564248497F7D74d6b2C':
+            calls.append(Call(pool, ['balanceOf(address)(uint256)', wallet], [[f'{pool}_staked', parsers.from_wei]]))
+            calls.append(Call(pool, [f'earned(address)(uint256)', wallet], [[f'{pool}_pending', parsers.from_wei]]))
+            calls.append(Call(pool, [f'bifi()(address)'], [[f'{pool}_want', None]]))
+            calls.append(Call(pool, [f'wbnb()(address)'], [[f'{pool}_rewardtoken', None]]))
+        else:
+            calls.append(Call(pool, ['balanceOf(address)(uint256)', wallet], [[f'{pool}_staked', parsers.from_wei]]))
+            calls.append(Call(pool, [f'earned(address)(uint256)', wallet], [[f'{pool}_pending', parsers.from_wei]]))
+            calls.append(Call(pool, [f'{stake_func}()(address)'], [[f'{pool}_want', None]]))
+            calls.append(Call(pool, [f'{reward_func}()(address)'], [[f'{pool}_rewardtoken', None]])) 
 
-    stakes = Multicall(calls,WEB3_NETWORKS[network])()
+    stakes = await Multicall(calls,WEB3_NETWORKS[network])()
 
     poolNest = {poolKey: 
     { 'userData': { } } }
@@ -2008,12 +2015,12 @@ def get_fh_pools(wallet,list_of_pools,network,farm_id,stake_func=None,reward_fun
                 staked = stakes[each]
                 reward_token = stakes[f'{breakdown[0]}_rewardtoken']
                 try:
-                    reward_token_want = Call(reward_token, 'want()(address)', [[f'want', None]], WEB3_NETWORKS[network])()['want']
-                    reward_token_pps = Call(reward_token, 'getPricePerFullShare()(uint256)', [[f'pps', from_wei]], WEB3_NETWORKS[network])()['pps']
-                    reward_token_symbol = Call(reward_token_want, 'symbol()(string)', [[f'symbol', None]], WEB3_NETWORKS[network])()['symbol']
+                    reward_token_want = await Call(reward_token, 'want()(address)', [[f'want', None]], WEB3_NETWORKS[network])()['want']
+                    reward_token_pps =  await Call(reward_token, 'getPricePerFullShare()(uint256)', [[f'pps', parsers.from_wei]], WEB3_NETWORKS[network])()['pps']
+                    reward_token_symbol =  await Call(reward_token_want, 'symbol()(string)', [[f'symbol', None]], WEB3_NETWORKS[network])()['symbol']
                     reward_token = reward_token_want
                 except:
-                    reward_token_symbol = Call(reward_token, 'symbol()(string)', [[f'symbol', None]], WEB3_NETWORKS[network])()['symbol']
+                    reward_token_symbol = await Call(reward_token, 'symbol()(string)', [[f'symbol', None]], WEB3_NETWORKS[network])()['symbol']
                     reward_token_pps =  1
                 reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'] * reward_token_pps, 'symbol' : reward_token_symbol, 'token' : reward_token}
                 want_token = stakes[f'{breakdown[0]}_want']

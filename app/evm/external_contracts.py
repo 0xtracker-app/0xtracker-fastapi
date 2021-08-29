@@ -7,23 +7,19 @@ import time
 import cloudscraper
 from . utils import make_get,make_get_json
 
-async def get_beefy_bsc():
-    r = await make_get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/bsc_pools.js')
+async def get_beefy_bsc(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/bsc_pools.js')
     s2 = "export const bscPools = "
 
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
     return [x['earnedTokenAddress'] for x in cleaned_up]
-    # regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
-    # print(regex)
-    # hson = hjson.loads(f'[{regex}]'.replace('partners: ,',''))
-    # t = json.loads(json.dumps(hson))
         
-def get_beefy_bsc_boosts():
-    r = requests.get('https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
-    data = r.text.replace('_', '-')
-    return hjson.loads(data[67:-2])
+async def get_beefy_boosts(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
+    data = r.replace('_', '-')
+    return [x['earnContractAddress'] for x in json.loads(json.dumps(hjson.loads(data[67:-2])))]
 
 def get_vsafes():
     r = requests.get('https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
@@ -232,7 +228,15 @@ def get_superfarm_pools():
     r = json.loads(requests.get('https://superlauncher.io/farms/farms.json').text)
     return [x['farmAddresses'] for x in r]
 
+def get_snowball_guage():
+    balancer_pools = call_graph('https://snob-backend-api.herokuapp.com/graphql', {'query': bitquery.snowball.query, 'variable' : None})
 
+    return [x['gaugeAddress'] for x in balancer_pools['data']['SnowglobeContracts']]
+
+def get_snowball_globe():
+    balancer_pools = call_graph('https://snob-backend-api.herokuapp.com/graphql', {'query': bitquery.snowball.query, 'variable' : None})
+
+    return [x['snowglobeAddress'] for x in balancer_pools['data']['SnowglobeContracts']]
 
 # hyperjump_vault_list = [x['earnedTokenAddress'] for x in get_hyperjump_vaults()]
 

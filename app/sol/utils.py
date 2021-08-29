@@ -5,7 +5,7 @@ import json
 import asyncio
 import aiohttp
 import requests
-import sol.helpers
+from . import helpers
 
 RPC_CONNECTION = 'https://api.mainnet-beta.solana.com'
 
