@@ -21,3 +21,20 @@ stadium_farm_info = {
     ]
 
 }
+
+eleusd_info = {
+    'stakedFunction' : 'balanceOf',
+    'wantFunction' : 'token',
+    'masterChef' : '0xf0a92566Eb2abBf1F33DF407Af16E6cc563768C1',
+    'rewards' :[{
+        'function' : 'pendingWMatic',
+        'rewardToken' : '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+        'rewardSymbol' : 'WMATIC'
+    },{
+        'function' : 'pendingEleven',
+        'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
+        'rewardSymbol' : 'ELE'
+    }
+    ]
+
+}

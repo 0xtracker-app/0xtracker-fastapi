@@ -4,3 +4,5 @@ vaults = [{'address' : '0xCa0F37f73174a28a64552D426590d3eD601ecCa1', 'decimal' :
 {'address' : '0xad6AD29d6b8B74b4302dD829c945ca3274035c16', 'decimal' : 6, 'want' : '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', 'collat_rate' : .75},
 {'address' : '0xbEbAD52f3A50806b25911051BabDe6615C8e21ef', 'decimal' : 6, 'want' : '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 'collat_rate' : .75}
 ]
+
+rewards = ['0x942D581a01887B4CB45B2EAA64E2bD6D50D1f99A']

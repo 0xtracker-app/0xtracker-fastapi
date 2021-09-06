@@ -4638,9 +4638,7 @@ async def runFlask(selectedPools, wallet):
         elif farms[d]['network'] == 'avax':
             avax_tokens += [{'token' : farms[d]['rewardToken'], 'decimal' : farms[d]['decimal'], 'network' : farms[d]['network']}]            
 
-    if '0xBeefy' in selectedPools:
-        for d in bBoostsCheck:
-            tokens += [{'token' : bBoostsCheck[d]['earnedTokenAddress'], 'decimal' : bBoostsCheck[d]['earnedTokenDecimals'], 'network' : 'bsc'}]
+
     if '0x97bdB4071396B7f60b65E0EB62CE212a699F4B08' in selectedPools:
         tokens += [{'token' : '0x579A6277a6c2c63a5b25006F63Bce5DC8D9c25e7', 'decimal' : 18, 'network' : 'bsc'}]
 

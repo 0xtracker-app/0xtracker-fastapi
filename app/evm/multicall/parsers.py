@@ -128,3 +128,12 @@ def parse_zombie_pool(data):
      }
        
     return d
+
+def parse_router(data, native=None):
+    if native is None:
+        return from_wei(data[1])
+    else:
+        return from_wei(data[1]) * native
+
+def parse_wanted_offset(value, offset):
+    return value[offset]

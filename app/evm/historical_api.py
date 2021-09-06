@@ -3,7 +3,6 @@ import requests
 import json
 import time
 import pandas as pd
-from farms import farms
 from web3 import Web3
 from networks import WEB3_NETWORKS, SCAN_APIS
 import multicall.parsers as parser

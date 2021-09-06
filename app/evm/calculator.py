@@ -4,7 +4,6 @@ from . import uniswapv3
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
     quotePrice = prices[token0]
-
     userPct = staked / totalSupply
     lp1val = (userPct * int(reserves[0])) / (10**tkn0d)
     lp2val = (userPct * int(reserves[1])) / (10**tkn1d)
@@ -66,12 +65,13 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingELE'] + finalResponse[f]['userData'][x]['pendingNRVAmount'], 2)
 
             if x == 'bingoBoard':
-                finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices['0x579A6277a6c2c63a5b25006F63Bce5DC8D9c25e7'], 2)
+                if 'pending' in finalResponse[f]['userData'][x]:
+                    finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices['0x579A6277a6c2c63a5b25006F63Bce5DC8D9c25e7'], 2)
 
             if 'rewardToken' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken']], 2)
 
-            if 'gambitRewards' in lastReturn[f]['userData'][x]:
+            elif 'gambitRewards' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
                 for i, gr in enumerate(lastReturn[f]['userData'][x]['gambitRewards']):
                     if 'valueOfAsset' in finalResponse[f]['userData'][x]['gambitRewards'][i]:
@@ -81,20 +81,20 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                     if x not in ['0xA2A065DBCBAE680DF2E6bfB7E5E41F1f1710e63b', 'VAULTS']:
                         finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount']
 
-            if 'pendingNerve' in lastReturn[f]['userData'][x]:
+            elif 'pendingNerve' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingNRVAmount'] = round((finalResponse[f]['userData'][x]['pendingNerve'] * finalResponse[f]['userData'][x]['nerveMultipler']) * prices['0x42f6f551ae042cbe50c739158b4f0cac0edb9096'.lower()], 2)
             
-            if 'pendingBunny' in lastReturn[f]['userData'][x]:
+            elif 'pendingBunny' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingBunnyAmount'] = round(finalResponse[f]['userData'][x]['pendingBunny'] * prices['0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51'.lower()], 2)
                 finalResponse[f]['userData'][x]['pendingRewardAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken']], 2)
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingBunnyAmount'] + finalResponse[f]['userData'][x]['pendingRewardAmount'], 2)
 
-            if 'pendingMerlin' in lastReturn[f]['userData'][x]:
+            elif 'pendingMerlin' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingMerlinAmount'] = round(finalResponse[f]['userData'][x]['pendingMerlin'] * prices['0xda360309c59cb8c434b28a91b823344a96444278'.lower()], 2)
                 finalResponse[f]['userData'][x]['pendingRewardAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken']], 2)
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingMerlinAmount'] + finalResponse[f]['userData'][x]['pendingRewardAmount'], 2)
             
-            if 'pending' in lastReturn[f]['userData'][x]:
+            elif 'pending' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[rewardToken], 2)
             else:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
@@ -242,7 +242,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
             finalResponse[f]['total'] = 0
         
         if f == '0xFortress':
-            mintedFAI = Call("0x67340Bd16ee5649A37015138B3393Eb5ad17c195", ['%s(address)(uint256)' % ('mintedFAIs'), wallet], [['mint', parsers.from_wei ]])()
+            mintedFAI = await Call("0x67340Bd16ee5649A37015138B3393Eb5ad17c195", ['%s(address)(uint256)' % ('mintedFAIs'), wallet], [['mint', parsers.from_wei ]])()
             finalResponse[f]['mintedFAI'] = mintedFAI['mint']
         
         if 'type' in farm_data:

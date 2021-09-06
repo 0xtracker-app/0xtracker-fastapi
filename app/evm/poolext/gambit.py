@@ -70,6 +70,27 @@ gambits = [
         }
     ]
 
+},
+{
+    'name' : 'AUTO/USDG Farm',
+    'contract' : '0xE6958298328D02051769282628a3b4178D0F3A47',
+    'stakedFunction' : 'stakedBalance',
+    'stakeToken' : '0x0523fd5c53ea5419b4daf656bc1b157ddfe3ce50',
+    'rewards' : [
+        {
+            'yieldTracker' : '0x093b8be41c1A30704De84a9521632f9a139c08bd',
+            'symbol' : 'xGMT',
+            'rewardToken' : '0xe304ff0983922787Fd84BC9170CD21bF78B16B10',
+            'rewardFunction' : 'claimable'
+        },
+        {
+            'yieldTracker' : '0x23ed48E5dce3acC7704d0ce275B7b9a0e346b63A',
+            'symbol' : 'wBNB',
+            'rewardToken' : '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+            'rewardFunction' : 'claimable'
+        }
+    ]
+
 }       
 
 ]

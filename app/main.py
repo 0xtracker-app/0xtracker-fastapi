@@ -9,8 +9,10 @@ from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
 from httpsession.session import ClientSession, get_session
 from httpsession.session_utils import session_start, session_stop
+from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
 
 app = FastAPI(title='FastAPI')
+#app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
 
 # app.add_event_handler("startup", connect_to_mongo)
 # app.add_event_handler("shutdown", close_mongo_connection)

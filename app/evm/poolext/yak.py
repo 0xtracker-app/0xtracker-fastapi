@@ -3723,4 +3723,4 @@ json = {
   }
 }
 
-vaults = [x['address'] for x in json['43114']['strategies'] if 'deprecated' not in x and x['platform'] != 'complus']
+vaults = [x['address'] for x in json['43114']['strategies'] if 'deprecated' not in x and x['platform'] != 'complus'] + ['0x3129fb69d734aebeeef7e40d33b5093f4284767c', '0xa1801f4ffd40b192a13a54614e66d3625d5c422e']

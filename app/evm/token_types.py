@@ -31,7 +31,7 @@ async def get_lp(token, farm_id):
                 Call(lp_pool['token1'], 'symbol()(string)', [['tkn1s', None]])
             ], network_chain)
 
-            return {**multi_lp, **await lp_tokens(),  **{'lpToken' : token}}
+            return {**lp_pool, **await lp_tokens(),  **{'lpToken' : token}}
 
 async def get_uniswap_pool(token, farm_id):
 
@@ -60,7 +60,8 @@ async def get_single(token, farm_id):
         network_chain = WEB3_NETWORKS[farm_id]
                 
         try:
-            token = await Call(token, 'loanTokenAddress()(address)', [['loan', None]], network_chain)()['loan']
+            x = await Call(token, 'loanTokenAddress()(address)', [['loan', None]], network_chain)()
+            token = x['loan']
         except:
             token = token
         

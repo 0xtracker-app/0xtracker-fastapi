@@ -1,10 +1,8 @@
 from .networks import WEB3_NETWORKS
 from .multicall import Multicall, Call, parsers
-from .farms import farms
 from . import token_types
 
-async def token_router(wanted_token, farm_address):
-    farm_network = farms[farm_address]['network']
+async def token_router(wanted_token, farm_address, farm_network):
     try:
         return {**await token_types.get_lp(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'lp'}}
     except:
@@ -37,7 +35,7 @@ async def token_router(wanted_token, farm_address):
                                         except:
                                             return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
 
-async def get_token_data(data,mongo_client):
+async def get_token_data(data,mongo_client, farm_network):
 
     calls = []
     network = ''
@@ -58,8 +56,7 @@ async def get_token_data(data,mongo_client):
         wanted = data[0][each]
 
         if 'want' in each:    
-            #print(wanted)
-            farm_network = farms[farm_address]['network']
+    
             network = farm_network
             
             found_token = await collection.find_one({'tokenID' : wanted, 'network' : farm_network}, {'_id': False})
@@ -89,16 +86,9 @@ async def get_token_data(data,mongo_client):
                 if 'getRatio' in found_token:
                     calls.append(Call(found_token['tokenID'], 'getRatio()(uint256)', [[f'{each}_getRatio', parsers.from_wei]]))
             else:
-                token_data = await token_router(wanted, farm_address)
+                token_data = await token_router(wanted, farm_address, farm_network)
                 data[1][farm_address]['userData'][pool_id].update(token_data) 
                 collection.update_one({'tokenID' : wanted, 'network' : farm_network}, { "$set": token_data }, upsert=True)
-
-        else:
-            if variable == 'pending':
-                data[1][farm_address]['userData'][pool_id][variable] = parsers.from_wei(wanted)
-                data[1][farm_address]['userData'][pool_id]['rawPending'] = wanted
-                data[1][farm_address]['userData'][pool_id]['poolID'] = pool_id
-                data[1][farm_address]['userData'][pool_id]['contractAddress'] = farm_address
 
     token_calls = await Multicall(calls, WEB3_NETWORKS[network])()
 
@@ -132,26 +122,25 @@ async def get_token_data(data,mongo_client):
     
     return data[1]
 
-def token_list_from_stakes(data):
-    tokens = []
+def token_list_from_stakes(data, farm_info):
+    tokens = [{'token' : farm_info['rewardToken'], 'decimal' : farm_info['decimal'], 'network' : farm_info['network']}]
     for d in data:
-        tokens += [{'token' : x['token0'], 'decimal' : x['tkn0d'], 'network' : farms[d]['network']} for x in data[d]['userData'].values() if 'token0' in x]
+        tokens += [{'token' : x['token0'], 'decimal' : x['tkn0d'], 'network' : farm_info['network']} for x in data[d]['userData'].values() if 'token0' in x]
         
         for x in data[d]['userData'].values():
             if 'gambitRewards' in x:
                 for rewards in x['gambitRewards']:
                     decimal = rewards['decimal'] if 'decimal' in rewards else 18
-                    tokens += [{'token' : rewards['token'], 'decimal' : decimal, 'network' : farms[d]['network']}]
+                    tokens += [{'token' : rewards['token'], 'decimal' : decimal, 'network' : farm_info['network']}]
             elif 'rewardDecimal' in x and 'rewardToken' in x:
-                tokens += [{'token' : x['rewardToken'], 'decimal' : x['rewardDecimal'], 'network' : farms[d]['network']}]
+                tokens += [{'token' : x['rewardToken'], 'decimal' : x['rewardDecimal'], 'network' : farm_info['network']}]
             elif 'rewardToken' in x:
-                tokens += [{'token' : x['rewardToken'], 'decimal' : 18, 'network' : farms[d]['network']}]
+                tokens += [{'token' : x['rewardToken'], 'decimal' : 18, 'network' : farm_info['network']}]
             if 'slot0' in x:
-                tokens += [{'token' : x['token1'], 'decimal' : x['tkn1d'], 'network' : farms[d]['network']}]
-
+                tokens += [{'token' : x['token1'], 'decimal' : x['tkn1d'], 'network' : farm_info['network']}]
 
             if 'balancerTokens' in x:
                 for i,balancer in enumerate(x['balancerTokens']):
-                    tokens += [{'token' : balancer, 'decimal' : x['balancerDecimals'][i], 'network' : farms[d]['network']}]
+                    tokens += [{'token' : balancer, 'decimal' : x['balancerDecimals'][i], 'network' : farm_info['network']}]
     
     return tokens
