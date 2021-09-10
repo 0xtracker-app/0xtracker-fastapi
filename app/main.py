@@ -3,7 +3,7 @@ from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
 from sol import funcs as sol_funcs
-from evm import return_farms_list, get_evm_positions
+from evm import return_farms_list, get_evm_positions, get_wallet_balance
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -55,6 +55,11 @@ async def get_farm_list():
 @app.get('/farms/{wallet}/{farm_id}')
 async def get_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
     results = await get_evm_positions(wallet, farm_id, mongo_db, session)
+    return results
+
+@app.get('/wallet/{wallet}/{network}')
+async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
+    results = await get_wallet_balance(wallet, network, mongo_db, session)
     return results
 
 @app.get('/tokens/{network}/{token_id}')

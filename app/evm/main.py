@@ -48,17 +48,6 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
 
     prices = await oracles.list_router_prices(token_list, farm_network)
 
-    # if farm_configuraiton['network'] in INCH_SUPPORTED:
-    #     prices = await oracles.list_router_prices(token_list, farm_network)
-    # elif farm_configuraiton['network'] == 'avax':
-    #     prices = await oracles.avax_router_prices(token_list, ['PNG', 'JOE', 'SUSHI'])
-    # elif farm_configuraiton['network'] == 'ftm':
-    #     prices = await oracles.fantom_router_prices(token_list, ['SPOOKY', 'HYPER', 'SPIRIT', 'WAKA', 'PAINT'])
-    # elif farm_configuraiton['network'] == 'oke':
-    #     prices = await oracles.oke_router_prices(token_list, ['PANDA', 'CHERRY', 'KSWAP'])
-    # elif farm_configuraiton['network'] == 'kcc':
-    #     prices = await oracles.kcc_router_prices(token_list, ['KUSWAP', 'KOFFEE', 'KANDY', 'BONE'])
-
     # print(token_list)
     # price_overrides = await asyncio.gather(*[otkn[v['token']][0](**otkn[v['token']][1]) for i, v in enumerate(token_list) if v['token'] in otkn])
 

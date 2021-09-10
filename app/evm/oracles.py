@@ -4,7 +4,7 @@ from .multicall import Call, Multicall, parsers
 from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
 from .networks import WEB3_NETWORKS
 from . import native_tokens
-from .utils import make_get_json
+from .utils import make_get, make_get_json
 import asyncio
 from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import NetworkRoutes
@@ -14,11 +14,10 @@ INCH_QUOTE_TOKENS = {
     'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
     'eth' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6}}
 
-def coingecko_by_address_network(address,network):
+async def coingecko_by_address_network(address,network,session):
     url = f'https://api.coingecko.com/api/v3/simple/token_price/{network}?contract_addresses={address}&vs_currencies=usd'
-    r = requests.get(url)
 
-    return json.loads(r.text)
+    return await make_get_json(session, url)
 
 async def fantom_router_prices(tokens_in, router):
     calls= []
@@ -161,7 +160,7 @@ async def list_router_prices(tokens_in, network):
     calls= []
     out_token = network_route.native
     network_conn = network_route.network_conn
-    native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router]], network_conn)()
+    native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router]], network_conn)()
 
     for token in tokens_in:
         for contract in network_route.lrouters:
@@ -191,7 +190,6 @@ async def list_router_prices(tokens_in, network):
     prices[out_token.lower()] = native_price['native_price']
 
     return prices
-
 
 async def avax_router_prices(tokens_in, router):
     calls= []
