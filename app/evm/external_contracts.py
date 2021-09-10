@@ -306,7 +306,7 @@ async def get_beefy_boosts_poly(session):
 
 async def get_pcs_pools(session, offset):
     r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.ts')
-    s2 = "const pools: PoolConfig[] = "
+    s2 = "const pools: SerializedPoolConfig[] = "
     s_end = "export default pools"
     data = r[r.index(s2) + len(s2) :r.index(s_end)]
     hson = hjson.loads(data)
@@ -500,3 +500,6 @@ async def get_dyp(session):
 
 async def get_taodao(session):
     return poolext.taodao.dao
+
+async def get_bishare(session):
+    return poolext.bishare.vaults

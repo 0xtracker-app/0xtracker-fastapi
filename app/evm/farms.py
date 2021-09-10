@@ -115,6 +115,7 @@ class Farms:
         'stakedFunction' : 'stakedWantTokens',
         'pendingFunction' : 'pendingAUTO',
         'masterChef' : '0x0895196562C7868C5Be92459FaE7f877ED450452',
+        'death_index' : [331],
         'perBlock' : 'AUTOPerBlock',
         'featured' : 2,
         'network' : 'bsc'
@@ -239,7 +240,8 @@ class Farms:
         'masterChef' : '0xb04381026F5D4AAf0487aC4336F16E133FA5FB0a',
         'perBlock' : 'bluePerBlock',
         'featured' : 2,
-        'network' : 'bsc'
+        'network' : 'bsc',
+        'add_chefs' : ['0xBDd7E57634eEdAfBb61a12744dd249EBAB69CAB9', '0xbadb507006b72a94F3529e79B3F5a12e0E6A95F3']
     },
                 '0xA9C9D9Aed47320835c84090c62dC324FcF24f683' : {
         'name' : 'mochiswap.io',
@@ -320,7 +322,8 @@ class Farms:
         'masterChef' : '0x76bd7145b99FDF84064A082BF86A33198C6e9D09',
         'perBlock' : 'rupeePerBlock',
         'featured' : 2,
-        'network' : 'bsc'
+        'network' : 'bsc',
+        'add_chefs' : ['0xd1b3d8ef5ac30a14690fbd05cf08905e1bf7d878']
     },
                 '0xd1b3d8ef5ac30a14690fbd05cf08905e1bf7d878' : {
         'name' : 'hyruleswap.com (Goron Vaults)',
@@ -330,6 +333,7 @@ class Farms:
         'pendingFunction' : 'pendingGRUPEE',
         'masterChef' : '0xd1b3d8ef5ac30a14690fbd05cf08905e1bf7d878',
         'perBlock' : 'GRUPEEPerBlock',
+        'death_index' : [2],
         'show' : False,
         'featured' : 2,
         'network' : 'bsc'
@@ -525,6 +529,7 @@ class Farms:
         'pendingFunction' : 'pendingBalloon',
         'masterChef' : '0x95030532D65C7344347E61Ab96273B6B110385F2',
         'perBlock' : 'balloonPerBlock',
+        'death_index' : [43],
         'featured' : 2,
         'network' : 'bsc'
     },
@@ -761,7 +766,8 @@ class Farms:
         'masterChef' : '0x4448336BA564bd620bE90d55078e397c26492a43',
         'perBlock' : 'takoPerBlock',
         'featured' : 2,
-        'network' : 'bsc'
+        'network' : 'bsc',
+        'add_chefs' : ['0x8399B18A8f951a84e98366013EcE47F9bcb6D1f5']
     },
                 '0x8399B18A8f951a84e98366013EcE47F9bcb6D1f5' : {
         'name' : 'takodefi.com (Vaults)',
@@ -784,7 +790,8 @@ class Farms:
         'masterChef' : '0xB19300246e19929a617C4260189f7B759597B8d8',
         'perBlock' : 'takoPerBlock',
         'featured' : 2,
-        'network' : 'matic'
+        'network' : 'matic',
+        'add_chefs' : ['0x63645F519d75ca5064400d4f67E6Ca9991F375BE']
     },
                 '0x63645F519d75ca5064400d4f67E6Ca9991F375BE' : {
         'name' : 'takodefi.com (Vaults)',
@@ -986,7 +993,8 @@ class Farms:
         'masterChef' : '0x303961805A22d76Bac6B2dE0c33FEB746d82544B',
         'perBlock' : 'cakePerBlock',
         'featured' : 2,
-        'network' : 'bsc'
+        'network' : 'bsc',
+        'add_chefs' : ['0xED955AE44A5632A0163B72e2f5e1474FB814034F']
     },
                 '0xED955AE44A5632A0163B72e2f5e1474FB814034F' : {
         'name' : 'sponge.finance (Layer 1)',
@@ -1160,7 +1168,8 @@ class Farms:
         'masterChef' : '0x4ce9Ae2f5983e19AebF5b8Bae4460f2B9EcE811a',
         'perBlock' : 'pawPerBlock',
         'featured' : 2,
-        'network' : 'matic'
+        'network' : 'matic',
+        'add_chefs' : ['0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904']
     },
                 '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904' : {
         'name' : 'polycat.finance (vaults)',
@@ -1171,6 +1180,7 @@ class Farms:
         'masterChef' : '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904',
         'featured' : 2,
         'network' : 'matic',
+        'death_index' : [454],
         'show' : False
     },
                 '0xB93C082bCfCCf5BAeA0E0f0c556668E25A41B896' : {
@@ -1227,6 +1237,7 @@ class Farms:
         'perBlock' : 'rewardPerBlock',
         'featured' : 2,
         'network' : 'matic',
+        'add_chefs' : ['0xb444d596273C66Ac269C33c30Fbb245F4ba8A79d', '0xa37DD1f62661EB18c338f18Cf797cff8b5102d8e']
     },
                 '0xIronPoly' : {
         'name' : 'iron.finance',
@@ -1242,11 +1253,11 @@ class Farms:
             'vaults' : [external_contracts.dummy_vault],
             'args' : [
                 {
-                    'farm_id' : '0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef',
+                    'farm_id' : '0xIronPoly',
                     'network_id' : 'matic',
                     'farm_data' :{
                         'name' : 'iron.finance',
-                        'rewardToken' : '0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef ',
+                        'rewardToken' : '0x4a81f8796e0c6ad4877a51c86693b0de8093f2ef',
                         'decimal' : 18,
                         'stakedFunction' : 'userInfo',
                         'pendingFunction' : 'pendingReward',
@@ -1311,6 +1322,7 @@ class Farms:
         'perBlock' : 'krillPerBlock',
         'featured' : 2,
         'network' : 'matic',
+        'add_chefs' : ['0x0c23DCc118313ceB45a029CE0A4AB744eA4928ef']
     },
                 '0x0c23DCc118313ceB45a029CE0A4AB744eA4928ef' : {
         'name' : 'polywhale.finance (Reefs)',
@@ -1961,6 +1973,17 @@ class Farms:
             'vault_args' : [{}, {}]
         }
     },
+                '0x1B8deA992Ebb340a151383E18F63c1e89cE180a4' : {
+        'name' : 'polyyeld.finance (v2)',
+        'rewardToken' : '0x1fd6cf265fd3428f655378a803658942095b4c4e',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingYeld',
+        'masterChef' : '0x1B8deA992Ebb340a151383E18F63c1e89cE180a4',
+        'perBlock' : 'YeldPerBlock',
+        'featured' : 2,
+        'network' : 'matic'
+    },
                 '0x6ad70613d14c34aa69E1604af91c39e0591a132e' : {
         'name' : 'augury.finance',
         'rewardToken' : '0x76e63a3e7ba1e2e61d3da86a87479f983de89a7e',
@@ -2008,7 +2031,8 @@ class Farms:
         'pendingFunction' : 'pendingReward',
         'masterChef' : '0x69E7Bbe85db0364397378364458952bEcB886920',
         'featured' : 2,
-        'network' : 'matic'
+        'network' : 'matic',
+        'add_chefs' : ['0x17684f4d5385FAc79e75CeafC93f22D90066eD5C', '0x029D14479B9497B95CeD7DE6DAbb023E31b4a1C3']
     },
                 '0x029D14479B9497B95CeD7DE6DAbb023E31b4a1C3' : {
         'name' : 'safedollar.fi (SDS v1)',
@@ -2301,17 +2325,11 @@ class Farms:
             'vaults' : [external_contracts.get_thunder_pools],
             'args' : [
                 {
-                    'farm_id' : '0xAcryptos',
-                    'network' : 'bsc',
-                    '_pps' : 'getPricePerFullShare'
-                    },
-                {
-                    'farm_id' : '0xAcryptos',
-                    'network' : 'bsc',
-                    'caller' : '0xb1fa5d3c0111d8E9ac43A19ef17b281D5D4b474E',
-                    'pfunc' : 'pendingSushi'
-                    }],
-            'vault_args' : [{}, {}]
+                    'farm_id' : '0xF4168CD3C00799bEeB9a88a6bF725eB84f5d41b7',
+                    'network_id' : 'bsc',
+                    }
+                    ],
+            'vault_args' : [{}]
         }
     },
                 '0xCc7E7c9FC775D25176e9Bfc5A400EdAc212aa81C' : {
@@ -2322,7 +2340,8 @@ class Farms:
         'pendingFunction' : 'pendingPup',
         'masterChef' : '0xCc7E7c9FC775D25176e9Bfc5A400EdAc212aa81C',
         'featured' : 2,
-        'network' : 'matic'
+        'network' : 'matic',
+        'add_chefs' : ['0x9DcB2D5e7b5212fAF98e4a152827fd76bD55f68b']
     },
                 '0x9DcB2D5e7b5212fAF98e4a152827fd76bD55f68b' : {
         'name' : 'polypup.finance (Layer 2)',
@@ -2967,6 +2986,16 @@ class Farms:
         'featured' : 2,
         'network' : 'matic'
     },
+                '0xd6D8EBf01b79EE3fC1Ab76Dc3eA79bcB209205E4' : {
+        'name' : 'pearzap.com',
+        'rewardToken' : '0xdf7c18ed59ea738070e665ac3f5c258dcc2fbad8',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingPear',
+        'masterChef' : '0xd6D8EBf01b79EE3fC1Ab76Dc3eA79bcB209205E4',
+        'featured' : 2,
+        'network' : 'bsc'
+    },
                 '0x723f61a9bcd6c390474d0d2b3d5e65e1f9ada824' : {
         'name' : 'boneswap.finance',
         'rewardToken' : '0x6C1B568A1D7Fb33DE6707238803F8821E9472539',
@@ -3054,7 +3083,8 @@ class Farms:
         'poolLength' : 'getPairsLength',
         'masterChef' : '0xaEBa5C691aF30b7108D9C277d6BB47347387Dc13',
         'featured' : 2,
-        'network' : 'oke'
+        'network' : 'oke',
+        'add_chefs' : ['0x5E6D7c01824C64C4BC7f2FF42C300871ce6Ff555','0x1FcCEabCd2dDaDEa61Ae30a2f1c2D67A05fDDa29']
     },
                 '0x5E6D7c01824C64C4BC7f2FF42C300871ce6Ff555' : {
         'name' : 'kswap.finance (Deposit Pool)',
@@ -3306,7 +3336,8 @@ class Farms:
         'pendingFunction' : 'pendingJf',
         'masterChef' : '0x83C35EA2C32293aFb24aeB62a14fFE920C2259ab',
         'featured' : 2,
-        'network' : 'oke'
+        'network' : 'oke',
+        'add_chefs' : ['0x4e864E36Bb552BD1Bf7bcB71A25d8c96536Af7e3', '0x0B29065f0C5B9Db719f180149F0251598Df2F1e4']
     },
                 '0x4e864E36Bb552BD1Bf7bcB71A25d8c96536Af7e3' : {
         'name' : 'jswap.finance (Deposit Pool)',
@@ -3432,6 +3463,7 @@ class Farms:
         'stakedFunction' : 'stakedWantTokens',
         'pendingFunction' : 'pendingSilver',
         'masterChef' : '0xBb3f43008e277543353588Ca2A4941F12e3CaCC0',
+        'death_index' : [51],
         'featured' : 2,
         'network' : 'matic',
         'extraFunctions' : {
@@ -3749,6 +3781,39 @@ class Farms:
         'masterChef' : '0xD05B53c621497be947b4302e64c19d01EC8dbB56',
         'featured' : 1,
         'network' : 'matic'
+    },
+                '0x1Dc5685088D038CCe7B826BB7688142c7b5c6DeC' : {
+        'name' : 'shibcakeswap.finance',
+        'rewardToken' : '0x818cee824f8caeaa05fb6a1f195935e364d52af0',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0x1Dc5685088D038CCe7B826BB7688142c7b5c6DeC',
+        'featured' : 2,
+        'network' : 'bsc'
+    },
+                '0xBiShare' : {
+        'name' : 'bishares.finance',
+        'rewardToken' : '0x19A6Da6e382b85F827088092a3DBe864d9cCba73',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBiShare',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_bishare],
+            'args' : [
+                    {
+                        'farm_id' : '0xBiShare',
+                        'network_id' : 'bsc',
+                        'staked' : 'pool',
+                        'stake_override' : {'0xdBf6Afe135e2C4CB599680C2F1554bBDa219CE10' : 'syrup'}
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
 }
 

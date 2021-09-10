@@ -91,8 +91,8 @@ async def get_uniswap_token_data(v3_positions, network, uniswap_factory,uniswap_
 
 def get_uniswap_v3_balance(token_data,network,prices):
 
-    token0 = token_data['token0']
-    token1 = token_data['token1']
+    token0 = token_data['token0'].lower()
+    token1 = token_data['token1'].lower()
     ints0 = token_data['tkn0d']
     ints1 = token_data['tkn1d']
     symbol0 = token_data['tkn0s']

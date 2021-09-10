@@ -984,7 +984,7 @@ async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contrac
         else:
             return None
 
-async def get_syrup_pools(wallet, vaults, network_id, farm_id, staked=None, reward=None, pending_reward=None, user_info=None):
+async def get_syrup_pools(wallet, vaults, network_id, farm_id, staked=None, reward=None, pending_reward=None, user_info=None, stake_override={}):
         poolKey = farm_id
         calls = []
         network = WEB3_NETWORKS[network_id]
@@ -994,9 +994,10 @@ async def get_syrup_pools(wallet, vaults, network_id, farm_id, staked=None, rewa
         user_info = 'userInfo' if user_info is None else user_info
 
         for pool in vaults:
+            staked_function = stake_override[pool] if pool in stake_override else staked
             calls.append(Call(pool, [f'{user_info}(address)(uint256)', wallet], [[f'{pool}_staked', None]]))
             calls.append(Call(pool, [f'{pending_reward}(address)(uint256)', wallet], [[f'{pool}_pending', None]]))
-            calls.append(Call(pool, [f'{staked}()(address)'], [[f'{pool}_want', None]]))
+            calls.append(Call(pool, [f'{staked_function}()(address)'], [[f'{pool}_want', None]]))
             calls.append(Call(pool, [f'{reward}()(address)'], [[f'{pool}_rewardtoken', None]]))
 
 
@@ -2081,13 +2082,13 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
 
     for pool in pools:
         
-        if 'poolLength' in farm_info:
-            pool_length = farm_info['poolLength']
+        if 'poolLength' in farm_info[pool]:
+            pool_length = farm_info[pool]['poolLength']
         else:
             pool_length = 'poolLength'
 
         
-        if farm_info['stakedFunction'] is not None and pool.lower() not in ['0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'.lower(), '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
+        if farm_info[pool]['stakedFunction'] is not None and pool.lower() not in ['0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'.lower(), '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
             calls.append(Call(pool, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
             calls.append(Call(pool, 'getRewardsLength()(uint256)', [[pool, None]]))
@@ -2109,18 +2110,15 @@ async def get_only_staked(wallet, pools, network, farm_info):
     final = pools[1]
     
     for pool in pools[0]:    
-        stakedFunction = farm_info['stakedFunction']
+        stakedFunction = farm_info[pool]['stakedFunction']
+        death_index = [] if 'death_index' not in farm_info[pool] else farm_info[pool]['death_index']
         rng = 1 if pool in ['0x0895196562C7868C5Be92459FaE7f877ED450452'] else 0
         end = 3 if pool in [''] else pools[0][pool]
         for i in range(rng, end):
-            if pool == '0xd1b3d8ef5ac30a14690fbd05cf08905e1bf7d878' and i == 2:
+            if i in death_index:
                 continue
-            elif pool == '0x0895196562C7868C5Be92459FaE7f877ED450452' and i == 331:
-                continue
-            elif pool == '0x95030532D65C7344347E61Ab96273B6B110385F2' and i == 43:
-                continue
-            elif pool == '' and i == 0:
-                continue
+            # elif pool == '' and i == 0:
+            #     continue
             else:
                 if pool == '0x0B29065f0C5B9Db719f180149F0251598Df2F1e4': 
                     calls.append(Call(pool, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
@@ -2151,10 +2149,10 @@ async def get_pending_want(wallet, stakes, network, farm_info):
         key = next(iter(stake.keys()))
         address = key.split('_')[0]
         poolID = int(key.split('_')[1])
-        network_id = farm_info['network']
+        network_id = farm_info[address]['network']
 
-        if farm_info['pendingFunction'] is not None:
-            pendingFunction = farm_info['pendingFunction']
+        if farm_info[address]['pendingFunction'] is not None:
+            pendingFunction = farm_info[address]['pendingFunction']
             if address not in ['0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904', '0x0B29065f0C5B9Db719f180149F0251598Df2F1e4']:
                 calls.append(Call(address, ['%s(uint256,address)(uint256)' % (pendingFunction), poolID, wallet], [['%s_%s_pending' % (address, poolID), None]]))
             
@@ -2162,7 +2160,7 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 calls.append(Call(address, [f'{pendingFunction}(address,uint256)(uint256)', wallet, poolID], [['%s_%s_pending' % (address, poolID), None]]))
 
 
-        if farm_info['stakedFunction'] is not None:
+        if farm_info[address]['stakedFunction'] is not None:
             if address in ['0xF1F8E3ff67E386165e05b2B795097E95aaC899F0', '0xdd44c3aefe458B5Cb6EF2cb674Cd5CC788AF11D3', '0xbb093349b248c8EDb20b6d846a25bF4c21d46a3d', '0x6685C8618298C04b6E42dDAC06400cc5924e917e']:
                 calls.append(Call(address, ['poolInfo(uint256)((uint256,address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 1]]))
             elif address == '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7':
@@ -2195,9 +2193,9 @@ async def get_pending_want(wallet, stakes, network, farm_info):
 
                     wanted = stakes[stake]
                     token_decimal = 18 if wanted not in token_decimals else token_decimals[wanted]
-                    reward_decimal = 18 if 'decimal' not in farm_info else farm_info['decimal']
+                    reward_decimal = 18 if 'decimal' not in farm_info[addPool[0]] else farm_info[addPool[0]]['decimal']
                     raw_stakes = final[addPool[0]]['userData'][int(addPool[1])]['staked']
-                    raw_pending = stakes[f'{value_key}_pending']
+                    raw_pending = 0 if f'{value_key}_pending' not in stakes else stakes[f'{value_key}_pending']
                     pool_id = int(addPool[1])
 
                     final[addPool[0]]['userData'][int(addPool[1])]['rawStakes'] = raw_stakes
@@ -2212,6 +2210,11 @@ async def get_pending_want(wallet, stakes, network, farm_info):
     return stakes, final
 
 async def get_traditional_masterchef(wallet, pools, network, farm_info, return_obj):
+
+    for farm in pools:
+        if farm not in return_obj:
+            return_obj[farm] = {'name' : farm_info[farm]['name'], 'network' : farm_info[farm]['network'], 'wallet' : wallet, 'userData' : {}}
+
     pool_lengths = await get_pool_lengths(wallet, pools, network, farm_info)
     only_staked = await get_only_staked(wallet, (pool_lengths, return_obj), network, farm_info)
     pending_wants = await get_pending_want(wallet, only_staked, network, farm_info)

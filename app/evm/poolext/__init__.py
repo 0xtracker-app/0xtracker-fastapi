@@ -46,3 +46,4 @@ from . import yak
 from . import qubit
 from . import pancake_hunny
 from . import wault_locked
+from . import bishare

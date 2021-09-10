@@ -3,7 +3,7 @@ from . import uniswapv3
 
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
-    quotePrice = prices[token0]
+    quotePrice = prices[token0.lower()]
     userPct = staked / totalSupply
     lp1val = (userPct * int(reserves[0])) / (10**tkn0d)
     lp2val = (userPct * int(reserves[1])) / (10**tkn1d)
@@ -12,7 +12,7 @@ def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
 def getEBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, pricePer, eToken, prices):
 
-    quotePrice = prices[token0]
+    quotePrice = prices[token0.lower()]
 
     #Check for E11
     if token0.lower() == '0xAcD7B3D9c10e97d0efA418903C0c7669E702E4C0'.lower():
@@ -42,8 +42,7 @@ def get_balancer_ratio(token_data,quote_price):
 
     for i,lp_balance in enumerate(lp_values):
         token_address = token_data['balancerTokens'][i]
-        token_price = quote_price[token_address]
-        print(lp_price,lp_balance * token_price)
+        token_price = quote_price[token_address.lower()]
         lp_price += lp_balance * token_price
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price}
@@ -61,15 +60,15 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
 
             if 'pendingNerve' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingNRVAmount'] = round((finalResponse[f]['userData'][x]['pendingNerve'] * finalResponse[f]['userData'][x]['nerveMultipler']) * prices['0x42f6f551ae042cbe50c739158b4f0cac0edb9096'.lower()], 2)
-                finalResponse[f]['userData'][x]['pendingELE'] = round(finalResponse[f]['userData'][x]['pending'] * prices[rewardToken], 2)
+                finalResponse[f]['userData'][x]['pendingELE'] = round(finalResponse[f]['userData'][x]['pending'] * prices[rewardToken.lower()], 2)
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingELE'] + finalResponse[f]['userData'][x]['pendingNRVAmount'], 2)
 
             if x == 'bingoBoard':
                 if 'pending' in finalResponse[f]['userData'][x]:
-                    finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices['0x579A6277a6c2c63a5b25006F63Bce5DC8D9c25e7'], 2)
+                    finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices['0x579A6277a6c2c63a5b25006F63Bce5DC8D9c25e7'.lower()], 2)
 
             if 'rewardToken' in lastReturn[f]['userData'][x]:
-                finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken']], 2)
+                finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken'].lower()], 2)
 
             elif 'gambitRewards' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
@@ -77,7 +76,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                     if 'valueOfAsset' in finalResponse[f]['userData'][x]['gambitRewards'][i]:
                         finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * gr['valueOfAsset']
                     else:
-                        finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * prices[gr['token']]
+                        finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * prices[gr['token'].lower()]
                     if x not in ['0xA2A065DBCBAE680DF2E6bfB7E5E41F1f1710e63b', 'VAULTS']:
                         finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount']
 
@@ -86,16 +85,16 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
             
             elif 'pendingBunny' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingBunnyAmount'] = round(finalResponse[f]['userData'][x]['pendingBunny'] * prices['0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51'.lower()], 2)
-                finalResponse[f]['userData'][x]['pendingRewardAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken']], 2)
+                finalResponse[f]['userData'][x]['pendingRewardAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken'].lower()], 2)
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingBunnyAmount'] + finalResponse[f]['userData'][x]['pendingRewardAmount'], 2)
 
             elif 'pendingMerlin' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingMerlinAmount'] = round(finalResponse[f]['userData'][x]['pendingMerlin'] * prices['0xda360309c59cb8c434b28a91b823344a96444278'.lower()], 2)
-                finalResponse[f]['userData'][x]['pendingRewardAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken']], 2)
+                finalResponse[f]['userData'][x]['pendingRewardAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken'].lower()], 2)
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingMerlinAmount'] + finalResponse[f]['userData'][x]['pendingRewardAmount'], 2)
             
             elif 'pending' in lastReturn[f]['userData'][x]:
-                finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[rewardToken], 2)
+                finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[rewardToken.lower()], 2)
             else:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
                 finalResponse[f]['userData'][x]['pending'] = 0
@@ -155,11 +154,11 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                     #     quotePrice = get_atricryptos_price('ftm', '0x92d5ebf3593a92888c25c0abef126583d4b5312e',6,'uint256,int128')
                     if 'zombieOverride' in lastReturn[f]['userData'][x]:
                         if lastReturn[f]['userData'][x]['zombieOverride'] is True:
-                            quotePrice = prices['0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5']
+                            quotePrice = prices['0x50ba8bf9e34f0f83f96a340387d1d3888ba4b3b5'.lower()]
                         else:
-                            quotePrice = prices[lastReturn[f]['userData'][x]['token0']] if lastReturn[f]['userData'][x]['token0'] in prices else 0.1
+                            quotePrice = prices[lastReturn[f]['userData'][x]['token0'].lower()] if lastReturn[f]['userData'][x]['token0'].lower() in prices else 0.1
                     else:
-                        quotePrice = prices[lastReturn[f]['userData'][x]['token0']] if lastReturn[f]['userData'][x]['token0'] in prices else 0.1
+                        quotePrice = prices[lastReturn[f]['userData'][x]['token0'].lower()] if lastReturn[f]['userData'][x]['token0'].lower() in prices else 0.1
 
                     # if 'curve_pool_token' in lastReturn[f]['userData'][x]:
                     #     if lastReturn[f]['userData'][x]['curve_pool_token'] == '0x8096ac61db23291252574d49f036f0f9ed8ab390':
@@ -221,7 +220,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                         finalResponse[f]['userData'][x].update(uniswapv3.get_uniswap_v3_balance(finalResponse[f]['userData'][x], farm_network, prices))
                         finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
                         for i, gr in enumerate(lastReturn[f]['userData'][x]['uniswapFee']):
-                            finalResponse[f]['userData'][x]['uniswapFee'][i]['pendingAmount'] = gr['pending'] * prices[gr['token']]
+                            finalResponse[f]['userData'][x]['uniswapFee'][i]['pendingAmount'] = gr['pending'] * prices[gr['token'].lower()]
                             finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['uniswapFee'][i]['pendingAmount']
                     else:
                         finalResponse[f]['userData'][x]['lpPrice'] = round(singleStake * quotePrice, 2)

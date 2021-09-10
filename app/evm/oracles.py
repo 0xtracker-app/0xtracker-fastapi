@@ -1,12 +1,13 @@
 import requests
 import json
 from .multicall import Call, Multicall, parsers
-from .routers import FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
+from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
 from .networks import WEB3_NETWORKS
 from . import native_tokens
 from .utils import make_get_json
 import asyncio
 from aiohttp import ClientSession, ClientTimeout
+from .native_tokens import NetworkRoutes
 
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
@@ -47,7 +48,7 @@ async def fantom_router_prices(tokens_in, router):
 
     return {**prices, **{'0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' : fantom_price['fantom_price']}}
 
-def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None):
+async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None):
     chain_w3 = WEB3_NETWORKS[network]
     chain = network.upper()
 
@@ -63,12 +64,12 @@ def get_price_from_router(token_in, network, router, native=False, decimal=18, b
     default_router = getattr(native_tokens.DefaultRouter, chain)
         
     if native is True:
-        native_price = Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parse_router]], chain_w3)()['token_in']
-        token_price = Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, native_token]], [[f'token_in', parse_router, native_price]],chain_w3)()['token_in']
-        return token_price
+        native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router]], chain_w3)()
+        token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, native_token]], [[f'token_in', parsers.parse_router, native_price['token_in']]],chain_w3)()
+        return {token_in.lower() : token_price['token_in']}
     else:
-        token_price = Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, token_out]], [[f'token_in', parse_router]],chain_w3)()['token_in']
-        return token_price
+        token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, token_out]], [[f'token_in', parsers.parse_router]],chain_w3)()
+        return {token_in.lower() : token_price['token_in']}
 
 async def kcc_router_prices(tokens_in, router):
     calls= []
@@ -154,6 +155,44 @@ def harmony_router_prices(tokens_in, router):
 
     return {**prices, **{'0xcf664087a5bb0237a0bad6742852ec6c8d69a27a' : one_price}}
 
+async def list_router_prices(tokens_in, network):
+
+    network_route = NetworkRoutes(network)
+    calls= []
+    out_token = network_route.native
+    network_conn = network_route.network_conn
+    native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router]], network_conn)()
+
+    for token in tokens_in:
+        for contract in network_route.lrouters:
+            token_dec = token['decimal']
+            token_address = token['token']
+            calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+    
+    multi=await Multicall(calls,network_conn, _strict=False)()
+
+    prices = {}
+
+    for each in multi:
+        token = each.split('_')[1]
+        looped_value = multi[each]
+
+        if token in prices:
+            current_value = prices[token]
+            if looped_value > current_value:
+                prices[token] = looped_value
+        else:
+            prices[token] = looped_value
+    
+    for token in tokens_in:
+        if token['token'] not in prices:
+            prices[token['token']] = .01
+
+    prices[out_token.lower()] = native_price['native_price']
+
+    return prices
+
+
 async def avax_router_prices(tokens_in, router):
     calls= []
     out_token = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
@@ -221,3 +260,40 @@ async def get_one_inch_quote(tokens, session):
             list_of_prices[to_token_address] = usd_value
 
     return list_of_prices
+
+async def get_price_from_synpool(token_in,swap_address, token_out_index, decimal, network):
+
+        one_token = 1 * 10 ** decimal
+        
+        price = await Call(swap_address, ['calculateRemoveLiquidityOneToken(uint256,uint8)(uint256)', one_token, token_out_index], [['price', parsers.from_wei]], _w3=WEB3_NETWORKS[network])()
+
+        return {token_in.lower() : price['price']}
+
+async def get_xjoe_price():
+        calls = []
+
+        joe = '0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd'
+        xjoe = '0x57319d41F71E81F3c65F2a47CA4e001EbAFd4F33'
+        
+        calls.append(Call(joe, [f'balanceOf(address)(uint256)', xjoe], [[f'ext_xjoe', parsers.from_wei]]))
+        calls.append(Call(xjoe, [f'totalSupply()(uint256)'], [[f'ext_xjoets', parsers.from_wei]]))
+        calls.append(Call('0x60aE616a2155Ee3d9A68541Ba4544862310933d4', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd', '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7']], [[f'joe_price', parsers.parse_router]]))
+        calls.append(Call('0x60aE616a2155Ee3d9A68541Ba4544862310933d4', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70']], [[f'avax_price', parsers.parse_router]]))
+
+        multi_call = await Multicall(calls, WEB3_NETWORKS['avax'])()
+
+        joe_ratio = multi_call[f'ext_xjoe'] / multi_call[f'ext_xjoets']
+        joe_price_usd = multi_call['avax_price'] * multi_call['joe_price']
+
+        return joe_ratio * joe_price_usd
+
+async def get_blackswan_lp():
+    x = [] 
+    x.append(Call('0xD3293BdE855033c77B7919da40ABD1DF9EB5eB46', [f'getReserves()((uint112,uint112))'], [[f'reserves', None]]))
+    x.append(Call('0xD3293BdE855033c77B7919da40ABD1DF9EB5eB46','totalSupply()(uint256)', [['totalSupply', parsers.from_wei]]))
+
+    multi = await Multicall(x,WEB3_NETWORKS['matic'])()
+    userPct = 1 / multi['totalSupply']
+    lpval = (userPct * multi['reserves'][0] / (10**6))
+
+    return lpval

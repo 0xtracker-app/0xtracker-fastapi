@@ -1,4 +1,5 @@
 from . import routers
+from .networks import WEB3_NETWORKS
 
 class NativeToken():
     BSC = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
@@ -20,3 +21,20 @@ class DefaultRouter():
     FTM = routers.FTMRouter.SPOOKY
     KCC = routers.KCCRouter.KUSWAP
     AVAX = routers.AVAXRouter.PNG
+
+class RouteClass():
+    BSC = routers.BSCRouter
+    MATIC= routers.MATICRouter
+    FTM = routers.FTMRouter
+    KCC = routers.KCCRouter
+    AVAX = routers.AVAXRouter
+
+class NetworkRoutes():
+
+    def __init__(self, network=None):
+        self.network_conn = WEB3_NETWORKS[network]
+        self.native = getattr(NativeToken, network.upper())
+        self.stable = getattr(StableToken, network.upper())
+        self.default_router = getattr(DefaultRouter, network.upper())
+        self.router = getattr(RouteClass, network.upper())
+        self.lrouters = [attr for attr in dir(self.router()) if not callable(getattr(self.router(),attr)) and not attr.startswith("__")]
