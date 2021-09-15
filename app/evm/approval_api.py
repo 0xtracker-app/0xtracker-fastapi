@@ -1,20 +1,18 @@
-import requests
+from .utils import make_get_json, make_get
 import json
-import database_connect
-import multicall.parsers as parser
-from networks import WEB3_NETWORKS, SCAN_APIS
+from .networks import WEB3_NETWORKS, SCAN_APIS
 from web3 import Web3
-from multicall import Call, Multicall
+from .multicall import Call, Multicall, parsers
 
 
-def lookup_token_info(token_list, network):
+async def lookup_token_info(token_list, network):
 
         calls = []
         for token in token_list:
             calls.append(Call(token, [f'symbol()(string)'], [[f'{token}_symbol', None]]))
             calls.append(Call(token, [f'decimals()(uint256)'], [[f'{token}_decimal', None]]))
 
-        missing_tokens_info = Multicall(calls,WEB3_NETWORKS[network], _strict=False)()
+        missing_tokens_info = await Multicall(calls,WEB3_NETWORKS[network], _strict=False)()
 
         format_token_data = {}
 
@@ -28,7 +26,7 @@ def lookup_token_info(token_list, network):
 
         return format_token_data
 
-def scan_ethlogs_approval(network, address):
+async def scan_ethlogs_approval(network, address, session, mongodb):
 
     network_data = SCAN_APIS[network]
     apikey = network_data['api_key']
@@ -41,8 +39,8 @@ def scan_ethlogs_approval(network, address):
 
     url = f'https://api.{scan_url}/api?module=logs&action=getLogs&fromBlock=0&toBlock={latest_block}&topic0={topic0}&topic0_1_opr=and&topic1={topic1}&apikey={apikey}'
 
-    r = requests.get(url)
-    data0 = json.loads(r.text)['result']
+    r = await make_get_json(session, url)
+    data0 = r['result']
     
     format_approvals = {}
 
@@ -52,15 +50,13 @@ def scan_ethlogs_approval(network, address):
 
     url = f'https://api.{scan_url}/api?module=logs&action=getLogs&fromBlock={last_query_block}&toBlock={latest_block}&topic0={topic0}&topic0_1_opr=and&topic1={topic1}&apikey={apikey}'
 
-    r = requests.get(url)
-    data1 = json.loads(r.text)['result']
+    r = await make_get_json(session, url)
+    data1 = r['result']
 
     data = data0 + data1
 
     format_approvals = {'userInfo' : {'wallet' : address}, 'approvals' : {}}
 
-
-    token_database = database_connect.set_full_tokens()
     missing_tokens = []
 
     for each in data:
@@ -71,7 +67,7 @@ def scan_ethlogs_approval(network, address):
         amount = 0 if each['data'] == '0x' else Web3.toInt(hexstr=each['data'])
 
         if each['address'] not in format_approvals['approvals']:
-            token_data = token_database.find_one({'tokenID' : token_approved, 'network' : network}, {'_id': False})
+            token_data = await mongodb.xtracker['full_tokens'].find_one({'tokenID' : token_approved, 'network' : network}, {'_id': False})
 
             if token_data is None:
                 token_data = {}
@@ -87,23 +83,23 @@ def scan_ethlogs_approval(network, address):
             else:
                 format_approvals['approvals'][token_approved]['contracts'][contract_approved]['tx'].append([{'contractApproved' : contract_approved, 'amount' : amount, 'block_number' : block_number, 'tx' : each['transactionHash']}])
 
-    unknown_tokens = lookup_token_info(missing_tokens,'bsc')
+    unknown_tokens = await lookup_token_info(missing_tokens, network)
     balance_calls = []
     
     for each in format_approvals['approvals']:
         if len(format_approvals['approvals'][each]['tokenData']) == 0:
             format_approvals['approvals'][each]['tokenData'].update(unknown_tokens[each])
             decimals = unknown_tokens[each]['tkn0d']
-            balance_calls.append(Call(each, ['balanceOf(address)(uint256)', address], [[f'{each}', parser.from_custom, decimals]]))
+            balance_calls.append(Call(each, ['balanceOf(address)(uint256)', address], [[f'{each}', parsers.from_custom, decimals]]))
         else:
             if 'tkn1d' in format_approvals['approvals'][each]['tokenData']:
-                balance_calls.append(Call(each, ['balanceOf(address)(uint256)', address], [[f'{each}', parser.from_custom, 18]]))
+                balance_calls.append(Call(each, ['balanceOf(address)(uint256)', address], [[f'{each}', parsers.from_custom, 18]]))
             else:
                 decimals = format_approvals['approvals'][each]['tokenData']['tkn0d']
-                balance_calls.append(Call(each, ['balanceOf(address)(uint256)', address], [[f'{each}', parser.from_custom, decimals]]))
+                balance_calls.append(Call(each, ['balanceOf(address)(uint256)', address], [[f'{each}', parsers.from_custom, decimals]]))
 
     
-    token_balances = Multicall(balance_calls,WEB3_NETWORKS[network])()
+    token_balances = await Multicall(balance_calls,WEB3_NETWORKS[network])()
 
     for each in format_approvals['approvals']:
         format_approvals['approvals'][each]['balance'] = token_balances[each]

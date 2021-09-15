@@ -8,7 +8,7 @@ def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
     lp1val = (userPct * int(reserves[0])) / (10**tkn0d)
     lp2val = (userPct * int(reserves[1])) / (10**tkn1d)
 
-    return {'lpTotal': '%s/%s' % (round(lp1val, 2), round(lp2val, 2)), 'lpPrice' : round((lp1val * quotePrice) * 2, 2)}
+    return {'lpTotal': '%s/%s' % (round(lp1val, 2), round(lp2val, 2)), 'lpPrice' : round((lp1val * quotePrice) * 2, 2), 'lpBalances' : [lp1val, lp2val], 'actualStaked' : staked}
 
 def getEBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, pricePer, eToken, prices):
 
@@ -24,7 +24,7 @@ def getEBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, pricePer, 
     lp1val = (userPct * int(reserves[0])) / (10**tkn0d)
     lp2val = (userPct * int(reserves[1])) / (10**tkn1d)
 
-    return {'lpTotal': round(actualStaked, 4), 'lpPrice' : round((lp1val * quotePrice) * 2, 2), 'elevenBalance' : '(%s/%s)' % (round(lp1val, 2), round(lp2val, 2))}
+    return {'lpTotal': round(actualStaked, 4), 'lpPrice' : round((lp1val * quotePrice) * 2, 2), 'elevenBalance' : '(%s/%s)' % (round(lp1val, 2), round(lp2val, 2)), 'lpBalances' : [lp1val, lp2val], 'actualStaked' : actualStaked}
 
 def get_balancer_ratio(token_data,quote_price):
 
@@ -112,6 +112,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                      prices))
 
                     finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
+                    finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
             if 'reserves' in lastReturn[f]['userData'][x]:
 
                     if 'getPricePerFullShare' in lastReturn[f]['userData'][x]:
@@ -130,14 +131,17 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                     prices))
 
                     finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
+                    finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
                     
                     if 'getPricePerFullShare' in lastReturn[f]['userData'][x]:
                         finalResponse[f]['userData'][x]['elevenBalance'] = '(%s)' % (finalResponse[f]['userData'][x]['lpTotal'])
                         finalResponse[f]['userData'][x]['lpTotal'] = round(lastReturn[f]['userData'][x]['staked'] * lastReturn[f]['userData'][x]['getPricePerFullShare'], 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = lastReturn[f]['userData'][x]['staked'] * lastReturn[f]['userData'][x]['getPricePerFullShare']
                     
                     if 'getRatio' in lastReturn[f]['userData'][x]:
                         finalResponse[f]['userData'][x]['elevenBalance'] = '(%s)' % (finalResponse[f]['userData'][x]['lpTotal'])
                         finalResponse[f]['userData'][x]['lpTotal'] = round(lastReturn[f]['userData'][x]['staked'] * lastReturn[f]['userData'][x]['getRatio'], 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = lastReturn[f]['userData'][x]['staked'] * lastReturn[f]['userData'][x]['getRatio']
                    
             else:
                     # if lastReturn[f]['userData'][x]['token0'].lower() in ['0x86aFa7ff694Ab8C985b79733745662760e454169'.lower(), '0x049d68029688eAbF473097a2fC38ef61633A3C7A'.lower(), '0x10a450A21B79c3Af78fb4484FF46D3E647475db4'.lower(), '0x7C9e73d4C71dae564d41F78d56439bB4ba87592f'.lower(), '0x02dA7035beD00ae645516bDb0c282A7fD4AA7442'.lower()]:
@@ -177,6 +181,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                         
 
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                         
                         # if lastReturn[f]['userData'][x]['e11token'].lower() == '0xdaf66c0b7e8e2fc76b15b07ad25ee58e04a66796'.lower():
                         #     inchBNBPrice = beefyPrices['1inch-1inch-bnb']
@@ -191,11 +196,13 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                         fullStake = lastReturn[f]['userData'][x]['fulcrumToken'] * singleStake
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                     elif 'swap' in finalResponse[f]['userData'][x]:
                         if 'pricePer' in finalResponse[f]['userData'][x]:
                             singleStake = singleStake * parsers.from_wei(finalResponse[f]['userData'][x]['pricePer'])
                         fullStake = singleStake * finalResponse[f]['userData'][x]['virtualPrice']
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
                     elif 'curve_pool_token' in finalResponse[f]['userData'][x]:
                         fullStake = singleStake * finalResponse[f]['userData'][x]['virtualPrice']
@@ -204,14 +211,17 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                         if 'getPricePerFullShare' in finalResponse[f]['userData'][x]:
                             fullStake = fullStake * finalResponse[f]['userData'][x]['getPricePerFullShare']
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)                            
                     elif 'getPricePerFullShare' in finalResponse[f]['userData'][x]:
                         fullStake = singleStake * finalResponse[f]['userData'][x]['getPricePerFullShare']
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
                     elif 'getRatio' in finalResponse[f]['userData'][x]:
                         fullStake = singleStake * finalResponse[f]['userData'][x]['getRatio']
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
                     elif 'balancerBalances' in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x].update(get_balancer_ratio(finalResponse[f]['userData'][x], prices))
@@ -219,10 +229,12 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
                     elif 'slot0' in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x].update(uniswapv3.get_uniswap_v3_balance(finalResponse[f]['userData'][x], farm_network, prices))
                         finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
+                        finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
                         for i, gr in enumerate(lastReturn[f]['userData'][x]['uniswapFee']):
                             finalResponse[f]['userData'][x]['uniswapFee'][i]['pendingAmount'] = gr['pending'] * prices[gr['token'].lower()]
                             finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['uniswapFee'][i]['pendingAmount']
                     else:
+                        finalResponse[f]['userData'][x]['actualStaked'] = singleStake
                         finalResponse[f]['userData'][x]['lpPrice'] = round(singleStake * quotePrice, 2)
 
                         if 'borrowed' in finalResponse[f]['userData'][x]:
@@ -230,6 +242,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
 
                     if 'tokenPair' not in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x]['tokenPair'] = lastReturn[f]['userData'][x]['tkn0s']
+                        finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s']]
         try:
             pending_user_amount = sum(d['pendingAmount'] for d in finalResponse[f]['userData'].values() if d)
             finalResponse[f]['poolTotal'] = sum(d['lpPrice'] for d in finalResponse[f]['userData'].values() if d)

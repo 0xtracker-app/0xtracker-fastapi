@@ -8,7 +8,7 @@ from .utils import make_get, make_get_json
 import asyncio
 from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import NetworkRoutes
-
+from .router_override import router_override
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
     'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
@@ -164,9 +164,11 @@ async def list_router_prices(tokens_in, network):
 
     for token in tokens_in:
         for contract in network_route.lrouters:
-            token_dec = token['decimal']
+             
             token_address = token['token']
-            calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+            token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
+            token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
+            calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
     
     multi=await Multicall(calls,network_conn, _strict=False)()
 

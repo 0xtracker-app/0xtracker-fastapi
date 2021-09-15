@@ -26,7 +26,7 @@ async def get_balance_of(token_list, wallet, network, network_info):
         calls.append(Call(token, ['symbol()(string)'], [[f'{token}_symbol', None]]))
         calls.append(Call(token, ['decimals()(uint8)'], [[f'{token}_decimal', None]]))
 
-    multi_return = await Multicall(calls, WEB3_NETWORKS[network])()
+    multi_return = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
 
     native_balance = await get_native_balance(wallet, network)
 

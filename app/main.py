@@ -3,7 +3,7 @@ from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
 from sol import funcs as sol_funcs
-from evm import return_farms_list, get_evm_positions, get_wallet_balance
+from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -62,11 +62,27 @@ async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(
     results = await get_wallet_balance(wallet, network, mongo_db, session)
     return results
 
+@app.get('/wallet/{wallet}/{network}')
+async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
+    results = await get_wallet_balance(wallet, network, mongo_db, session)
+    return results
+
 @app.get('/tokens/{network}/{token_id}')
 async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id:str = Path(..., min_length=1), network:str = Path(..., min_length=1)):
     x = await db.xtracker['full_tokens'].find_one({'tokenID' : token_id, 'network' : network}, {'_id': False})
     return x
 
+@app.get('/token-approval/{wallet}/{network}')
+async def get_token_approvals(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
+    results = await scan_ethlogs_approval(network, wallet, session, mongo_db)
+    return results
+
+@app.get('/historical-transactions/{network}/{wallet}/{contract}/{token}')
+async def historical_transactions(wallet,network,contract,token, session: ClientSession = Depends(get_session)):
+    results = await get_tx_to_contract(network, wallet, token, contract, session)
+    return results
+
+ 
 # to make it work with Amazon Lambda, we create a handler object
 handler = Mangum(app=app)
 
