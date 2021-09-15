@@ -722,7 +722,7 @@ async def get_adamant_funds(wallet, vaults):
                 actual_pending = extra_data['real_pending']
                  
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked, 'pending': (parsers.from_wei((actual_pending * addy_mints)) * reward_multi) / 1000 }
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked, 'pending': (parsers.from_wei((actual_pending * addy_mints)) * reward_multi) / 1000, 'contractAddress' : breakdown[0] }
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
     addy_eth = await get_addy_eth(wallet, addy_mints)
