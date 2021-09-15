@@ -2198,6 +2198,7 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                     raw_pending = 0 if f'{value_key}_pending' not in stakes else stakes[f'{value_key}_pending']
                     pool_id = int(addPool[1])
 
+                    final[addPool[0]]['userData'][int(addPool[1])]['want'] = addPool[0]
                     final[addPool[0]]['userData'][int(addPool[1])]['rawStakes'] = raw_stakes
                     final[addPool[0]]['userData'][int(addPool[1])]['rawPending'] = raw_pending
                     final[addPool[0]]['userData'][int(addPool[1])]['poolID'] = pool_id
