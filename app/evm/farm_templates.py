@@ -618,24 +618,36 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
     poolKey = farm_id
     calls = []
 
-    for vault in vaults:
-        calls.append(Call(vault, ['balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_wei]]))
+    vault_list = []
+    want_lookup = {}
 
-    stakes= await Multicall(calls, WEB3_NETWORKS[network])()
+    for vault in vaults:
+        vault_address = vault['vault']
+        want_address = vault['want']
+        calls.append(Call(vault_address, ['balanceOf(address)(uint256)', wallet], [[f'{vault_address}_staked', parsers.from_wei]]))
+        calls.append(Call(vault_address, [f'getPricePerFullShare()(uint256)'], [[f'{vault_address}_getPricePerFullShare', parsers.from_wei]]))
+        vault_list.append(vault_address)
+        want_lookup[vault_address] = want_address
+
+    stakes= await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
 
     poolNest = {poolKey: 
     { 'userData': { } } }
 
     poolIDs = {}
 
-    for stake in stakes:
-        if stakes[stake] > 0:
-            addPool = stake.split('_')       
-            if addPool[0] not in poolNest[poolKey]['userData']:
-                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': addPool[0] }
-                poolIDs['%s_%s_want' % (poolKey, addPool[0])] = addPool[0]
-            else:    
-                poolNest[poolKey]['userData'][addPool[0]].update({addPool[1]: stakes[stake]})
+    token_decimals = await template_helpers.get_token_list_decimals(vault_list,network,False)
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                token_decimal = 18 if breakdown[0] not in token_decimals else token_decimals[breakdown[0]]
+                staked = parsers.from_custom(stakes[each], token_decimal)
+                want_token = want_lookup[breakdown[0]]
+                price_per = stakes[f'{breakdown[0]}_getPricePerFullShare'] if f'{breakdown[0]}_getPricePerFullShare' in stakes else 1
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'getPricePerFullShare' : price_per, 'contractAddress' : breakdown[0]}
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest    

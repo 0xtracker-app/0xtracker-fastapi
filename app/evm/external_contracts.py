@@ -51,7 +51,10 @@ async def get_beefy_bsc(session):
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
-    return [x['earnedTokenAddress'] for x in cleaned_up]
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+    vault_data.append({'vault' : '0x6BE4741AB0aD233e4315a10bc783a7B923386b71', 'want' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'})
+
+    return vault_data
         
 async def get_beefy_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
@@ -182,7 +185,10 @@ async def get_beefy_matic_pools(session):
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
-    return [x['earnedTokenAddress'] for x in cleaned_up]
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+    vault_data.append({'vault' : '0x1d23ecC0645B07791b7D99349e253ECEbe43f614', 'want' : '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'})
+
+    return vault_data
 
 async def get_beefy_fantom_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fantom_pools.js')
@@ -191,7 +197,10 @@ async def get_beefy_fantom_pools(session):
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
-    return [x['earnedTokenAddress'] for x in cleaned_up]
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+    vault_data.append({'vault' : '0x49c68eDb7aeBd968F197121453e41b8704AcdE0C', 'want' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'})
+
+    return vault_data
 
 async def get_beefy_avax_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/avalanche_pools.js')
