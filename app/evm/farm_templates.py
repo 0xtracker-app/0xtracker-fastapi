@@ -624,7 +624,7 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
     for vault in vaults:
         vault_address = vault['vault']
         want_address = vault['want']
-        calls.append(Call(vault_address, ['balanceOf(address)(uint256)', wallet], [[f'{vault_address}_staked', parsers.from_wei]]))
+        calls.append(Call(vault_address, ['balanceOf(address)(uint256)', wallet], [[f'{vault_address}_staked', None]]))
         calls.append(Call(vault_address, [f'getPricePerFullShare()(uint256)'], [[f'{vault_address}_getPricePerFullShare', parsers.from_wei]]))
         vault_list.append(vault_address)
         want_lookup[vault_address] = want_address

@@ -209,7 +209,9 @@ async def get_beefy_avax_pools(session):
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
-    return [x['earnedTokenAddress'] for x in cleaned_up]
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
 
 async def get_qs_vaults(session):
         scraper = cloudscraper.create_scraper(delay=2)
