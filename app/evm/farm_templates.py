@@ -132,7 +132,8 @@ async def get_moonpot_contracts(wallet,farm_id,network_id,vaults):
 
         reward_calls = []
         for each in contracts:
-            reward_calls.append(Call(each['contract'], [f'rewardTokenLength()(uint256)'], [[each['contract'], None]]))
+            if 'reward_length' not in each:
+                reward_calls.append(Call(each['contract'], [f'rewardTokenLength()(uint256)'], [[each['contract'], None]]))
 
         reward_lengths = await Multicall(reward_calls, network)()
 
@@ -140,12 +141,17 @@ async def get_moonpot_contracts(wallet,farm_id,network_id,vaults):
         for each in contracts:
             pot_contract = each['contract']
             token_function = each['token_function']
-            reward_length = reward_lengths[pot_contract]
+            reward_length = reward_lengths[pot_contract] if pot_contract in reward_lengths else 1
             calls.append(Call(pot_contract, [f'userTotalBalance(address)(uint256)',wallet], [[f'{pot_contract}_staked', parsers.from_wei]]))
             calls.append(Call(pot_contract, [f'{token_function}()(address)'], [[f'{pot_contract}_want', None]]))
-            for i in range(0,reward_length):
-                calls.append(Call(pot_contract, [f'earned(address,uint256)(uint256)', wallet, i], [[f'{pot_contract}pending{i}', None]]))
-                calls.append(Call(pot_contract, [f'rewardInfo(uint256)(address)', i], [[f'{pot_contract}rewardaddress{i}', None]]))
+            
+            if 'reward_length' not in each:
+                for i in range(0,reward_length):
+                    calls.append(Call(pot_contract, [f'earned(address,uint256)(uint256)', wallet, i], [[f'{pot_contract}pending{i}', None]]))
+                    calls.append(Call(pot_contract, [f'rewardInfo(uint256)(address)', i], [[f'{pot_contract}rewardaddress{i}', None]]))
+            else:
+                calls.append(Call(pot_contract, [f'earned(address)(uint256)', wallet], [[f'{pot_contract}pending0', None]]))
+                calls.append(Call(pot_contract, [f'rewardToken()(address)'], [[f'{pot_contract}rewardaddress0', None]]))          
 
         stakes=await Multicall(calls, network)()
 
@@ -164,7 +170,7 @@ async def get_moonpot_contracts(wallet,farm_id,network_id,vaults):
                     want_token = stakes[f'{breakdown[0]}_want']
                     wanted_decimal = 18
                     pot_contract = breakdown[0]
-                    reward_length = reward_lengths[pot_contract]
+                    reward_length = reward_lengths[pot_contract] if pot_contract in reward_lengths else 1
 
                     poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
