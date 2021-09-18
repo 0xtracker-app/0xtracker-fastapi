@@ -86,6 +86,27 @@ class Farms:
             'vault_args' : [{'network' : 'okexchain'}]
         }
     },
+    '0x8eDCe6D0E0687DA9C07B36591781fB6641A53a12' : {
+        'name' : 'eleven.finance',
+        'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingEleven',
+        'masterChef' : '0x8eDCe6D0E0687DA9C07B36591781fB6641A53a12',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_ele_tokens],
+            'args' : [
+                {
+                    'farm_id' : '0x8eDCe6D0E0687DA9C07B36591781fB6641A53a12',
+                    'network' : 'ftm',
+                    '_pps' : 'getPricePerFullShare'
+                }],
+            'vault_args' : [{'network' : 'fantom'}]
+        }
+    },
     '0x7f7Bf15B9c68D23339C31652C8e860492991760d' : {
         'name' : 'farm.br34p.finance',
         'rewardToken' : '0xbda8d53fe0f164915b46cd2ecffd94254b6086a2',
