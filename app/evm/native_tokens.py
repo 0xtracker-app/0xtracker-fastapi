@@ -36,7 +36,7 @@ class NativeDecimal():
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
-    MATIC = '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063'
+    MATIC = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
     FTM = '0x04068da6c83afcfa0e13ba15a6696662335d5b75'
     KCC = '0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48'
     AVAX = '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70'
@@ -47,7 +47,7 @@ class StableToken():
 
 class StableDecimal():
     BSC = 18
-    MATIC = 18
+    MATIC = 6
     FTM = 6
     KCC = 18
     AVAX = 18

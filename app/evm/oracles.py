@@ -8,7 +8,7 @@ from .utils import make_get, make_get_json
 import asyncio
 from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import NetworkRoutes
-from .router_override import router_override
+from .router_override import router_override, stable_override
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
     'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
@@ -18,6 +18,12 @@ async def coingecko_by_address_network(address,network,session):
     url = f'https://api.coingecko.com/api/v3/simple/token_price/{network}?contract_addresses={address}&vs_currencies=usd'
 
     return await make_get_json(session, url)
+
+async def coingecko_by_address_network_single(address,network,session):
+    url = f'https://api.coingecko.com/api/v3/simple/token_price/{network}?contract_addresses={address}&vs_currencies=usd'
+    response = await make_get_json(session, url)
+
+    return {address.lower() : response[address]['usd']}
 
 async def fantom_router_prices(tokens_in, router):
     calls= []
@@ -174,6 +180,10 @@ async def list_router_prices(tokens_in, network):
 
             if contract == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
                 calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+            elif token_address in stable_override:
+                override_out = stable_override[token_address]['token']
+                override_decimal = stable_override[token_address]['decimal']
+                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
             else:
                 calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
 
@@ -197,7 +207,7 @@ async def list_router_prices(tokens_in, network):
             prices[token['token']] = .01
 
     prices[out_token.lower()] = native_price['native_price']
-
+    print(prices)
     return prices
 
 async def avax_router_prices(tokens_in, router):

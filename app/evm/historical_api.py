@@ -32,12 +32,14 @@ async def get_tx_to_contract(network, wallet, token, contract, session):
                 if tx['transfer_type'] == 'IN':
                     response['totalWithdrawls'] += token_amount
                     response['withdrawls'].append({
+                        'block_height' : block['block_height'],
                         'block_signed_at' : tx['block_signed_at'],
                         'token_transfer_amount' : token_amount
                         })
                 else:
                     response['totalDeposits'] += token_amount
                     response['deposits'].append({
+                        'block_height' : block['block_height'],
                         'block_signed_at' : tx['block_signed_at'],
                         'token_transfer_amount' : token_amount
                         })
