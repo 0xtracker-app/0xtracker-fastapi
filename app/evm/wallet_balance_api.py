@@ -30,7 +30,7 @@ async def get_balance_of(token_list, wallet, network, network_info):
 
     native_balance = await get_native_balance(wallet, network)
 
-    user_holdings = {network_info.native.lower() : {'contract' : network_info.native.lower(), 'token_decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18)}}
+    user_holdings = {f'native+{network}' : {'contract' : network_info.native.lower(), 'token_decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18)}}
     user_tokens = [network_info.native]
 
     for x in multi_return:
