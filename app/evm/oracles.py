@@ -171,6 +171,7 @@ async def list_router_prices(tokens_in, network):
             token_address = token['token']
             token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
             token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
+
             if contract == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
                 calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
             else:

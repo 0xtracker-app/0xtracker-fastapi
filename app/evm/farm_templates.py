@@ -932,7 +932,7 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
                 staked = parsers.from_custom(stakes[each], token_decimal)
                 want_token = stakes[f'{breakdown[0]}_want']
                 price_per = stakes[f'{breakdown[0]}_getPricePerFullShare']
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'getPricePerFullShare' : price_per, 'vault_receipt' : breakdown[0]}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'getPricePerFullShare' : price_per, 'vault_receipt' : breakdown[0], 'contractAddress' : breakdown[0]}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
     if len(poolIDs) > 0:
@@ -943,6 +943,7 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
 async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contract, calculator, farm_id, native_symbol, native_token, _decode=None):
         poolKey = farm_id
         calls = []
+        info_calls = []
         network = WEB3_NETWORKS[network_id]
         one_token = 1 * 10 ** 18
 
@@ -953,12 +954,13 @@ async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contrac
 
         for vault in vaults:
                 calls.append(Call(dashboard_contract, ['profitOfPool(address,address)((uint256,uint256))', vault, wallet], [[f'{vault}_pendings', parsers.parse_profit_of_pool]]))
-                calls.append(Call(dashboard_contract, [f'infoOfPool(address,address)(({decode}))', vault, wallet], [[f'{vault}_userinfo', parsers.parse_pancake_bunny_info]]))
+                info_calls.append(Call(dashboard_contract, [f'infoOfPool(address,address)(({decode}))', vault, wallet], [[f'{vault}_userinfo', parsers.parse_pancake_bunny_info]]))
                 calls.append(Call(vault, [f'stakingToken()(address)'], [[f'{vault}_want', None]]))
                 calls.append(Call(vault, [f'rewardsToken()(address)'], [[f'{vault}_rewardtoken', None]]))
 
 
-        stakes=await Multicall(calls, network)()
+        stakes=await Multicall(info_calls, network)()
+        ainfo=await Multicall(calls, network)()
 
         poolNest = {poolKey: 
         { 'userData': { } } }
@@ -970,9 +972,9 @@ async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contrac
                 if stakes[each]['balance'] > 0:
                     breakdown = each.split('_')
                     staked = stakes[each]['principal']
-                    want_token = stakes[f'{breakdown[0]}_want']
-                    pendings = stakes[f'{breakdown[0]}_pendings']
-                    reward_token = '0xD016cAAe879c42cB0D74BB1A265021bf980A7E96' if stakes[f'{breakdown[0]}_rewardtoken'] == '0x6b70f0136a7e2bd1fa945566b82b208760632b2e' else stakes[f'{breakdown[0]}_rewardtoken']
+                    want_token = ainfo[f'{breakdown[0]}_want']
+                    pendings = ainfo[f'{breakdown[0]}_pendings']
+                    reward_token = '0xD016cAAe879c42cB0D74BB1A265021bf980A7E96' if ainfo[f'{breakdown[0]}_rewardtoken'] == '0x6b70f0136a7e2bd1fa945566b82b208760632b2e' else ainfo[f'{breakdown[0]}_rewardtoken']
 
                     try:
                         staked_symbol = await Call(reward_token, 'symbol()(string)', None, network)()
