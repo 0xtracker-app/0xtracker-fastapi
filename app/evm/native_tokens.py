@@ -10,6 +10,7 @@ class NativeToken():
     ETH = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
     OKE = '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15'
     HARMONY = '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a'
+    MOON = '0x98878B06940aE243284CA214f92Bb71a2b032B8A'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -20,6 +21,7 @@ class NativeSymbol():
     ETH = 'ETH'
     OKE = 'OKT'
     HARMONY = 'ONE'
+    MOON = 'MOVR'
 
 class NativeDecimal():
     BSC = 18
@@ -30,6 +32,7 @@ class NativeDecimal():
     ETH = 18
     OKE = 18
     HARMONY = 18
+    MOON = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -40,6 +43,7 @@ class StableToken():
     ETH = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
     OKE = '0x382bb369d343125bfb2117af9c149795c6c65c50'
     HARMONY = '0x985458e523db3d53125813ed68c274899e9dfab4'
+    MOON = '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'
 
 class StableDecimal():
     BSC = 18
@@ -50,6 +54,7 @@ class StableDecimal():
     ETH = 6
     OKE = 18
     HARMONY = 6
+    MOON = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCS_V2
@@ -60,6 +65,7 @@ class DefaultRouter():
     ETH = routers.ETHRouter.UNI
     OKE = routers.OKERouter.CHERRY
     HARMONY = routers.ONERouter.SUSHI
+    MOON = routers.MoonRouter.SOLAR
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -70,6 +76,7 @@ class RouteClass():
     ETH = routers.ETHRouter
     OKE = routers.OKERouter
     HARMONY = routers.ONERouter
+    MOON = routers.MoonRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -80,6 +87,7 @@ class CoinGecko():
     ETH = 'ethereum'
     OKE = 'okex-chain'
     HARMONY = 'harmony-shard-0'
+    MOON = ''
 
 
 class NetworkRoutes():
@@ -90,6 +98,7 @@ class NetworkRoutes():
         self.snative = getattr(NativeSymbol, network.upper())
         self.dnative = getattr(NativeDecimal, network.upper())
         self.stable = getattr(StableToken, network.upper())
+        self.dstable = getattr(StableDecimal, network.upper())
         self.default_router = getattr(DefaultRouter, network.upper())
         self.router = getattr(RouteClass, network.upper())
         self.lrouters = [attr for attr in dir(self.router()) if not callable(getattr(self.router(),attr)) and not attr.startswith("__")]

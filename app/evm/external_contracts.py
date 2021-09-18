@@ -457,6 +457,9 @@ async def get_jetswap_vaults(network, session):
 async def stadium_farm_info(session):
     return poolext.ext_masterchef.stadium_farm_info
 
+async def darkside_info(session):
+    return poolext.ext_masterchef.darkside_farm_info
+
 async def moonpot_contracts(session):
     return poolext.moonpot.moonpot_contracts
 

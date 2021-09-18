@@ -8,7 +8,8 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https
                 'eth': { 'connection' : Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 1},
                 'oke': { 'connection' : Web3(Web3.HTTPProvider('https://exchainrpc.okex.org')), 'id' : 66},
                 'harmony': { 'connection' : Web3(Web3.HTTPProvider('https://api.harmony.one')), 'id' : 1666600000},
-                'avax': { 'connection' : Web3(Web3.HTTPProvider('https://api.avax.network/ext/bc/C/rpc')), 'id' : 43114},                
+                'avax': { 'connection' : Web3(Web3.HTTPProvider('https://api.avax.network/ext/bc/C/rpc')), 'id' : 43114},
+                'moon': { 'connection' : Web3(Web3.HTTPProvider('https://rpc.moonriver.moonbeam.network')), 'id' : 1285},                
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://nd-718-288-301.p2pify.com/c8aa321fc47fa093d4bd974da375e863'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
@@ -19,7 +20,8 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://nd
                 'eth': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1},
                 'oke': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://exchainrpc.okex.org'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 66},
                 'harmony': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://api.harmony.one'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1666600000},
-                'avax': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://api.avax.network/ext/bc/C/rpc'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 43114},                
+                'avax': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://api.avax.network/ext/bc/C/rpc'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 43114},
+                'moon': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://rpc.moonriver.moonbeam.network'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1285},                
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : '4VRVI4YKCSN4YN33MQ2BDCWXAQPHMBCZ4D', 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

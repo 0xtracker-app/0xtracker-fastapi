@@ -3403,6 +3403,27 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xDarksideFinance' : {
+        'name' : 'darkside.finance',
+        'rewardToken' : '0x1942b8262a0683b54f4f91d0c08ddd92ed6e8fe6',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xDarksideFinance',
+        'featured' : 2,
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_multireward_masterchef],
+            'vaults' : [external_contracts.darkside_info],
+            'args' : [
+                    {
+                        'farm_id' : '0xDarksideFinance',
+                        'network_id' : 'matic'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0xConvexETH' : {
         'name' : 'convexfinance.com',
         'rewardToken' : '0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B',
@@ -3814,6 +3835,16 @@ class Farms:
                     ],
             'vault_args' : [{}]
         }
+    },
+                '0xf03b75831397D4695a6b9dDdEEA0E578faa30907' : {
+        'name' : 'solarbeam.io',
+        'rewardToken' : '0x6bd193ee6d2104f14f94e2ca6efefae561a4334b',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSolar',
+        'masterChef' : '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
+        'featured' : 2,
+        'network' : 'moon'
     },
 }
 

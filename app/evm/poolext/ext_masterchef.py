@@ -22,6 +22,30 @@ stadium_farm_info = {
 
 }
 
+darkside_farm_info = {
+    'stakedFunction' : 'userInfo',
+    'poolFunction' : 'poolLength',
+    'wantFunction' : 'poolInfo',
+    'masterChef' : '0x767580F1B2aF12b7267cE33Ba2678addA7388403',
+    'rewards' :[{
+        'function' : 'pendingCZDiamond',
+        'rewardToken' : '0x6664c64c8582e62da861fcac33a627b0f92ff0f8',
+        'rewardSymbol' : 'CZDIAMOND'
+    },{
+        'function' : 'pendingUSDC',
+        'rewardToken' : '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+        'rewardSymbol' : 'USDC',
+        'rewardDecimal' : 6
+    },
+    {
+        'function' : 'pendingDarkside',
+        'rewardToken' : '0x1942b8262a0683b54f4f91d0c08ddd92ed6e8fe6',
+        'rewardSymbol' : 'DARK'
+    }
+    ]
+
+}
+
 eleusd_info = {
     'stakedFunction' : 'balanceOf',
     'wantFunction' : 'token',

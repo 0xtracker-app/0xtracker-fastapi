@@ -33,7 +33,10 @@ async def token_router(wanted_token, farm_address, farm_network):
                                         try:
                                             return {**await token_types.get_balancer_token(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'balancer'}}
                                         except:
-                                            return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                            try:
+                                                return {**await token_types.get_nft(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'nft'}}
+                                            except:
+                                                return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
 
 async def get_token_data(data,mongo_client, farm_network):
 

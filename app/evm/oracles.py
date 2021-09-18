@@ -160,7 +160,10 @@ async def list_router_prices(tokens_in, network):
     calls= []
     out_token = network_route.native
     network_conn = network_route.network_conn
-    native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router]], network_conn)()
+    if network_route.default_router == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
+        native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable], 0], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
+    else:
+        native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
 
     for token in tokens_in:
         for contract in network_route.lrouters:
@@ -168,8 +171,11 @@ async def list_router_prices(tokens_in, network):
             token_address = token['token']
             token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
             token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
-            calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
-    
+            if contract == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
+                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+            else:
+                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+
     multi=await Multicall(calls,network_conn, _strict=False)()
 
     prices = {}

@@ -56,7 +56,6 @@ async def get_uniswap_pool(token, farm_id):
     return {**lp_pool, **await lp_tokens(),  **{'uniswapPool' : token}}
 
 async def get_single(token, farm_id):
-
         network_chain = WEB3_NETWORKS[farm_id]
                 
         try:
@@ -377,3 +376,15 @@ async def get_balancer_ratio(token_data,quote_price):
         lp_price += lp_balance * token_price
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price}
+
+async def get_nft(token, farm_id):
+        network_chain = WEB3_NETWORKS[farm_id]
+                       
+        single = Multicall([
+                        Call(token, 'symbol()(string)', [['tkn0s', None]]),
+                        Call(token, 'baseTokenURI()(string)', [['baseTokenURI', None]]),
+                    ], network_chain)
+
+        add = {'token0' : token, 'tkn0d' : 1}
+
+        return {**add, **await single()}
