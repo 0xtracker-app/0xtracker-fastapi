@@ -4,6 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
 from sol import funcs as sol_funcs
 from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
+from cosmos import get_wallet_balances as cosmos_wallet_balances
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -62,9 +63,9 @@ async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(
     results = await get_wallet_balance(wallet, network, mongo_db, session)
     return results
 
-@app.get('/wallet/{wallet}/{network}')
-async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
-    results = await get_wallet_balance(wallet, network, mongo_db, session)
+@app.get('/cosmos-wallet/{wallet}/')
+async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session)):
+    results = await cosmos_wallet_balances(wallet,session)
     return results
 
 @app.get('/tokens/{network}/{token_id}')
