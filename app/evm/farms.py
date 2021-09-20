@@ -1333,6 +1333,76 @@ class Farms:
         'network' : 'matic',
         'show' : False
     },
+                '0xIronAVAX' : {
+        'name' : 'iron.finance',
+        'rewardToken' : '0xfc108f21931576a21d0b4b301935dac80d9e5086',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xIronAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xIronAVAX',
+                    'network_id' : 'avax',
+                    'farm_data' :{
+                        'name' : 'iron.finance',
+                        'rewardToken' : '0xfc108f21931576a21d0b4b301935dac80d9e5086',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingReward',
+                        'masterChef' : '0x073667be2bc3efC8c03Caf6C35632EB8aD6DfC47',
+                        'perBlock' : 'rewardPerBlock',
+                        'featured' : 2,
+                        'network' : 'avax',
+                        'wantFunction' : 'lpToken',
+                        'rewardSymbol' : 'ICE',
+                        'show' : False
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xIronFTM' : {
+        'name' : 'iron.finance',
+        'rewardToken' : '0x260b3e40c714ce8196465ec824cd8bb915081812',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xIronFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xIronFTM',
+                    'network_id' : 'ftm',
+                    'farm_data' :{
+                        'name' : 'iron.finance',
+                        'rewardToken' : '0x260b3e40c714ce8196465ec824cd8bb915081812',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingReward',
+                        'masterChef' : '0x733A33312FBFFe22C86bf1204264f3Fa06c7aB65',
+                        'perBlock' : 'rewardPerBlock',
+                        'featured' : 2,
+                        'network' : 'ftm',
+                        'wantFunction' : 'lpToken',
+                        'rewardSymbol' : 'ICE',
+                        'show' : False
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0x34bc3D36845d8A7cA6964261FbD28737d0d6510f' : {
         'name' : 'polywhale.finance',
         'rewardToken' : '0x05089c9ebffa4f0aca269e32056b1b36b37ed71b',
