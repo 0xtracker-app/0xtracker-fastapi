@@ -4,7 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
 from sol import funcs as sol_funcs
 from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
-from cosmos import get_wallet_balances as cosmos_wallet_balances
+from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -58,12 +58,17 @@ async def get_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_d
     results = await get_evm_positions(wallet, farm_id, mongo_db, session)
     return results
 
+@app.get('/cosmos-farms/{wallet}/{farm_id}')
+async def get_cosmos_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
+    results = await get_cosmos_positions(wallet, farm_id, mongo_db, session)
+    return results
+
 @app.get('/wallet/{wallet}/{network}')
 async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
     results = await get_wallet_balance(wallet, network, mongo_db, session)
     return results
 
-@app.get('/cosmos-wallet/{wallet}/')
+@app.get('/cosmos-wallet/{wallet}')
 async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session)):
     results = await cosmos_wallet_balances(wallet,session)
     return results
@@ -83,6 +88,10 @@ async def historical_transactions(wallet,network,contract,token, session: Client
     results = await get_tx_to_contract(network, wallet, token, contract, session)
     return results
 
+@app.get('/write-tokens/{wallet}')
+async def get_cosmos_farms(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
+    results = await write_tokens(wallet, mongo_db, session)
+    return results
  
 # to make it work with Amazon Lambda, we create a handler object
 handler = Mangum(app=app)

@@ -12,12 +12,20 @@ def transform_trace_routes(traces):
 
                 trace_routes[f'ibc/{token_hash}'] = token_denom
                 if 'decimal' in token and 'display_denom' in token:
+                    # meta_data[token_denom] = {
+                    #     'base_denom' : token_denom,
+                    #     'display_denom' : token['display_denom'].upper(),
+                    #     'decimal' : token['decimal'],
+                    #     'chain_id' : token['counter_party']['chain_id']
+                    # }
+
                     meta_data[token_denom] = {
-                        'base_denom' : token_denom,
-                        'display_denom' : token['display_denom'].upper(),
-                        'decimal' : token['decimal'],
-                        'chain_id' : token['counter_party']['chain_id']
+                        "tokenID" : token_denom,  
+                        "tkn0d" : token['decimal'],
+                        "tkn0s" : token['display_denom'].upper(),
+                        "token0" : token_denom, 
                     }
+
     return [trace_routes, meta_data]
 
 def from_custom(value, decimal):

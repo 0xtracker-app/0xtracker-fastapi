@@ -1,0 +1,20 @@
+from . import farm_templates
+from . import external_contracts
+
+class Farms:
+
+    def __init__(self, wallet=None, selected_farm=None):
+        self.wallet = wallet
+        self.farms = {
+    'CosmosStaking' : {
+        'name' : 'Cosmos Staking',
+        'masterChef' : 'CosmosStaking',
+        'featured' : 2,
+        'network' : 'cosmos',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_delegations],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [{'farm_id' : 'CosmosStaking'}],
+            'vault_args' : [{}]
+        }
+    },}
