@@ -11,8 +11,8 @@ import asyncio
 INCH_SUPPORTED = ['bsc','matic','eth']
 
 def return_farms_list():
-    x = Farms()
-    return x.farms
+    evm = Farms()
+    return evm.farms
 
 async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
     set_farms = Farms(wallet, farm_id)
