@@ -18,6 +18,7 @@ def transform_trace_routes(traces):
                         'decimal' : token['decimal'],
                         'chain_id' : token['counter_party']['chain_id']
                     }
+
     return [trace_routes, meta_data]
 
 def from_custom(value, decimal):
