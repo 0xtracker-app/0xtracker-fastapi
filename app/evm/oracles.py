@@ -178,7 +178,7 @@ async def list_router_prices(tokens_in, network):
             token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
             token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
 
-            if contract == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
+            if contract == 'SOLAR':
                 calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
             elif token_address in stable_override:
                 override_out = stable_override[token_address]['token']
@@ -207,7 +207,6 @@ async def list_router_prices(tokens_in, network):
             prices[token['token']] = .01
 
     prices[out_token.lower()] = native_price['native_price']
-    print(prices)
     return prices
 
 async def avax_router_prices(tokens_in, router):
