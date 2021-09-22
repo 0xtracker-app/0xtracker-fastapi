@@ -1,1 +1,1 @@
-from .funcs import local_balances
+from .main import get_wallet_balances

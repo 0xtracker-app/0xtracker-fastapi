@@ -2,12 +2,7 @@ from base64 import b64decode, b64encode
 from base58 import b58decode
 from solana.publickey import PublicKey
 import json
-import asyncio
-import aiohttp
-import requests
 from . import helpers
-
-RPC_CONNECTION = 'https://api.mainnet-beta.solana.com'
 
 def decode_byte_string(byte_string: str, encoding: str = "base64") -> bytes:
     """Decode a encoded string from an RPC Response."""
@@ -93,21 +88,34 @@ async def getMultipleAccounts(accounts: list):
     result = await make_request(json.dumps(data), headers)
     return result
 
-async def make_get(url):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
+async def make_get(session, url, kwargs={}):
+    async with session.get(url, **kwargs) as response:
             result = await response.text()
             response.raise_for_status()
-    
-    return json.loads(result)
+    return result
 
-async def make_request(data, headers):
-    async with aiohttp.ClientSession() as session:
-        async with session.post(RPC_CONNECTION, headers=headers, data=data) as response:
+async def make_get_hson(session, url, kwargs={}):
+    async with session.get(url, **kwargs) as response:
             result = await response.text()
+            result = json.loads(json.dumps(hjson.loads(result)))
             response.raise_for_status()
-    
-    return json.loads(result)
+    return result
+
+async def make_get_json(session, url, kwargs={}):
+    async with session.get(url, **kwargs) as response:
+        try:
+            result = await response.json()
+            return result
+        except:
+            None
+
+async def make_post_json(session, url, kwargs={}):
+    async with session.post(url, **kwargs) as response:
+        try:
+            result = await response.json()
+            return result
+        except:
+            None
 
 def get_program_address(vault_account_info,wallet,program):
     return str(PublicKey.find_program_address([helpers.public_key_hex(vault_account_info), helpers.public_key_hex(wallet)], program)[0])
@@ -116,6 +124,6 @@ def get_anchor_account(wallet,farm_plot,associated_program):
     return str(PublicKey.find_program_address([memoryview(b'anchor'), helpers.public_key_hex(wallet), helpers.public_key_hex(farm_plot)], associated_program)[0])
 
 async def get_token_metadata():
-    token_info = await make_get('https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json')
+    token_info = await make_get_json('https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json')
 
     return {t['address'] : t for t in token_info['tokens']  }
