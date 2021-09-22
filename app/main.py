@@ -4,7 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
 from sol import funcs as sol_funcs
 from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
-from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens
+from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -49,7 +49,7 @@ async def read_results(wallet):
 
 @app.get('/farms-list/')
 async def get_farm_list():
-    farm_list = return_farms_list()
+    farm_list = {**return_farms_list(), **cosmos_farms_list()}
     results = [{'sendValue' : farm_list[x]['masterChef'], 'name' : farm_list[x]['name'], 'network': farm_list[x]['network'], 'featured' : farm_list[x]['featured']} for x in farm_list if 'show' not in farm_list[x]]
     return results
 

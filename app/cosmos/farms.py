@@ -17,4 +17,17 @@ class Farms:
             'args' : [{'farm_id' : 'CosmosStaking'}],
             'vault_args' : [{}]
         }
-    },}
+    },
+    'Osmosis' : {
+        'name' : 'osmosis.zone',
+        'masterChef' : 'Osmosis',
+        'featured' : 2,
+        'network' : 'cosmos',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_osmosis_staking],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [{'farm_id' : 'Osmosis', 'network' : 'osmosis'}],
+            'vault_args' : [{}]
+        }
+    },
+}

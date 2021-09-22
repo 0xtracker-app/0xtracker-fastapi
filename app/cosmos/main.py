@@ -1,9 +1,17 @@
+from math import cos
 from .networks import CosmosNetwork
 from . import queries
 from . import oracles
 from . import helpers
+from .calculator import calculate_prices
+from .token_lookup import TokenMetaData
 from .farms import Farms
+from .networks import CosmosNetwork
 import asyncio
+
+def return_farms_list():
+    cosmos = Farms()
+    return cosmos.farms
 
 async def get_wallet_balances(wallet, session):
     cosmos = CosmosNetwork(wallet)
@@ -37,7 +45,6 @@ async def get_wallet_balances(wallet, session):
 async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
-    farm_network = farm_configuraiton['network']
     
     args = {'wallet' : wallet}
     returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
@@ -47,7 +54,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
         if farm_configuraiton['extraFunctions']['vaults'] is not None:
             vaults = await asyncio.gather(*[v(session=http_session, **farm_configuraiton['extraFunctions']['vault_args'][i]) for i, v in enumerate(farm_configuraiton['extraFunctions']['vaults'])])
 
-        farm_infos = await asyncio.gather(*[f(vaults=vaults[i], session=http_session, **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
+        farm_infos = await asyncio.gather(*[f(vaults=vaults[i], session=http_session, mongodb=mongo_db, **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
 
         for farm_info in farm_infos:
             if farm_info is not None:
@@ -57,42 +64,36 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
     if len(returned_object[0]) < 1:
         return {}
 
-    # build_meta_data = await get_token_data(returned_object, mongo_db, farm_configuraiton['network'])
+    prices = await oracles.cosmostation_prices(http_session)
 
-    # token_list = token_list_from_stakes(build_meta_data, farm_configuraiton)
+    response = await calculate_prices(returned_object[1], prices)
 
-    # prices = await oracles.list_router_prices(token_list, farm_network)
-
-    # otkn = TokenOverride(http_session).tokens
-    # price_overrides = await asyncio.gather(*[otkn[v['token']][0](**otkn[v['token']][1]) for i, v in enumerate(token_list) if v['token'] in otkn])
-
-    # for each in price_overrides:
-    #     prices.update(each)
-
-    # response = await calculate_prices(build_meta_data, prices, farm_configuraiton, wallet)
-
-    return returned_object[1]
+    return response
 
 async def write_tokens(wallet, mongo_db, session):
-    cosmos = CosmosNetwork(wallet)
-    net_config = cosmos.all_networks
+    # wallet = f'ibc/{wallet}'
+    # x = await TokenMetaData(address=wallet, mongodb=mongo_db).lookup()
+    # cosmos = CosmosNetwork(wallet)
+    # net_config = cosmos.all_networks
 
-    traces =  await asyncio.gather(*[queries.get_ibc_tokens(net_config[network], session) for network in net_config])
-    # prices = await oracles.cosmostation_prices(session)
-    transform_trace = helpers.transform_trace_routes(traces)
+    # traces =  await asyncio.gather(*[queries.get_ibc_tokens(net_config[network], session) for network in net_config])
+    # # prices = await oracles.cosmostation_prices(session)
+    # transform_trace = helpers.transform_trace_routes(traces)
 
-    trace_database = mongo_db.xtracker['cosmos_routes']
+    trace_views = mongo_db.xtracker['cosmos_routes_view']
     denom_database = mongo_db.xtracker['cosmos_tokens']
 
-    for i, network in enumerate(traces):
+    # for i, network in enumerate(traces):
 
-        if 'ibc_tokens' in network:
-            for token in network['ibc_tokens']:
-                token_data = {'hash' : f'ibc/{token["hash"]}', 'base_denom' : token['base_denom'], 'chain_id' : token['counter_party']['chain_id']}
-                await trace_database.update_one({'hash' : f'ibc/{token["hash"]}', 'base_denom' : token['base_denom'], 'chain_id' : token['counter_party']['chain_id']},{ "$set": token_data }, upsert=True)
+    #     if 'ibc_tokens' in network:
+    #         for token in network['ibc_tokens']:
+    #             token_data = {'hash' : f'ibc/{token["hash"]}', 'base_denom' : token['base_denom'], 'chain_id' : token['counter_party']['chain_id']}
+    #             await trace_database.update_one({'hash' : f'ibc/{token["hash"]}', 'base_denom' : token['base_denom'], 'chain_id' : token['counter_party']['chain_id']},{ "$set": token_data }, upsert=True)
 
-            
-    for each in transform_trace[1]:
-        x = transform_trace[1][each]
-        
-        await denom_database.update_one({'tokenID' : x['tokenID']},{ "$set": x }, upsert=True)
+    full_dict = trace_views.find({},{'_id': False})        
+    for x in await full_dict.to_list(length=None):
+        if x['meta_data']:
+            record = x['meta_data'][0]
+            record['tokenID'] = x['hash']
+            del record['_id']      
+            await denom_database.update_one({'tokenID' : x['hash']},{ "$set": record }, upsert=True)
