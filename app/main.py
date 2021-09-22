@@ -88,10 +88,10 @@ async def historical_transactions(wallet,network,contract,token, session: Client
     results = await get_tx_to_contract(network, wallet, token, contract, session)
     return results
 
-@app.get('/write-tokens/{wallet}')
-async def get_cosmos_farms(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
-    results = await write_tokens(wallet, mongo_db, session)
-    return results
+# @app.get('/write-tokens/{wallet}')
+# async def get_cosmos_farms(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
+#     results = await write_tokens(wallet, mongo_db, session)
+#     return results
  
 # to make it work with Amazon Lambda, we create a handler object
 handler = Mangum(app=app)

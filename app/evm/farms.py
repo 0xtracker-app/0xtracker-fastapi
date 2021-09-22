@@ -3937,6 +3937,40 @@ class Farms:
         'featured' : 2,
         'network' : 'moon'
     },
+                '0x8064A0058EfA9af75634635d764939D87700CBa0' : {
+        'name' : 'rainbowfarm.finance',
+        'rewardToken' : '0xdbadf0143c56f57caf559e1cce45290a4146fda1',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingRNBO',
+        'masterChef' : '0x8064A0058EfA9af75634635d764939D87700CBa0',
+        'featured' : 2,
+        'network' : 'bsc'
+    },
+                '0xBufferFinance' : {
+        'name' : 'buffer.finance',
+        'rewardToken' : '0xa296ad1c47fe6bdc133f39555c1d1177bd51fbc5',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBufferFinance',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_buffer_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xBufferFinance',
+                        'network_id' : 'bsc',
+                        'staked' : '_inToken',
+                        'reward' : '_rewardToken',
+                        'user_info' : '_userInfo'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
