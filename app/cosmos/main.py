@@ -37,6 +37,7 @@ async def get_wallet_balances(wallet, session):
                     "tokenBalance": helpers.from_custom(token['amount'], token_decimal),
                     "tokenPrice": prices[token_denom],
                     "wallet" : balance['wallet'],
+                    'network' : 'cosmos'
                 }
                 )
 
