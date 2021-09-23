@@ -3935,7 +3935,31 @@ class Farms:
         'pendingFunction' : 'pendingSolar',
         'masterChef' : '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
         'featured' : 2,
-        'network' : 'moon'
+        'network' : 'moon',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
+                    'network_id' : 'moon',
+                    'farm_data' :{
+                        'name' : 'solarbeam.io (Vaults)',
+                        'rewardToken' : '0x6bd193ee6d2104f14f94e2ca6efefae561a4334b',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingSolar',
+                        'masterChef' : '0x7e6E03822D0077F3C417D33caeAc900Fc2645679',
+                        'featured' : 2,
+                        'network' : 'moon',
+                        'wantFunction' : 'poolInfo',
+                        'rewardSymbol' : 'SOLAR',
+                        'show' : False
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
     },
                 '0x8064A0058EfA9af75634635d764939D87700CBa0' : {
         'name' : 'rainbowfarm.finance',

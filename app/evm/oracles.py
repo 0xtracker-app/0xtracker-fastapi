@@ -179,13 +179,19 @@ async def list_router_prices(tokens_in, network):
             token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
 
             if contract == 'SOLAR':
-                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
-            elif token_address in stable_override:
-                override_out = stable_override[token_address]['token']
-                override_decimal = stable_override[token_address]['decimal']
-                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
+                if token_address.lower() in stable_override:
+                    override_out = stable_override[token_address]['token']
+                    override_decimal = stable_override[token_address]['decimal']
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out], 25], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
+                else:
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))  
             else:
-                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+                if token_address.lower() in stable_override:
+                    override_out = stable_override[token_address]['token']
+                    override_decimal = stable_override[token_address]['decimal']
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
+                else:
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
 
     multi=await Multicall(calls,network_conn, _strict=False)()
 
@@ -207,6 +213,7 @@ async def list_router_prices(tokens_in, network):
             prices[token['token']] = .01
 
     prices[out_token.lower()] = native_price['native_price']
+    print(prices)
     return prices
 
 async def avax_router_prices(tokens_in, router):
@@ -313,3 +320,6 @@ async def get_blackswan_lp():
     lpval = (userPct * multi['reserves'][0] / (10**6))
 
     return lpval
+
+async def return_stable(token_in):
+    return {token_in.lower() : 1}
