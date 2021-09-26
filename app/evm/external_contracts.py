@@ -183,6 +183,8 @@ async def get_beefy_matic_pools(session):
     s2 = "export const polygonPools = "
     
     data = r[r.index(s2) + len(s2) :len(r)-2]
+    data = re.sub(r'\saddLiquidityUrl:\s.+(\,)', " nothing: '',", data)
+    data = re.sub(r'\sbuyTokenUrl:\s.+(\,)', " nothing: '',", data)
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
     vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
@@ -310,7 +312,7 @@ async def get_beefy_boosts_poly(session):
     s2 = "export const polygonStakePools = ["
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
-    hson = hjson.loads(f'[{regex}]'.replace('partners: ,',''))
+    hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
     t = json.loads(json.dumps(hson))
 
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
