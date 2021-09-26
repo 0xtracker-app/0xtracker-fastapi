@@ -520,3 +520,6 @@ async def get_bishare(session):
 
 async def get_buffer_vaults(session):
     return ['0xe65d029AaC2c0a2dF4F61A759b942CCDa4d2EeFC']
+
+async def get_wonderland_bonds(session):
+    return []

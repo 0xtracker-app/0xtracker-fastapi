@@ -196,7 +196,7 @@ async def list_router_prices(tokens_in, network):
     multi=await Multicall(calls,network_conn, _strict=False)()
 
     prices = {}
-
+    print(multi)
     for each in multi:
         token = each.split('_')[1]
         looped_value = multi[each]

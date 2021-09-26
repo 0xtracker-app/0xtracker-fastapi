@@ -2492,3 +2492,57 @@ async def get_vault_style_with_rewards(wallet, vaults, network_id, farm_id, stak
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_wonderland(wallet, vaults, farm_id, network_id):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        MEMO_ADDRESS = "0x136Acd46C134E8269052c62A67042D6bDeDde3C9"
+        TIME_ADDRESS = "0xb54f16fB19478766A268F172C9480f8da1a7c9C3"
+        MIM_ADDRESS = "0x130966628846BFd36ff31a822705796e8cb8C18D"
+
+        RESERVES = ['0x130966628846BFd36ff31a822705796e8cb8C18D', '0x113f413371fc4cc4c9d6416cf1de9dfd7bf747df']
+        BONDS = ['0x694738E0A438d90487b4a549b201142c1a97B556', '0xA184AE1A71EcAD20E822cB965b99c287590c4FFe', '0xc26850686ce755FFb8690EA156E5A6cf03DcBDE1', '0xE02B1AA2c4BE73093BE79d763fdFFC0E3cf67318']
+
+        for i,vault in enumerate(BONDS):
+                calls.append(Call(vault, [f'bondInfo(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_custom, 9]]))
+                calls.append(Call(vault, [f'pendingPayoutFor(address)(uint256)', wallet], [[f'{vault}_pending', parsers.from_custom, 9]]))
+                calls.append(Call(vault, [f'percentVestedFor(address)(uint256)', wallet], [[f'{vault}_vested', None]]))
+                #calls.append(Call(vault, [f'principle()(address)'], [[f'{vault}_want', None]]))
+
+        calls.append(Call(MEMO_ADDRESS, [f'balanceOf(address)(uint256)', wallet], [[f'{MEMO_ADDRESS}_staked', parsers.from_custom, 9]]))
+        calls.append(Call('0x4456B87Af11e87E329AB7d7C7A246ed1aC2168B9', [f'Memories()(address)'], [[f'{MEMO_ADDRESS}_want', None]]))
+
+
+        stakes=await Multicall(calls, network)()
+
+        token_decimals = await template_helpers.get_token_list_decimals(stakes,network_id,True)
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    percentage = stakes[f'{breakdown[0]}_vested'] / 10000 if f'{breakdown[0]}_vested' in stakes else 1
+                    staked = stakes[each]
+                    staked_offset = staked * percentage
+                    actual_staked = staked if staked == staked_offset else staked - staked_offset
+                    want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
+                    token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    if f'{breakdown[0]}_pending' in stakes:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : 'TIME', 'token' : TIME_ADDRESS, 'decimal' : 9}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'] = [reward_token_0]
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None

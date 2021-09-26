@@ -3995,6 +3995,27 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xWonderLand' : {
+        'name' : 'wonderland.money',
+        'rewardToken' : '0xb54f16fB19478766A268F172C9480f8da1a7c9C3',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xWonderLand',
+        'featured' : 9,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_wonderland],
+            'vaults' : [external_contracts.get_wonderland_bonds],
+            'args' : [
+                    {
+                        'farm_id' : '0xWonderLand',
+                        'network_id' : 'avax',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
