@@ -694,6 +694,66 @@ async def get_nuts(wallet, network, farm_id, vaults):
     else:
         return None
 
+async def get_adamant_funds_dynamic(wallet, vaults, farm_id, calculator, minter, network, reward):
+    poolKey = farm_id
+    
+    addy_mints = await Call(minter, 'addyPerProfitEth()(uint256)', None, WEB3_NETWORKS[network])()
+    
+    adamant_user_info = []
+    strat_vaults = vaults
+    for item in strat_vaults:
+        strategy = item['strategyAddress']
+        vault = item['vaultAddress']
+
+        adamant_user_info.append(Call(vault, ['balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_wei]]))
+        adamant_user_info.append(Call(vault, ['getPendingReward(address)(uint256)', wallet], [[f'{vault}_pending', None]]))
+        adamant_user_info.append(Call(vault, ['getRewardMultiplier()(uint256)'], [[f'{vault}_multiplier', None]]))
+        adamant_user_info.append(Call(strategy, ['want()(address)'], [[f'{vault}_want', None]]))
+    
+    user_data = await Multicall(adamant_user_info, WEB3_NETWORKS[network])()
+
+    print(user_data)
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+    
+
+    for each in user_data:
+        if 'staked' in each:
+            if user_data[each] > 0:
+                breakdown = each.split('_')
+                staked = user_data[each]
+                pending = user_data[f'{breakdown[0]}_pending']
+                want_token = user_data[f'{breakdown[0]}_want']
+                reward_multi = user_data[f'{breakdown[0]}_multiplier']
+                reward_token = reward
+
+                extra_data = await Multicall(
+                    
+                [Call(breakdown[0], ['getRatio()(uint256)'], [['getPricePerFullShare', parsers.from_wei]]),
+                Call(calculator,['valueOfAsset(address,uint256)(uint256)', reward_token, pending], [['real_pending', None]])], WEB3_NETWORKS[network])()
+
+                ppfs = extra_data['getPricePerFullShare']
+                actual_staked = staked * ppfs
+                actual_pending = extra_data['real_pending']
+                 
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked, 'pending': (parsers.from_wei((actual_pending * addy_mints)) * reward_multi) / 1000, 'contractAddress' : breakdown[0] }
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+    # addy_eth = await get_addy_eth(wallet, addy_mints)
+    
+    # if addy_eth is not None:
+    #     poolIDs.update(addy_eth[0])
+    #     poolNest['0xAdamant']['userData'].update(addy_eth[1]['0xAdamant']['userData'])
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
+
 async def get_adamant_funds(wallet, vaults):
     poolKey = '0xAdamant'
     calculator = '0x80d8dad3753887731BA8f92AEe84Df371B6A7790'
@@ -1162,9 +1222,9 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
             want_function = farm_data['wantFunction']
 
         for pid in range(0,pool_length):
-            calls.append(Call(farm_data['masterChef'], [f'{staked_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}ext_staked', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}ext_pending', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'{want_function}(uint256)(address)', pid], [[f'{pid}ext_want', None]]))
+            calls.append(Call(farm_data['masterChef'], [f'{staked_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'{want_function}(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
 
         stakes=await Multicall(calls, network)()
 
@@ -2187,7 +2247,7 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 calls.append(Call(address, ['rewardsInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
             elif address == '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904':
                 calls.append(Call(address, ['poolInfo(uint256)((address,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
-            elif address in ['0x0769fd68dFb93167989C6f7254cd0D766Fb2841F','0x67da5f2ffaddff067ab9d5f025f8810634d84287', '0x7875Af1a6878bdA1C129a4e2356A3fD040418Be5', '0x8F5BBB2BB8c2Ee94639E55d5F41de9b4839C1280', '0x3a01521F8E7F012eB37eAAf1cb9490a5d9e18249', '0xd10eF2A513cEE0Db54E959eF16cAc711470B62cF']:
+            elif address in ['0x0769fd68dFb93167989C6f7254cd0D766Fb2841F','0x67da5f2ffaddff067ab9d5f025f8810634d84287', '0x7875Af1a6878bdA1C129a4e2356A3fD040418Be5', '0x8F5BBB2BB8c2Ee94639E55d5F41de9b4839C1280', '0x3a01521F8E7F012eB37eAAf1cb9490a5d9e18249', '0xd10eF2A513cEE0Db54E959eF16cAc711470B62cF', '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3']:
                 calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))         
             else:
                 calls.append(Call(address, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))

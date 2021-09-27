@@ -508,8 +508,15 @@ async def get_adamant_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/current_vaults.json')
     return json.loads(r)
 
+async def get_adamant_vaults_arb(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/arbitrum_vaults.json')
+    return json.loads(r)
+
 async def get_adamant_boosts(session):
     return ['0xC5bCD23f21B6288417eB6C760F8AC0fBb4bb8a56']
+
+async def get_adamant_boosts_arb(session):
+    return ['0x097b15dC3Bcfa7D08ea246C09B6A9a778e5b007B']
 
 async def get_fortress_vaults(session):
     return poolext.fortress.forts

@@ -177,7 +177,6 @@ async def list_router_prices(tokens_in, network):
             token_address = token['token']
             token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
             token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
-
             if contract == 'SOLAR':
                 if token_address.lower() in stable_override:
                     override_out = stable_override[token_address]['token']
@@ -322,3 +321,8 @@ async def get_blackswan_lp():
 
 async def return_stable(token_in):
     return {token_in.lower() : 1}
+
+async def get_goldbar_price():
+
+    nugget = await get_price_from_router(token_in='0xE0B58022487131eC9913C1F3AcFD8F74FC6A6C7E',network='bsc',router=BSCRouter.APESWAP, native=True)
+    return {'0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12'.lower() : nugget['0xE0B58022487131eC9913C1F3AcFD8F74FC6A6C7E'.lower()] * 213.33}

@@ -1679,6 +1679,30 @@ class Farms:
             'vault_args' : [{},{},{}]
         }
     },
+                '0xAdamantArb' : {
+        'name' : 'adamant.finance',
+        'rewardToken' : '0x09ad12552ec45f82be90b38dfe7b06332a680864',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAdamantArb',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_adamant_funds_dynamic],
+            'vaults' : [external_contracts.get_adamant_vaults_arb],
+            'args' : [
+                {
+                    'calculator' : '0x25c4D57c9eAFA243a8d74249fE70855E50931cE7',
+                    'minter' : '0x47D3DCaD6e47C519238Cbe50DA43e6a53C49CFC2',
+                    'reward' : '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+                    'farm_id' : '0xAdamantArb',
+                    'reward' : '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+                    'network' : 'arb',
+                }],
+            'vault_args' : [{}]
+        }
+    },
                 '0x2e47630f1a7807b596267361f9DD4C534632Ae98' : {
         'name' : 'goldenbull.finance',
         'rewardToken' : '0x3e9b01762a82c12151cde2094f8ef9bcab774c8e',
@@ -2866,8 +2890,8 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_single_masterchef, farm_templates.get_syrup_pools],
-            'vaults' : [external_contracts.dummy_vault, external_contracts.get_blockmine],
+            'functions' : [farm_templates.get_single_masterchef, farm_templates.get_syrup_pools, farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_blockmine, external_contracts.dummy_vault],
             'args' : [
                     {
                         'farm_id' : '0x6CB1Cdbae9a20413e37aF1491507cd5faE2DdD3e',
@@ -2884,16 +2908,32 @@ class Farms:
                                         'rewardSymbol' : 'GOLDCOIN',
                                         'show' : False
                                     }
-                            },
+                    },
                     {
                         'farm_id' : '0x6CB1Cdbae9a20413e37aF1491507cd5faE2DdD3e',
                         'network_id' : 'bsc',
                         'staked' : 'stakeToken',
                         'reward' : 'rewardToken',
                         'pending_reward' : 'pendingReward'
+                    },
+                    {
+                        'farm_id' : '0x6CB1Cdbae9a20413e37aF1491507cd5faE2DdD3e',
+                        'network_id' : 'bsc',
+                        'farm_data' : {
+                                        'name' : 'block-mine.io refinery',
+                                        'rewardToken' : '0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12',
+                                        'decimal' : 18,
+                                        'stakedFunction' : 'userInfo',
+                                        'pendingFunction' : 'pendingCake',
+                                        'masterChef' : '0x646Bc159130F6bDCbB312ecb9E9984Eea4A67D4b',
+                                        'featured' : 2,
+                                        'network' : 'bsc',
+                                        'rewardSymbol' : 'GOLDBAR',
+                                        'show' : False
+                                    }
                     },                    
                     ],
-            'vault_args' : [{},{}]
+            'vault_args' : [{},{},{}]
         }
 
     },
@@ -4039,6 +4079,28 @@ class Farms:
                 ],
             'vault_args' : [{}]
         }
+    },
+                '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3' : {
+        'name' : 'sushi.com',
+        'rewardToken' : '0xd4d42f0b6def4ce0383636770ef773390d85c61a',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
+        'perBlock' : 'sushiPerSecond',
+        'featured' : 2,
+        'network' : 'arb'
+    },
+                '0x9180583C1ab03587b545629dd60D2be0bf1DF4f2' : {
+        'name' : 'jetswap.finance',
+        'rewardToken' : '0x3d8f1accee8e263f837138829b6c4517473d0688',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0x9180583C1ab03587b545629dd60D2be0bf1DF4f2',
+        'perBlock' : 'cakePerBlock',
+        'featured' : 1,
+        'network' : 'ftm',
     },
 }
 

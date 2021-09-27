@@ -11,6 +11,7 @@ class NativeToken():
     OKE = '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15'
     HARMONY = '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a'
     MOON = '0x98878B06940aE243284CA214f92Bb71a2b032B8A'
+    ARB = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -22,6 +23,7 @@ class NativeSymbol():
     OKE = 'OKT'
     HARMONY = 'ONE'
     MOON = 'MOVR'
+    ARB = 'AETH'
 
 class NativeDecimal():
     BSC = 18
@@ -33,6 +35,7 @@ class NativeDecimal():
     OKE = 18
     HARMONY = 18
     MOON = 18
+    ARB = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -44,6 +47,7 @@ class StableToken():
     OKE = '0x382bb369d343125bfb2117af9c149795c6c65c50'
     HARMONY = '0x985458e523db3d53125813ed68c274899e9dfab4'
     MOON = '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'
+    ARB = '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8'
 
 class StableDecimal():
     BSC = 18
@@ -55,6 +59,7 @@ class StableDecimal():
     OKE = 18
     HARMONY = 6
     MOON = 6
+    ARB = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -66,6 +71,7 @@ class DefaultRouter():
     OKE = routers.OKERouter.CHERRY
     HARMONY = routers.ONERouter.SUSHI
     MOON = routers.MoonRouter.SOLAR
+    ARB = routers.ArbRouter.SUSHI
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -77,6 +83,7 @@ class RouteClass():
     OKE = routers.OKERouter
     HARMONY = routers.ONERouter
     MOON = routers.MoonRouter
+    ARB = routers.ArbRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -88,6 +95,7 @@ class CoinGecko():
     OKE = 'okex-chain'
     HARMONY = 'harmony-shard-0'
     MOON = ''
+    ARB = 'arbitrum-one'
 
 
 class NetworkRoutes():
