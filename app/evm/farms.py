@@ -4117,6 +4117,26 @@ class Farms:
         'featured' : 1,
         'network' : 'ftm',
     },
+                '0xca2DeAc853225f5a4dfC809Ae0B7c6e39104fCe5' : {
+        'name' : 'cafeswap.finance',
+        'rewardToken' : '0xb5106a3277718ecad2f20ab6b86ce0fee7a21f09',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBrew',
+        'masterChef' : '0xca2DeAc853225f5a4dfC809Ae0B7c6e39104fCe5',
+        'featured' : 2,
+        'network' : 'matic'
+    },
+                '0xc772955c33088a97D56d0BBf473d05267bC4feBB' : {
+        'name' : 'cafeswap.finance',
+        'rewardToken' : '0x790be81c3ca0e53974be2688cdb954732c9862e1',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0xc772955c33088a97D56d0BBf473d05267bC4feBB',
+        'featured' : 2,
+        'network' : 'bsc'
+    },
 }
 
 
