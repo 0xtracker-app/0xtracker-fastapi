@@ -3203,7 +3203,22 @@ class Farms:
         'pendingFunction' : 'pendingCherry',
         'masterChef' : '0x8cddb4cd757048c4380ae6a69db8cd5597442f7b',
         'featured' : 2,
-        'network' : 'oke'
+        'network' : 'oke',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_cherry_farms],
+            'args' : [
+                    {
+                        'farm_id' : '0x8cddb4cd757048c4380ae6a69db8cd5597442f7b',
+                        'network_id' : 'oke',
+                        'staked' : 'syrup',
+                        'reward' : 'rewardToken',
+                        'pending_reward' : 'pendingReward',
+                        'user_info' : 'userInfo'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
                 '0xaEBa5C691aF30b7108D9C277d6BB47347387Dc13' : {
         'name' : 'kswap.finance',

@@ -419,6 +419,9 @@ async def get_superfarm_extra(session):
 async def get_pandaswap_farms(session):
     return poolext.pandaswap.farms
 
+async def get_cherry_farms(session):
+    return poolext.cherry.pools
+
 async def get_feeder_auto(session):
     return poolext.feeder.auto_staking
 
