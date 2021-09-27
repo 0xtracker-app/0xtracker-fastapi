@@ -346,6 +346,9 @@ async def get_pcs_pools(session, offset):
 async def get_pcs_auto(session):
     return ['0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC']
 
+async def get_baby_auto(session):
+    return ['0x3e1eaD5cBe817689F4bDB96bceeb112FdBE94dBc']
+
 async def get_pickle_addresses(session,network):
     r = await make_get_json(session, 'https://d38jrn41whs0ud.cloudfront.net/prod/protocol/pools')
     return [x['jarAddress'] for x in r if x['network'] == network]

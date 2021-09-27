@@ -57,7 +57,7 @@ class StableDecimal():
     MOON = 6
 
 class DefaultRouter():
-    BSC = routers.BSCRouter.PCS_V2
+    BSC = routers.BSCRouter.PCSV2
     MATIC= routers.MATICRouter.QUICKSWAP
     FTM = routers.FTMRouter.SPOOKY
     KCC = routers.KCCRouter.KUSWAP

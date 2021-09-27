@@ -4016,6 +4016,30 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                    '0xdfAa0e08e357dB0153927C7EaBB492d1F60aC730' : {
+        'name' : 'babyswap.finance',
+        'rewardToken' : '0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0xdfAa0e08e357dB0153927C7EaBB492d1F60aC730',
+        'perBlock' : 'cakePerBlock',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_baby_auto],
+            'args' : [
+                {
+                    'farm_id' : '0xdfAa0e08e357dB0153927C7EaBB492d1F60aC730',
+                    'network' : 'bsc',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo'
+                },                
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
