@@ -337,7 +337,7 @@ async def get_glp_price():
 
     multi = await Multicall(x,WEB3_NETWORKS['arb'])()
     glp_price = multi['getAum'] / multi['totalSupply']
-    print(glp_price)
+
     return {'0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258'.lower() : glp_price}
 
 async def get_gmx_price(return_token):
