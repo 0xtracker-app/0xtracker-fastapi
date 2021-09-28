@@ -2606,3 +2606,45 @@ async def get_wonderland(wallet, vaults, farm_id, network_id):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_gmx(wallet, vaults, farm_id, network_id):
+        gmx = vaults
+        poolKey = farm_id
+        network = WEB3_NETWORKS[network_id]
+        
+        calls = []
+        for stake in gmx:
+            stake_token = stake['stakeToken']
+            calls.append(Call(stake['contract'],['getDepositBalances(address,address[],address[])(uint256[])',wallet,[stake_token],[stake['rewardTracker']]], [[f'{stake_token}_staked', parsers.parse_gmx]]))
+            for i,reward in enumerate(stake['rewards']):    
+                calls.append(Call(reward['yieldTracker'],['claimable(address)(uint256)',wallet],[[f'{stake_token}_pending{i}', None]]))
+
+        stakes = await Multicall(calls, network)() 
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        farm_infos = {x['stakeToken'] : x  for x in gmx}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = parsers.from_wei(stakes[each])
+                    want_token = breakdown[0]
+                    farm_info = farm_infos[breakdown[0]]
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    for i,reward in enumerate(farm_info['rewards']):
+                        if f'{breakdown[0]}_pending{i}' in stakes:
+                            reward_token_0 = {'pending': parsers.from_wei(stakes[f'{breakdown[0]}_pending{i}']), 'symbol' : reward['symbol'], 'token' : reward['rewardToken']}
+                            poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest
+        else:
+            return None

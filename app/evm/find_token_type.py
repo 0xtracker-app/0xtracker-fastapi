@@ -151,4 +151,4 @@ def token_list_from_stakes(data, farm_info):
                 for i,balancer in enumerate(x['balancerTokens']):
                     tokens += [{'token' : balancer.lower(), 'decimal' : x['balancerDecimals'][i], 'network' : farm_info['network']}]
     
-    return tokens
+    return [i for n, i in enumerate(tokens) if i not in tokens[n + 1:]]

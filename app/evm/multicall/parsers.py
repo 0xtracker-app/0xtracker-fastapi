@@ -11,6 +11,9 @@ def parse_slot_0(data):
 
     return d
 
+def parse_gmx(data):
+    return data[0]
+
 def parse_uniswap_positions(data):
     d = {
         'nonce' : data[0],

@@ -163,5 +163,22 @@ def sqrtPriceToPrice(sqrtPriceX96Prop):
     price = pow(sqrtPrice, 2)
     return price
 
+def uniSqrtPrice(tokenDecimals, sqrtRatioX96):
+    
+    scalarNumerator = pow(10, tokenDecimals[0])
+    scalarDenominator = pow(10, tokenDecimals[1])
+
+    sqrtRatioX96BI = int(sqrtRatioX96)
+
+    inputNumerator = sqrtRatioX96BI * sqrtRatioX96BI
+    inputDenominator = pow(2,192)
+
+    numerator = scalarDenominator * inputDenominator
+    denominator = scalarNumerator * inputNumerator
+
+    if denominator > numerator:
+        return 1 / (denominator/ numerator)
+    else:
+        return numerator / denominator
 
 

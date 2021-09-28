@@ -703,6 +703,27 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xGMX' : {
+        'name' : 'gmx.io',
+        'rewardToken' : '0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xGMX',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_gmx],
+            'vaults' : [external_contracts.gmx_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xGMX',
+                    'network_id' : 'arb'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0x058451C62B96c594aD984370eDA8B6FD7197bbd4' : {
         'name' : 'pantherswap.com',
         'rewardToken' : '0x1f546ad641b56b86fd9dceac473d1c7a357276b7',
@@ -1478,6 +1499,22 @@ class Farms:
             'functions' : [farm_templates.get_beefy_style_stakes],
             'vaults' : [external_contracts.get_beefy_fantom_pools],
             'args' : [{'farm_id' : '0xBeefyFantom', 'network' : 'ftm'}],
+            'vault_args' : [{}]
+        }
+    },
+                '0xBeefyArb' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyArb',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_beefy_arb_pools],
+            'args' : [{'farm_id' : '0xBeefyArb', 'network' : 'arb'}],
             'vault_args' : [{}]
         }
     },

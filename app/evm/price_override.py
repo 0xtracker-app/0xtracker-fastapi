@@ -1,4 +1,4 @@
-from .oracles import get_price_from_router, get_price_from_synpool, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, return_stable, get_goldbar_price
+from .oracles import get_gmx_price, get_price_from_router, get_price_from_synpool, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, return_stable, get_goldbar_price, get_glp_price
 from . import routers
 
 class TokenOverride:
@@ -11,6 +11,9 @@ class TokenOverride:
             '0x57319d41f71e81f3c65f2a47ca4e001ebafd4f33'.lower() : [get_xjoe_price, {}],
             '0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12'.lower() : [get_goldbar_price, {}],
             '0xD3293BdE855033c77B7919da40ABD1DF9EB5eB46'.lower() : [get_blackswan_lp, {}],
+            '0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258'.lower() : [get_glp_price, {}],
+            '0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a'.lower() : [get_gmx_price, {'return_token' : '0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a'}],
+            '0xf42Ae1D54fd613C9bb14810b0588FaAa09a426cA'.lower() : [get_gmx_price, {'return_token' : '0xf42Ae1D54fd613C9bb14810b0588FaAa09a426cA'}],
             '0xc581b735a1688071a1746c968e0798d642ede491'.lower() : [return_stable, {'token_in' : '0xc581b735a1688071a1746c968e0798d642ede491'}],
             '0xd016caae879c42cb0d74bb1a265021bf980a7e96'.lower() : [get_price_from_router, {'token_in' : '0xd016caae879c42cb0d74bb1a265021bf980a7e96', 'network' : 'matic', 'router' : routers.MATICRouter.APESWAP, 'native' : True, 'bypass_token' : '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619'}],
             '0xddb3bd8645775f59496c821e4f55a7ea6a6dc299'.lower() : [get_price_from_router, {'token_in' : '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95', 'network' : 'bsc', 'router' : routers.BSCRouter.APESWAP, 'native' : True}],

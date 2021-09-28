@@ -1,7 +1,7 @@
 import requests
 import json
 from .multicall import Call, Multicall, parsers
-from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
+from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter, ArbRouter
 from .networks import WEB3_NETWORKS
 from . import native_tokens
 from .utils import make_get, make_get_json
@@ -9,6 +9,8 @@ import asyncio
 from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import NetworkRoutes
 from .router_override import router_override, stable_override
+from .uniswapv3 import uniSqrtPrice
+
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
     'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
@@ -326,3 +328,25 @@ async def get_goldbar_price():
 
     nugget = await get_price_from_router(token_in='0xE0B58022487131eC9913C1F3AcFD8F74FC6A6C7E',network='bsc',router=BSCRouter.APESWAP, native=True)
     return {'0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12'.lower() : nugget['0xE0B58022487131eC9913C1F3AcFD8F74FC6A6C7E'.lower()] * 213.33}
+
+async def get_glp_price():
+
+    x = [] 
+    x.append(Call('0x321F653eED006AD1C29D174e17d96351BDe22649', [f'getAumInUsdg(bool)(uint256)', True], [[f'getAum', parsers.from_wei]]))
+    x.append(Call('0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258','totalSupply()(uint256)', [['totalSupply', parsers.from_wei]]))
+
+    multi = await Multicall(x,WEB3_NETWORKS['arb'])()
+    glp_price = multi['getAum'] / multi['totalSupply']
+    print(glp_price)
+    return {'0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258'.lower() : glp_price}
+
+async def get_gmx_price(return_token):
+
+    ETH = await get_price_from_router(token_in='0x82af49447d8a07e3bd95bd0d56f35241523fbab1',network='arb',router=ArbRouter.SUSHI)
+    ether_price = (ETH['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'] * 1e18) / 1e6
+
+    x = await Call('0x80A9ae39310abf666A87C743d6ebBD0E8C42158E', 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS['arb'])()
+
+    return {return_token.lower() : uniSqrtPrice([18,18], x['slot0']['sqrtPriceX96']) * ether_price}
+
+

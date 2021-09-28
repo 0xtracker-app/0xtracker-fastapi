@@ -48,3 +48,4 @@ from . import pancake_hunny
 from . import wault_locked
 from . import bishare
 from . import cherry
+from . import gmx

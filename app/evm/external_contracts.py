@@ -204,6 +204,17 @@ async def get_beefy_fantom_pools(session):
 
     return vault_data
 
+async def get_beefy_arb_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/arbitrum_pools.js')
+    s2 = "export const arbitrumPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
+
 async def get_beefy_avax_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/avalanche_pools.js')
     s2 = "export const avalanchePools = "
@@ -503,6 +514,9 @@ async def get_wault_locked(session, network):
 
 async def gambit_vaults(session):
     return poolext.gambit.gambits
+
+async def gmx_vaults(session):
+    return poolext.gmx.vaults
 
 async def squirrel_vaults(session):
     return poolext.squirrel.nuts

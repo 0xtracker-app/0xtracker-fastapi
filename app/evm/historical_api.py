@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 COVALENT_KEY = os.getenv("COVALENT_API")
-NETWORK_MAP = {'eth' : '1', 'bsc' : '56', 'matic' : '137', 'avax' : '43113', 'ftm' : '250'}
+NETWORK_MAP = {'eth' : '1', 'bsc' : '56', 'matic' : '137', 'avax' : '43113', 'ftm' : '250', 'arb' : '42161'}
 
 async def get_tx_to_contract(network, wallet, token, contract, session):
     query = json.dumps({"$or": [{"from_address": contract},{"to_address": contract}]})
