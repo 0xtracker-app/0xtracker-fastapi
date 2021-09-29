@@ -174,6 +174,28 @@ class Farms:
         'featured' : 2,
         'network' : 'matic'
     },
+    '0x073D613b435b5574e988Dc989f467DDf94FB47D4' : {
+        'name' : 'swamp.finance',
+        'rewardToken' : '0x23cBC7C95a13071562af2C4Fb1Efa7a284d0543a',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingNATIVE',
+        'masterChef' : '0x073D613b435b5574e988Dc989f467DDf94FB47D4',
+        'perBlock' : 'NATIVEPerBlock',
+        'featured' : 2,
+        'network' : 'ftm'
+    },
+    '0x86d77d1CA67358f28BFc57cC85AD59c86c4f092a' : {
+        'name' : 'swamp.finance',
+        'rewardToken' : '0x3d6386FDE111eC2919cc8871377821b12c7EAE7C',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingNATIVE',
+        'masterChef' : '0x86d77d1CA67358f28BFc57cC85AD59c86c4f092a',
+        'perBlock' : 'NATIVEPerBlock',
+        'featured' : 2,
+        'network' : 'avax'
+    },
         '0x1C515985c6318550Afb5bC590f4f0843b977250A' : {
         'name' : 'manyswap.io',
         'rewardToken' : '0x2dD6c9c5BCD16816226542688788932c6e79A600',
