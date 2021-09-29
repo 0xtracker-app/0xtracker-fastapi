@@ -2648,3 +2648,52 @@ async def get_gmx(wallet, vaults, farm_id, network_id):
             return poolIDs, poolNest
         else:
             return None
+
+async def get_tranchess(wallet, vaults, farm_id, network_id):
+        poolKey = farm_id
+        network = WEB3_NETWORKS[network_id]
+        tranch = ['M', 'A', 'B']
+        helper = '0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6'
+
+        primaryMarketAddress = Web3.toChecksumAddress(0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D)
+        exchangeAddress = Web3.toChecksumAddress(0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6)
+        pancakePairAddress = Web3.toChecksumAddress(0x1472976E0B97F5B2fC93f1FFF14e2b5C4447b64F)
+        feeDistributorAddress = Web3.toChecksumAddress(0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8)
+        address = Web3.toChecksumAddress(wallet)
+        protocol_format = '(uint256,uint256,((uint256,uint256,uint256,uint256,uint256,uint256),(uint256,(uint256,uint256,uint256,uint256),uint256)),(bool,bool,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,(uint256,uint256,uint256,uint256,uint256)),(uint256,uint256,(uint256,uint256,uint256,uint256,uint256,uint256)),((uint256,uint256,uint256),uint256,uint256,((uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,(uint256,uint256,uint256),bool,uint256)))'
+
+        
+
+        calls = []
+        for i,stake in enumerate(tranch):
+            calls.append(Call(helper,['availableBalanceOf(uint256,address)(uint256)',i, wallet], [[f'{stake}{i}_staked', parsers.from_wei]]))
+            calls.append(Call('0xd6B3B86209eBb3C608f3F42Bf52818169944E402',[f'token{stake}()(address)'], [[f'{stake}{i}_want', None]]))
+
+        chess_info = await Call('0x44073262764d7cce3ded8882e637e957dcc7c503', [f'getProtocolData(address,address,address,address,address){protocol_format}', primaryMarketAddress, exchangeAddress, pancakePairAddress, feeDistributorAddress, address], _w3=network)()
+
+        stakes = await Multicall(calls, network)() 
+        chess_position = parsers.tranchess_reward(chess_info)
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = stakes[each]
+                    want_token = stakes[f'{breakdown[0]}_want']
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+        if chess_position['total_chess'] > 0:
+            poolNest[poolKey]['userData']['chessPosition'] = {'want': '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6', 'staked' : parsers.from_wei(chess_position['staked_chess']), 'pending' : parsers.from_wei(chess_position['pending_chess'])}
+            poolIDs['%s_%s_want' % (poolKey, 'chessPosition')] = '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6'
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest
+        else:
+            return None

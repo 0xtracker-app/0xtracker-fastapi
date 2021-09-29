@@ -14,6 +14,9 @@ def parse_slot_0(data):
 def parse_gmx(data):
     return data[0]
 
+def tranchess_reward(data):
+    return {'staked_chess' : data[5][3][4][1], 'pending_chess' : data[5][3][6], 'total_chess' : data[5][3][6] + data[5][3][4][1]}
+
 def parse_uniswap_positions(data):
     d = {
         'nonce' : data[0],

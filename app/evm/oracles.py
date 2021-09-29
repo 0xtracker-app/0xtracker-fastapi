@@ -10,6 +10,7 @@ from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import NetworkRoutes
 from .router_override import router_override, stable_override
 from .uniswapv3 import uniSqrtPrice
+import time
 
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
@@ -26,6 +27,12 @@ async def coingecko_by_address_network_single(address,network,session):
     response = await make_get_json(session, url)
 
     return {address.lower() : response[address]['usd']}
+
+async def get_tranchess_price(tranch,address,session):
+    url = f'https://tranchess.com/api/v1/funds/0xd6B3B86209eBb3C608f3F42Bf52818169944E402/historyNavs?granularity=M30&count=1'
+    response = await make_get_json(session, url)
+
+    return {address.lower() : int(response['historyNavs'][0][tranch]) / 1e18}
 
 async def fantom_router_prices(tokens_in, router):
     calls= []

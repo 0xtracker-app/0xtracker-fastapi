@@ -4090,11 +4090,11 @@ class Farms:
                 '0xWonderLand' : {
         'name' : 'wonderland.money',
         'rewardToken' : '0xb54f16fB19478766A268F172C9480f8da1a7c9C3',
-        'decimal' : 18,
+        'decimal' : 9,
         'stakedFunction' : None,
         'pendingFunction' : None,
         'masterChef' : '0xWonderLand',
-        'featured' : 9,
+        'featured' : 2,
         'network' : 'avax',
         'extraFunctions' : {
             'functions' : [farm_templates.get_wonderland],
@@ -4173,6 +4173,27 @@ class Farms:
         'masterChef' : '0xc772955c33088a97D56d0BBf473d05267bC4feBB',
         'featured' : 2,
         'network' : 'bsc'
+    },
+                '0xTranChess' : {
+        'name' : 'tranchess.com',
+        'rewardToken' : '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xTranChess',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_tranchess],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xTranChess',
+                        'network_id' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
 }
 
