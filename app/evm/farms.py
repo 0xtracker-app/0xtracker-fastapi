@@ -1247,6 +1247,26 @@ class Farms:
         'death_index' : [454],
         'show' : False
     },
+                '0x864A0B7F8466247A0e44558D29cDC37D4623F213' : {
+        'name' : 'autofarm.network',
+        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0x864A0B7F8466247A0e44558D29cDC37D4623F213',
+        'featured' : 2,
+        'network' : 'avax',
+    },
+                '0x76b8c3ECdF99483335239e66F34191f11534cbAA' : {
+        'name' : 'autofarm.network',
+        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0x76b8c3ECdF99483335239e66F34191f11534cbAA',
+        'featured' : 2,
+        'network' : 'ftm',
+    },
                 '0xB93C082bCfCCf5BAeA0E0f0c556668E25A41B896' : {
         'name' : 'polyzap.finance',
         'rewardToken' : '0xeb2778f74e5ee038e67aa6c77f0f0451abd748fd',
