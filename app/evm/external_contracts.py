@@ -463,6 +463,12 @@ async def get_zombie_pools(session):
 async def get_tengu_stakes(session):
     return ['0xd38cE88CAf05FFDb193Ba95fce552c5129E42C89']
 
+async def get_macaron_syrup(session):
+    return ['0xCded81aa5Ab3A433CadF77Fd5aC8B6fD973906e1', '0xF69bdcDB577F98753d4890Cc5aCfF3BE00177584', '0x7DB34B681c759918079C67EeF08868225F34fbcB', '0x13ED683DDf483d1f0bd2AE02b01D4d1D451D6c5b', '0x0f819C8E6A7c0F0906CBc84b9b1e6642f9634E61', '0x903A20CDbAC174250eAcc7437720929f0dE97B99', '0x82cF07a989835b68260989F13Bc853f8fe48ad04', '0xc8De98F603af53a5D52AF6AA153d9e15b0002B2c', '0xf3D514263239672455306D188DD5f045E61deD03', '0xC85C50988AEC8d260853443B345CAE63B7432b7A', '0xF60EDbF7D95E79878f4d448F0CA5622479eB8790']
+
+async def get_macaron_auto(session):
+    return ['0x0608A42BA74F2026A88aC2304f6802838F36bEB5', '0xCd59d44E94Dec10Bb666f50f98cD0B1593dC3a3A', '0x6dAc44A858Cb51e0d4d663A6589D2535A746607A', '0xd474366F6c80230507481495F3C1490e62E3093F']
+
 async def get_jetswap_vaults(network, session):
     if network == 'polygon':
         r = await make_get_json(session, 'https://polygon.jetswap.finance/api/vaults.json')
@@ -472,6 +478,25 @@ async def get_jetswap_vaults(network, session):
         r = await make_get_json(session, 'https://jetswap.finance/api/vaults.json')
         r = [x['vaultAddresses']['56'] for x in r]
         return r
+
+async def get_elk_vaults(network, session):
+        ROUNDS = 7
+
+        scraper = cloudscraper.create_scraper()
+        r = scraper.get('https://api.elk.finance/v1/info/farms').json()
+        
+        vaults = []
+
+        for round in range(0,ROUNDS):
+            a = round + 1
+
+            if network in r[f'round{a}']:
+                for vault in r[f'round{a}'][network]:
+                    vaults.append(r[f'round{a}'][network][vault]['address'])
+
+        return vaults
+
+
 
 async def stadium_farm_info(session):
     return poolext.ext_masterchef.stadium_farm_info

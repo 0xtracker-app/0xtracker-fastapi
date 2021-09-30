@@ -4237,6 +4237,119 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xElkAVAX' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkAVAX',
+                        'network' : 'avax',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'avax'}]
+        }
+    },
+                '0xElkMatic' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkMatic',
+        'featured' : 2,
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkMatic',
+                        'network' : 'matic',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'matic'}]
+        }
+    },
+                '0xElkFTM' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkFTM',
+                        'network' : 'ftm',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'ftm'}]
+        }
+    },
+                '0xElkBSC' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkBSC',
+                        'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'bsc'}]
+        }
+    },
+                '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b' : {
+        'name' : 'macaronswap.finance',
+        'rewardToken' : '0xacb2d47827c9813ae26de80965845d80935afd0b',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingMacaron',
+        'masterChef' : '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_macaron_syrup, external_contracts.get_macaron_auto],
+            'args' : [
+                {
+                    'farm_id' : '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b',
+                    'network_id' : 'bsc',
+                    'staked' : 'stakingToken'
+                },
+                {
+                    'farm_id' : '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b',
+                    'network' : 'bsc',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo',
+                    'want_token' : 'token'
+                },                
+                ],
+            'vault_args' : [{}, {}, {}]
+        }
+    },
 }
 
 
