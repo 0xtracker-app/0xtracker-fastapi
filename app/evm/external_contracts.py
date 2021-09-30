@@ -482,7 +482,7 @@ async def get_jetswap_vaults(network, session):
 async def get_elk_vaults(network, session):
         ROUNDS = 7
 
-        scraper = cloudscraper.create_scraper()
+        scraper = cloudscraper.create_scraper(delay=1)
         r = scraper.get('https://api.elk.finance/v1/info/farms').json()
         
         vaults = []

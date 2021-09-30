@@ -766,7 +766,8 @@ async def get_adamant_funds(wallet, vaults):
     for item in strat_vaults:
         strategy = item['strategyAddress']
         vault = item['vaultAddress']
-
+        if strategy == "" or vault == "":
+            continue
         adamant_user_info.append(Call(vault, ['balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_wei]]))
         adamant_user_info.append(Call(vault, ['getPendingReward(address)(uint256)', wallet], [[f'{vault}_pending', None]]))
         adamant_user_info.append(Call(vault, ['getRewardMultiplier()(uint256)'], [[f'{vault}_multiplier', None]]))

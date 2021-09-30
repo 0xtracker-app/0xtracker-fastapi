@@ -326,7 +326,7 @@ async def get_blackswan_lp():
     userPct = 1 / multi['totalSupply']
     lpval = (userPct * multi['reserves'][0] / (10**6))
 
-    return lpval
+    return {'0xD3293BdE855033c77B7919da40ABD1DF9EB5eB46'.lower() : lpval}
 
 async def return_stable(token_in):
     return {token_in.lower() : 1}
