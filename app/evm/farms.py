@@ -1037,6 +1037,28 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc'
     },
+                '0xcF8070d9fbE3F96f4bFF0F90Cc84BfD30869dAF2' : {
+        'name' : 'thegrandbanks.finance',
+        'rewardToken' : '0xbcf339df10d78f2b44aa760ead0f715a7a7d7269',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingGrand',
+        'masterChef' : '0xcF8070d9fbE3F96f4bFF0F90Cc84BfD30869dAF2',
+        'perBlock' : 'GrandPerBlock',
+        'featured' : 2,
+        'network' : 'matic'
+    },
+                '0xC6da8165f6f5F0F890c363cD67af1c33Bb540123' : {
+        'name' : 'thegrandbanks.finance',
+        'rewardToken' : '0xbcf339df10d78f2b44aa760ead0f715a7a7d7269',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0xC6da8165f6f5F0F890c363cD67af1c33Bb540123',
+        'perBlock' : 'GrandPerBlock',
+        'featured' : 2,
+        'network' : 'moon'
+    },
                 '0xf6afB97aC5eAfAd60d3ad19c2f85E0Bd6b7eAcCf' : {
         'name' : 'garudaswap.finance',
         'rewardToken' : '0x854086dc841e1bfae50cb615bf41f55bf432a90b',
