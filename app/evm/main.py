@@ -47,7 +47,7 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
     token_list = token_list_from_stakes(build_meta_data, farm_configuraiton)
 
     prices = await oracles.list_router_prices(token_list, farm_network)
-
+    print(prices)
     otkn = TokenOverride(http_session).tokens
     price_overrides = await asyncio.gather(*[otkn[v['token']][0](**otkn[v['token']][1]) for i, v in enumerate(token_list) if v['token'] in otkn])
 

@@ -1547,12 +1547,12 @@ async def get_fh_pools(wallet,vaults,network,farm_id,stake_func=None,reward_func
                 staked = stakes[each]
                 reward_token = stakes[f'{breakdown[0]}_rewardtoken']
                 try:
-                    reward_token_want = await Call(reward_token, 'want()(address)', [[f'want', None]], WEB3_NETWORKS[network])()
+                    reward_token_want = await Call(reward_token, 'want()(address)', WEB3_NETWORKS[network])()
                     reward_token_pps =  await Call(reward_token, 'getPricePerFullShare()(uint256)', _w3=WEB3_NETWORKS[network])()
                     reward_token_symbol =  await Call(reward_token_want['want'], 'symbol()(string)', _w3=WEB3_NETWORKS[network])()
                     reward_token = reward_token_want
                 except:
-                    reward_token_symbol = await Call(reward_token, 'symbol()(string)', [[f'symbol', None]], WEB3_NETWORKS[network])()
+                    reward_token_symbol = await Call(reward_token, 'symbol()(string)', _w3=WEB3_NETWORKS[network])()
                     reward_token_pps =  1 * 10 ** 18
                 reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'] * parsers.from_wei(reward_token_pps), 'symbol' : reward_token_symbol, 'token' : reward_token}
                 want_token = stakes[f'{breakdown[0]}_want']
