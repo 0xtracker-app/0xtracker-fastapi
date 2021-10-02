@@ -2,6 +2,7 @@ import aiohttp
 import json
 import hjson
 from web3 import Web3
+import cloudscraper
 from .networks import WEB3_NETWORKS_NON_ASYNC
 
 async def make_get(session, url, kwargs={}):
@@ -24,6 +25,10 @@ async def make_get_json(session, url, kwargs={}):
             return result
         except:
             None
+
+async def cf_make_get_json(session, url, kwargs={}):
+    scraper = cloudscraper.create_scraper(sess=session, delay=2)
+    return scraper.get(url).json()
 
 async def make_post_json(session, url, kwargs={}):
     async with session.post(url, **kwargs) as response:

@@ -1,7 +1,7 @@
 import requests
 import json
 from .multicall import Call, Multicall, parsers
-from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter
+from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter, ArbRouter
 from .networks import WEB3_NETWORKS
 from . import native_tokens
 from .utils import make_get, make_get_json
@@ -9,6 +9,9 @@ import asyncio
 from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import NetworkRoutes
 from .router_override import router_override, stable_override
+from .uniswapv3 import uniSqrtPrice
+import time
+
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
     'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
@@ -24,6 +27,12 @@ async def coingecko_by_address_network_single(address,network,session):
     response = await make_get_json(session, url)
 
     return {address.lower() : response[address]['usd']}
+
+async def get_tranchess_price(tranch,address,session):
+    url = f'https://tranchess.com/api/v1/funds/0xd6B3B86209eBb3C608f3F42Bf52818169944E402/historyNavs?granularity=M30&count=1'
+    response = await make_get_json(session, url)
+
+    return {address.lower() : int(response['historyNavs'][0][tranch]) / 1e18}
 
 async def fantom_router_prices(tokens_in, router):
     calls= []
@@ -53,7 +62,7 @@ async def fantom_router_prices(tokens_in, router):
 
     return {**prices, **{'0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' : fantom_price['fantom_price']}}
 
-async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None):
+async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None, return_token=None):
     chain_w3 = WEB3_NETWORKS[network]
     chain = network.upper()
 
@@ -62,6 +71,11 @@ async def get_price_from_router(token_in, network, router, native=False, decimal
     else:
         token_out = token_out
 
+    if return_token is None:
+        return_token = token_in
+    else:
+        return_token = return_token
+
     if bypass_token is None:
         native_token = getattr(native_tokens.NativeToken, chain)
     else:
@@ -69,12 +83,13 @@ async def get_price_from_router(token_in, network, router, native=False, decimal
     default_router = getattr(native_tokens.DefaultRouter, chain)
         
     if native is True:
-        native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router]], chain_w3)()
+        stable_decimal = getattr(native_tokens.StableDecimal, chain)
+        native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router_native, stable_decimal]], chain_w3)()
         token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, native_token]], [[f'token_in', parsers.parse_router, native_price['token_in']]],chain_w3)()
-        return {token_in.lower() : token_price['token_in']}
+        return {return_token.lower() : token_price['token_in']}
     else:
         token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, token_out]], [[f'token_in', parsers.parse_router]],chain_w3)()
-        return {token_in.lower() : token_price['token_in']}
+        return {return_token.lower() : token_price['token_in']}
 
 async def kcc_router_prices(tokens_in, router):
     calls= []
@@ -177,15 +192,20 @@ async def list_router_prices(tokens_in, network):
             token_address = token['token']
             token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
             token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
-
-            if contract == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
-                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
-            elif token_address in stable_override:
-                override_out = stable_override[token_address]['token']
-                override_decimal = stable_override[token_address]['decimal']
-                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
+            if contract == 'SOLAR':
+                if token_address.lower() in stable_override:
+                    override_out = stable_override[token_address]['token']
+                    override_decimal = stable_override[token_address]['decimal']
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out], 25], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
+                else:
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))  
             else:
-                calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+                if token_address.lower() in stable_override:
+                    override_out = stable_override[token_address]['token']
+                    override_decimal = stable_override[token_address]['decimal']
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
+                else:
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
 
     multi=await Multicall(calls,network_conn, _strict=False)()
 
@@ -207,7 +227,6 @@ async def list_router_prices(tokens_in, network):
             prices[token['token']] = .01
 
     prices[out_token.lower()] = native_price['native_price']
-    print(prices)
     return prices
 
 async def avax_router_prices(tokens_in, router):
@@ -313,4 +332,34 @@ async def get_blackswan_lp():
     userPct = 1 / multi['totalSupply']
     lpval = (userPct * multi['reserves'][0] / (10**6))
 
-    return lpval
+    return {'0xD3293BdE855033c77B7919da40ABD1DF9EB5eB46'.lower() : lpval}
+
+async def return_stable(token_in):
+    return {token_in.lower() : 1}
+
+async def get_goldbar_price():
+
+    nugget = await get_price_from_router(token_in='0xE0B58022487131eC9913C1F3AcFD8F74FC6A6C7E',network='bsc',router=BSCRouter.APESWAP, native=True)
+    return {'0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12'.lower() : nugget['0xE0B58022487131eC9913C1F3AcFD8F74FC6A6C7E'.lower()] * 213.33}
+
+async def get_glp_price():
+
+    x = [] 
+    x.append(Call('0x321F653eED006AD1C29D174e17d96351BDe22649', [f'getAumInUsdg(bool)(uint256)', True], [[f'getAum', parsers.from_wei]]))
+    x.append(Call('0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258','totalSupply()(uint256)', [['totalSupply', parsers.from_wei]]))
+
+    multi = await Multicall(x,WEB3_NETWORKS['arb'])()
+    glp_price = multi['getAum'] / multi['totalSupply']
+
+    return {'0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258'.lower() : glp_price}
+
+async def get_gmx_price(return_token):
+
+    ETH = await get_price_from_router(token_in='0x82af49447d8a07e3bd95bd0d56f35241523fbab1',network='arb',router=ArbRouter.SUSHI)
+    ether_price = (ETH['0x82af49447d8a07e3bd95bd0d56f35241523fbab1'] * 1e18) / 1e6
+
+    x = await Call('0x80A9ae39310abf666A87C743d6ebBD0E8C42158E', 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS['arb'])()
+
+    return {return_token.lower() : uniSqrtPrice([18,18], x['slot0']['sqrtPriceX96']) * ether_price}
+
+

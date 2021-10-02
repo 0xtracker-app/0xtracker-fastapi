@@ -174,6 +174,28 @@ class Farms:
         'featured' : 2,
         'network' : 'matic'
     },
+    '0x073D613b435b5574e988Dc989f467DDf94FB47D4' : {
+        'name' : 'swamp.finance',
+        'rewardToken' : '0x23cBC7C95a13071562af2C4Fb1Efa7a284d0543a',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingNATIVE',
+        'masterChef' : '0x073D613b435b5574e988Dc989f467DDf94FB47D4',
+        'perBlock' : 'NATIVEPerBlock',
+        'featured' : 2,
+        'network' : 'ftm'
+    },
+    '0x86d77d1CA67358f28BFc57cC85AD59c86c4f092a' : {
+        'name' : 'swamp.finance',
+        'rewardToken' : '0x3d6386FDE111eC2919cc8871377821b12c7EAE7C',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingNATIVE',
+        'masterChef' : '0x86d77d1CA67358f28BFc57cC85AD59c86c4f092a',
+        'perBlock' : 'NATIVEPerBlock',
+        'featured' : 2,
+        'network' : 'avax'
+    },
         '0x1C515985c6318550Afb5bC590f4f0843b977250A' : {
         'name' : 'manyswap.io',
         'rewardToken' : '0x2dD6c9c5BCD16816226542688788932c6e79A600',
@@ -703,6 +725,27 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xGMX' : {
+        'name' : 'gmx.io',
+        'rewardToken' : '0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xGMX',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_gmx],
+            'vaults' : [external_contracts.gmx_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xGMX',
+                    'network_id' : 'arb'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0x058451C62B96c594aD984370eDA8B6FD7197bbd4' : {
         'name' : 'pantherswap.com',
         'rewardToken' : '0x1f546ad641b56b86fd9dceac473d1c7a357276b7',
@@ -994,6 +1037,28 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc'
     },
+                '0xcF8070d9fbE3F96f4bFF0F90Cc84BfD30869dAF2' : {
+        'name' : 'thegrandbanks.finance',
+        'rewardToken' : '0xbcf339df10d78f2b44aa760ead0f715a7a7d7269',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingGrand',
+        'masterChef' : '0xcF8070d9fbE3F96f4bFF0F90Cc84BfD30869dAF2',
+        'perBlock' : 'GrandPerBlock',
+        'featured' : 2,
+        'network' : 'matic'
+    },
+                '0xC6da8165f6f5F0F890c363cD67af1c33Bb540123' : {
+        'name' : 'thegrandbanks.finance',
+        'rewardToken' : '0xbcf339df10d78f2b44aa760ead0f715a7a7d7269',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0xC6da8165f6f5F0F890c363cD67af1c33Bb540123',
+        'perBlock' : 'GrandPerBlock',
+        'featured' : 2,
+        'network' : 'moon'
+    },
                 '0xf6afB97aC5eAfAd60d3ad19c2f85E0Bd6b7eAcCf' : {
         'name' : 'garudaswap.finance',
         'rewardToken' : '0x854086dc841e1bfae50cb615bf41f55bf432a90b',
@@ -1203,6 +1268,26 @@ class Farms:
         'network' : 'matic',
         'death_index' : [454],
         'show' : False
+    },
+                '0x864A0B7F8466247A0e44558D29cDC37D4623F213' : {
+        'name' : 'autofarm.network',
+        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0x864A0B7F8466247A0e44558D29cDC37D4623F213',
+        'featured' : 2,
+        'network' : 'avax',
+    },
+                '0x76b8c3ECdF99483335239e66F34191f11534cbAA' : {
+        'name' : 'autofarm.network',
+        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0x76b8c3ECdF99483335239e66F34191f11534cbAA',
+        'featured' : 2,
+        'network' : 'ftm',
     },
                 '0xB93C082bCfCCf5BAeA0E0f0c556668E25A41B896' : {
         'name' : 'polyzap.finance',
@@ -1481,6 +1566,22 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xBeefyArb' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyArb',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_beefy_arb_pools],
+            'args' : [{'farm_id' : '0xBeefyArb', 'network' : 'arb'}],
+            'vault_args' : [{}]
+        }
+    },
                 '0xBeefyAVAX' : {
         'name' : 'beefy.finance',
         'rewardToken' : '0xd6070ae98b8069de6B494332d1A1a81B6179D960',
@@ -1677,6 +1778,30 @@ class Farms:
             'vaults' : [external_contracts.get_adamant_vaults, external_contracts.dummy_vault, external_contracts.get_adamant_boosts],
             'args' : [{},{'farm_id' : '0xAdamant'},{'network_id' : 'matic', 'farm_id' : '0xAdamant'}],
             'vault_args' : [{},{},{}]
+        }
+    },
+                '0xAdamantArb' : {
+        'name' : 'adamant.finance',
+        'rewardToken' : '0x09ad12552ec45f82be90b38dfe7b06332a680864',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAdamantArb',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_adamant_funds_dynamic],
+            'vaults' : [external_contracts.get_adamant_vaults_arb],
+            'args' : [
+                {
+                    'calculator' : '0x25c4D57c9eAFA243a8d74249fE70855E50931cE7',
+                    'minter' : '0x47D3DCaD6e47C519238Cbe50DA43e6a53C49CFC2',
+                    'reward' : '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+                    'farm_id' : '0xAdamantArb',
+                    'reward' : '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+                    'network' : 'arb',
+                }],
+            'vault_args' : [{}]
         }
     },
                 '0x2e47630f1a7807b596267361f9DD4C534632Ae98' : {
@@ -2866,8 +2991,8 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_single_masterchef, farm_templates.get_syrup_pools],
-            'vaults' : [external_contracts.dummy_vault, external_contracts.get_blockmine],
+            'functions' : [farm_templates.get_single_masterchef, farm_templates.get_syrup_pools, farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_blockmine, external_contracts.dummy_vault],
             'args' : [
                     {
                         'farm_id' : '0x6CB1Cdbae9a20413e37aF1491507cd5faE2DdD3e',
@@ -2884,16 +3009,32 @@ class Farms:
                                         'rewardSymbol' : 'GOLDCOIN',
                                         'show' : False
                                     }
-                            },
+                    },
                     {
                         'farm_id' : '0x6CB1Cdbae9a20413e37aF1491507cd5faE2DdD3e',
                         'network_id' : 'bsc',
                         'staked' : 'stakeToken',
                         'reward' : 'rewardToken',
                         'pending_reward' : 'pendingReward'
+                    },
+                    {
+                        'farm_id' : '0x6CB1Cdbae9a20413e37aF1491507cd5faE2DdD3e',
+                        'network_id' : 'bsc',
+                        'farm_data' : {
+                                        'name' : 'block-mine.io refinery',
+                                        'rewardToken' : '0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12',
+                                        'decimal' : 18,
+                                        'stakedFunction' : 'userInfo',
+                                        'pendingFunction' : 'pendingCake',
+                                        'masterChef' : '0x646Bc159130F6bDCbB312ecb9E9984Eea4A67D4b',
+                                        'featured' : 2,
+                                        'network' : 'bsc',
+                                        'rewardSymbol' : 'GOLDBAR',
+                                        'show' : False
+                                    }
                     },                    
                     ],
-            'vault_args' : [{},{}]
+            'vault_args' : [{},{},{}]
         }
 
     },
@@ -3163,7 +3304,22 @@ class Farms:
         'pendingFunction' : 'pendingCherry',
         'masterChef' : '0x8cddb4cd757048c4380ae6a69db8cd5597442f7b',
         'featured' : 2,
-        'network' : 'oke'
+        'network' : 'oke',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_cherry_farms],
+            'args' : [
+                    {
+                        'farm_id' : '0x8cddb4cd757048c4380ae6a69db8cd5597442f7b',
+                        'network_id' : 'oke',
+                        'staked' : 'syrup',
+                        'reward' : 'rewardToken',
+                        'pending_reward' : 'pendingReward',
+                        'user_info' : 'userInfo'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
                 '0xaEBa5C691aF30b7108D9C277d6BB47347387Dc13' : {
         'name' : 'kswap.finance',
@@ -3827,6 +3983,17 @@ class Farms:
         'featured' : 2,
         'network' : 'eth'
     },
+                '0x73186f2Cf2493f20836b17b21ae79fc12934E207' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0x080f6aed32fc474dd5717105dba5ea57268f46eb',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0x73186f2Cf2493f20836b17b21ae79fc12934E207',
+        'featured' : 2,
+        'network' : 'arb'
+    },
                 '0xQubit' : {
         'name' : 'qbt.fi',
         'rewardToken' : '0x17b7163cf1dbd286e262ddc68b553d899b93f526',
@@ -3935,7 +4102,31 @@ class Farms:
         'pendingFunction' : 'pendingSolar',
         'masterChef' : '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
         'featured' : 2,
-        'network' : 'moon'
+        'network' : 'moon',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xf03b75831397D4695a6b9dDdEEA0E578faa30907',
+                    'network_id' : 'moon',
+                    'farm_data' :{
+                        'name' : 'solarbeam.io (Vaults)',
+                        'rewardToken' : '0x6bd193ee6d2104f14f94e2ca6efefae561a4334b',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingSolar',
+                        'masterChef' : '0x7e6E03822D0077F3C417D33caeAc900Fc2645679',
+                        'featured' : 2,
+                        'network' : 'moon',
+                        'wantFunction' : 'poolInfo',
+                        'rewardSymbol' : 'SOLAR',
+                        'show' : False
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
     },
                 '0x8064A0058EfA9af75634635d764939D87700CBa0' : {
         'name' : 'rainbowfarm.finance',
@@ -3968,6 +4159,291 @@ class Farms:
                         'user_info' : '_userInfo'
                     },
                     ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xWonderLand' : {
+        'name' : 'wonderland.money',
+        'rewardToken' : '0xb54f16fB19478766A268F172C9480f8da1a7c9C3',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xWonderLand',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_wonderland],
+            'vaults' : [external_contracts.get_wonderland_bonds],
+            'args' : [
+                    {
+                        'farm_id' : '0xWonderLand',
+                        'network_id' : 'avax',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                    '0xdfAa0e08e357dB0153927C7EaBB492d1F60aC730' : {
+        'name' : 'babyswap.finance',
+        'rewardToken' : '0x53e562b9b7e5e94b81f10e96ee70ad06df3d2657',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0xdfAa0e08e357dB0153927C7EaBB492d1F60aC730',
+        'perBlock' : 'cakePerBlock',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_baby_auto],
+            'args' : [
+                {
+                    'farm_id' : '0xdfAa0e08e357dB0153927C7EaBB492d1F60aC730',
+                    'network' : 'bsc',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo'
+                },                
+                ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3' : {
+        'name' : 'sushi.com',
+        'rewardToken' : '0xd4d42f0b6def4ce0383636770ef773390d85c61a',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
+        'perBlock' : 'sushiPerSecond',
+        'featured' : 2,
+        'network' : 'arb'
+    },
+                '0x9180583C1ab03587b545629dd60D2be0bf1DF4f2' : {
+        'name' : 'jetswap.finance',
+        'rewardToken' : '0x3d8f1accee8e263f837138829b6c4517473d0688',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0x9180583C1ab03587b545629dd60D2be0bf1DF4f2',
+        'perBlock' : 'cakePerBlock',
+        'featured' : 1,
+        'network' : 'ftm',
+    },
+                '0xca2DeAc853225f5a4dfC809Ae0B7c6e39104fCe5' : {
+        'name' : 'cafeswap.finance',
+        'rewardToken' : '0xb5106a3277718ecad2f20ab6b86ce0fee7a21f09',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBrew',
+        'masterChef' : '0xca2DeAc853225f5a4dfC809Ae0B7c6e39104fCe5',
+        'featured' : 2,
+        'network' : 'matic'
+    },
+                '0xc772955c33088a97D56d0BBf473d05267bC4feBB' : {
+        'name' : 'cafeswap.finance',
+        'rewardToken' : '0x790be81c3ca0e53974be2688cdb954732c9862e1',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0xc772955c33088a97D56d0BBf473d05267bC4feBB',
+        'featured' : 2,
+        'network' : 'bsc'
+    },
+                '0xTranChess' : {
+        'name' : 'tranchess.com',
+        'rewardToken' : '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xTranChess',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_tranchess],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xTranChess',
+                        'network_id' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xElkAVAX' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkAVAX',
+                        'network' : 'avax',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'avax'}]
+        }
+    },
+                '0xElkMatic' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkMatic',
+        'featured' : 2,
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkMatic',
+                        'network' : 'matic',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'matic'}]
+        }
+    },
+                '0xElkFTM' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkFTM',
+                        'network' : 'ftm',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'ftm'}]
+        }
+    },
+                '0xElkHECO' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkHECO',
+        'featured' : 2,
+        'network' : 'heco',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkHECO',
+                        'network' : 'heco',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'heco'}]
+        }
+    },
+                '0xElkXDAI' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkXDAI',
+        'featured' : 2,
+        'network' : 'xdai',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkXDAI',
+                        'network' : 'xdai',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'xdai'}]
+        }
+    },
+                '0xElkBSC' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkBSC',
+                        'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'bsc'}]
+        }
+    },
+                '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b' : {
+        'name' : 'macaronswap.finance',
+        'rewardToken' : '0xacb2d47827c9813ae26de80965845d80935afd0b',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingMacaron',
+        'masterChef' : '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_macaron_syrup, external_contracts.get_macaron_auto],
+            'args' : [
+                {
+                    'farm_id' : '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b',
+                    'network_id' : 'bsc',
+                    'staked' : 'stakingToken'
+                },
+                {
+                    'farm_id' : '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b',
+                    'network' : 'bsc',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo',
+                    'want_token' : 'token'
+                },                
+                ],
+            'vault_args' : [{}, {}, {}]
+        }
+    },
+                '0xc7dad2e953Dc7b11474151134737A007049f576E' : {
+        'name' : 'morpheusswap.finance',
+        'rewardToken' : '0x0789ff5ba37f72abc4d561d00648acadc897b32d',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingMorph',
+        'masterChef' : '0xc7dad2e953Dc7b11474151134737A007049f576E',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_morpheus_syrup],
+            'args' : [
+                {
+                    'farm_id' : '0xc7dad2e953Dc7b11474151134737A007049f576E',
+                    'network_id' : 'ftm',
+                    'staked' : 'syrup'
+                },           
+                ],
             'vault_args' : [{}]
         }
     },

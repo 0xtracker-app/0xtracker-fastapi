@@ -69,7 +69,10 @@ async def get_token_data(data,mongo_client, farm_network):
             if found_token is not None:
                 data[1][farm_address]['userData'][pool_id].update(found_token)
                 if 'lpToken' in found_token:
-                    calls.append(Call(found_token['lpToken'], 'totalSupply()(uint256)', [[f'{each}_totalSupply', parsers.from_wei]]))
+                    if found_token['lpToken'].lower() in ['0xf64e1c5b6e17031f5504481ac8145f4c3eab4917'.lower()]:
+                        calls.append(Call(found_token['lpToken'], 'totalSupply()(uint256)', [[f'{each}_totalSupply', parsers.from_custom, 9]]))
+                    else:
+                        calls.append(Call(found_token['lpToken'], 'totalSupply()(uint256)', [[f'{each}_totalSupply', parsers.from_wei]]))
                     calls.append(Call(found_token['lpToken'], 'getReserves()((uint112,uint112))', [[f'{each}_reserves', parsers.parseReserves]]))
                 if 'getPricePerFullShare' in found_token:
                     calls.append(Call(found_token['tokenID'], 'getPricePerFullShare()(uint256)', [[f'{each}_getPricePerFullShare', parsers.from_wei]]))
@@ -148,4 +151,4 @@ def token_list_from_stakes(data, farm_info):
                 for i,balancer in enumerate(x['balancerTokens']):
                     tokens += [{'token' : balancer.lower(), 'decimal' : x['balancerDecimals'][i], 'network' : farm_info['network']}]
     
-    return tokens
+    return [i for n, i in enumerate(tokens) if i not in tokens[n + 1:]]

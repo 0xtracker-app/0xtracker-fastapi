@@ -6,7 +6,7 @@ import requests
 import time
 import cloudscraper
 from requests.sessions import session
-from .utils import make_get, make_get_hson,make_get_json
+from .utils import make_get, make_get_hson,make_get_json,cf_make_get_json
 from .multicall import parsers
 from .thegraph import call_graph
 from . import poolext
@@ -183,6 +183,8 @@ async def get_beefy_matic_pools(session):
     s2 = "export const polygonPools = "
     
     data = r[r.index(s2) + len(s2) :len(r)-2]
+    data = re.sub(r'\saddLiquidityUrl:\s.+(\,)', " nothing: '',", data)
+    data = re.sub(r'\sbuyTokenUrl:\s.+(\,)', " nothing: '',", data)
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
     vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
@@ -199,6 +201,17 @@ async def get_beefy_fantom_pools(session):
 
     vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
     vault_data.append({'vault' : '0x49c68eDb7aeBd968F197121453e41b8704AcdE0C', 'want' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'})
+
+    return vault_data
+
+async def get_beefy_arb_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/arbitrum_pools.js')
+    s2 = "export const arbitrumPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
 
     return vault_data
 
@@ -310,7 +323,7 @@ async def get_beefy_boosts_poly(session):
     s2 = "export const polygonStakePools = ["
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
-    hson = hjson.loads(f'[{regex}]'.replace('partners: ,',''))
+    hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
     t = json.loads(json.dumps(hson))
 
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
@@ -343,6 +356,9 @@ async def get_pcs_pools(session, offset):
 
 async def get_pcs_auto(session):
     return ['0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC']
+
+async def get_baby_auto(session):
+    return ['0x3e1eaD5cBe817689F4bDB96bceeb112FdBE94dBc']
 
 async def get_pickle_addresses(session,network):
     r = await make_get_json(session, 'https://d38jrn41whs0ud.cloudfront.net/prod/protocol/pools')
@@ -414,6 +430,9 @@ async def get_superfarm_extra(session):
 async def get_pandaswap_farms(session):
     return poolext.pandaswap.farms
 
+async def get_cherry_farms(session):
+    return poolext.cherry.pools
+
 async def get_feeder_auto(session):
     return poolext.feeder.auto_staking
 
@@ -444,6 +463,15 @@ async def get_zombie_pools(session):
 async def get_tengu_stakes(session):
     return ['0xd38cE88CAf05FFDb193Ba95fce552c5129E42C89']
 
+async def get_macaron_syrup(session):
+    return ['0xCded81aa5Ab3A433CadF77Fd5aC8B6fD973906e1', '0xF69bdcDB577F98753d4890Cc5aCfF3BE00177584', '0x7DB34B681c759918079C67EeF08868225F34fbcB', '0x13ED683DDf483d1f0bd2AE02b01D4d1D451D6c5b', '0x0f819C8E6A7c0F0906CBc84b9b1e6642f9634E61', '0x903A20CDbAC174250eAcc7437720929f0dE97B99', '0x82cF07a989835b68260989F13Bc853f8fe48ad04', '0xc8De98F603af53a5D52AF6AA153d9e15b0002B2c', '0xf3D514263239672455306D188DD5f045E61deD03', '0xC85C50988AEC8d260853443B345CAE63B7432b7A', '0xF60EDbF7D95E79878f4d448F0CA5622479eB8790']
+
+async def get_macaron_auto(session):
+    return ['0x0608A42BA74F2026A88aC2304f6802838F36bEB5', '0xCd59d44E94Dec10Bb666f50f98cD0B1593dC3a3A', '0x6dAc44A858Cb51e0d4d663A6589D2535A746607A', '0xd474366F6c80230507481495F3C1490e62E3093F']
+
+async def get_morpheus_syrup(session):
+    return ['0x2854980e1f6526CB5AeC8d53c5028AF486368ea1', '0x415742c217eA4941B706ff358bF6178985590cFA', '0x8b0c89A08045A38A710fd141443d463B960C9aAe', '0x9055064B490604E41593d9271a53603CF48204F4', '0x4bDA0C69f7F15a43Ef35881c2aB3B7f995630A14', '0x5db1AD1E0ECC9EfBF69d3566C54eE650Cd712Fa5', '0x791A8d97FeeF371D1AEc6f25B7C3E4545c847476']
+
 async def get_jetswap_vaults(network, session):
     if network == 'polygon':
         r = await make_get_json(session, 'https://polygon.jetswap.finance/api/vaults.json')
@@ -453,6 +481,25 @@ async def get_jetswap_vaults(network, session):
         r = await make_get_json(session, 'https://jetswap.finance/api/vaults.json')
         r = [x['vaultAddresses']['56'] for x in r]
         return r
+
+async def get_elk_vaults(network, session):
+        ROUNDS = 7
+        STAKING = {"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
+        r = await cf_make_get_json(session, 'https://api.elk.finance/v1/info/farms')
+        
+        vaults = []
+
+        for round in range(0,ROUNDS):
+            a = round + 1
+
+            if network in r[f'round{a}']:
+                for vault in r[f'round{a}'][network]:
+                    vaults.append(r[f'round{a}'][network][vault]['address'])
+        vaults.append(STAKING[network]['ELK'])
+
+        return vaults
+
+
 
 async def stadium_farm_info(session):
     return poolext.ext_masterchef.stadium_farm_info
@@ -496,6 +543,9 @@ async def get_wault_locked(session, network):
 async def gambit_vaults(session):
     return poolext.gambit.gambits
 
+async def gmx_vaults(session):
+    return poolext.gmx.vaults
+
 async def squirrel_vaults(session):
     return poolext.squirrel.nuts
 
@@ -503,8 +553,15 @@ async def get_adamant_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/current_vaults.json')
     return json.loads(r)
 
+async def get_adamant_vaults_arb(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/arbitrum_vaults.json')
+    return json.loads(r)
+
 async def get_adamant_boosts(session):
     return ['0xC5bCD23f21B6288417eB6C760F8AC0fBb4bb8a56']
+
+async def get_adamant_boosts_arb(session):
+    return ['0x097b15dC3Bcfa7D08ea246C09B6A9a778e5b007B']
 
 async def get_fortress_vaults(session):
     return poolext.fortress.forts
@@ -520,3 +577,6 @@ async def get_bishare(session):
 
 async def get_buffer_vaults(session):
     return ['0xe65d029AaC2c0a2dF4F61A759b942CCDa4d2EeFC']
+
+async def get_wonderland_bonds(session):
+    return []

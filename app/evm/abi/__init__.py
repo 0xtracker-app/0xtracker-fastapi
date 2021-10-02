@@ -14,3 +14,4 @@ from . import traderjoe
 from . import uni_nft
 from . import uranium
 from . import wswap
+from . import transchess

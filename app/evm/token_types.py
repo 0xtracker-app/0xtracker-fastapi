@@ -101,7 +101,7 @@ async def get_curve_token(token, farm_id):
     except:
         swap_token = await Call(swap['curve_minter'], [f'underlying_coins(uint256)(address)', tokenIndex], [['swapToken', None]], network_chain)()
 
-    swapToken = await Multicall([
+    swapToken = Multicall([
             Call(swap['curve_minter'], 'get_virtual_price()(uint256)', [['virtualPrice', parsers.from_wei]]),
         ], network_chain)
     
@@ -142,7 +142,7 @@ async def get_curve_token_two(token, farm_id):
     except:
         swap_token = await Call(token, [f'underlying_coins(uint256)(address)', tokenIndex], [['swapToken', None]], network_chain)()
 
-    swapToken = await Multicall([
+    swapToken = Multicall([
             Call(token, 'get_virtual_price()(uint256)', [['virtualPrice', parsers.from_wei]])
         ], network_chain)
     
