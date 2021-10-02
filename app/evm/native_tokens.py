@@ -88,8 +88,8 @@ class DefaultRouter():
     MOON = routers.MoonRouter.SOLAR
     ARB = routers.ArbRouter.SUSHI
     CELO = routers.CeloRouter.UBE
-    XDAI = routers.DaiRouter
-    HECO = routers.HecoRouter
+    XDAI = routers.DaiRouter.HONEY
+    HECO = routers.HecoRouter.MDEX
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -117,9 +117,9 @@ class CoinGecko():
     HARMONY = 'harmony-shard-0'
     MOON = ''
     ARB = 'arbitrum-one'
-    CELO = ''
-    XDAI = ''
-    HECO = ''
+    CELO = 'celo'
+    XDAI = 'xdai'
+    HECO = 'huobi-token'
 
 
 class NetworkRoutes():

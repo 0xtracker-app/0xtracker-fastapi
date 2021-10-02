@@ -62,7 +62,7 @@ async def fantom_router_prices(tokens_in, router):
 
     return {**prices, **{'0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' : fantom_price['fantom_price']}}
 
-async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None):
+async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None, return_token=None):
     chain_w3 = WEB3_NETWORKS[network]
     chain = network.upper()
 
@@ -71,6 +71,11 @@ async def get_price_from_router(token_in, network, router, native=False, decimal
     else:
         token_out = token_out
 
+    if return_token is None:
+        return_token = token_in
+    else:
+        return_token = return_token
+
     if bypass_token is None:
         native_token = getattr(native_tokens.NativeToken, chain)
     else:
@@ -78,12 +83,13 @@ async def get_price_from_router(token_in, network, router, native=False, decimal
     default_router = getattr(native_tokens.DefaultRouter, chain)
         
     if native is True:
-        native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router]], chain_w3)()
+        stable_decimal = getattr(native_tokens.StableDecimal, chain)
+        native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router_native, stable_decimal]], chain_w3)()
         token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, native_token]], [[f'token_in', parsers.parse_router, native_price['token_in']]],chain_w3)()
-        return {token_in.lower() : token_price['token_in']}
+        return {return_token.lower() : token_price['token_in']}
     else:
         token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, token_out]], [[f'token_in', parsers.parse_router]],chain_w3)()
-        return {token_in.lower() : token_price['token_in']}
+        return {return_token.lower() : token_price['token_in']}
 
 async def kcc_router_prices(tokens_in, router):
     calls= []

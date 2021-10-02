@@ -3983,6 +3983,17 @@ class Farms:
         'featured' : 2,
         'network' : 'eth'
     },
+                '0x73186f2Cf2493f20836b17b21ae79fc12934E207' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0x080f6aed32fc474dd5717105dba5ea57268f46eb',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0x73186f2Cf2493f20836b17b21ae79fc12934E207',
+        'featured' : 2,
+        'network' : 'arb'
+    },
                 '0xQubit' : {
         'name' : 'qbt.fi',
         'rewardToken' : '0x17b7163cf1dbd286e262ddc68b553d899b93f526',
@@ -4322,6 +4333,48 @@ class Farms:
             'vault_args' : [{'network' : 'ftm'}]
         }
     },
+                '0xElkHECO' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkHECO',
+        'featured' : 2,
+        'network' : 'heco',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkHECO',
+                        'network' : 'heco',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'heco'}]
+        }
+    },
+                '0xElkXDAI' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkXDAI',
+        'featured' : 2,
+        'network' : 'xdai',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkXDAI',
+                        'network' : 'xdai',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'xdai'}]
+        }
+    },
                 '0xElkBSC' : {
         'name' : 'elk.finance',
         'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
@@ -4370,6 +4423,28 @@ class Farms:
                 },                
                 ],
             'vault_args' : [{}, {}, {}]
+        }
+    },
+                '0xc7dad2e953Dc7b11474151134737A007049f576E' : {
+        'name' : 'morpheusswap.finance',
+        'rewardToken' : '0x0789ff5ba37f72abc4d561d00648acadc897b32d',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingMorph',
+        'masterChef' : '0xc7dad2e953Dc7b11474151134737A007049f576E',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_morpheus_syrup],
+            'args' : [
+                {
+                    'farm_id' : '0xc7dad2e953Dc7b11474151134737A007049f576E',
+                    'network_id' : 'ftm',
+                    'staked' : 'syrup'
+                },           
+                ],
+            'vault_args' : [{}]
         }
     },
 }
