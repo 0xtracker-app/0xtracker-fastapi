@@ -12,6 +12,9 @@ class NativeToken():
     HARMONY = '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a'
     MOON = '0x98878B06940aE243284CA214f92Bb71a2b032B8A'
     ARB = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'
+    CELO = '0x471EcE3750Da237f93B8E339c536989b8978a438'
+    XDAI = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
+    HECO = '0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -24,6 +27,9 @@ class NativeSymbol():
     HARMONY = 'ONE'
     MOON = 'MOVR'
     ARB = 'AETH'
+    CELO = 'CELO'
+    XDAI = 'XDAI'
+    HECO = 'HT'
 
 class NativeDecimal():
     BSC = 18
@@ -36,6 +42,9 @@ class NativeDecimal():
     HARMONY = 18
     MOON = 18
     ARB = 18
+    CELO = 18
+    XDAI = 18
+    HECO = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -48,6 +57,9 @@ class StableToken():
     HARMONY = '0x985458e523db3d53125813ed68c274899e9dfab4'
     MOON = '0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D'
     ARB = '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8'
+    CELO = '0x64dEFa3544c695db8c535D289d843a189aa26b98'
+    XDAI = '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83'
+    HECO = '0xa71edc38d189767582c38a3145b5873052c3e47a'
 
 class StableDecimal():
     BSC = 18
@@ -60,6 +72,9 @@ class StableDecimal():
     HARMONY = 6
     MOON = 6
     ARB = 6
+    CELO = 18
+    XDAI = 6
+    HECO = 18
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -72,6 +87,9 @@ class DefaultRouter():
     HARMONY = routers.ONERouter.SUSHI
     MOON = routers.MoonRouter.SOLAR
     ARB = routers.ArbRouter.SUSHI
+    CELO = routers.CeloRouter.UBE
+    XDAI = routers.DaiRouter
+    HECO = routers.HecoRouter
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -84,6 +102,9 @@ class RouteClass():
     HARMONY = routers.ONERouter
     MOON = routers.MoonRouter
     ARB = routers.ArbRouter
+    CELO = routers.CeloRouter
+    XDAI = routers.DaiRouter
+    HECO = routers.HecoRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -96,6 +117,9 @@ class CoinGecko():
     HARMONY = 'harmony-shard-0'
     MOON = ''
     ARB = 'arbitrum-one'
+    CELO = ''
+    XDAI = ''
+    HECO = ''
 
 
 class NetworkRoutes():
