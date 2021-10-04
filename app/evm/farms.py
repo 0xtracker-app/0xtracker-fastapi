@@ -3432,6 +3432,7 @@ class Farms:
         'masterChef' : '0x9A2C85eFBbE4DD93cc9a9c925Cea4A2b59c0db78',
         'featured' : 2,
         'network' : 'matic',
+        'add_chefs' : ['0x0B14C435DC29f2e3F53E203a18077F4A41914870', '0x9581EA83B4BCd5F2c5f1705382FBd80a11E57DcD'],
         'extraFunctions' : {
             'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
             'vaults' : [external_contracts.get_polygonfarm_pools, external_contracts.get_polygonfarm_staking],
@@ -3453,6 +3454,28 @@ class Farms:
                     ],
             'vault_args' : [{},{}]
         }
+    },
+                '0x0B14C435DC29f2e3F53E203a18077F4A41914870' : {
+        'name' : 'polyalpha.finance',
+        'rewardToken' : '0x0b048d6e01a6b9002c291060bf2179938fd8264c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingAlpha',
+        'masterChef' : '0x0B14C435DC29f2e3F53E203a18077F4A41914870',
+        'featured' : 2,
+        'network' : 'matic',
+        'show' : False,
+    },
+                '0x9581EA83B4BCd5F2c5f1705382FBd80a11E57DcD' : {
+        'name' : 'polybeta.finance',
+        'rewardToken' : '0xac3090b7042fca2cdbf233022e4a9823a032600c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBeta',
+        'masterChef' : '0x9581EA83B4BCd5F2c5f1705382FBd80a11E57DcD',
+        'featured' : 2,
+        'network' : 'matic',
+        'show' : False,
     },
                 '0xF23053191FcA049f04926dBb108F86Cc61A4F77D' : {
         'name' : 'polyyork.finance',

@@ -41,7 +41,6 @@ async def get_reserves_and_total_supply(lp_data, client, balance):
 
     return {'lpTotal' : [coin_value,pc_value]}
 
-
 async def get_farming_from_program(farm_id, wallet, program, offset, client, vaults, session, mongodb):
     solana = wallet
 
