@@ -4,7 +4,7 @@ from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
 from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
 from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
-from sol import get_wallet_balances as solana_wallet_balances
+from sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -65,6 +65,11 @@ async def get_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_d
 @app.get('/cosmos-farms/{wallet}/{farm_id}')
 async def get_cosmos_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
     results = await get_cosmos_positions(wallet, farm_id, mongo_db, session)
+    return results
+
+@app.get('/solana-farms/{wallet}/{farm_id}')
+async def get_solana_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana)):
+    results = await get_solana_positions(wallet, farm_id, mongo_db, session, client)
     return results
 
 @app.get('/wallet/{wallet}/{network}')
