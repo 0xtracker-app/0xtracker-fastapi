@@ -1,8 +1,6 @@
 import asyncio
 from aiohttp import helpers
 from solana._layouts.shared import PUBLIC_KEY_LAYOUT
-from solana.rpc.async_api import AsyncClient
-from solana.rpc.api import Client
 from solana.rpc.types import TokenAccountOpts, MemcmpOpts
 from solana.publickey import PublicKey
 import spl.token._layouts as layouts
@@ -12,12 +10,9 @@ from . import slicers
 from .helpers import from_custom, get_pending_rewards, saber_farmer_wrapper
 from .constants import PROGRAMS
 
-
-
 RPC_CONNECTION = 'https://api.mainnet-beta.solana.com'
 
-async def local_balances(wallet):
-    client = AsyncClient(RPC_CONNECTION)
+async def local_balances(wallet, mongodb, session, client):
     public_key = PublicKey(wallet)
 
     parsed_account_data = []
@@ -29,15 +24,11 @@ async def local_balances(wallet):
         meta_data = token_metadata[mint_address] if mint_address in token_metadata else None
         if account_data.amount > 0 :
             parsed_account_data.append({
-                'mint' : utils.convert_public_key(account_data.mint),
-                'owner' : utils.convert_public_key(account_data.owner),
-                'amount' : account_data.amount,
-                'pubKey' : each['pubkey'],
-                'metaData' : meta_data
-                # 'accountBalance' : await client.get_token_account_balance(each['pubkey'])
+                'token_address' : utils.convert_public_key(account_data.mint),
+                'tokenBalance' : account_data.amount,
+                'tokenPrice' : ''
             })
 
-    await client.close()
     return parsed_account_data
 
 async def get_reserves_and_total_supply(lp_data, client, balance):
