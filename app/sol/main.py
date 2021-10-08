@@ -23,7 +23,7 @@ async def get_wallet_balances(wallet, mongodb, session, client):
     prices = await oracles.get_sonar_pricing(session) 
 
     return_wallets = []
-    native_meta = await TokenMetaData(address='11111111111111111111111111111111', mongodb=mongodb, network='solana', session=session).lookup()
+    native_meta = await TokenMetaData(address='11111111111111111111111111111111', mongodb=mongodb, network='solana', session=session, client=client).lookup()
     return_wallets.append({
         "token_address": '11111111111111111111111111111111',
         "symbol": native_meta['tkn0s'],
@@ -38,7 +38,7 @@ async def get_wallet_balances(wallet, mongodb, session, client):
         token_price = prices[mint_address] if mint_address in prices else 0
 
         if account_data.amount > 0 :
-            meta_data = await TokenMetaData(address=mint_address, mongodb=mongodb, network='solana', session=session).lookup()
+            meta_data = await TokenMetaData(address=mint_address, mongodb=mongodb, network='solana', session=session, client=client).lookup()
 
             return_wallets.append(
             {

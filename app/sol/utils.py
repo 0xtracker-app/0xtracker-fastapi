@@ -104,9 +104,9 @@ async def make_get_hson(session, url, kwargs={}):
 async def make_get_json(session, url, kwargs={}):
     async with session.get(url, **kwargs) as response:
         try:
-            result = await response.json()
-            return result
-        except:
+            return await response.json(content_type=None)
+        except Exception as error:
+            print(error)
             None
 
 async def make_post_json(session, url, kwargs={}):

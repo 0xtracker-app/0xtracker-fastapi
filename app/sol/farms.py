@@ -13,10 +13,14 @@ class Farms:
         'featured' : 2,
         'network' : 'solana',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_farming_from_program],
-            'vaults' : [external_contracts.dummy_vault],
-            'args' : [{'farm_id' : 'Raydium', 'program' : constants.PROGRAMS.RAYDIUM_PROGRAM, 'offset' : 40}],
-            'vault_args' : [{}]
+            'functions' : [farm_templates.get_farming_from_program, farm_templates.get_farming_from_program_dual, farm_templates.get_farming_from_program_dual],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault, external_contracts.dummy_vault],
+            'args' : [
+                {'farm_id' : 'Raydium', 'program' : constants.PROGRAMS.RAYDIUM_PROGRAM, 'offset' : 40},
+                {'farm_id' : 'Raydium', 'program' : constants.PROGRAMS.RAYDIUM_PROGRAM_V4, 'offset' : 40, 'reward_dec' : 1e9},
+                {'farm_id' : 'Raydium', 'program' : constants.PROGRAMS.RAYDIUM_PROGRAM_V5, 'offset' : 40, 'reward_dec' : 1e15},
+                ],
+            'vault_args' : [{},{},{}]
         }
     },
 }

@@ -321,7 +321,24 @@ async def get_xjoe_price():
         joe_ratio = multi_call[f'ext_xjoe'] / multi_call[f'ext_xjoets']
         joe_price_usd = multi_call['avax_price'] * multi_call['joe_price']
 
-        return joe_ratio * joe_price_usd
+        return {'0x57319d41f71e81f3c65f2a47ca4e001ebafd4f33'.lower() : joe_ratio * joe_price_usd}
+
+async def get_xboo_price():
+        calls = []
+
+        boo = '0x841fad6eae12c286d1fd18d1d525dffa75c7effe'
+        xboo = '0xa48d959AE2E88f1dAA7D5F611E01908106dE7598'
+        
+        calls.append(Call(boo, [f'balanceOf(address)(uint256)', xboo], [[f'ext_xboo', parsers.from_wei]]))
+        calls.append(Call(xboo, [f'totalSupply()(uint256)'], [[f'ext_xboots', parsers.from_wei]]))
+        calls.append(Call('0xF491e7B69E4244ad4002BC14e878a34207E38c29', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0x841fad6eae12c286d1fd18d1d525dffa75c7effe', '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83']], [[f'boo_price', parsers.parse_router]]))
+        calls.append(Call('0xF491e7B69E4244ad4002BC14e878a34207E38c29', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83', '0x04068da6c83afcfa0e13ba15a6696662335d5b75']], [[f'ftm_price', parsers.parse_router_native, 6]]))
+        multi_call = await Multicall(calls, WEB3_NETWORKS['ftm'])()
+
+        boo_ratio = multi_call[f'ext_xboo'] / multi_call[f'ext_xboots']
+        boo_price_usd = multi_call['ftm_price'] * multi_call['boo_price']
+
+        return {xboo.lower() : boo_ratio * boo_price_usd}
 
 async def get_blackswan_lp():
     x = [] 

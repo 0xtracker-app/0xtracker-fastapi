@@ -2458,7 +2458,18 @@ class Farms:
         'pendingFunction' : 'pendingBOO',
         'masterChef' : '0x2b2929E785374c651a81A63878Ab22742656DcDd',
         'featured' : 2,
-        'network' : 'ftm'
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_spooky_stakes],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0x2b2929E785374c651a81A63878Ab22742656DcDd',
+                    'network_id' : 'ftm',
+                    'farm_data' : {'masterChef' : '0x2352b745561e7e6FCD03c093cE7220e3e126ace0', 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingReward'}
+                },],
+            'vault_args' : [{}]
+        }
     },
                 '0xf43261d712cCa4aE55b34B77d9157e773254D1dF' : {
         'name' : 'honestwork.farm',
