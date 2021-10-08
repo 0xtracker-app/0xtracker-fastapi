@@ -1,3 +1,4 @@
+from . import queries
 from . import slicers
 from . import stake_layout
 from . import utils
@@ -43,13 +44,14 @@ async def get_reserves_and_total_supply(lp_data, client, balance):
 
 async def get_farming_from_program(farm_id, wallet, program, offset, client, vaults, session, mongodb):
     solana = wallet
+    poolKey = farm_id
 
-    #Get Staking Positions filtered by Wallet Address
     staking_program = await client.get_program_accounts(program, encoding='base64', memcmp_opts=slicers.memcmp_owner(solana.public_key, offset))
     user_stakes = []
     pool_infos = []
     lp_infos = []
-    #Loop over each position
+    reward_infos = []
+
     for each in staking_program['result']:
 
         account_data = stake_layout.USER_STAKE_INFO_ACCOUNT_LAYOUT.parse(utils.decode_byte_string(each['account']['data'][0]))
@@ -61,36 +63,96 @@ async def get_farming_from_program(farm_id, wallet, program, offset, client, vau
 
     for each in pool_data:
         stake_info = stake_layout.STAKE_INFO_LAYOUT.parse(utils.decode_byte_string(each['result']['value']['data'][0]))
-        print(utils.convert_public_key(stake_info.poolLpTokenAccount))
-        lp_infos.append(client.get_account_info(utils.convert_public_key(stake_info.poolLpTokenAccount), encoding="jsonParsed"))
+        lp_infos.append(TokenMetaData(address=utils.convert_public_key(stake_info.poolLpTokenAccount), mongodb=mongodb, network='solana', session=session, client=client))
+        reward_infos.append(TokenMetaData(address=utils.convert_public_key(stake_info.poolRewardTokenAccount), mongodb=mongodb, network='solana', session=session, client=client))
 
-    lp_data = await asyncio.gather(*lp_infos)
-    print(lp_data)
-    tokens_metadata = []
-    for each in lp_data:
-        print(each['result']['value']['data']['parsed']['info']['mint'])
-        tokens_metadata.append(TokenMetaData(address=each['result']['value']['data']['parsed']['info']['mint'], mongodb=mongodb, network='solana', session=session).lookup)
+    all_token_metadata = await asyncio.gather(*[x.account_to_mint() for x in lp_infos])
+    reward_data = await asyncio.gather(*[x.account_to_mint() for x in reward_infos])
+    update_reserves = await asyncio.gather(*[queries.ts_reserves(x, client) for x in all_token_metadata])
 
-    all_token_metadata = await asyncio.gather(*[x() for x in tokens_metadata])
+    poolNest = {poolKey: 
+    { 'userData': { } } }
 
-    coin_amount_data = await client.get_token_account_balance('4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R')
-    pc_amount_data = await client.get_token_account_balance('SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt')
-    lp_supply_data = await client.get_token_supply('7P5Thr9Egi2rvMmEuQkLn8x8e8Qro7u2U7yLD2tU2Hbe')
+    poolIDs = {}
 
-    x = await client.get_program_accounts('675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8', encoding='base64')
+    for idx, each in enumerate(pool_data):
+        stake_info = stake_layout.STAKE_INFO_LAYOUT.parse(utils.decode_byte_string(each['result']['value']['data'][0]))
 
-    for each in x['result']:
-        print(each)
+        if user_stakes[idx]['depositBalance'] > 0:
+            staked = helpers.from_custom(user_stakes[idx]['depositBalance'], update_reserves[idx]['token_decimal'])
+            want_token = update_reserves[idx]['tokenID']
 
-    #If LP then get reserves/total supply
-    # if len(lp_info) > 0:
-    #     lp_balances = await get_reserves_and_total_supply(lp_info[0], client, account_data.depositBalance)
-    #     user_stakes[pool_id].update(lp_balances)
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']].update(update_reserves[idx])
+            poolIDs['%s_%s_want' % (poolKey, user_stakes[idx]['poolID'])] = want_token
+            
+            pending_rewards = user_stakes[idx]['depositBalance'] * stake_info.rewardPerShareNet / 1e9 - user_stakes[idx]['rewardDebt']
+            reward_token_0 = {'pending': helpers.from_custom(pending_rewards, reward_data[idx]['token_decimal']), 'symbol' : reward_data[idx]['tkn0s'], 'token' : reward_data[idx]['tokenID']}
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']]['gambitRewards'].append(reward_token_0)
+            
 
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
 
-        # user_stakes[pool_id].update({'poolInfo': {'poolLpTokenAccount': utils.convert_public_key(stake_info.poolLpTokenAccount), 'poolRewardTokenAccount': utils.convert_public_key(
-        #     stake_info.poolRewardTokenAccount), 'totalReward': stake_info.totalReward, 'rewardPerShareNet': stake_info.rewardPerShareNet}})
+async def get_farming_from_program_dual(farm_id, wallet, program, offset, client, vaults, session, mongodb, reward_dec):
+    solana = wallet
+    poolKey = farm_id
 
+    staking_program = await client.get_program_accounts(program, encoding='base64', memcmp_opts=slicers.memcmp_owner(solana.public_key, offset))
+    user_stakes = []
+    pool_infos = []
+    lp_infos = []
+    reward_infos = []
+    reward_infosB = []
 
+    for each in staking_program['result']:
 
-        # user_stakes[pool_id]['rewards'].append({'balance' : helpers.get_pending_rewards(account_data.depositBalance, stake_info.rewardPerShareNet, 1e9, account_data.rewardDebt, 6)})
+        account_data = stake_layout.USER_STAKE_INFO_ACCOUNT_LAYOUT_V4.parse(utils.decode_byte_string(each['account']['data'][0]))
+        pool_id = utils.convert_public_key(account_data.poolId)
+        user_stakes.append({'poolID': pool_id, 'depositBalance': account_data.depositBalance, 'rewardDebt': account_data.rewardDebt, 'rewardDebtB' : account_data.rewardDebtB})
+        pool_infos.append(client.get_account_info(pool_id))
+
+    pool_data = await asyncio.gather(*pool_infos)
+
+    for each in pool_data:
+        stake_info = stake_layout.STAKE_INFO_LAYOUT_V4.parse(utils.decode_byte_string(each['result']['value']['data'][0]))
+        lp_infos.append(TokenMetaData(address=utils.convert_public_key(stake_info.poolLpTokenAccount), mongodb=mongodb, network='solana', session=session, client=client))
+        reward_infos.append(TokenMetaData(address=utils.convert_public_key(stake_info.poolRewardTokenAccount), mongodb=mongodb, network='solana', session=session, client=client))
+        reward_infosB.append(TokenMetaData(address=utils.convert_public_key(stake_info.poolRewardTokenAccountB), mongodb=mongodb, network='solana', session=session, client=client))
+
+    all_token_metadata = await asyncio.gather(*[x.account_to_mint() for x in lp_infos])
+    reward_data = await asyncio.gather(*[x.account_to_mint() for x in reward_infos])
+    reward_dataB = await asyncio.gather(*[x.account_to_mint() for x in reward_infosB])
+    update_reserves = await asyncio.gather(*[queries.ts_reserves(x, client) for x in all_token_metadata])
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for idx, each in enumerate(pool_data):
+        stake_info = stake_layout.STAKE_INFO_LAYOUT_V4.parse(utils.decode_byte_string(each['result']['value']['data'][0]))
+
+        if user_stakes[idx]['depositBalance'] > 0:
+            staked = helpers.from_custom(user_stakes[idx]['depositBalance'], update_reserves[idx]['token_decimal'])
+            want_token = update_reserves[idx]['tokenID']
+
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']].update(update_reserves[idx])
+            poolIDs['%s_%s_want' % (poolKey, user_stakes[idx]['poolID'])] = want_token
+            
+            pending_rewards = user_stakes[idx]['depositBalance'] * stake_info.perShare / reward_dec - user_stakes[idx]['rewardDebt']
+            reward_token_0 = {'pending': helpers.from_custom(pending_rewards, reward_data[idx]['token_decimal']), 'symbol' : reward_data[idx]['tkn0s'], 'token' : reward_data[idx]['tokenID']}
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']]['gambitRewards'].append(reward_token_0)
+
+            pending_rewards = user_stakes[idx]['depositBalance'] * stake_info.perShareB / reward_dec - user_stakes[idx]['rewardDebtB']
+            reward_token_0 = {'pending': helpers.from_custom(pending_rewards, reward_dataB[idx]['token_decimal']), 'symbol' : reward_dataB[idx]['tkn0s'], 'token' : reward_dataB[idx]['tokenID']}
+            poolNest[poolKey]['userData'][user_stakes[idx]['poolID']]['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None

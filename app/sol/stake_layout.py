@@ -1,38 +1,54 @@
 from enum import IntEnum
 
-from construct import Bytes, Padding, Int64ul, Int8ul, Int64sl, Int16ul, Octet, BytesInteger
-from construct import BitsInteger, BitsSwapped, BitStruct, Const, Flag
+from construct import Bytes, Padding, Int64ul, Int8ul, Int64sl, Int16ul, Octet, BytesInteger, Int64un, Int16un
+from construct import BitsInteger, BitsSwapped, BitStruct, Const, Flag, Computed
 from construct import Struct
 from solana._layouts.shared import PUBLIC_KEY_LAYOUT
+from base64 import b64decode, b64encode
+from base58 import b58decode
+from solana.publickey import PublicKey
 
+def decode_byte_string(byte_string: str, encoding: str = "base64") -> bytes:
+    """Decode a encoded string from an RPC Response."""
+    b_str = str.encode(byte_string)
+    if encoding == "base64":
+        return b64decode(b_str)
+    if encoding == "base58":
+        return b58decode(b_str)
+
+    raise NotImplementedError(f"{encoding} decoding not currently supported.")
+
+def convert_public_key(hash):
+    return str(PublicKey(hash))
 
 # Fusion Pools Layout
 STAKE_INFO_LAYOUT_V4 = Struct(
     "state" / Int64ul,
     "nonce" / Int64ul,
-    "poolLpTokenAccount" / Bytes(32),
-    "poolRewardTokenAccount" / Bytes(32),
+    "poolLpTokenAccount" / PUBLIC_KEY_LAYOUT,
+    "poolRewardTokenAccount" / PUBLIC_KEY_LAYOUT,
     "totalReward" / Int64ul,
     "perShare" / BytesInteger(16,swapped=True),
     "perBlock" / Int64ul,
     "option" / Int8ul,
-    "poolRewardTokenAccountB" / Bytes(32),
+    "poolRewardTokenAccountB" / PUBLIC_KEY_LAYOUT,
     Padding(7),
     "totalRewardB" / Int64ul,
     "perShareB" / BytesInteger(16,swapped=True),
     "perBlockB" / Int64ul,
     "lastBlock" / Int64ul,
-    "owner" / Bytes(32)
+    "owner" / PUBLIC_KEY_LAYOUT
+    
 )
 
 # RAY Yield Farming
 STAKE_INFO_LAYOUT = Struct(
     "state" / Int64ul,
     "nonce" / Int64ul,
-    "poolLpTokenAccount" / Bytes(32),
-    "poolRewardTokenAccount" / Bytes(32),
-    "owner" / Bytes(32),
-    "feeOwner" / Bytes(32),
+    "poolLpTokenAccount" / PUBLIC_KEY_LAYOUT,
+    "poolRewardTokenAccount" / PUBLIC_KEY_LAYOUT,
+    "owner" / PUBLIC_KEY_LAYOUT,
+    "feeOwner" / PUBLIC_KEY_LAYOUT,
     "feeY" / Int64ul,
     "feeX" / Int64ul,
     "totalReward" / Int64ul,
@@ -59,8 +75,8 @@ ACCOUNT_FLAGS_LAYOUT = BitsSwapped(  # Swap to little endian
 OPEN_ORDERS_LAYOUT = Struct(
     Padding(5),
     "account_flags" / ACCOUNT_FLAGS_LAYOUT,
-    "market" / Bytes(32),
-    "owner" / Bytes(32),
+    "market" / PUBLIC_KEY_LAYOUT,
+    "owner" / PUBLIC_KEY_LAYOUT,
     "base_token_free" / Int64ul,
     "base_token_total" / Int64ul,
     "quote_token_free" / Int64ul,
@@ -76,15 +92,15 @@ OPEN_ORDERS_LAYOUT = Struct(
 USER_STAKE_INFO_ACCOUNT_LAYOUT = Struct(
   "state" / Int64ul,
   "poolId" / PUBLIC_KEY_LAYOUT,
-  "stakerOwner" / Bytes(32),
+  "stakerOwner" / PUBLIC_KEY_LAYOUT,
   "depositBalance" / Int64ul,
-  "rewardDebt" / Int64ul
+  "rewardDebt" / Int64ul,
 )
 
 USER_STAKE_INFO_ACCOUNT_LAYOUT_V4 = Struct(
   "state" / Int64ul,
-  "poolId" / Bytes(32),
-  "stakerOwner" / Bytes(32),
+  "poolId" / PUBLIC_KEY_LAYOUT,
+  "stakerOwner" / PUBLIC_KEY_LAYOUT,
   "depositBalance" / Int64ul,
   "rewardDebt" / Int64ul,
   "rewardDebtB" / Int64ul
@@ -179,4 +195,183 @@ SABER_LANDLORD = Struct(
     'total_rewards_shares' / Int64ul,
     'mint_proxy_program'/ PUBLIC_KEY_LAYOUT,
     'rewards_token_mint'/ PUBLIC_KEY_LAYOUT
+)
+
+RAYDIUM_AMM_V4 = Struct(
+  "status" / Int64ul,
+  "nonce" / Int64ul,
+  "orderNum" / Int64ul,
+  "depth" / Int64ul,
+  "coinDecimals" / Int64ul,
+  "pcDecimals" / Int64ul,
+  "state" / Int64ul,
+  "resetFlag" / Int64ul,
+  "minSize" / Int64ul,
+  "volMaxCutRatio" / Int64ul,
+  "amountWaveRatio" / Int64ul,
+  "coinLotSize" / Int64ul,
+  "pcLotSize" / Int64ul,
+  "minPriceMultiplier" / Int64ul,
+  "maxPriceMultiplier" / Int64ul,
+  "systemDecimalsValue" / Int64ul,
+  ## Fees
+  "minSeparateNumerator" / Int64ul,
+  "minSeparateDenominator" / Int64ul,
+  "tradeFeeNumerator" / Int64ul,
+  "tradeFeeDenominator" / Int64ul,
+  "pnlNumerator" / Int64ul,
+  "pnlDenominator" / Int64ul,
+  "swapFeeNumerator" / Int64ul,
+  "swapFeeDenominator" / Int64ul,
+  ## OutPutData
+  "needTakePnlCoin" / Int64ul,
+  "needTakePnlPc" / Int64ul,
+  "totalPnlPc" / Int64ul,
+  "totalPnlCoin" / Int64ul,
+  "poolTotalDepositPc" / BytesInteger(16, signed=False, swapped=True),
+  "poolTotalDepositCoin" / BytesInteger(16, signed=False, swapped=True),
+  "swapCoinInAmount" / BytesInteger(16, signed=False, swapped=True),
+  "swapPcOutAmount" / BytesInteger(16, signed=False, swapped=True),
+  "swapCoin2PcFee" / Int64ul,
+  "swapPcInAmount" / BytesInteger(16, signed=False, swapped=True),
+  "swapCoinOutAmount" / BytesInteger(16, signed=False, swapped=True),
+  "swapPc2CoinFee" / Int64ul,
+
+  'rawpoolCoinTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'rawpoolPcTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'rawcoinMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'rawpcMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'rawlpMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'rawammOpenOrders'/ PUBLIC_KEY_LAYOUT,
+  'rawserumMarket'/ PUBLIC_KEY_LAYOUT,
+  'rawserumProgramId'/ PUBLIC_KEY_LAYOUT,
+  'rawammTargetOrders'/ PUBLIC_KEY_LAYOUT,
+  'rawpoolWithdrawQueue'/ PUBLIC_KEY_LAYOUT,
+  'rawpoolTempLpTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'rawammOwner'/ PUBLIC_KEY_LAYOUT,
+  'rawpnlOwner'/ PUBLIC_KEY_LAYOUT,
+  'poolCoinTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolCoinTokenAccount)),
+  'poolPcTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolPcTokenAccount)),
+  'coinMintAddress' / Computed(lambda this: convert_public_key(this.rawcoinMintAddress)),
+  'pcMintAddress' / Computed(lambda this: convert_public_key(this.rawpcMintAddress)),
+  'lpMintAddress' / Computed(lambda this: convert_public_key(this.rawlpMintAddress)),
+  'ammOpenOrders' / Computed(lambda this: convert_public_key(this.rawammOpenOrders)),
+  'serumMarket' / Computed(lambda this: convert_public_key(this.rawserumMarket)),
+  'serumProgramId' / Computed(lambda this: convert_public_key(this.rawserumProgramId)),
+  'ammTargetOrders' / Computed(lambda this: convert_public_key(this.rawammTargetOrders)),
+  'poolWithdrawQueue' / Computed(lambda this: convert_public_key(this.rawpoolWithdrawQueue)),
+  'poolTempLpTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolTempLpTokenAccount)),
+  'ammOwner' / Computed(lambda this: convert_public_key(this.rawammOwner)),
+  'pnlOwner' / Computed(lambda this: convert_public_key(this.rawpnlOwner)),
+)
+
+RAYDIUM_AMM_V3 = Struct(
+  "status" / Int64ul,
+  "nonce" / Int64ul,
+  "orderNum" / Int64ul,
+  "depth" / Int64ul,
+  "coinDecimals" / Int64ul,
+  "pcDecimals" / Int64ul,
+  "state" / Int64ul,
+  "resetFlag" / Int64ul,
+  "fee" / Int64ul,
+  "min_separate" / Int64ul,
+  "minSize" / Int64ul,
+  "volMaxCutRatio" / Int64ul,
+  "pnlRatio" / Int64ul,
+  "amountWaveRatio" / Int64ul,
+  "coinLotSize" / Int64ul,
+  "pcLotSize" / Int64ul,
+  "minPriceMultiplier" / Int64ul,
+  "maxPriceMultiplier" / Int64ul,
+  "needTakePnlCoin" / Int64ul,
+  "needTakePnlPc" / Int64ul,
+  "totalPnlX" / Int64ul,
+  "totalPnlY" / Int64ul,
+  "poolTotalDepositPc" / Int64ul,
+  "poolTotalDepositCoin" / Int64ul,
+  "systemDecimalsValue" / Int64ul,
+  'rawpoolCoinTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'rawpoolPcTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'rawcoinMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'rawpcMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'rawlpMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'rawammOpenOrders'/ PUBLIC_KEY_LAYOUT,
+  'rawserumMarket'/ PUBLIC_KEY_LAYOUT,
+  'rawserumProgramId'/ PUBLIC_KEY_LAYOUT,
+  'rawammTargetOrders'/ PUBLIC_KEY_LAYOUT,
+  'rawammQuantities'/ PUBLIC_KEY_LAYOUT,
+  'rawpoolWithdrawQueue'/ PUBLIC_KEY_LAYOUT,
+  'rawpoolTempLpTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'rawammOwner'/ PUBLIC_KEY_LAYOUT,
+  'rawpnlOwner'/ PUBLIC_KEY_LAYOUT,
+  'rawsrmTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'poolCoinTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolCoinTokenAccount)),
+  'poolPcTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolPcTokenAccount)),
+  'coinMintAddress' / Computed(lambda this: convert_public_key(this.rawcoinMintAddress)),
+  'pcMintAddress' / Computed(lambda this: convert_public_key(this.rawpcMintAddress)),
+  'lpMintAddress' / Computed(lambda this: convert_public_key(this.rawlpMintAddress)),
+  'ammOpenOrders' / Computed(lambda this: convert_public_key(this.rawammOpenOrders)),
+  'serumMarket' / Computed(lambda this: convert_public_key(this.rawserumMarket)),
+  'serumProgramId' / Computed(lambda this: convert_public_key(this.rawserumProgramId)),
+  'ammTargetOrders' / Computed(lambda this: convert_public_key(this.rawammTargetOrders)),
+  'ammQuantities' / Computed(lambda this: convert_public_key(this.rawammQuantities)),
+  'poolWithdrawQueue' / Computed(lambda this: convert_public_key(this.rawpoolWithdrawQueue)),
+  'poolTempLpTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolTempLpTokenAccount)),
+  'ammOwner' / Computed(lambda this: convert_public_key(this.rawammOwner)),
+  'pnlOwner' / Computed(lambda this: convert_public_key(this.rawpnlOwner)),
+  'srmTokenAccount'/ Computed(lambda this: convert_public_key(this.rawsrmTokenAccount))
+)
+
+RAYDIUM_AMM = Struct(
+  "status" / Int64ul,
+  "nonce" / Int64ul,
+  "orderNum" / Int64ul,
+  "depth" / Int64ul,
+  "coinDecimals" / Int64ul,
+  "pcDecimals" / Int64ul,
+  "state" / Int64ul,
+  "resetFlag" / Int64ul,
+  "fee" / Int64ul,
+  "minSize" / Int64ul,
+  "volMaxCutRatio" / Int64ul,
+  "pnlRatio" / Int64ul,
+  "amountWaveRatio" / Int64ul,
+  "coinLotSize" / Int64ul,
+  "pcLotSize" / Int64ul,
+  "minPriceMultiplier" / Int64ul,
+  "maxPriceMultiplier" / Int64ul,
+  "needTakePnlCoin" / Int64ul,
+  "needTakePnlPc" / Int64ul,
+  "totalPnlX" / Int64ul,
+  "totalPnlY" / Int64ul,
+  "systemDecimalsValue" / Int64ul,
+  'poolCoinTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'poolPcTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'coinMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'pcMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'lpMintAddress'/ PUBLIC_KEY_LAYOUT,
+  'ammOpenOrders'/ PUBLIC_KEY_LAYOUT,
+  'serumMarket'/ PUBLIC_KEY_LAYOUT,
+  'serumProgramId'/ PUBLIC_KEY_LAYOUT,
+  'ammTargetOrders'/ PUBLIC_KEY_LAYOUT,
+  'ammQuantities'/ PUBLIC_KEY_LAYOUT,
+  'poolWithdrawQueue'/ PUBLIC_KEY_LAYOUT,
+  'poolTempLpTokenAccount'/ PUBLIC_KEY_LAYOUT,
+  'ammOwner'/ PUBLIC_KEY_LAYOUT,
+  'pnlOwner'/ PUBLIC_KEY_LAYOUT,
+  'poolCoinTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolCoinTokenAccount)),
+  'poolPcTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolPcTokenAccount)),
+  'coinMintAddress' / Computed(lambda this: convert_public_key(this.rawcoinMintAddress)),
+  'pcMintAddress' / Computed(lambda this: convert_public_key(this.rawpcMintAddress)),
+  'lpMintAddress' / Computed(lambda this: convert_public_key(this.rawlpMintAddress)),
+  'ammOpenOrders' / Computed(lambda this: convert_public_key(this.rawammOpenOrders)),
+  'serumMarket' / Computed(lambda this: convert_public_key(this.rawserumMarket)),
+  'serumProgramId' / Computed(lambda this: convert_public_key(this.rawserumProgramId)),
+  'ammTargetOrders' / Computed(lambda this: convert_public_key(this.rawammTargetOrders)),
+  'ammQuantities' / Computed(lambda this: convert_public_key(this.rawammQuantities)),
+  'poolWithdrawQueue' / Computed(lambda this: convert_public_key(this.rawpoolWithdrawQueue)),
+  'poolTempLpTokenAccount' / Computed(lambda this: convert_public_key(this.rawpoolTempLpTokenAccount)),
+  'ammOwner' / Computed(lambda this: convert_public_key(this.rawammOwner)),
+  'pnlOwner' / Computed(lambda this: convert_public_key(this.rawpnlOwner)),
 )

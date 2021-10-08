@@ -27,7 +27,7 @@ async def get_tx_to_contract(network, wallet, token, contract, session):
     }
 
     for block in x['data']['items']:
-        response['gasUsed'] += block['gas_quote']
+        response['gasUsed'] += block['gas_quote'] if 'gas_quote' in block else 0
         for tx in block['transfers']:
             token_amount = parsers.from_custom(int(tx['delta']), int(tx['contract_decimals']))
             if token_amount > 0:

@@ -625,6 +625,7 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
     calls = []
 
     vault_list = []
+    want_list = []
     want_lookup = {}
 
     for vault in vaults:
@@ -633,6 +634,7 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
         calls.append(Call(vault_address, ['balanceOf(address)(uint256)', wallet], [[f'{vault_address}_staked', None]]))
         calls.append(Call(vault_address, [f'getPricePerFullShare()(uint256)'], [[f'{vault_address}_getPricePerFullShare', parsers.from_wei]]))
         vault_list.append(vault_address)
+        want_list.append(want_address)
         want_lookup[vault_address] = want_address
 
     stakes= await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
@@ -642,13 +644,13 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
 
     poolIDs = {}
 
-    token_decimals = await template_helpers.get_token_list_decimals(vault_list,network,False)
+    token_decimals = await template_helpers.get_token_list_decimals(want_list,network,False)
 
     for each in stakes:
         if 'staked' in each:
             if stakes[each] > 0:
                 breakdown = each.split('_')
-                token_decimal = 18 if breakdown[0] not in token_decimals else token_decimals[breakdown[0]]
+                token_decimal = 18 if want_lookup[breakdown[0]] not in token_decimals else token_decimals[want_lookup[breakdown[0]]]
                 staked = parsers.from_custom(stakes[each], token_decimal)
                 want_token = want_lookup[breakdown[0]]
                 price_per = stakes[f'{breakdown[0]}_getPricePerFullShare'] if f'{breakdown[0]}_getPricePerFullShare' in stakes else 1
@@ -2697,5 +2699,55 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest
+        else:
+            return None
+
+async def get_spooky_stakes(wallet,farm_id,network_id,farm_data,vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        if 'poolFunction' not in farm_data:
+            pool_function = 'poolLength'
+        else:
+            pool_function = farm_data['poolFunction']
+        
+        pool_length = await Call(farm_data['masterChef'], [f'{pool_function}()(uint256)'],None,network)() 
+        staked_function = farm_data['stakedFunction']
+        pending_function = farm_data['pendingFunction']
+
+        if 'wantFunction' not in farm_data:
+            want_function = 'poolInfo'
+        else:
+            want_function = farm_data['wantFunction']
+
+        for pid in range(0,pool_length):
+            calls.append(Call(farm_data['masterChef'], [f'{staked_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', None]]))
+            calls.append(Call(farm_data['masterChef'], [f'{want_function}(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_reward', None]]))
+            calls.append(Call(farm_data['masterChef'], [f'xboo()(address)'],[[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+        reward_metadata = await template_helpers.get_token_list_decimals_symbols([stakes[x] for x in stakes if 'reward' in x],network_id)
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = stakes[each]
+                    want_token = stakes[f'{breakdown[0]}_want']
+                    pending = stakes[f'{breakdown[0]}_pending']
+                    reward_token = stakes[f'{breakdown[0]}_reward']
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : parsers.from_custom(pending, reward_metadata[f'{reward_token}_decimals']), 'rewardToken' : reward_token, 'rewardSymbol' : reward_metadata[f'{reward_token}_symbol']}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+        
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
         else:
             return None

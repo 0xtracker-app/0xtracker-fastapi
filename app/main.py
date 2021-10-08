@@ -53,7 +53,7 @@ async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_databa
 
 @app.get('/farms-list/')
 async def get_farm_list():
-    farm_list = {**return_farms_list(), **cosmos_farms_list()}
+    farm_list = {**return_farms_list(), **cosmos_farms_list(), **solana_farms_list()}
     results = [{'sendValue' : farm_list[x]['masterChef'], 'name' : farm_list[x]['name'], 'network': farm_list[x]['network'], 'featured' : farm_list[x]['featured']} for x in farm_list if 'show' not in farm_list[x]]
     return results
 
