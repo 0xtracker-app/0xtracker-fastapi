@@ -2751,3 +2751,43 @@ async def get_spooky_stakes(wallet,farm_id,network_id,farm_data,vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_geist_lending_protocol(wallet,vaults,farm_id,network,snapshot='getAccountSnapshot'):
+
+    poolKey = farm_id
+    calls = []
+
+    lending_vaults = vaults
+
+    for vault in lending_vaults:
+        vault_address = vault['address']
+        calls.append(Call(vault_address, [f'{snapshot}(address)((uint256,uint256))', wallet], [[f'{vault_address}_accountSnapshot', None ]]))
+        
+    stakes=await Multicall(calls, WEB3_NETWORKS[network])()
+
+    poolNest = {poolKey: 
+    { 'userData': { }
+     } }
+
+    poolIDs = {}
+
+    hash_map = {x['address'] : x for x in lending_vaults}
+
+    for stake in stakes:
+        if stakes[stake][0] > 0 or stakes[stake][1] > 0:
+            addPool = stake.split('_')
+            if addPool[0] not in poolNest[poolKey]['userData']:
+
+                snapshot =  stakes[stake]
+                underlying = hash_map[addPool[0]]['want']
+                underlying_decimal = hash_map[addPool[0]]['decimal']           
+                collat = parsers.from_custom(snapshot[0], underlying_decimal)
+                collat_rate = hash_map[addPool[0]]['collat_rate']
+                borrow = parsers.from_custom(snapshot[1], underlying_decimal)
+                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate}
+                poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None

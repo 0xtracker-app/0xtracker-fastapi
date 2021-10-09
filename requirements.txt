@@ -71,7 +71,7 @@ rfc3986==1.5.0
 rlp==2.0.1
 six==1.16.0
 sniffio==1.2.0
-solana==0.11.3
+solana==0.15.1
 SQLAlchemy==1.3.24
 starlette==0.13.6
 toml==0.10.2

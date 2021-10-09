@@ -519,6 +519,9 @@ async def yak_vaults(session):
 async def qubit_vaults(session):
     return poolext.qubit.vaults
 
+async def geist_vaults(session):
+    return poolext.geist.vaults
+
 async def get_pancakehunny(session):
     return poolext.pancake_hunny.reward_info
 
