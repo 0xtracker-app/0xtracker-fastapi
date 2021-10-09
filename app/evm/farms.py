@@ -4481,6 +4481,59 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xF43480afE9863da4AcBD4419A47D9Cc7d25A647F' : {
+        'name' : 'abracadabra.money',
+        'rewardToken' : '0x090185f2135308bad17527004364ebcc2d37e5f6',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingIce',
+        'masterChef' : '0xF43480afE9863da4AcBD4419A47D9Cc7d25A647F',
+        'featured' : 2,
+        'network' : 'eth',
+    },
+                '0x37Cf490255082ee50845EA4Ff783Eb9b6D1622ce' : {
+        'name' : 'abracadabra.money',
+        'rewardToken' : '0x468003b688943977e6130f4f68f23aad939a1040',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingIce',
+        'masterChef' : '0x37Cf490255082ee50845EA4Ff783Eb9b6D1622ce',
+        'featured' : 2,
+        'network' : 'ftm',
+    },
+                '0x839De324a1ab773F76a53900D70Ac1B913d2B387' : {
+        'name' : 'abracadabra.money',
+        'rewardToken' : '0x3e6648c5a70a150a88bce65f4ad4d506fe15d2af',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingIce',
+        'masterChef' : '0x839De324a1ab773F76a53900D70Ac1B913d2B387',
+        'featured' : 2,
+        'network' : 'arb',
+    },
+    #             '0xGeist' : {
+    #     'name' : 'geist.finance',
+    #     'rewardToken' : '0xd8321AA83Fb0a4ECd6348D4577431310A6E0814d',
+    #     'decimal' : 18,
+    #     'stakedFunction' : None,
+    #     'pendingFunction' : None,
+    #     'masterChef' : '0xGeist',
+    #     'featured' : 2,
+    #     'network' : 'ftm',
+    #     'type' : 'lending',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_qubit_lending_protocol],
+    #         'vaults' : [external_contracts.geist_vaults],
+    #         'args' : [
+    #                 {
+    #                     'farm_id' : '0xGeist',
+    #                     'network' : 'ftm',
+    #                     'snapshot' : 'accountSnapshot'
+    #                 }
+    #                 ],
+    #         'vault_args' : [{}]
+    #     }
+    # },
 }
 
 

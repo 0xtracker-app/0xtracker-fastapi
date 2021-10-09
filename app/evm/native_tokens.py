@@ -15,6 +15,7 @@ class NativeToken():
     CELO = '0x471EcE3750Da237f93B8E339c536989b8978a438'
     XDAI = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
     HECO = '0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f'
+    METER = '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -30,6 +31,7 @@ class NativeSymbol():
     CELO = 'CELO'
     XDAI = 'XDAI'
     HECO = 'HT'
+    METER = 'MTG'
 
 class NativeDecimal():
     BSC = 18
@@ -45,6 +47,7 @@ class NativeDecimal():
     CELO = 18
     XDAI = 18
     HECO = 18
+    METER = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -60,6 +63,7 @@ class StableToken():
     CELO = '0x64dEFa3544c695db8c535D289d843a189aa26b98'
     XDAI = '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83'
     HECO = '0xa71edc38d189767582c38a3145b5873052c3e47a'
+    METER = '0xd86e243fc0007e6226b07c9a50c9d70d78299eb5'
 
 class StableDecimal():
     BSC = 18
@@ -75,6 +79,7 @@ class StableDecimal():
     CELO = 18
     XDAI = 6
     HECO = 18
+    METER = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -90,6 +95,7 @@ class DefaultRouter():
     CELO = routers.CeloRouter.UBE
     XDAI = routers.DaiRouter.HONEY
     HECO = routers.HecoRouter.MDEX
+    METER = routers.MeterRouter.VOLT
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -105,6 +111,7 @@ class RouteClass():
     CELO = routers.CeloRouter
     XDAI = routers.DaiRouter
     HECO = routers.HecoRouter
+    METER = routers.MeterRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -120,6 +127,7 @@ class CoinGecko():
     CELO = 'celo'
     XDAI = 'xdai'
     HECO = 'huobi-token'
+    METER = ''
 
 
 class NetworkRoutes():
