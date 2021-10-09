@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov']
+        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -147,6 +147,21 @@ class CosmosNetwork:
                 'symbol' : 'IOV',
                 'decimals' : 6,
                 'coin_gecko_id' : 'starname'
+            }
+        },
+            'juno' : {
+            'wallet' : from_atom(wallet,'juno'),
+            'rpc' : 'https://rpc.juno.omniflix.co',
+            'rest' : 'https://api.juno.omniflix.co',
+            'chain_id' : 'juno-1',
+            'chain_name' : 'Juno Mainnet',
+            'explorer' : 'https://www.mintscan.io/juno',
+            'bech_prefix' : 'juno',
+            'stake_token' : {
+                'denom' : 'ujuno',
+                'symbol' : 'JUNO',
+                'decimals' : 6,
+                'coin_gecko_id' : ''
             }
         },
     }
