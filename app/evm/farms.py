@@ -4028,6 +4028,17 @@ class Farms:
         'featured' : 2,
         'network' : 'arb'
     },
+                '0xaeD5b25BE1c3163c907a471082640450F928DDFE' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0xe55e19fb4f2d85af758950957714292dac1e25b2',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0xaeD5b25BE1c3163c907a471082640450F928DDFE',
+        'featured' : 2,
+        'network' : 'ftm'
+    },
                 '0xQubit' : {
         'name' : 'qbt.fi',
         'rewardToken' : '0x17b7163cf1dbd286e262ddc68b553d899b93f526',
