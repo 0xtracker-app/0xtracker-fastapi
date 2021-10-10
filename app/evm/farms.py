@@ -4615,6 +4615,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xDB30643c71aC9e2122cA0341ED77d09D5f99F924' : {
+        'name' : 'defikingdoms.com',
+        'rewardToken' : '0x72Cb10C6bfA5624dD07Ef608027E366bd690048F',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0xDB30643c71aC9e2122cA0341ED77d09D5f99F924',
+        'featured' : 2,
+        'network' : 'harmony',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_dk_jewel],
+            'args' : [
+                    {
+                        'farm_id' : '0xDB30643c71aC9e2122cA0341ED77d09D5f99F924',
+                        'network' : 'harmony',
+                        'receipt_token' : '0xA9cE83507D872C5e1273E745aBcfDa849DAA654F'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
     #             '0xGeist' : {
     #     'name' : 'geist.finance',
     #     'rewardToken' : '0xd8321AA83Fb0a4ECd6348D4577431310A6E0814d',

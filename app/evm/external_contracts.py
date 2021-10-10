@@ -448,6 +448,9 @@ async def get_polygonfarm_staking(session):
 async def get_polyfund_vault(session):
     return ['0xdcfd912b50904B4d5745DfFe0D4d7a5097c82849']
 
+async def get_dk_jewel(session):
+    return ['0x72Cb10C6bfA5624dD07Ef608027E366bd690048F']
+
 async def get_ironlend_vaults(session):
     return poolext.ironlend.vaults
 
