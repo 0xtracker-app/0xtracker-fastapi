@@ -1287,6 +1287,7 @@ class Farms:
         'pendingFunction' : None,
         'masterChef' : '0x76b8c3ECdF99483335239e66F34191f11534cbAA',
         'featured' : 2,
+        'death_index' : [75, 76],
         'network' : 'ftm',
     },
                 '0xB93C082bCfCCf5BAeA0E0f0c556668E25A41B896' : {

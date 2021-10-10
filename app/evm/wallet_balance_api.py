@@ -83,23 +83,24 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     payload = []
 
     for token in wallet_data[0]:
-
         address = wallet_data[0][token]['contract']
-        symbol = wallet_data[0][token]['token_symbol']
-        try:
-            price = prices[address]['usd'] if address in prices else 0
-        except:
-            price = 0
 
-        data = {
-            'token_address' : address.lower(),
-            'symbol' : symbol,
-            'tokenBalance' : wallet_data[0][token]['token_balance'],
-            'tokenPrice' : price,
-            'network' : network
-        }
+        if address not in ['0x9e2d266d6c90f6c0d80a88159b15958f7135b8af']:
+            symbol = wallet_data[0][token]['token_symbol']
+            try:
+                price = prices[address]['usd'] if address in prices else 0
+            except:
+                price = 0
 
-        payload.append(data)
+            data = {
+                'token_address' : address.lower(),
+                'symbol' : symbol,
+                'tokenBalance' : wallet_data[0][token]['token_balance'],
+                'tokenPrice' : price,
+                'network' : network
+            }
+
+            payload.append(data)
 
 
     return payload
