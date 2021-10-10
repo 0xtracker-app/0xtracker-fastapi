@@ -9,6 +9,7 @@ class TokenOverride:
             '0xdd17344f7537df99f212a08f5a5480af9f6c083a'.lower() : [get_price_from_synpool, {'token_in' : '0xdd17344f7537df99f212a08f5a5480af9f6c083a','swap_address' : '0x930d001b7efb225613ac7f35911c52ac9e111fa9', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'bsc'}],
             '0x398a2d1b343d09261df990c2fcc97b5d5d62c1b5'.lower() : [get_price_from_synpool, {'token_in' : '0x398a2d1b343d09261df990c2fcc97b5d5d62c1b5','swap_address' : '0x96cf323E477Ec1E17A4197Bdcc6f72Bb2502756a', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'matic'}],
             '0x08928492691b64e6fe6ff9dead42f557d20a4a18'.lower() : [get_price_from_synpool, {'token_in' : '0x08928492691b64e6fe6ff9dead42f557d20a4a18','swap_address' : '0x1f6A0656Ff5061930076bf0386b02091e0839F9f', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'ftm'}],
+            '0x2913E812Cf0dcCA30FB28E6Cac3d2DCFF4497688'.lower() : [get_price_from_synpool, {'token_in' : '0x2913E812Cf0dcCA30FB28E6Cac3d2DCFF4497688','swap_address' : '0x84cd82204c07c67dF1C2C372d8Fd11B3266F76a3', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'arb'}],
             '0x57319d41f71e81f3c65f2a47ca4e001ebafd4f33'.lower() : [get_xjoe_price, {}],
             '0xa48d959AE2E88f1dAA7D5F611E01908106dE7598'.lower() : [get_xboo_price, {}],
             '0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12'.lower() : [get_goldbar_price, {}],
