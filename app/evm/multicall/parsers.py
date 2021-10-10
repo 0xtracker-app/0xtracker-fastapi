@@ -77,6 +77,18 @@ def parseBunny(data):
 
     return response
 
+def parse_singular_reward(data):
+    index = data[7]
+    # reward_tokens = [
+    #     {'reward_token' : '0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE', 'decimals' : 18, 'symbol' : 'BOO'},
+    #     {'reward_token' : '0x3D8f1ACCEe8e263F837138829B6C4517473d0688', 'decimals' : 18, 'symbol' : 'fWINGS'},
+    #     {'reward_token' : '0xA9937092c4E2B0277C16802Cc8778D252854688A', 'decimals' : 18, 'symbol' : 'fOLIVE'},
+    #     {'reward_token' : '0x0575f8738EFdA7F512e3654F277C77e80C7d2725', 'decimals' : 18, 'symbol' : 'ORI'},
+    #     {'reward_token' : '0x5Cc61A78F164885776AA610fb0FE1257df78E59B', 'decimals' : 18, 'symbol' : 'SPIRIT'},
+    # ]
+    reward_tokens = ['0x841FAD6EAe12c286d1Fd18d1d525DFfA75C7EFFE', '0x3D8f1ACCEe8e263F837138829B6C4517473d0688', '0xA9937092c4E2B0277C16802Cc8778D252854688A', '0x0575f8738EFdA7F512e3654F277C77e80C7d2725', '0x5Cc61A78F164885776AA610fb0FE1257df78E59B']
+    return reward_tokens[index]
+
 def from_tao(value):
     return value / 1e9
 

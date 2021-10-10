@@ -2791,3 +2791,53 @@ async def get_geist_lending_protocol(wallet,vaults,farm_id,network,snapshot='get
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_singular_masterchef(wallet,farm_id,network_id,farm_data,vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+        pool_length = await Call(farm_data['masterChef'], [f'poolLength()(uint256)'],None,network)()
+
+        for pid in range(0,pool_length):
+            calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_staked', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'pendingSing(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_pending', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'pendingEarned(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_pending1', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'poolInfo(uint256)(address)', pid], [[f'{pid}s_want', None]]))
+            if network_id == 'ftm':
+                calls.append(Call(farm_data['masterChef'], [f'poolInfo(uint256)((address,uint256,uint256,uint256,uint16,uint256,bool,uint256))', pid], [[f'{pid}s_rewardtoken', parsers.parse_singular_reward]]))
+            else:
+                calls.append(Call(farm_data['masterChef'], [f'WL_earn()(address)'], [[f'{pid}s_rewardtoken', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        token_symbols = await template_helpers.get_token_list_decimals_symbols([stakes[x] for x in stakes if 'rewardtoken' in x],network_id)
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = stakes[each]
+                    want_token = stakes[f'{breakdown[0]}_want']
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+                
+                    if stakes[f'{breakdown[0]}_pending'] > 0:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : 'SING', 'token' : farm_data['reward']}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+
+                    if stakes[f'{breakdown[0]}_pending1'] > 0:
+                        reward_address = stakes[f'{breakdown[0]}_rewardtoken']
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending1'], 'symbol' : token_symbols[f'{reward_address}_symbol'], 'token' : stakes[f'{breakdown[0]}_rewardtoken']}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)                    
+
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
