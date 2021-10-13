@@ -28,6 +28,12 @@ async def coingecko_by_address_network_single(address,network,session):
 
     return {address.lower() : response[address]['usd']}
 
+async def get_price_from_firebird(token_in, token_out, amount, out_d, session):
+    url = f'https://router.firebird.finance/polygon/route?tokenIn={token_in}&tokenOut={token_out}&amountIn={amount}&saveGas=0'
+    r = await make_get_json(session, url)
+    return {token_in.lower() : parsers.from_custom(int(r['outputAmount']), out_d)}
+
+
 async def get_tranchess_price(tranch,address,session):
     url = f'https://tranchess.com/api/v1/funds/0xd6B3B86209eBb3C608f3F42Bf52818169944E402/historyNavs?granularity=M30&count=1'
     response = await make_get_json(session, url)

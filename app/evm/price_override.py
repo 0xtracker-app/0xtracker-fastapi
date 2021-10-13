@@ -1,4 +1,4 @@
-from .oracles import get_gmx_price, get_price_from_router, get_price_from_synpool, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
+from .oracles import get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
 from . import routers
 
 class TokenOverride:
@@ -27,5 +27,6 @@ class TokenOverride:
             '0x15d0318fddf785ac0d3ba690c0033b3bedf4c648'.lower() : [get_tranchess_price, {'address' : '0x15d0318fddf785ac0d3ba690c0033b3bedf4c648', 'tranch' : 'trancheM', 'session' : session}],
             '0x8cc456b384c8ad06bf430f4f130aa63ef0dc6f85'.lower() : [get_tranchess_price, {'address' : '0x8cc456b384c8ad06bf430f4f130aa63ef0dc6f85', 'tranch' : 'trancheA', 'session' : session}],
             '0x80da8ca6c3dabd3a9f06ca8eeed5d61687fab7ef'.lower() : [get_tranchess_price, {'address' : '0x80da8ca6c3dabd3a9f06ca8eeed5d61687fab7ef', 'tranch' : 'trancheB', 'session' : session}],
+            '0x88a3acac5c48f93121d4d7771a068a1fcde078bc'.lower() : [get_price_from_firebird, {'token_in' : '0x88a3acac5c48f93121d4d7771a068a1fcde078bc', 'token_out' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'out_d' : 6, 'amount' : 1 * 10 ** 18, 'session' : session}],
 
 }
