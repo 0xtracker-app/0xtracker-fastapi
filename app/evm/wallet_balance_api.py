@@ -3,7 +3,7 @@ from .multicall import Call, Multicall, parsers
 import json
 import time
 from web3 import Web3
-from .oracles import coingecko_by_address_network
+from .oracles import coingecko_by_address_network, list_router_prices
 from .networks import WEB3_NETWORKS, SCAN_APIS
 from .utils import make_get_json
 from .native_tokens import NetworkRoutes
@@ -32,19 +32,19 @@ async def get_balance_of(token_list, wallet, network, network_info):
 
     native_balance = await get_native_balance(wallet, network)
 
-    user_holdings = {f'native+{network}' : {'contract' : network_info.native.lower(), 'token_decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18)}}
+    user_holdings = {f'native+{network}' : {'token' : network_info.native.lower(), 'decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18), 'network' : network}}
     user_tokens = [network_info.native]
 
     for x in multi_return:
         if 'balance' in x:
-            if multi_return[x] > 0:
+            if multi_return[x] > 0 and x.split('_')[0].lower() not in user_tokens:
                 key = x.split('_')[0]
                 token_decimal = multi_return[f'{key}_decimal'] if f'{key}_decimal' in multi_return else 18
                 token_symbol = multi_return[f'{key}_symbol'] if f'{key}_symbol' in multi_return else 'UNKNOWN'
                 token_balance = parsers.from_custom(multi_return[x], token_decimal)
 
-                user_holdings[key] = {'contract' : key, 'token_decimal' : token_decimal, 'token_symbol' : token_symbol, 'token_balance' : token_balance}
-                user_tokens.append(key)
+                user_holdings[key] = {'token' : key, 'decimal' : token_decimal, 'token_symbol' : token_symbol, 'token_balance' : token_balance, 'network' : network}
+                user_tokens.append(key.lower())
 
     return user_holdings, ','.join(user_tokens)
 
@@ -67,7 +67,7 @@ async def get_token_list_from_scan(network,session,wallet):
 
 async def get_token_list_from_mongo(network,mongo):
     x = await mongo.xtracker['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
-    return x['tokens']
+    return x['tokens'] if x is not None else []
 
 async def get_wallet_balance(wallet, network, mongodb, session):
     
@@ -80,17 +80,22 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     
     wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
     prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
+    router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network)
     payload = []
 
     for token in wallet_data[0]:
-        address = wallet_data[0][token]['contract']
+        address = wallet_data[0][token]['token']
 
         if address not in ['0x9e2d266d6c90f6c0d80a88159b15958f7135b8af']:
             symbol = wallet_data[0][token]['token_symbol']
-            try:
-                price = prices[address]['usd'] if address in prices else 0
-            except:
-                price = 0
+
+            price = router_prices[address] if address in router_prices else 0
+
+            if price == .01:
+                try:
+                    price = prices[address]['usd'] if address in prices else 0
+                except:
+                    price = 0
 
             data = {
                 'token_address' : address.lower(),

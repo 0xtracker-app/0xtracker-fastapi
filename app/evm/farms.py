@@ -4637,6 +4637,27 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xVoltSwap' : {
+        'name' : 'voltswap.finance',
+        'rewardToken' : '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVoltSwap',
+        'featured' : 2,
+        'network' : 'meter',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_voltswap],
+            'vaults' : [external_contracts.get_voltswap],
+            'args' : [
+                    {
+                        'farm_id' : '0xVoltSwap',
+                        'network_id' : 'meter',
+                    },
+                    ],
+            'vault_args' : [{'wallet' : wallet}]
+        }
+    },
     #             '0xGeist' : {
     #     'name' : 'geist.finance',
     #     'rewardToken' : '0xd8321AA83Fb0a4ECd6348D4577431310A6E0814d',
