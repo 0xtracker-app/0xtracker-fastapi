@@ -19,6 +19,11 @@ async def get_quickswap_lps(wallet, session):
     x = await call_graph('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03', {'operationName' : 'liquidityPositions', 'query' : bitquery.quickswap_lps.query, 'variables' : {'user': wallet.lower()}}, session)
     return x
 
+async def get_voltswap(wallet, session):
+    geysers = await call_graph('https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
+    vault = await call_graph('https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
+    return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
+
 async def get_mai_graph(wallet, session):
 
     obj = """{
