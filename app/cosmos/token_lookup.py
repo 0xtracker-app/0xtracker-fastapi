@@ -34,7 +34,7 @@ class TokenMetaData:
                 self.token_metadata = found_token
             else:
                 get_pool = await queries.get_gamm_pool(self.tokenID, self.network, self.session)
-                print(get_pool)
+
                 found_token0 = await self.cosmos_tokens.find_one({'tokenID': get_pool['token0']}, {'_id': False})
                 found_token1 = await self.cosmos_tokens.find_one({'tokenID': get_pool['token1']}, {'_id': False})
                 get_pool.update({
