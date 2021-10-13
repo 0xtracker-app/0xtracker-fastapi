@@ -1972,7 +1972,7 @@ class Farms:
         'pendingFunction' : 'pendingReward',
         'masterChef' : '0x6275518a63e891b1bC54FEEBBb5333776E32fAbD',
         'perBlock' : 'rewardPerBlock',
-        'featured' : 1,
+        'featured' : 2,
         'network' : 'matic',
         'extraFunctions' : {
             'functions' : [farm_templates.get_vault_style],
@@ -3376,7 +3376,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingTime',
         'masterChef' : '0x41C4dFA389e8c43BA6220aa62021ed246d441306',
-        'featured' : 1,
+        'featured' : 2,
         'network' : 'matic'
     },
                 '0x939a890BCdAB6D337af9612EaBbbdaeC5CA3a4FE' : {
@@ -4104,7 +4104,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingQuokka',
         'masterChef' : '0xD05B53c621497be947b4302e64c19d01EC8dbB56',
-        'featured' : 1,
+        'featured' : 2,
         'network' : 'matic'
     },
                 '0x1Dc5685088D038CCe7B826BB7688142c7b5c6DeC' : {
@@ -4656,6 +4656,36 @@ class Farms:
                     },
                     ],
             'vault_args' : [{'wallet' : wallet}]
+        }
+    },
+                '0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a' : {
+        'name' : 'towerfinance.io',
+        'rewardToken' : '0x88a3acac5c48f93121d4d7771a068a1fcde078bc',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a',
+        'featured' : 2,
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a',
+                    'network_id' : 'matic',
+                    'farm_data' :{
+                        'rewardToken' : '0x88a3acac5c48f93121d4d7771a068a1fcde078bc',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingReward',
+                        'masterChef' : '0x4696B1A198407BFb8bB8dd59030Bf30FaC258f1D',
+                        'network' : 'matic',
+                        'rewardSymbol' : 'IVORY',
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
         }
     },
     #             '0xGeist' : {
