@@ -1567,6 +1567,22 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xBeefyHarmony' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0xbF07093ccd6adFC3dEB259C557b61E94c1F66945',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyHarmony',
+        'featured' : 2,
+        'network' : 'harmony',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_beefy_harmony_pools],
+            'args' : [{'farm_id' : '0xBeefyHarmony', 'network' : 'harmony'}],
+            'vault_args' : [{}]
+        }
+    },
                 '0xBeefyArb' : {
         'name' : 'beefy.finance',
         'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
