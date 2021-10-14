@@ -281,7 +281,7 @@ async def get_hyperjump_vaults_ftm(session):
     return [x['earnedTokenAddress'] for x in json.loads(json.dumps(f))]
 
 async def get_autoshark_vaults(network, session):
-    r = await make_get(session,'https://old.autoshark.finance/api/v2/vaults')
+    r = await make_get(session,'https://autoshark.finance/.netlify/functions/vaults')
     r = json.loads(r)['data']
     return [x['address'] for x in r if x['address'] != '0x85ff09374D1f59288b6978EB9254377a51BE0B7c' and x['network'] == network]
 
