@@ -1,2 +1,6 @@
-# AWS Lambda FastAPI CI/CD Pipeline using GitHub Actions
-This project repository contains the github actions workflow of CI/CD Pipeline for FastAPI to AWS Lambda.
+# 0xTracker Backend API
+
+.env file should contain the following
+MONGODB_URL = "mongodb+srv://"
+MONGO_DB="myFirstDatabase"
+COVALENT_API = 'ckey_xxxxxxxxxxxxxxxxxxxxxx'
