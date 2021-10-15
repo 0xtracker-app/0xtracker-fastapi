@@ -4704,29 +4704,16 @@ class Farms:
             'vault_args' : [{}]
         }
     },
-    #             '0xGeist' : {
-    #     'name' : 'geist.finance',
-    #     'rewardToken' : '0xd8321AA83Fb0a4ECd6348D4577431310A6E0814d',
-    #     'decimal' : 18,
-    #     'stakedFunction' : None,
-    #     'pendingFunction' : None,
-    #     'masterChef' : '0xGeist',
-    #     'featured' : 2,
-    #     'network' : 'ftm',
-    #     'type' : 'lending',
-    #     'extraFunctions' : {
-    #         'functions' : [farm_templates.get_qubit_lending_protocol],
-    #         'vaults' : [external_contracts.geist_vaults],
-    #         'args' : [
-    #                 {
-    #                     'farm_id' : '0xGeist',
-    #                     'network' : 'ftm',
-    #                     'snapshot' : 'accountSnapshot'
-    #                 }
-    #                 ],
-    #         'vault_args' : [{}]
-    #     }
-    # },
+                '0x35cA0e02C4c16c94c4cC8B67D13d660b78414f95' : {
+        'name' : 'nasdex.xyz',
+        'rewardToken' : '0xE8d17b127BA8b9899a160D9a07b69bCa8E08bfc6',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingNSDX',
+        'masterChef' : '0x35cA0e02C4c16c94c4cC8B67D13d660b78414f95',
+        'featured' : 2,
+        'network' : 'matic',
+    },
 }
 
 
