@@ -4714,6 +4714,35 @@ class Farms:
         'featured' : 2,
         'network' : 'matic',
     },
+                '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F' : {
+        'name' : 'sushi.com',
+        'rewardToken' : '0xd15ec721c2a896512ad29c671997dd68f9593226',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+        'featured' : 2,
+        'network' : 'celo',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sushi_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+                    'network_id' : 'celo',
+                    'farm_data' :{
+                        'masterChef' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+                        'rewarder' : '0x1be211D8DA40BC0ae8719c6663307Bfc987b1d6c',
+                        'r0sym' : 'SUSHI',
+                        'r1sym' : 'CELO',
+                        'r0t' : '0xd15ec721c2a896512ad29c671997dd68f9593226',
+                        'r1t' : '0x471EcE3750Da237f93B8E339c536989b8978a438'
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
