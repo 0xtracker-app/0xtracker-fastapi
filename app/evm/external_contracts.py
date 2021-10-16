@@ -22,7 +22,10 @@ async def get_quickswap_lps(wallet, session):
 async def get_voltswap(wallet, session):
     geysers = await call_graph('https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
     vault = await call_graph('https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
-    return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
+    if vault['data']['user']:
+        return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
+    else:
+        return {'geysers' : [], 'user_vaults' : []}
 
 async def get_mai_graph(wallet, session):
 
@@ -495,6 +498,7 @@ async def get_jetswap_vaults(network, session):
     if network == 'polygon':
         r = await make_get_json(session, 'https://polygon.jetswap.finance/api/vaults.json')
         r = [x['vaultAddresses']['137'] for x in r]
+        print(r)
         return r
     elif network == 'bsc':
         r = await make_get_json(session, 'https://jetswap.finance/api/vaults.json')

@@ -7,7 +7,7 @@ from . import native_tokens
 from .utils import make_get, make_get_json
 import asyncio
 from aiohttp import ClientSession, ClientTimeout
-from .native_tokens import NetworkRoutes
+from .native_tokens import LiqCheck, NetworkRoutes
 from .router_override import router_override, stable_override
 from .uniswapv3 import uniSqrtPrice
 import time
@@ -185,6 +185,7 @@ async def list_router_prices(tokens_in, network):
 
     network_route = NetworkRoutes(network)
     calls= []
+    liq_calls = []
     out_token = network_route.native
     network_conn = network_route.network_conn
     if network_route.default_router == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
@@ -202,24 +203,32 @@ async def list_router_prices(tokens_in, network):
                 if token_address.lower() in stable_override:
                     override_out = stable_override[token_address]['token']
                     override_decimal = stable_override[token_address]['decimal']
+                    liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, override_out], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : override_decimal, 'price' : 1}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out], 25], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
                 else:
+                    liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))  
             else:
                 if token_address.lower() in stable_override:
                     override_out = stable_override[token_address]['token']
                     override_decimal = stable_override[token_address]['decimal']
+                    liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, override_out], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : override_decimal, 'price' : 1}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
                 else:
+                    liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
 
     multi=await Multicall(calls,network_conn, _strict=False)()
-
+    liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
+    print(liq_check)
     prices = {}
 
     for each in multi:
         token = each.split('_')[1]
-        looped_value = multi[each]
+        liq = liq_check[each] if each in liq_check else 0
+        looped_value = multi[each] if liq > 9999 else 0
+
+        print(each, looped_value, liq)
 
         if token in prices:
             current_value = prices[token]
@@ -230,7 +239,7 @@ async def list_router_prices(tokens_in, network):
     
     for token in tokens_in:
         if token['token'] not in prices:
-            prices[token['token']] = .01
+            prices[token['token']] = 0
 
     prices[out_token.lower()] = native_price['native_price']
     return prices
