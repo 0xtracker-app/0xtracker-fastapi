@@ -2882,3 +2882,47 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+        
+        pool_length = await Call(farm_data['masterChef'], [f'poolLength()(uint256)'],None,network)() 
+
+        for pid in range(0,pool_length):
+            calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'pendingSushi(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
+            calls.append(Call(farm_data['rewarder'], [f'pendingToken(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_extra', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'lpToken(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = stakes[each]
+                    want_token = stakes[f'{breakdown[0]}_want']
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    if stakes[f'{breakdown[0]}_pending'] > 0:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : farm_data['r0sym'], 'token' : farm_data['r0t']}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+
+                    if stakes[f'{breakdown[0]}_extra'] > 0:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_extra'], 'symbol' : farm_data['r1sym'], 'token' : farm_data['r1t']}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
