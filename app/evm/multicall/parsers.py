@@ -161,3 +161,6 @@ def parse_router_native(data, native=None):
 
 def parse_wanted_offset(value, offset):
     return value[offset]
+
+def parse_liq(data, info):
+    return from_custom(data[1], info['decimal']) * info['price']

@@ -129,6 +129,37 @@ class CoinGecko():
     HECO = 'huobi-token'
     METER = ''
 
+class LiqCheck():
+    BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
+    MATIC= '0x4c432ec34cee974e2f26163a2950388779b25183'
+    FTM = '0x3f0b450c9453c4d49675af2016abe17e08e1f0fb'
+    KCC = '0xebb3fb87362a3331a28301a5e282ad9f649c5f0c'
+    AVAX = '0xc0bebd9b58d04602e241160ae0f66c843010ceea'
+    ETH = '0x97570f38917f2a0063b1f85f920b9e149f7a23ed'
+    OKE = '0x3f0b450c9453c4d49675af2016abe17e08e1f0fb'
+    HARMONY = '0x6516953017799626f13aad59daa1bccc68a3a247'
+    MOON = '0x0C8be7B6864538b7086bF5611aB6940b510749a4'
+    ARB = '0x731083adec06c95a3c9ffca54828cb3ea0935e86'
+    CELO = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
+    XDAI = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
+    HECO = '0x6204688D31C627423B153486FEe40390A8381a5A'
+    METER = '0x3C25ef83448EEBFAb5055040EB58a35f94940E6f'
+
+class MinLiq():
+    BSC = 49999
+    MATIC = 49999
+    FTM = 49999
+    KCC = 9999
+    AVAX = 49999
+    ETH = 49999
+    OKE = 9999
+    HARMONY = 9999
+    MOON = 9999
+    ARB = 9999
+    CELO = 9999
+    XDAI = 9999
+    HECO = 9999
+    METER = 9999
 
 class NetworkRoutes():
 
@@ -143,3 +174,5 @@ class NetworkRoutes():
         self.router = getattr(RouteClass, network.upper())
         self.lrouters = [attr for attr in dir(self.router()) if not callable(getattr(self.router(),attr)) and not attr.startswith("__")]
         self.coingecko = getattr(CoinGecko, network.upper())
+        self.liqcheck = getattr(LiqCheck, network.upper())
+        self.minliq = getattr(MinLiq, network.upper())
