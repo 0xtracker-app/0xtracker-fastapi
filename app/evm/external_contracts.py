@@ -498,7 +498,6 @@ async def get_jetswap_vaults(network, session):
     if network == 'polygon':
         r = await make_get_json(session, 'https://polygon.jetswap.finance/api/vaults.json')
         r = [x['vaultAddresses']['137'] for x in r]
-        print(r)
         return r
     elif network == 'bsc':
         r = await make_get_json(session, 'https://jetswap.finance/api/vaults.json')
