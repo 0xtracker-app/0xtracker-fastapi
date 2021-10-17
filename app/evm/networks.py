@@ -1,6 +1,6 @@
 from web3 import Web3, eth
 
-WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https://nd-718-288-301.p2pify.com/c8aa321fc47fa093d4bd974da375e863')), 'id' : 56},
+WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https://bsc.getblock.io/mainnet/?api_key=c9437afd-ea06-48f0-a2d3-bfdadb622f8f')), 'id' : 56},
                 'matic':  {'connection' : Web3(Web3.HTTPProvider('https://polygon-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f')), 'id' : 137},
                 'ftm' : {'connection' : Web3(Web3.HTTPProvider('https://rpc.ftm.tools/')), 'id': 250},
                 'kcc' : {'connection' : Web3(Web3.HTTPProvider('https://rpc-mainnet.kcc.network')), 'id': 321}, 
@@ -17,7 +17,7 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https
                 'meter': { 'connection' : Web3(Web3.HTTPProvider('https://rpc.meter.io')), 'id' : 82},          
                 }
 
-WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://nd-718-288-301.p2pify.com/c8aa321fc47fa093d4bd974da375e863'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
+WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://bsc.getblock.io/mainnet/?api_key=c9437afd-ea06-48f0-a2d3-bfdadb622f8f'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
                 'matic':  {'connection' : Web3(Web3.AsyncHTTPProvider('https://polygon-mainnet.infura.io/v3/d09c293e2cc14290ada8169d29e9b65f'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 137},
                 'ftm' : {'connection' : Web3(Web3.AsyncHTTPProvider('https://rpc.ftm.tools/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id': 250},
                 'kcc' : {'connection' : Web3(Web3.AsyncHTTPProvider('https://rpc-mainnet.kcc.network'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id': 321}, 
