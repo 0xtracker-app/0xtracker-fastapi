@@ -145,6 +145,21 @@ class LiqCheck():
     HECO = '0x6204688D31C627423B153486FEe40390A8381a5A'
     METER = '0x3C25ef83448EEBFAb5055040EB58a35f94940E6f'
 
+class MinLiq():
+    BSC = 49999
+    MATIC = 49999
+    FTM = 49999
+    KCC = 9999
+    AVAX = 49999
+    ETH = 49999
+    OKE = 9999
+    HARMONY = 9999
+    MOON = 9999
+    ARB = 9999
+    CELO = 9999
+    XDAI = 9999
+    HECO = 9999
+    METER = 9999
 
 class NetworkRoutes():
 
@@ -160,3 +175,4 @@ class NetworkRoutes():
         self.lrouters = [attr for attr in dir(self.router()) if not callable(getattr(self.router(),attr)) and not attr.startswith("__")]
         self.coingecko = getattr(CoinGecko, network.upper())
         self.liqcheck = getattr(LiqCheck, network.upper())
+        self.minliq = getattr(MinLiq, network.upper())

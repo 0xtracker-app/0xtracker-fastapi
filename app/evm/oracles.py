@@ -220,15 +220,12 @@ async def list_router_prices(tokens_in, network):
 
     multi=await Multicall(calls,network_conn, _strict=False)()
     liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
-    print(liq_check)
     prices = {}
 
     for each in multi:
         token = each.split('_')[1]
         liq = liq_check[each] if each in liq_check else 0
-        looped_value = multi[each] if liq > 9999 else 0
-
-        print(each, looped_value, liq)
+        looped_value = multi[each] if liq > network_route.minliq else 0
 
         if token in prices:
             current_value = prices[token]
@@ -393,5 +390,11 @@ async def get_gmx_price(return_token):
     x = await Call('0x80A9ae39310abf666A87C743d6ebBD0E8C42158E', 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS['arb'])()
 
     return {return_token.lower() : uniSqrtPrice([18,18], x['slot0']['sqrtPriceX96']) * ether_price}
+
+async def get_synth_price(address,aggregator,network):
+
+    price = await Call(aggregator, [f'latestAnswer()(uint256)'], _w3=WEB3_NETWORKS[network])()
+
+    return {address.lower() : parsers.from_custom(price, 8)}
 
 

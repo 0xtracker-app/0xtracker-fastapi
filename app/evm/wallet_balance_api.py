@@ -82,6 +82,7 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
     router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network)
     payload = []
+    stored_tokens = []
 
     for token in wallet_data[0]:
         address = wallet_data[0][token]['token']
@@ -104,8 +105,9 @@ async def get_wallet_balance(wallet, network, mongodb, session):
                 'tokenPrice' : price,
                 'network' : network
             }
-
-            payload.append(data)
+            if address.lower() not in stored_tokens:
+                payload.append(data)
+                stored_tokens.append(address.lower())
 
 
     return payload
