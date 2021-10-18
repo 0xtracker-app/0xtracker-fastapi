@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends, Path
+from typing import List
+from fastapi import FastAPI, Depends, Path, Query
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
@@ -85,6 +86,14 @@ async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_ses
 @app.get('/tokens/{network}/{token_id}')
 async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id:str = Path(..., min_length=1), network:str = Path(..., min_length=1)):
     x = await db.xtracker['full_tokens'].find_one({'tokenID' : token_id, 'network' : network}, {'_id': False})
+    return x
+
+@app.get('/user-balance/')
+async def get_user_balances(db: AsyncIOMotorClient = Depends(get_database), wallet : List[str] = Query([])):
+    if wallet:
+        x = await db.xtracker['user_data'].find({'wallet' : {'$in' : wallet}}, {'_id': False}).to_list(length=None)
+    else:
+        x = await db.xtracker['user_data'].find({}, {'_id': False}).to_list(length=None)
     return x
 
 @app.get('/token-approval/{wallet}/{network}')
