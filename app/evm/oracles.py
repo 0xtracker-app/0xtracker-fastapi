@@ -182,7 +182,7 @@ def harmony_router_prices(tokens_in, router):
 
     return {**prices, **{'0xcf664087a5bb0237a0bad6742852ec6c8d69a27a' : one_price}}
 
-async def list_router_prices(tokens_in, network):
+async def list_router_prices(tokens_in, network, check_liq=False):
 
     network_route = NetworkRoutes(network)
     calls= []
@@ -220,15 +220,23 @@ async def list_router_prices(tokens_in, network):
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
 
     multi=await Multicall(calls,network_conn, _strict=False)()
-    liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
+
+    if check_liq:
+        liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
 
     prices = {}
+
     for each in multi:
         token = each.split('_')[1]
-        if token in APPROVED_TOKENS:
-            liq = network_route.minliq + 1
+
+        if check_liq:
+            if token in APPROVED_TOKENS:
+                liq = network_route.minliq + 1
+            else:
+                liq = liq_check[each] if each in liq_check else 0
         else:
-            liq = liq_check[each] if each in liq_check else 0
+            liq = network_route.minliq + 1
+
         looped_value = multi[each] if liq > network_route.minliq else 0
 
         if token in prices:

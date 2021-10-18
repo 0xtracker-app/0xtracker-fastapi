@@ -80,7 +80,7 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     
     wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
     prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
-    router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network)
+    router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network, check_liq=True)
     payload = []
     stored_tokens = []
     total_balance = 0
