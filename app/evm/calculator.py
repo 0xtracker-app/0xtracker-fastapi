@@ -1,5 +1,6 @@
 from .multicall import Multicall, Call, parsers
 from . import uniswapv3
+import time
 
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
@@ -47,7 +48,7 @@ def get_balancer_ratio(token_data,quote_price):
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price}
     
-async def calculate_prices(lastReturn, prices, farm_data, wallet):
+async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
 
     finalResponse = lastReturn
     rewardToken = farm_data['rewardToken']
@@ -262,5 +263,8 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet):
             if farm_data['type'] == 'lending':
                 finalResponse[f]['availableLimit'] = sum(d['lpPrice'] * d['rate'] for d in finalResponse[f]['userData'].values() if 'rate' in d)
                 finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
+
+        if finalResponse[f]['total'] > 0:
+            mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : farm_network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : farm_network, 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
     
     return finalResponse

@@ -95,7 +95,7 @@ async def check_raydium_lp(client, token, session):
 
         if rayv3['result']:
             account_data = stake_layout.RAYDIUM_AMM_V3.parse(utils.decode_byte_string(rayv4['result'][0]['account']['data'][0]))
-            print(account_data)
+
             # lp_token['lp_data'] = parse_ray_ammv3(account_data)
             # lp_token['type'] = "ray-v3-lp"
         else:
@@ -103,7 +103,7 @@ async def check_raydium_lp(client, token, session):
 
             if ray['result']:
                 account_data = stake_layout.RAYDIUM_AMM.parse(utils.decode_byte_string(rayv4['result'][0]['account']['data'][0]))
-                print(account_data)
+
                 # lp_token['lp_data'] = parse_ray_amm(account_data)
                 # lp_token['type'] = "ray-lp"
                 

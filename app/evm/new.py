@@ -956,7 +956,7 @@ def get_balancer_ratio(token_data,quote_price):
     for i,lp_balance in enumerate(lp_values):
         token_address = token_data['balancerTokens'][i]
         token_price = quote_price[token_address]
-        print(lp_price,lp_balance * token_price)
+
         lp_price += lp_balance * token_price
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price}
@@ -2858,7 +2858,7 @@ def get_curve_gauage(wallet,farm_id,network_id,gauages,rewards=None):
         calls.append(Call(guage, [f'lp_token()(address)'], [[f'{guage}_want', None]]))
 
     stakes=Multicall(calls, network,_strict=False)()
-    print(stakes)
+
     poolNest = {poolKey: 
     { 'userData': { } } }
 
@@ -3228,8 +3228,6 @@ def get_moneypot(wallet, rewards, farm_id, network_id, contract, token_pair=None
         calls.append(Call(token_pair, [f'balanceOf(address)(uint256)', wallet], [[f'{token_pair}', from_wei]]))
 
         stakes=Multicall(calls, network)()
-
-        print(stakes)
 
         poolNest = {poolKey: 
         { 'userData': { } } }

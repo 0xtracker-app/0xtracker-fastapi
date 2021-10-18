@@ -82,7 +82,7 @@ async def get_farming_from_program(wallet, program, offset):
 
         user_stakes[pool_id] = {
             'poolID': pool_id, 'depositBalance': account_data.depositBalance, 'rewardDebt': account_data.rewardDebt, 'rewards' : []}
-        print(pool_id, account_data)
+
         #Get Pool Info
         pool_info = await client.get_account_info(pool_id)
 
@@ -112,7 +112,7 @@ async def get_farming_from_program(wallet, program, offset):
 
         user_stakes[pool_id]['rewards'].append({'balance' : get_pending_rewards(account_data.depositBalance, stake_info.rewardPerShareNet, 1e9, account_data.rewardDebt, 6)})
 
-    print(user_stakes)
+
     await client.close()
 
 async def get_farming_from_vault_info(wallet, account_info, vault_accounts, program, user_parser, vault_parser):
@@ -139,7 +139,7 @@ async def get_farming_from_vault_info(wallet, account_info, vault_accounts, prog
             pool_id = account_infos[i]
             decode_user_balance_info = user_parser.parse(utils.decode_byte_string(each['data'][0]))
             decode_vault_account_info = vault_parser.parse(utils.decode_byte_string(vault_info['result']['value'][i]['data'][0]))
-            print(utils.convert_public_key(decode_vault_account_info.lp_token_mint))
+
             user_vlp_shares = decode_user_balance_info.amount
             user_lp_tokens = int((user_vlp_shares * decode_vault_account_info.total_vault_balance) / decode_vault_account_info.total_vlp_shares)
 
@@ -155,7 +155,7 @@ async def get_farming_from_vault_info(wallet, account_info, vault_accounts, prog
                 user_stakes[pool_id].update(lp_balances)
                 user_stakes[pool_id]['tokenInfo'] = lp_info
             
-    print(user_stakes)
+
     await client.close()   
 
 

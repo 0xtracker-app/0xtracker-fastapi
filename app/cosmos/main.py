@@ -8,12 +8,13 @@ from .token_lookup import TokenMetaData
 from .farms import Farms
 from .networks import CosmosNetwork
 import asyncio
+import time
 
 def return_farms_list():
     cosmos = Farms()
     return cosmos.farms
 
-async def get_wallet_balances(wallet, session):
+async def get_wallet_balances(wallet, session, mongo_client):
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks
 
@@ -23,6 +24,7 @@ async def get_wallet_balances(wallet, session):
     transform_trace = helpers.transform_trace_routes(traces)
 
     return_wallets = []
+    total_balance = 0
     for balance in balances:
 
         if balance['tokens']:
@@ -30,6 +32,8 @@ async def get_wallet_balances(wallet, session):
 
                 token_denom = transform_trace[0][token['denom']] if token['denom'] in transform_trace[0] else token['denom']
                 token_decimal = transform_trace[1][token_denom]['decimal'] if token_denom in transform_trace[1] else 6
+            
+            total_balance += prices[token_denom] * helpers.from_custom(token['amount'], token_decimal)
             return_wallets.append(
                 {
                     "token_address": token['denom'],
@@ -40,6 +44,9 @@ async def get_wallet_balances(wallet, session):
                     'network' : 'cosmos'
                 }
                 )
+
+    if total_balance > 0:
+        mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 
@@ -67,7 +74,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
 
     prices = await oracles.cosmostation_prices(http_session)
 
-    response = await calculate_prices(returned_object[1], prices)
+    response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
 
     return response
 

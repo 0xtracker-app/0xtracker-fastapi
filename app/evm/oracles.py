@@ -12,6 +12,7 @@ from .router_override import router_override, stable_override
 from .uniswapv3 import uniSqrtPrice
 import time
 
+APPROVED_TOKENS = ['0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97']
 INCH_QUOTE_TOKENS = {
     'bsc' : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimals' : 18},
     'matic' : {'token' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'decimals' : 6},
@@ -220,11 +221,14 @@ async def list_router_prices(tokens_in, network):
 
     multi=await Multicall(calls,network_conn, _strict=False)()
     liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
-    prices = {}
 
+    prices = {}
     for each in multi:
         token = each.split('_')[1]
-        liq = liq_check[each] if each in liq_check else 0
+        if token in APPROVED_TOKENS:
+            liq = network_route.minliq + 1
+        else:
+            liq = liq_check[each] if each in liq_check else 0
         looped_value = multi[each] if liq > network_route.minliq else 0
 
         if token in prices:
@@ -233,7 +237,7 @@ async def list_router_prices(tokens_in, network):
                 prices[token] = looped_value
         else:
             prices[token] = looped_value
-    
+
     for token in tokens_in:
         if token['token'] not in prices:
             prices[token['token']] = 0
