@@ -1,9 +1,9 @@
-from operator import mul
 from .multicall import Call, Multicall, parsers
 import json
 import time
 from web3 import Web3
 from .oracles import coingecko_by_address_network, list_router_prices
+from .router_override import stable_override, router_override
 from .networks import WEB3_NETWORKS, SCAN_APIS
 from .utils import make_get_json
 from .native_tokens import NetworkRoutes
@@ -83,6 +83,7 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network)
     payload = []
     stored_tokens = []
+    total_balance = 0
 
     for token in wallet_data[0]:
         address = wallet_data[0][token]['token']
@@ -98,6 +99,9 @@ async def get_wallet_balance(wallet, network, mongodb, session):
                 except:
                     price = 0
 
+            if address in router_override or address in stable_override:
+                price = 0
+
             data = {
                 'token_address' : address.lower(),
                 'symbol' : symbol,
@@ -108,6 +112,9 @@ async def get_wallet_balance(wallet, network, mongodb, session):
             if address.lower() not in stored_tokens:
                 payload.append(data)
                 stored_tokens.append(address.lower())
+                total_balance += wallet_data[0][token]['token_balance'] * price
 
+    if total_balance > 0:
+        mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
 
     return payload

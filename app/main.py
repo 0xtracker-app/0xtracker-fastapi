@@ -78,8 +78,8 @@ async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(
     return results
 
 @app.get('/cosmos-wallet/{wallet}')
-async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session)):
-    results = await cosmos_wallet_balances(wallet,session)
+async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session), mongo_db: AsyncIOMotorClient = Depends(get_database)):
+    results = await cosmos_wallet_balances(wallet,session, mongo_db)
     return results
 
 @app.get('/tokens/{network}/{token_id}')

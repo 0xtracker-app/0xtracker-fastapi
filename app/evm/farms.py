@@ -1034,7 +1034,7 @@ class Farms:
         'pendingFunction' : 'pendingGrand',
         'masterChef' : '0x3d8fd880976a3EA0f53cad02463867013D331107',
         'perBlock' : 'GrandPerBlock',
-        'featured' : 2,
+        'featured' : 1,
         'network' : 'bsc'
     },
                 '0xcF8070d9fbE3F96f4bFF0F90Cc84BfD30869dAF2' : {
@@ -1045,7 +1045,7 @@ class Farms:
         'pendingFunction' : 'pendingGrand',
         'masterChef' : '0xcF8070d9fbE3F96f4bFF0F90Cc84BfD30869dAF2',
         'perBlock' : 'GrandPerBlock',
-        'featured' : 2,
+        'featured' : 1,
         'network' : 'matic'
     },
                 '0xC6da8165f6f5F0F890c363cD67af1c33Bb540123' : {
@@ -1056,7 +1056,7 @@ class Farms:
         'pendingFunction' : None,
         'masterChef' : '0xC6da8165f6f5F0F890c363cD67af1c33Bb540123',
         'perBlock' : 'GrandPerBlock',
-        'featured' : 2,
+        'featured' : 1,
         'network' : 'moon'
     },
                 '0xf6afB97aC5eAfAd60d3ad19c2f85E0Bd6b7eAcCf' : {

@@ -10,6 +10,7 @@ from .helpers import from_custom
 from .farms import Farms
 import asyncio
 from .calculator import calculate_prices
+import time
 
 def return_farms_list():
     solana = Farms()
@@ -23,6 +24,8 @@ async def get_wallet_balances(wallet, mongodb, session, client):
     prices = await oracles.get_sonar_pricing(session) 
 
     return_wallets = []
+    total_balance = 0
+
     native_meta = await TokenMetaData(address='11111111111111111111111111111111', mongodb=mongodb, network='solana', session=session, client=client).lookup()
     return_wallets.append({
         "token_address": '11111111111111111111111111111111',
@@ -31,6 +34,8 @@ async def get_wallet_balances(wallet, mongodb, session, client):
         "tokenPrice": prices['11111111111111111111111111111111'],
         "wallet": solana.wallet,
     })
+
+    total_balance = (native['result']['value'] / 1e9) * prices['11111111111111111111111111111111']
     
     for each in balances['result']['value']:
         account_data = layouts.ACCOUNT_LAYOUT.parse(utils.decode_byte_string(each['account']['data'][0]))
@@ -39,7 +44,8 @@ async def get_wallet_balances(wallet, mongodb, session, client):
 
         if account_data.amount > 0 :
             meta_data = await TokenMetaData(address=mint_address, mongodb=mongodb, network='solana', session=session, client=client).lookup()
-
+            
+            total_balance += from_custom(account_data.amount, meta_data['token_decimal']) * token_price
             return_wallets.append(
             {
                 "token_address": mint_address,
@@ -49,7 +55,10 @@ async def get_wallet_balances(wallet, mongodb, session, client):
                 "wallet" : solana.wallet,
             }
             )
+        
 
+    if total_balance > 0:
+        mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'solana', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 
@@ -78,6 +87,6 @@ async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client):
 
     prices = await oracles.get_sonar_pricing(http_session)
 
-    response = await calculate_prices(returned_object[1], prices)
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
 
     return response

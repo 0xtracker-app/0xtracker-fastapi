@@ -395,7 +395,6 @@ async def get_diamond_hands(wallet, vaults):
 
 
     if len(poolIDs) > 0:
-        print(poolIDs,poolNest)
         return poolIDs, poolNest    
     else:
         return None
@@ -713,8 +712,6 @@ async def get_adamant_funds_dynamic(wallet, vaults, farm_id, calculator, minter,
         adamant_user_info.append(Call(strategy, ['want()(address)'], [[f'{vault}_want', None]]))
     
     user_data = await Multicall(adamant_user_info, WEB3_NETWORKS[network])()
-
-    print(user_data)
 
     poolNest = {poolKey: 
     { 'userData': { } } }
@@ -2599,7 +2596,7 @@ async def get_wonderland(wallet, vaults, farm_id, network_id):
                     want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
                     token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     if f'{breakdown[0]}_pending' in stakes:
