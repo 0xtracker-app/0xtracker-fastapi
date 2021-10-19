@@ -2053,7 +2053,7 @@ async def get_just_pending(wallet,vaults,network,farm_id,reward_method,reward_to
     for contract in contracts:
         calls.append(Call(contract, [f'{reward_method}(address)(uint256)', wallet], [[f'{contract}_pending', parsers.from_wei]]))
 
-    stakes=await Multicall(calls, network)()
+    stakes=await Multicall(calls, network, _strict=False)()
 
     poolNest = {poolKey: 
     { 'userData': { } } }
