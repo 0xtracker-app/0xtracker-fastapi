@@ -1,5 +1,8 @@
 import requests
 import json
+from functools import reduce
+import math
+import numpy as np
 from .multicall import Call, Multicall, parsers
 from .routers import BSCRouter, FTMRouter, KCCRouter, OKERouter, ONERouter, AVAXRouter, ArbRouter
 from .networks import WEB3_NETWORKS
@@ -219,10 +222,22 @@ async def list_router_prices(tokens_in, network, check_liq=False):
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
 
-    multi=await Multicall(calls,network_conn, _strict=False)()
+    if len(calls) > 2100:
+        chunks = len(calls) / 2000
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
+        multi = reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        multi=await Multicall(calls,network_conn, _strict=False)()
 
     if check_liq:
-        liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
+        if len(liq_calls) > 2100:
+            chunks = len(liq_calls) / 2000
+            x = np.array_split(liq_calls, math.ceil(chunks))
+            all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
+            liq_check = reduce(lambda a, b: dict(a, **b), all_calls)
+        else:
+            liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
 
     prices = {}
 
@@ -251,6 +266,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
             prices[token['token']] = 0
 
     prices[out_token.lower()] = native_price['native_price']
+    ##Set Dead Tokens To Zero
+    prices['0x0184316f58b9a44acdd3e683257259dc0cf2202a'.lower()] = 0
+    prices['0x714a84632ed7edbbbfeb62dacf02db4beb4c69d9'.lower()] = 0
+
     return prices
 
 async def avax_router_prices(tokens_in, router):

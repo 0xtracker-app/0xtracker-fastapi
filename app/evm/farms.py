@@ -2002,17 +2002,35 @@ class Farms:
             'vault_args' : [{}, {}]
         }
     },
-                '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F' : {
+                '0xSushiMatic' : {
         'name' : 'sushi.com',
         'rewardToken' : '0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a',
         'decimal' : 18,
-        'stakedFunction' : 'userInfo',
-        'pendingFunction' : 'pendingSushi',
-        'masterChef' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
-        'perBlock' : 'sushiPerSecond',
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xSushiMatic',
         'featured' : 2,
-        'network' : 'matic'
-    },
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sushi_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xSushiMatic',
+                    'network_id' : 'matic',
+                    'farm_data' :{
+                        'masterChef' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+                        'rewarder' : '0xa3378Ca78633B3b9b2255EAa26748770211163AE',
+                        'r0sym' : 'SUSHI',
+                        'r1sym' : 'MATIC',
+                        'r0t' : '0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a',
+                        'r1t' : '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+},
                 '0xE9eB13A6bdA835e10BED2e8F9b3BF3a2E72CA687' : {
         'name' : 'sneakerfinance.me',
         'rewardToken' : '0x71fc472b418343905edc609906506c10f6a0b169',
