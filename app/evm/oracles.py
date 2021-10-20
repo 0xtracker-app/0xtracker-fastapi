@@ -269,6 +269,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     ##Set Dead Tokens To Zero
     prices['0x0184316f58b9a44acdd3e683257259dc0cf2202a'.lower()] = 0
     prices['0x714a84632ed7edbbbfeb62dacf02db4beb4c69d9'.lower()] = 0
+    prices['0xd5e3bf9045cfb1e6ded4b35d1b9c34be16d6eec3'.lower()] = 0
 
     return prices
 
