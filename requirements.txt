@@ -84,3 +84,4 @@ web3==5.23.0
 websockets==9.1
 yarl==1.6.3
 zipp==3.5.0
+js2py==0.71
