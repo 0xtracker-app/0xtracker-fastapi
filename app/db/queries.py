@@ -7,20 +7,23 @@ def user_info_by_time(wallets, days):
 },
 {
    '$addFields' : { 
-      "date" : { '$toDate' : { '$multiply' : ["$timeStamp",1000] } },
+      "date" : { "$toDate" : { "$subtract" : [{ "$toLong": { "$toDate" : { "$multiply" : ["$timeStamp",1000] } } },{ "$mod": [ { "$toLong": { "$toDate" : { "$multiply" : ["$timeStamp",1000] } } }, 1000 * 60 * 60 ] } ] }},
    }
 },
 {
-   '$group' : {
-    "_id": {
-      "$toDate": {
-        "$subtract": [
-          { "$toLong": "$date" },
-          { "$mod": [ { "$toLong": "$date" }, 1000 * 60 * 60 ] }
-        ]
-      }
-    },
-     "average" : { '$avg' : "$dollarValue" }
+   "$group" : {
+    "_id": { "farm" : '$farm',
+             "date" : '$date'
+         },
+
+     "average" : { "$avg" : "$dollarValue" }
+   }
+},
+{
+   "$group" : {
+    "_id": '$_id.date',
+
+     "average" : { "$sum" : "$average" }
    }
 },
 {
