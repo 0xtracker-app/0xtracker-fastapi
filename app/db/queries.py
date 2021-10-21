@@ -1,7 +1,9 @@
-def user_info_by_hour(wallets):
+import time
+
+def user_info_by_time(wallets, days):
     return [
 {   
-   '$match' : { "wallet" : {'$in' : wallets}}
+   '$match' : { "wallet" : {'$in' : wallets}, "timeStamp" : {"$gte" : time.time() - 86400*days}}
 },
 {
    '$addFields' : { 
