@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi import FastAPI, Depends, Path, Query
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
@@ -14,7 +14,7 @@ from httpsession.session_utils import session_start, session_stop
 from solsession.session import AsyncClient, get_solana
 from solsession.session_utils import solana_start, solana_stop
 from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
-from db.queries import user_info_by_hour
+from db.queries import user_info_by_time
 
 app = FastAPI(title='FastAPI')
 #app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
@@ -90,9 +90,9 @@ async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id:st
     return x
 
 @app.get('/user-balance/')
-async def get_user_balances(db: AsyncIOMotorClient = Depends(get_database), wallet : List[str] = Query([])):
+async def get_user_balances(db: AsyncIOMotorClient = Depends(get_database), wallet : List[str] = Query([]), days: int = Query(...,ge=1, le=90)):
     if wallet:
-        x = await db.xtracker['user_data'].aggregate(user_info_by_hour(wallet)).to_list(length=None)
+        x = await db.xtracker['user_data'].aggregate(user_info_by_time(wallet, days)).to_list(length=None)
     else:
         x = await db.xtracker['user_data'].find({}, {'_id': False}).to_list(length=None)
     return x
