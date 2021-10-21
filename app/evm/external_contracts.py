@@ -4,6 +4,7 @@ import re
 import os
 import requests
 import time
+import js2py
 import cloudscraper
 from requests.sessions import session
 from .utils import make_get, make_get_hson,make_get_json,cf_make_get_json
@@ -90,19 +91,21 @@ async def get_ele_tokens(session,network=None):
     headers = {'accept': 'application/vnd.github.v3.raw',
                 'authorization': 'token {}'.format(token)}
     r = await make_get(session,'https://raw.githubusercontent.com/Eleven-Finance/elevenfinance/main/src/features/configure/pools.js', kwargs={'headers':headers})
-    s2 = "export const pools = "
-    text_remove = """\'<b>You aren\\\'t earning the maximum rewards yet.</b><br/><br/>Pool Boosted Rewards are migrating to new \' +\n          \'contract version.<br/><b>Unstake</b> all your tokens and then <b>Stake</b> them again to receive Increased \' +\n          \'Rewards in <b>ELE</b> and <b>MATIC</b><br/><br/><b>IMPORTANT:</b> You don\\\'t need to <b>Withdraw</b> funds, \' +\n          \'just to <b>Unstake</b> them.\'"""
-    data = r[r.index(s2) + len(s2) :len(r)-2]
-    data = data.replace(text_remove, " ' ' ")
-    data = data.replace("+","")
-    data = data.replace("depositWarning: '<p>Be aware of <b>4% Deposit fee</b> on this pool.</p>'", "")
-    data = data.replace("'<p>The fee is charged by Polycat, Eleven doesn\\'t charge you on the deposit</p>',", "")
-    data = hjson.loads(data.replace("\\",""))
-    response = json.loads(json.dumps(data))
+    # s2 = "export const pools = "
+    # text_remove = """\'<b>You aren\\\'t earning the maximum rewards yet.</b><br/><br/>Pool Boosted Rewards are migrating to new \' +\n          \'contract version.<br/><b>Unstake</b> all your tokens and then <b>Stake</b> them again to receive Increased \' +\n          \'Rewards in <b>ELE</b> and <b>MATIC</b><br/><br/><b>IMPORTANT:</b> You don\\\'t need to <b>Withdraw</b> funds, \' +\n          \'just to <b>Unstake</b> them.\'"""
+    # data = r[r.index(s2) + len(s2) :len(r)-2]
+    # data = data.replace(text_remove, " ' ' ")
+    # data = data.replace("+","")
+    # data = data.replace("depositWarning: '<p>Be aware of <b>4% Deposit fee</b> on this pool.</p>'", "")
+    # data = data.replace("'<p>The fee is charged by Polycat, Eleven doesn\\'t charge you on the deposit</p>',", "")
+    # data = hjson.loads(data.replace("\\",""))
+    data = r.split('export const pools = ')[1]
+    response = list(js2py.eval_js(data))
+    # response = json.loads(json.dumps(data))
     if network is None:
         return response
     else:
-        return [x['earnedTokenAddress'] for x in response if '11' in x['earnedToken'] and x['network'] == network and x['earnedTokenAddress'] not in skip_tokens]
+        return [x['earnedTokenAddress'] for x in response if 'earnedToken' in x and '11' in x['earnedToken'] and x['network'] == network and x['earnedTokenAddress'] not in skip_tokens]
 
 async def get_ele_staking_matic(session):
     return ['0x0FFb84A4c29147Bd745AAe0330f4F6f4Cb716c92']
