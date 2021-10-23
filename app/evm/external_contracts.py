@@ -325,6 +325,16 @@ async def pull_koge_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/vaultaddresses')
     return ast.literal_eval(r)
 
+async def pull_koge_vaults_ftm(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/ftm_vault_addresses.json')
+    r = ast.literal_eval(r)
+    return [x['vault'] for x in r]
+
+async def pull_koge_vaults_moon(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/movr_vault_addresses.json')
+    r = ast.literal_eval(r)
+    return [x['vault'] for x in r]
+
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])

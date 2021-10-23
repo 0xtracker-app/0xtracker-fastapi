@@ -34,12 +34,15 @@ async def token_router(wanted_token, farm_address, farm_network):
                                             return {**await token_types.get_balancer_token(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'balancer'}}
                                         except:
                                             try:
-                                                return {**await token_types.get_nft(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'nft'}}
+                                                return {**await token_types.get_beethoven_token(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'balancer'}}
                                             except:
                                                 try:
-                                                    return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                                    return {**await token_types.get_nft(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'nft'}}
                                                 except:
-                                                    return {**await token_types.catch_all(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'unknown'}}
+                                                    try:
+                                                        return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                                    except:
+                                                        return {**await token_types.catch_all(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'unknown'}}
 async def get_token_data(data,mongo_client, farm_network):
 
     calls = []
@@ -88,7 +91,10 @@ async def get_token_data(data,mongo_client, farm_network):
                     calls.append(Call(found_token['tokenID'], 'totalSupply()(uint256)', [[f'{each}_kashiTotalSupply', parsers.from_custom, token_decimal]]))
                 if 'balancerBalances' in found_token:
                     calls.append(Call(found_token['tokenID'], [f'totalSupply()(uint256)'], [[f'{each}_totalSupply', parsers.from_wei]]))
-                    calls.append(Call('0xBA12222222228d8Ba445958a75a0704d566BF2C8', ['getPoolTokens(bytes32)(address[],uint256[],uint256)', bytes.fromhex(found_token['balancerPoolID'])], [[f'{each}_balancerTokens', None],[f'{each}_balancerBalances', None]]))
+                    if 'balancerVault' in found_token:
+                        calls.append(Call(found_token['balancerVault'], ['getPoolTokens(bytes32)(address[],uint256[],uint256)', bytes.fromhex(found_token['balancerPoolID'])], [[f'{each}_balancerTokens', None],[f'{each}_balancerBalances', None]]))
+                    else:
+                        calls.append(Call('0xBA12222222228d8Ba445958a75a0704d566BF2C8', ['getPoolTokens(bytes32)(address[],uint256[],uint256)', bytes.fromhex(found_token['balancerPoolID'])], [[f'{each}_balancerTokens', None],[f'{each}_balancerBalances', None]]))                        
                 if 'curve_minter' in found_token:
                     calls.append(Call(found_token['curve_minter'], 'get_virtual_price()(uint256)', [[f'{each}_virtualPrice', parsers.from_wei]]))
                 if 'getRatio' in found_token:

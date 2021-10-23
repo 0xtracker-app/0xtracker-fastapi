@@ -46,7 +46,7 @@ def get_balancer_ratio(token_data,quote_price):
         token_price = quote_price[token_address.lower()]
         lp_price += lp_balance * token_price
 
-    return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price}
+    return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'actualStaked' : token_data['staked'], 'tokenSymbols' : token_data['balancerSymbols'], 'lpBalances' : lp_values, 'tokenPair' : "/".join(token_data['balancerSymbols'])}
     
 async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
 
