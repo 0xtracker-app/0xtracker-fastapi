@@ -342,7 +342,8 @@ async def get_balancer_token(pool_token,farm_id):
     else:
         pool_weights = pool_info['pool_weights']
 
-    token_data = { 
+    token_data = {
+    "balancerVault" : vault, 
     "balancerPoolID" : pool_info['pool_id'].hex(),
     "balancerBalances" :  [str(x) for x in vault_info[1]],
     "balancerWeights" : pool_weights,
@@ -389,6 +390,71 @@ async def get_nft(token, farm_id):
         add = {'token0' : token, 'tkn0d' : 1}
 
         return {**add, **await single()}
+
+async def get_beethoven_token(pool_token,farm_id):
+
+    network_chain = WEB3_NETWORKS[farm_id]
+
+    vault = '0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce'
+
+
+    try:
+        calls = []
+        calls.append(Call(pool_token, [f'getPoolId()(bytes32)'], [[f'pool_id', None]]))
+        calls.append(Call(pool_token, [f'totalSupply()(uint256)'], [[f'totalSupply', parsers.from_wei]]))
+        calls.append(Call(pool_token, [f'getNormalizedWeights()(uint256[])'], [[f'pool_weights', parsers.parse_pool_weights]]))
+
+        pool_info = await Multicall(calls,network_chain)()
+    except:
+        calls = []
+        calls.append(Call(pool_token, [f'getPoolId()(bytes32)'], [[f'pool_id', None]]))
+        calls.append(Call(pool_token, [f'totalSupply()(uint256)'], [[f'totalSupply', parsers.from_wei]]))
+
+        pool_info = await Multicall(calls,network_chain)()
+
+    balancer_vault = set_pool(balancer_vault_abi,vault,farm_id)
+    
+    vault_info = balancer_vault.getPoolTokens(pool_info['pool_id']).call()
+
+    calls = []
+
+    for token in vault_info[0]:
+        calls.append(Call(token, [f'symbol()(string)'], [[f'{token}_symbol', None]]))
+        calls.append(Call(token, [f'decimals()(uint256)'], [[f'{token}_decimal', None]]))
+
+    tokens_info = await Multicall(calls,WEB3_NETWORKS[farm_id])()
+
+    token_symbols = []
+    token_decimals = []
+    for each in tokens_info:
+        if 'symbol' in each:
+            token_symbols.append(tokens_info[each])
+        elif 'decimal' in each:
+            token_decimals.append(tokens_info[each])
+
+    if 'pool_weights' not in pool_info:
+        pool_weights = []
+        pool_lengths = len(vault_info[0])
+        for each in vault_info[0]:
+            pool_weights.append(1/pool_lengths)
+    else:
+        pool_weights = pool_info['pool_weights']
+
+    token_data = {
+    "balancerVault" : vault, 
+    "balancerPoolID" : pool_info['pool_id'].hex(),
+    "balancerBalances" :  [str(x) for x in vault_info[1]],
+    "balancerWeights" : pool_weights,
+    "balancerSymbols" : token_symbols,
+    "balancerDecimals" : token_decimals,
+    'balancerTokens' : vault_info[0],
+    "tkn0d" : token_decimals[0], 
+    "tkn0s" : '/'.join(token_symbols), 
+    "token0" : vault_info[0][0], 
+    "totalSupply" : pool_info['totalSupply']
+    }
+
+    return token_data
 
 async def catch_all(token, farm_id):
 

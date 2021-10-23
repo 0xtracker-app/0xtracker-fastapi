@@ -2002,6 +2002,48 @@ class Farms:
             'vault_args' : [{}, {}]
         }
     },
+                '0xKogeFTM' : {
+        'name' : 'kogefarm.io',
+        'rewardToken' : '0x13748d548d95d78a3c83fe3f32604b4796cffa23',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xKogeFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.pull_koge_vaults_ftm],
+            'args' : [
+                {
+                    'farm_id' : '0xKogeFTM',
+                    'network' : 'ftm'
+                },
+                    ],
+            'vault_args' : [{}, {}]
+        }
+    },
+                '0xKogeMoon' : {
+        'name' : 'kogefarm.io',
+        'rewardToken' : '0x13748d548d95d78a3c83fe3f32604b4796cffa23',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xKogeMoon',
+        'featured' : 2,
+        'network' : 'moon',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.pull_koge_vaults_moon],
+            'args' : [
+                {
+                    'farm_id' : '0xKogeMoon',
+                    'network' : 'moon'
+                },
+                    ],
+            'vault_args' : [{}, {}]
+        }
+    },
                 '0xSushiMatic' : {
         'name' : 'sushi.com',
         'rewardToken' : '0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a',
@@ -4801,6 +4843,39 @@ class Farms:
         'masterChef' : '0xa0488F956D7fe05b1798e9FaF0cE5F1133d23822',
         'featured' : 2,
         'network' : 'avax',
+    },
+                '0xBeethoven' : {
+        'name' : 'beethovenx.io',
+        'rewardToken' : '0xf24bcf4d1e507740041c9cfd2dddb29585adce1e',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeethoven',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xBeethoven',
+                    'network_id' : 'ftm',
+                    'farm_data' :{
+                        'name' : 'beethovenx.io',
+                        'rewardToken' : '0xf24bcf4d1e507740041c9cfd2dddb29585adce1e',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingBeets',
+                        'masterChef' : '0x8166994d9ebBe5829EC86Bd81258149B87faCfd3',
+                        'featured' : 2,
+                        'network' : 'ftm',
+                        'wantFunction' : 'lpTokens',
+                        'rewardSymbol' : 'BEETS',
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
     },
 }
 
