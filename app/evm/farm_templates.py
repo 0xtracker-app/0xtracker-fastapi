@@ -2923,3 +2923,38 @@ async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+
+async def get_euler_staking(wallet,farm_id,network_id,vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        for vault in vaults:
+            calls.append(Call(vault, [f'getUserInfo(address)((uint256,uint256))', wallet], [[f'{vault}_staked', None]]))        
+            calls.append(Call(vault, [f'euler()(address)'], [[f'{vault}_want', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each][0] > 0:
+                    breakdown = each.split('_')
+                    staked = parsers.from_wei(stakes[each][0])
+                    want_token = stakes[f'{breakdown[0]}_want']
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    reward_token_0 = {'pending': parsers.from_wei(stakes[each][1]), 'symbol' : 'EULER', 'token' : want_token}
+                    poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None

@@ -90,9 +90,9 @@ async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id:st
     return x
 
 @app.get('/user-balance/')
-async def get_user_balances(db: AsyncIOMotorClient = Depends(get_database), wallet : List[str] = Query([]), days: int = Query(...,ge=1, le=90)):
+async def get_user_balances(db: AsyncIOMotorClient = Depends(get_database), wallet : List[str] = Query([]), farm_id : List[str] = Query([]), days: int = Query(...,ge=1, le=90)):
     if wallet:
-        x = await db.xtracker['user_data'].aggregate(user_info_by_time(wallet, days)).to_list(length=None)
+        x = await db.xtracker['user_data'].aggregate(user_info_by_time(wallet, days, farm_id)).to_list(length=None)
     else:
         x = await db.xtracker['user_data'].find({}, {'_id': False}).to_list(length=None)
     return x

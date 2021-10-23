@@ -1,9 +1,9 @@
 import time
 
-def user_info_by_time(wallets, days):
+def user_info_by_time(wallets, days, farms):
     return [
 {   
-   '$match' : { "wallet" : {'$in' : wallets}, "timeStamp" : {"$gte" : time.time() - 86400*days}}
+   '$match' : { "wallet" : {'$in' : wallets}, "farm" : { "$in" if farms else "$nin" : farms}, "timeStamp" : {"$gte" : time.time() - 86400*days}}
 },
 {
    '$addFields' : { 
