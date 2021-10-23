@@ -21,7 +21,6 @@ async def get_network_staking(network, network_data, session):
     endpoint = network_data['rest']
     wallet = network_data['wallet']
     r = await make_get_json(session, f'{endpoint}/cosmos/staking/v1beta1/delegations/{wallet}')
-    
     return r
 
 async def get_network_staking_unbonded(network, network_data, session):

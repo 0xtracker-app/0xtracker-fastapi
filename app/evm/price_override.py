@@ -1,4 +1,4 @@
-from .oracles import get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
+from .oracles import get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
 from . import routers
 
 class TokenOverride:
@@ -29,4 +29,5 @@ class TokenOverride:
             '0x80da8ca6c3dabd3a9f06ca8eeed5d61687fab7ef'.lower() : [get_tranchess_price, {'address' : '0x80da8ca6c3dabd3a9f06ca8eeed5d61687fab7ef', 'tranch' : 'trancheB', 'session' : session}],
             '0x88a3acac5c48f93121d4d7771a068a1fcde078bc'.lower() : [get_price_from_firebird, {'token_in' : '0x88a3acac5c48f93121d4d7771a068a1fcde078bc', 'token_out' : '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', 'out_d' : 6, 'amount' : 1 * 10 ** 18, 'session' : session}],
             '0x0F83287FF768D1c1e17a42F44d644D7F22e8ee1d'.lower() : [get_synth_price, {'address' : '0x0F83287FF768D1c1e17a42F44d644D7F22e8ee1d', 'aggregator' : '0x7c8719f3683585a242a67c73f6f3c98362004da4', 'network' : 'eth'}],
+            '0x31d4eb09a216e181ec8a43ce79226a487d6f0ba9'.lower() : [get_price_from_uni3, {'return_token' : '0x31d4eb09a216e181ec8a43ce79226a487d6f0ba9', 'pool' : '0x7342C20D7F62B4D1a09d5022d883c7a796721443', 'network' : 'eth', 'token_decimals' : [18,6]}],
 }

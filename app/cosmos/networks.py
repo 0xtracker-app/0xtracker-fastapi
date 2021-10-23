@@ -164,6 +164,21 @@ class CosmosNetwork:
                 'coin_gecko_id' : ''
             }
         },
+            'terra' : {
+            'wallet' : from_atom(wallet,'terra'),
+            'rpc' : 'https://rpc-columbus.keplr.app',
+            'rest' : 'https://lcd-columbus.keplr.app',
+            'chain_id' : 'columbus-5',
+            'chain_name' : 'Terra',
+            'explorer' : 'https://finder.terra.money/columbus-5/',
+            'bech_prefix' : 'terra',
+            'stake_token' : {
+                'denom' : 'uluna',
+                'symbol' : 'LUNA',
+                'decimals' : 6,
+                'coin_gecko_id' : 'terra-luna'
+            }
+        },
     }
 
     def set_network(self, name):

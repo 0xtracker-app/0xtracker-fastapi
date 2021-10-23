@@ -186,6 +186,9 @@ async def get_polycrystal_staking(session):
 async def get_ele_staking_avax(session):
     return ['0x399e0348BdAb853576df586027ddeb1cb25Fae2C']
 
+async def euler_staking(session):
+    return ['0xb18faB4C6f054e734EA169561787CC87928f54Ee']
+
 async def dummy_vault(session):
     return ['0xDummy']
 

@@ -1,6 +1,6 @@
 from .multicall import Call, Multicall
 from .networks import WEB3_NETWORKS
-
+import time
 
 async def get_token_list_decimals(tokens,network_id,parse_wanted):
     
@@ -59,3 +59,19 @@ def get_token_list_decimals_symbols(tokens,network_id):
         calls.append(Call(each, 'symbol()(string)', [[f'{each}_symbol', None]]))
 
     return Multicall(calls, network)()
+
+def round_to_half_hour():
+    current_time = int(time.time())- 1260
+    interval = 1800
+    offset = current_time % interval
+    rounded = current_time - offset
+
+    return rounded
+
+def round_to_hour():
+    current_time = int(time.time()) - 1260
+    interval = 3600
+    offset = current_time % interval
+    rounded = current_time - offset
+
+    return rounded

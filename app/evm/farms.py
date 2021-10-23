@@ -4761,6 +4761,47 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x35cA0e02C4c16c94c4cC8B67D13d660b78414f95' : {
+        'name' : 'nasdex.xyz',
+        'rewardToken' : '0xE8d17b127BA8b9899a160D9a07b69bCa8E08bfc6',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingNSDX',
+        'masterChef' : '0x35cA0e02C4c16c94c4cC8B67D13d660b78414f95',
+        'featured' : 2,
+        'network' : 'matic',
+    },
+                '0xEuler' : {
+        'name' : 'euler.tools',
+        'rewardToken' : '0x3920123482070c1a2dff73aad695c60e7c6f6862',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xEuler',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_euler_staking],
+            'vaults' : [external_contracts.euler_staking],
+            'args' : [
+                {
+                    'farm_id' : '0xEuler',
+                    'network_id' : 'bsc',
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xa0488F956D7fe05b1798e9FaF0cE5F1133d23822' : {
+        'name' : 'smartcoin.farm',
+        'rewardToken' : '0xCC2f1d827b18321254223dF4e84dE399D9Ff116c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTokens',
+        'masterChef' : '0xa0488F956D7fe05b1798e9FaF0cE5F1133d23822',
+        'featured' : 2,
+        'network' : 'avax',
+    },
 }
 
 

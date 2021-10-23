@@ -1,3 +1,4 @@
+import re
 import requests
 import json
 from functools import reduce
@@ -13,6 +14,7 @@ from aiohttp import ClientSession, ClientTimeout
 from .native_tokens import LiqCheck, NetworkRoutes
 from .router_override import router_override, stable_override
 from .uniswapv3 import uniSqrtPrice
+from .template_helpers import round_to_hour
 import time
 
 APPROVED_TOKENS = ['0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', '0xc168e40227e4ebd8c1cae80f7a55a4f0e6d66c97']
@@ -39,10 +41,9 @@ async def get_price_from_firebird(token_in, token_out, amount, out_d, session):
 
 
 async def get_tranchess_price(tranch,address,session):
-    url = f'https://tranchess.com/api/v1/funds/0xd6B3B86209eBb3C608f3F42Bf52818169944E402/historyNavs?granularity=M30&count=1'
-    response = await make_get_json(session, url)
+    response = await Call('0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6', ['estimateNavs(uint256)((uint256,uint256,uint256))', round_to_hour()], [[f'estimateNavs',parsers.parse_tranchess]], _w3=WEB3_NETWORKS['bsc'])()
 
-    return {address.lower() : int(response['historyNavs'][0][tranch]) / 1e18}
+    return {address.lower() : response['estimateNavs'][tranch] / 1e18}
 
 async def fantom_router_prices(tokens_in, router):
     calls= []
@@ -422,6 +423,12 @@ async def get_gmx_price(return_token):
     x = await Call('0x80A9ae39310abf666A87C743d6ebBD0E8C42158E', 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS['arb'])()
 
     return {return_token.lower() : uniSqrtPrice([18,18], x['slot0']['sqrtPriceX96']) * ether_price}
+
+async def get_price_from_uni3(return_token, pool, network, token_decimals):
+
+    x = await Call(pool, 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS[network])()
+
+    return {return_token.lower() : uniSqrtPrice(token_decimals, x['slot0']['sqrtPriceX96'])}
 
 async def get_synth_price(address,aggregator,network):
 
