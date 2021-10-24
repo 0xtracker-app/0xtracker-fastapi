@@ -2943,7 +2943,7 @@ class Farms:
                 {
                     'farm_id' : '0xCurveFTM',
                     'network_id' : 'ftm',
-                    'rewards' : ['0x1E4F97b9f9F913c46F1632781732927B9019C68b']
+                    'rewards' : ['0x1E4F97b9f9F913c46F1632781732927B9019C68b', '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83', '0xd8321aa83fb0a4ecd6348d4577431310a6e0814d']
                 },
                     ],
             'vault_args' : [{'network' : 'ftm'}]
@@ -4876,6 +4876,16 @@ class Farms:
                     ],
             'vault_args' : [{}]
         }
+    },
+                '0xbCEf0849DDd928835A6Aa130aE527C2703CD832C' : {
+        'name' : 'scarecrow.fi',
+        'rewardToken' : '0x46e1ee17f51c52661d04238f1700c547de3b84a1',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingScare',
+        'masterChef' : '0xbCEf0849DDd928835A6Aa130aE527C2703CD832C',
+        'featured' : 2,
+        'network' : 'ftm',
     },
 }
 
