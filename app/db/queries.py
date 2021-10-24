@@ -13,7 +13,8 @@ def user_info_by_time(wallets, days, farms):
 {
    "$group" : {
     "_id": { "farm" : '$farm',
-             "date" : '$date'
+             "date" : '$date',
+             "network" : '$farm_network',
          },
 
      "average" : { "$avg" : "$dollarValue" }
