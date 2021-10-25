@@ -4887,6 +4887,16 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm',
     },
+                '0x1f4b7660b6AdC3943b5038e3426B33c1c0e343E6' : {
+        'name' : 'huckleberry.finance',
+        'rewardToken' : '0x9a92b5ebf1f6f6f7d93696fcd44e5cf75035a756',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x1f4b7660b6AdC3943b5038e3426B33c1c0e343E6',
+        'featured' : 2,
+        'network' : 'moon',
+    },
 }
 
 
