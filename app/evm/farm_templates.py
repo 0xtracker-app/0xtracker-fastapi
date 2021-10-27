@@ -2169,7 +2169,7 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
             pool_length = 'poolLength'
 
         
-        if farm_info[pool]['stakedFunction'] is not None and pool.lower() not in ['0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'.lower(), '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
+        if farm_info[pool]['stakedFunction'] is not None and pool.lower() not in ['0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'.lower(), '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower(), '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43'.lower()]:
             calls.append(Call(pool, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
             calls.append(Call(pool, 'getRewardsLength()(uint256)', [[pool, None]]))
@@ -2178,6 +2178,11 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
         poolLengths = {
         **await Multicall(calls, network_conn)(),
         **{'0x97bdB4071396B7f60b65E0EB62CE212a699F4B08' : 5}
+        }
+    elif '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43' : 2}
         }
     else:
         poolLengths = await Multicall(calls, network_conn)()
@@ -2958,3 +2963,44 @@ async def get_euler_staking(wallet,farm_id,network_id,vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_balance_earn(wallet, vaults, farm_id, network, reward_info, want_function=None):
+    network_conn = WEB3_NETWORKS[network]
+    if want_function is None:
+        want_function = 'stakingToken'
+    else:
+        want_function = want_function
+
+    poolKey = farm_id
+    calls = []
+
+    
+    for vault in vaults:
+
+        calls.append(Call(vault, ['balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_wei]]))
+        calls.append(Call(vault, ['earned(address)(uint256)', wallet], [[f'{vault}_pending', None]]))
+        calls.append(Call(vault, [f'{want_function}()(address)'], [[f'{vault}_want', None]]))
+
+    stakes=await Multicall(calls, network_conn, _strict=False)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                staked = stakes[each]
+                pending = stakes[f'{breakdown[0]}_pending']
+                want_token = stakes[f'{breakdown[0]}_want']
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append({'pending': parsers.from_custom(pending, reward_info['decimal']), 'symbol' : reward_info['symbol'], 'token' : reward_info['token']})
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+    
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None

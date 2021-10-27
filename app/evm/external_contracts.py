@@ -189,6 +189,9 @@ async def get_ele_staking_avax(session):
 async def euler_staking(session):
     return ['0xb18faB4C6f054e734EA169561787CC87928f54Ee']
 
+async def tomb_staking(session):
+    return ['0x8764DE60236C5843D9faEB1B638fbCE962773B67']
+
 async def dummy_vault(session):
     return ['0xDummy']
 

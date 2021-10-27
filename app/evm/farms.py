@@ -3630,11 +3630,30 @@ class Farms:
         'name' : 'sushi.com',
         'rewardToken' : '0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A',
         'decimal' : 18,
-        'stakedFunction' : 'userInfo',
-        'pendingFunction' : 'pendingSushi',
+        'stakedFunction' : None,
+        'pendingFunction' : None,
         'masterChef' : '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
         'featured' : 2,
-        'network' : 'harmony'
+        'network' : 'harmony',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sushi_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
+                    'network_id' : 'harmony',
+                    'farm_data' :{
+                        'masterChef' : '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
+                        'rewarder' : '0x25836011bbc0d5b6db96b20361a474cbc5245b45',
+                        'r0sym' : 'SUSHI',
+                        'r1sym' : 'WONE',
+                        'r0t' : '0xBEC775Cb42AbFa4288dE81F387a9b1A3c4Bc552A',
+                        'r1t' : '0xcf664087a5bb0237a0bad6742852ec6c8d69a27a'
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
     },
                 '0x8A4f4c7F4804D30c718a76B3fde75f2e0cFd8712' : {
         'name' : 'shibanova.io',
@@ -4896,6 +4915,29 @@ class Farms:
         'masterChef' : '0x1f4b7660b6AdC3943b5038e3426B33c1c0e343E6',
         'featured' : 2,
         'network' : 'moon',
+    },
+                '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43' : {
+        'name' : 'tomb.finance',
+        'rewardToken' : '0x4cdf39285d7ca8eb3f090fda0c069ba5f4145b37',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingShare',
+        'masterChef' : '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_balance_earn],
+            'vaults' : [external_contracts.tomb_staking],
+            'args' : [
+                {
+                    'farm_id' : '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43',
+                    'network' : 'ftm',
+                    'want_function' : 'share',
+                    'reward_info' : {'token' : '0x6c021ae822bea943b2e66552bde1d2696a53fbb7', 'symbol' : 'TOMB', 'decimal' : 18}
+                }
+                    ],
+            'vault_args' : [{}]
+        }
     },
 }
 
