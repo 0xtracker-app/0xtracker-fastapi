@@ -71,7 +71,7 @@ async def get_osmosis_staking(wallet, session, vaults, farm_id, mongodb, network
         }
 
     poolIDs = {}
-    print(staking)
+
     for i,each in enumerate(staking[0]['coins']):
 
             staked_position = {'staked' : 0, 'gambitRewards' : [], 'network' : 'cosmos'}
