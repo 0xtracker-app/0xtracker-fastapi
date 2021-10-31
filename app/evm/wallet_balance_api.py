@@ -27,7 +27,7 @@ async def get_balance_of(token_list, wallet, network, network_info):
     calls = []
 
     for token in token_list:
-        if token not in ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2', '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e']:
+        if token.lower() not in ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'.lower(), '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e'.lower(), '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(), '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower()]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
     
     if len(calls) > 2100:
@@ -118,7 +118,8 @@ async def get_wallet_balance(wallet, network, mongodb, session):
                     price = 0
 
             if address in router_override or address in stable_override:
-                price = 0
+                if address not in ['0xe5417af564e4bfda1c483642db72007871397896']:
+                    price = 0
 
             data = {
                 'token_address' : address.lower(),

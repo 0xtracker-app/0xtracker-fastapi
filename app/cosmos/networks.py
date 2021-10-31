@@ -151,8 +151,8 @@ class CosmosNetwork:
         },
             'juno' : {
             'wallet' : from_atom(wallet,'juno'),
-            'rpc' : 'https://rpc.juno.omniflix.co',
-            'rest' : 'https://api.juno.omniflix.co',
+            'rpc' : 'https://rpc-juno.itastakers.com',
+            'rest' : 'https://lcd-juno.itastakers.com',
             'chain_id' : 'juno-1',
             'chain_name' : 'Juno Mainnet',
             'explorer' : 'https://www.mintscan.io/juno',
@@ -177,6 +177,21 @@ class CosmosNetwork:
                 'symbol' : 'LUNA',
                 'decimals' : 6,
                 'coin_gecko_id' : 'terra-luna'
+            }
+        },
+            'terra' : {
+            'wallet' : from_atom(wallet,'secret'),
+            'rpc' : 'https://rpc-secret.keplr.app',
+            'rest' : 'https://lcd-secret.keplr.app',
+            'chain_id' : 'secret-3',
+            'chain_name' : 'Secret Network',
+            'explorer' : '',
+            'bech_prefix' : 'secret',
+            'stake_token' : {
+                'denom' : 'uscrt',
+                'symbol' : 'SCRT',
+                'decimals' : 6,
+                'coin_gecko_id' : 'secret'
             }
         },
     }

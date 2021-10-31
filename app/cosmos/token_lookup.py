@@ -1,4 +1,34 @@
 from . import queries
+
+async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
+
+    is_found = await cosmos_tokens.find_one({'tokenID': token}, {'_id': False})
+
+    if is_found:
+        return is_found
+    else:
+        base_denom = await queries.find_trace_route(token, network, session)
+
+        if base_denom:
+            await cosmos_routes.update_one({'hash' : token},{ "$set": base_denom}, upsert=True)
+            denom = base_denom['base_denom']
+            print(denom)
+            found_token = await cosmos_tokens.find_one({'tokenID' : denom}, {'_id': False})        
+            
+            if found_token:
+                single_token = {
+                    "tokenID" : token, 
+                    "tkn0d" : found_token['tkn0d'], 
+                    "tkn0s" : found_token['tkn0s'], 
+                    "token0" : found_token['token0']
+                }
+                await cosmos_tokens.update_one({'tokenID': token}, {"$set": single_token}, upsert=True)
+
+                return single_token
+        else:
+            return None
+
+
 class TokenMetaData:
 
     def __init__(self, address=None, mongodb=None, network=None, session=None):
@@ -35,8 +65,9 @@ class TokenMetaData:
             else:
                 get_pool = await queries.get_gamm_pool(self.tokenID, self.network, self.session)
 
-                found_token0 = await self.cosmos_tokens.find_one({'tokenID': get_pool['token0']}, {'_id': False})
-                found_token1 = await self.cosmos_tokens.find_one({'tokenID': get_pool['token1']}, {'_id': False})
+                found_token0 = await get_ibc(get_pool['token0'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
+                found_token1 = await get_ibc(get_pool['token1'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
+
                 get_pool.update({
                     'tokenID': get_pool['base_denom'],
                     'tkn0s': found_token0['tkn0s'],
