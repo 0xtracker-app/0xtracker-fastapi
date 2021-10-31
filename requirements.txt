@@ -80,7 +80,7 @@ typing-extensions==3.7.4.3
 urllib3==1.26.6
 uvicorn[standard]==0.13.1
 varint==1.0.2
-web3==5.23.0
+web3 @ git+https://github.com/Dirt-Nasty/web3.py.git
 websockets==9.1
 yarl==1.6.3
 zipp==3.5.0

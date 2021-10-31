@@ -7,6 +7,10 @@ from .router_override import stable_override, router_override
 from .networks import WEB3_NETWORKS, SCAN_APIS
 from .utils import make_get_json
 from .native_tokens import NetworkRoutes
+from functools import reduce
+import math
+import numpy as np
+import asyncio
 
 SCAN_SUPPORTED = [x for x in SCAN_APIS]
 
@@ -23,17 +27,32 @@ async def get_balance_of(token_list, wallet, network, network_info):
     calls = []
 
     for token in token_list:
-        if token != '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2':
+        if token.lower() not in ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'.lower(), '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e'.lower(), '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(), '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower()]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
-            calls.append(Call(token, ['symbol()(string)'], [[f'{token}_symbol', None]]))
-            calls.append(Call(token, ['decimals()(uint8)'], [[f'{token}_decimal', None]]))
-   
-    multi_return = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
-
+    
+    if len(calls) > 2100:
+        chunks = len(calls) / 2000
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network], _strict=False)() for call in x])
+        multi_return = reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        multi_return = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
+    
+    
     native_balance = await get_native_balance(wallet, network)
 
     user_holdings = {f'native+{network}' : {'token' : network_info.native.lower(), 'decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18), 'network' : network}}
     user_tokens = [network_info.native]
+
+    token_symbol = []
+    for x in multi_return:
+        if 'balance' in x:
+            if multi_return[x] > 0:
+                token = x.split('_')[0]
+                token_symbol.append(Call(token, ['symbol()(string)'], [[f'{token}_symbol', None]]))
+                token_symbol.append(Call(token, ['decimals()(uint8)'], [[f'{token}_decimal', None]]))
+
+    multi_return = {**multi_return, **await Multicall(token_symbol, WEB3_NETWORKS[network], _strict=False)()}
 
     for x in multi_return:
         if 'balance' in x:
@@ -45,7 +64,6 @@ async def get_balance_of(token_list, wallet, network, network_info):
 
                 user_holdings[key] = {'token' : key, 'decimal' : token_decimal, 'token_symbol' : token_symbol, 'token_balance' : token_balance, 'network' : network}
                 user_tokens.append(key.lower())
-
     return user_holdings, ','.join(user_tokens)
 
 async def get_token_list_from_scan(network,session,wallet):
@@ -100,7 +118,8 @@ async def get_wallet_balance(wallet, network, mongodb, session):
                     price = 0
 
             if address in router_override or address in stable_override:
-                price = 0
+                if address not in ['0xe5417af564e4bfda1c483642db72007871397896']:
+                    price = 0
 
             data = {
                 'token_address' : address.lower(),
