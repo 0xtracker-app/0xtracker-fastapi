@@ -524,7 +524,7 @@ async def get_jetswap_vaults(network, session):
         return r
 
 async def get_elk_vaults(network, session):
-        ROUNDS = 7
+        ROUNDS = 8
         STAKING = {"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
         r = await cf_make_get_json(session, 'https://api.elk.finance/v1/info/farms')
         
