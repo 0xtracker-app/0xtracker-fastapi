@@ -19,8 +19,8 @@ async def make_get_json(session, url, kwargs={}):
         try:
             result = await response.json()
             return result
-        except:
-            None
+        except Exception:
+            return {'message': 'json error', 'details' : response}
 
 async def make_post_json(session, url, kwargs={}):
     async with session.post(url, **kwargs) as response:
