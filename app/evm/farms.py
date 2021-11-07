@@ -1615,6 +1615,22 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xBeefyMoon' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0x173fd7434B8B50dF08e3298f173487ebDB35FD14',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyMoon',
+        'featured' : 2,
+        'network' : 'moon',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes, farm_templates.get_fh_pools],
+            'vaults' : [external_contracts.get_beefy_moon_pools, external_contracts.get_beefy_boosts_moon],
+            'args' : [{'farm_id' : '0xBeefyMoon', 'network' : 'moon'}, {'farm_id' : '0xBeefyMoon', 'network' : 'moon', 'stake_func' : 'stakedToken'}],
+            'vault_args' : [{},{}]
+        }
+    },
     '0xD109D9d6f258D48899D7D16549B89122B0536729' : {
         'name' : 'eleven.finance',
         'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
@@ -4168,7 +4184,7 @@ class Farms:
         }
     },
                 '0xPancakeHunny' : {
-        'name' : 'pancakehunny.finance',
+        'name' : 'hunny.finance',
         'rewardToken' : '0x565b72163f17849832a692a3c5928cc502f46d69',
         'decimal' : 18,
         'stakedFunction' : None,
