@@ -192,6 +192,9 @@ async def euler_staking(session):
 async def tomb_staking(session):
     return ['0x8764DE60236C5843D9faEB1B638fbCE962773B67']
 
+async def bouje_staking(session):
+    return ['0x5BE35C02996320688F9E5968148dE5bC31635f15']
+
 async def dummy_vault(session):
     return ['0xDummy']
 
