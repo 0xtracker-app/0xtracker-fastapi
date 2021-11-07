@@ -221,6 +221,17 @@ async def get_beefy_fantom_pools(session):
 
     return vault_data
 
+async def get_beefy_moon_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/moonriver_pools.js')
+    s2 = "export const moonriverPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
+
 async def get_beefy_arb_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/arbitrum_pools.js')
     s2 = "export const arbitrumPools = "
@@ -359,6 +370,16 @@ async def get_apeswap_pools_new(session):
 async def get_beefy_boosts_poly(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/polygon_stake.js')
     s2 = "export const polygonStakePools = ["
+    data = r[r.index(s2) + len(s2) :len(r)-3].strip()
+    regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
+    hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
+    t = json.loads(json.dumps(hson))
+
+    return [x['earnContractAddress'] for x in t if x['status'] == 'active']
+
+async def get_beefy_boosts_moon(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/moonriver_stake.js')
+    s2 = "export const moonriverStakePools = ["
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
     hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
