@@ -4955,6 +4955,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x89dcd1DC698Ad6A422ad505eFE66261A4320D8B5' : {
+        'name' : 'bouje.finance',
+        'rewardToken' : '0x37f70aa9fefc8971117bd53a1ddc2372aa7eec41',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBouje',
+        'masterChef' : '0x89dcd1DC698Ad6A422ad505eFE66261A4320D8B5',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.bouje_staking],
+            'args' : [
+                {
+                    'farm_id' : '0x89dcd1DC698Ad6A422ad505eFE66261A4320D8B5',
+                    'network_id' : 'ftm',
+                    'staked' : 'stakeToken'
+                },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
