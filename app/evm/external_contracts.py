@@ -124,7 +124,7 @@ async def get_wault_pools_matic(session):
     return r
 
 async def get_blockmine(session):
-    return ['0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870']
+    return ['0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870', '0x0c85C19a0ad8317Ce1b5d0A31097F8d0B4cd8981', '0x9cd3208AdB17F5976e949b0D0c5A37797B44f9a0']
 
 async def get_farmhero_staking_matic(session):
     return poolext.farmhero.matic_staking
