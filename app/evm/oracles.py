@@ -251,8 +251,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
             else:
                 liq = liq_check[each] if each in liq_check else 0
         else:
-            liq = network_route.minliq + 1
-
+            if token.lower() == '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'.lower() and each.split('_')[0] == 'BURGER':
+                liq = 0
+            else:
+                liq = network_route.minliq + 1
         looped_value = multi[each] if liq > network_route.minliq else 0
 
         if token in prices:
@@ -275,6 +277,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     prices['0x04645027122c9f152011f128c7085449b27cb6D7'.lower()] = 0
     prices['0xef27b9cb67aa93ec3494a60f1ea9380e86175b26'.lower()] = 0
     prices['0x27b880865395da6cda9c407e5edfcc32184cf429'.lower()] = 0
+    prices['0x0d05a204e27e4815f1f5afdb9d82aa221aa0bdfa'.lower()] = 0
     return prices
 
 async def avax_router_prices(tokens_in, router):
@@ -426,6 +429,14 @@ async def get_gmx_price(return_token):
     x = await Call('0x80A9ae39310abf666A87C743d6ebBD0E8C42158E', 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS['arb'])()
 
     return {return_token.lower() : uniSqrtPrice([18,18], x['slot0']['sqrtPriceX96']) * ether_price}
+
+async def get_ygg_price():
+
+    ETH = await get_price_from_router(token_in='0x6983d1e6def3690c4d616b13597a09e6193ea013',network='harmony', native=True, router=ONERouter.SUSHI)
+    
+    x = await get_price_from_router(token_in='0x63cf309500d8be0b9fdb8f1fb66c821236c0438c', token_out= '0x6983d1e6def3690c4d616b13597a09e6193ea013',network='harmony',router=ONERouter.SUSHI)
+
+    return {'0x63cf309500d8be0b9fdb8f1fb66c821236c0438c'.lower() : ETH['0x6983d1e6def3690c4d616b13597a09e6193ea013'] * x['0x63cf309500d8be0b9fdb8f1fb66c821236c0438c']}
 
 async def get_price_from_uni3(return_token, pool, network, token_decimals):
 

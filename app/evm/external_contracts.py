@@ -81,6 +81,10 @@ async def get_vsafes(session):
     r = await make_get_json(session,'https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
     return [x['id'] for x in r['data']]
 
+async def get_grim_vaults(session):
+    r = await make_get_json(session,'https://api.grim.finance/vaults')
+    return [x['earnedTokenAddress'] for x in r]
+
 async def get_firebird_vaults():
     r = await make_get_json(session,'https://farm-api-polygon.firebird.finance/api/farming-scan/get-farming-scans?group=fvault')
     return [x['id'] for x in r['data']]
@@ -124,7 +128,7 @@ async def get_wault_pools_matic(session):
     return r
 
 async def get_blockmine(session):
-    return ['0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870', '0x0c85C19a0ad8317Ce1b5d0A31097F8d0B4cd8981', '0x9cd3208AdB17F5976e949b0D0c5A37797B44f9a0']
+    return ['0x45E6729373db693e1422FbBdF0EaF530E09Bd388','0x7794318ddbcd30287f77F54a500a04494Af7C174','0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870', '0x0c85C19a0ad8317Ce1b5d0A31097F8d0B4cd8981', '0x9cd3208AdB17F5976e949b0D0c5A37797B44f9a0']
 
 async def get_farmhero_staking_matic(session):
     return poolext.farmhero.matic_staking
@@ -194,6 +198,9 @@ async def tomb_staking(session):
 
 async def bouje_staking(session):
     return ['0x5BE35C02996320688F9E5968148dE5bC31635f15']
+
+async def knight_staking(session):
+    return ['0xe790a0683b669089AdC199996F89Bd40FEd4C559', '0x3b8B92D882127b5e14c9476615374a69e55d4Ca1', '0xF928BB46273043F98cc731CeFFc16A1ccC177707']
 
 async def dummy_vault(session):
     return ['0xDummy']
