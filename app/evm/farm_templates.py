@@ -945,7 +945,7 @@ async def get_quickswap_style_multi(wallet, vaults, farm_id, network):
     else:
         return None
 
-async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=None, _strict=None, want_token=None):
+async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=None, _strict=None, want_token=None, decimal_from=None):
 
     if _pps == None:
         pps = 'getRatio'
@@ -966,6 +966,11 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
         want_token = 'token'
     else:
         want_token = want_token
+
+    if decimal_from is None:
+        decimal_from = True
+    else:
+        decimal_from = False
 
     poolKey = farm_id
     calls = []
@@ -989,13 +994,22 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
 
     poolIDs = {}
 
-    token_decimals = await template_helpers.get_token_list_decimals(vaults,network,False)
-
+    if decimal_from is True:
+        token_decimals = await template_helpers.get_token_list_decimals(vaults,network,False)
+    else:
+        token_decimals = await template_helpers.get_token_list_decimals(stakes,network,True)
+    
     for each in stakes:
         if 'staked' in each:
             if stakes[each] > 0:
                 breakdown = each.split('_')
-                token_decimal = 18 if breakdown[0] not in token_decimals else token_decimals[breakdown[0]]
+
+                if decimal_from is True:
+                    decimal_lookup = breakdown[0]
+                else:
+                    decimal_lookup = stakes[f'{breakdown[0]}_want']
+
+                token_decimal = 18 if decimal_lookup not in token_decimals else token_decimals[decimal_lookup]
                 staked = parsers.from_custom(stakes[each], token_decimal)
                 want_token = stakes[f'{breakdown[0]}_want']
                 price_per = stakes[f'{breakdown[0]}_getPricePerFullShare']
@@ -2254,7 +2268,9 @@ async def get_pending_want(wallet, stakes, network, farm_info):
             elif address == '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904':
                 calls.append(Call(address, ['poolInfo(uint256)((address,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
             elif address in ['0x0769fd68dFb93167989C6f7254cd0D766Fb2841F','0x67da5f2ffaddff067ab9d5f025f8810634d84287', '0x7875Af1a6878bdA1C129a4e2356A3fD040418Be5', '0x8F5BBB2BB8c2Ee94639E55d5F41de9b4839C1280', '0x3a01521F8E7F012eB37eAAf1cb9490a5d9e18249', '0xd10eF2A513cEE0Db54E959eF16cAc711470B62cF', '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3', '0x73186f2Cf2493f20836b17b21ae79fc12934E207', '0xaeD5b25BE1c3163c907a471082640450F928DDFE']:
-                calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))         
+                calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
+            elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79']:
+                calls.append(Call(address, ['poolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))         
             else:
                 calls.append(Call(address, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
 
