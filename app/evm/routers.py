@@ -114,4 +114,14 @@ class HecoRouter():
 class MeterRouter():
     VOLT = '0xC6E88363ea74F31f514b56E979413B3Ee8d76f39'
 
+class CroRouter():
+    CRONA = '0xcd7d16fB918511BF7269eC4f48d61D79Fb26f918'
+    VVS = '0x145863Eb42Cf62847A6Ca784e6416C1682b1b2Ae'
+
+class PolisRouter():
+    HADES = '0x103ce09bE9eF5cc13c0904ec5D64Ff6c4cba5fb9'
+
+class BobaRouter():
+    OOLONG = '0x17C83E2B96ACfb5190d63F5E46d93c107eC0b514'
+
 

@@ -1279,6 +1279,35 @@ class Farms:
         'featured' : 2,
         'network' : 'avax',
     },
+                '0xAutoCro' : {
+        'name' : 'autofarm.network',
+        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAutoCro',
+        'featured' : 2,
+        'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xAutoCro',
+                    'network_id' : 'cro',
+                    'farm_data' :{
+                        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+                        'decimal' : 18,
+                        'stakedFunction' : 'stakedWantTokens',
+                        'pendingFunction' : None,
+                        'masterChef' : '0x76b8c3ECdF99483335239e66F34191f11534cbAA',
+                        'rewardSymbol' : 'AUTO',
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0x76b8c3ECdF99483335239e66F34191f11534cbAA' : {
         'name' : 'autofarm.network',
         'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
@@ -5089,6 +5118,16 @@ class Farms:
                 }],
             'vault_args' : [{}]
         }
+    },
+                '0x342bffa41D7120C2c3ed746F80286EcD025272c5' : {
+        'name' : 'hadesswap.finance',
+        'rewardToken' : '0xf1498e8103359fd96c5e08fb34b4c249b619025a',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSoul',
+        'masterChef' : '0x342bffa41D7120C2c3ed746F80286EcD025272c5',
+        'featured' : 2,
+        'network' : 'polis',
     },
 }
 
