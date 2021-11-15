@@ -1238,7 +1238,8 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
 
         for pid in range(0,pool_length):
             calls.append(Call(farm_data['masterChef'], [f'{staked_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
+            if pending_function:
+                calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
             calls.append(Call(farm_data['masterChef'], [f'{want_function}(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
 
         stakes=await Multicall(calls, network)()
@@ -1254,7 +1255,7 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
                     breakdown = each.split('_')
                     staked = stakes[each]
                     want_token = stakes[f'{breakdown[0]}_want']
-                    pending = stakes[f'{breakdown[0]}_pending']
+                    pending = stakes[f'{breakdown[0]}_pending'] if f'{breakdown[0]}_pending' in stakes else 0
 
                     poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token

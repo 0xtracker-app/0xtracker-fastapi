@@ -16,6 +16,9 @@ class NativeToken():
     XDAI = '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d'
     HECO = '0x5545153ccfca01fbd7dd11c0b23ba694d9509a6f'
     METER = '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3'
+    CRO = '0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23'
+    POLIS = '0x6FC851B8D66116627Fb1137b9D5FE4E2e1BeA978'
+    BOBA = '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -32,6 +35,9 @@ class NativeSymbol():
     XDAI = 'XDAI'
     HECO = 'HT'
     METER = 'MTG'
+    CRO = 'CRO'
+    POLIS = 'POLIS'
+    BOBA = 'ETH'
 
 class NativeDecimal():
     BSC = 18
@@ -48,6 +54,9 @@ class NativeDecimal():
     XDAI = 18
     HECO = 18
     METER = 18
+    CRO = 18
+    POLIS = 18
+    BOBA = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -64,6 +73,9 @@ class StableToken():
     XDAI = '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83'
     HECO = '0xa71edc38d189767582c38a3145b5873052c3e47a'
     METER = '0xd86e243fc0007e6226b07c9a50c9d70d78299eb5'
+    CRO = '0xc21223249CA28397B4B6541dfFaEcC539BfF0c59'
+    POLIS = '0x247123e806a27ea322bfd93e0273d04602dc942d'
+    BOBA = '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc'
 
 class StableDecimal():
     BSC = 18
@@ -80,6 +92,9 @@ class StableDecimal():
     XDAI = 6
     HECO = 18
     METER = 6
+    CRO = 6
+    POLIS = 18
+    BOBA = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -96,6 +111,9 @@ class DefaultRouter():
     XDAI = routers.DaiRouter.HONEY
     HECO = routers.HecoRouter.MDEX
     METER = routers.MeterRouter.VOLT
+    CRO = routers.CroRouter.CRONA
+    POLIS = routers.PolisRouter.HADES
+    BOBA = routers.BobaRouter.OOLONG
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -112,6 +130,9 @@ class RouteClass():
     XDAI = routers.DaiRouter
     HECO = routers.HecoRouter
     METER = routers.MeterRouter
+    CRO = routers.CroRouter
+    POLIS = routers.PolisRouter
+    BOBA = routers.BobaRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -128,6 +149,9 @@ class CoinGecko():
     XDAI = 'xdai'
     HECO = 'huobi-token'
     METER = ''
+    CRO = ''
+    POLIS = ''
+    BOBA = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -144,6 +168,9 @@ class LiqCheck():
     XDAI = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
     HECO = '0x6204688D31C627423B153486FEe40390A8381a5A'
     METER = '0x3C25ef83448EEBFAb5055040EB58a35f94940E6f'
+    CRO = '0x1AA8807dA05C959bdD93025118dB57d8796e3e33'
+    POLIS = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
+    BOBA = ''
 
 class MinLiq():
     BSC = 49999
@@ -160,6 +187,9 @@ class MinLiq():
     XDAI = 9999
     HECO = 9999
     METER = 9999
+    CRO = 9999
+    POLIS = 9999
+    BOBA = 9999
 
 class NetworkRoutes():
 

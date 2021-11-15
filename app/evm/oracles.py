@@ -278,6 +278,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     prices['0xef27b9cb67aa93ec3494a60f1ea9380e86175b26'.lower()] = 0
     prices['0x27b880865395da6cda9c407e5edfcc32184cf429'.lower()] = 0
     prices['0x0d05a204e27e4815f1f5afdb9d82aa221aa0bdfa'.lower()] = 0
+    prices['0x27b880865395da6cda9c407e5edfcc32184cf429'.lower()] = 0
+    prices['0x491b25000d386cd31307580171a510d32d7e64ee'.lower()] = 0
+
+
     return prices
 
 async def avax_router_prices(tokens_in, router):
