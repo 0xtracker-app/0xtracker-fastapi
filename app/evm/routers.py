@@ -117,6 +117,7 @@ class MeterRouter():
 class CroRouter():
     CRONA = '0xcd7d16fB918511BF7269eC4f48d61D79Fb26f918'
     VVS = '0x145863Eb42Cf62847A6Ca784e6416C1682b1b2Ae'
+    CRODEX = '0xeC0A7a0C2439E8Cb67b992b12ecd020Ea943c7Be'
 
 class PolisRouter():
     HADES = '0x103ce09bE9eF5cc13c0904ec5D64Ff6c4cba5fb9'

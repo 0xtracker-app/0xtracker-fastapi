@@ -5129,6 +5129,47 @@ class Farms:
         'featured' : 2,
         'network' : 'polis',
     },
+                '0x77ea4a4cF9F77A034E4291E8f457Af7772c2B254' : {
+        'name' : 'cronaswap.org',
+        'rewardToken' : '0xadbd1231fb360047525bedf962581f3eee7b49fe',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCrona',
+        'masterChef' : '0x77ea4a4cF9F77A034E4291E8f457Af7772c2B254',
+        'featured' : 2,
+        'network' : 'cro',
+    },
+                '0xDccd6455AE04b03d785F12196B492b18129564bc' : {
+        'name' : 'vvs.finance',
+        'rewardToken' : '0x2d03bece6747adc00e1a131bba1469c15fd11e03',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingVVS',
+        'masterChef' : '0xDccd6455AE04b03d785F12196B492b18129564bc',
+        'featured' : 2,
+        'network' : 'cro',
+    },
+                '0xCroDex' : {
+        'name' : 'crodex.app',
+        'rewardToken' : '0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCroDex',
+        'featured' : 2,
+        'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_telx_single],
+            'vaults' : [external_contracts.crodex_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xCroDex',
+                    'network_id' : 'cro',
+                },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
