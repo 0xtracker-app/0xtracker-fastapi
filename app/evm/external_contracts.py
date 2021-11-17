@@ -128,7 +128,7 @@ async def get_wault_pools_matic(session):
     return r
 
 async def get_blockmine(session):
-    return ['0x45E6729373db693e1422FbBdF0EaF530E09Bd388','0x7794318ddbcd30287f77F54a500a04494Af7C174','0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870', '0x0c85C19a0ad8317Ce1b5d0A31097F8d0B4cd8981', '0x9cd3208AdB17F5976e949b0D0c5A37797B44f9a0']
+    return ['0x45E6729373db693e1422FbBdF0EaF530E09Bd388','0x7794318ddbcd30287f77F54a500a04494Af7C174','0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870', '0x0c85C19a0ad8317Ce1b5d0A31097F8d0B4cd8981', '0x9cd3208AdB17F5976e949b0D0c5A37797B44f9a0', '0x0E512e81d5A686d5921eB116DAE7F706b58A726f']
 
 async def get_farmhero_staking_matic(session):
     return poolext.farmhero.matic_staking
@@ -376,7 +376,7 @@ async def pull_koge_vaults_moon(session):
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
-    return [x for x in r['apy'] if x not in ['0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D']]
+    return [x for x in r['apy'] if x not in ['0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
 
 async def get_balancer_pools(session):
     balancer_pools = await call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None}, session)
