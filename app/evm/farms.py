@@ -4190,6 +4190,28 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm'
     },
+                '0xaeD5b25BE1c3163c907a471082640450F928DDFE' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0xE55e19Fb4F2D85af758950957714292DAC1e25B2',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0xaeD5b25BE1c3163c907a471082640450F928DDFE',
+        'featured' : 2,
+        'network' : 'harmony'
+    },
+                '0xd5609cD0e1675331E4Fb1d43207C8d9D83AAb17C' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0xb554A55358fF0382Fb21F0a478C3546d1106Be8c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0xd5609cD0e1675331E4Fb1d43207C8d9D83AAb17C',
+        'featured' : 2,
+        'network' : 'boba'
+    },
                 '0xQubit' : {
         'name' : 'qbt.fi',
         'rewardToken' : '0x17b7163cf1dbd286e262ddc68b553d899b93f526',
