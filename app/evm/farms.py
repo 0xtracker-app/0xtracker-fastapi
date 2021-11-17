@@ -4190,6 +4190,28 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm'
     },
+                '0xaeD5b25BE1c3163c907a471082640450F928DDFE' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0xE55e19Fb4F2D85af758950957714292DAC1e25B2',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0xaeD5b25BE1c3163c907a471082640450F928DDFE',
+        'featured' : 2,
+        'network' : 'harmony'
+    },
+                '0xd5609cD0e1675331E4Fb1d43207C8d9D83AAb17C' : {
+        'name' : 'synapseprotocol.com',
+        'rewardToken' : '0xb554A55358fF0382Fb21F0a478C3546d1106Be8c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSynapse',
+        'wantFunction' : 'lpToken',
+        'masterChef' : '0xd5609cD0e1675331E4Fb1d43207C8d9D83AAb17C',
+        'featured' : 2,
+        'network' : 'boba'
+    },
                 '0xQubit' : {
         'name' : 'qbt.fi',
         'rewardToken' : '0x17b7163cf1dbd286e262ddc68b553d899b93f526',
@@ -4918,6 +4940,16 @@ class Farms:
         'featured' : 2,
         'network' : 'avax',
     },
+                '0x1495b7e8d7E9700Bd0726F1705E864265724f6e2' : {
+        'name' : 'smartcoin.farm v2',
+        'rewardToken' : '0x6D923f688C7FF287dc3A5943CAeefc994F97b290',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTokens',
+        'masterChef' : '0x1495b7e8d7E9700Bd0726F1705E864265724f6e2',
+        'featured' : 2,
+        'network' : 'avax',
+    },
                 '0xBeethoven' : {
         'name' : 'beethovenx.io',
         'rewardToken' : '0xf24bcf4d1e507740041c9cfd2dddb29585adce1e',
@@ -5169,6 +5201,36 @@ class Farms:
                     ],
             'vault_args' : [{}]
         }
+    },
+                '0x7abc67c8d4b248a38b0dc5756300630108cb48b4' : {
+        'name' : 'viper.exchange',
+        'rewardToken' : '0xEa589E93Ff18b1a1F1e9BaC7EF3E86Ab62addc79',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x7abc67c8d4b248a38b0dc5756300630108cb48b4',
+        'featured' : 2,
+        'network' : 'harmony'
+    },
+                '0x31B9FBd965397d697D2dAa434EbD219aB878E49B' : {
+        'name' : 'oolongswap.com',
+        'rewardToken' : '0x5008f837883ea9a07271a1b5eb0658404f5a9610',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingOolong',
+        'masterChef' : '0x31B9FBd965397d697D2dAa434EbD219aB878E49B',
+        'featured' : 2,
+        'network' : 'boba'
+    },
+                '0x958C0d0baA8F220846d3966742D4Fb5edc5493D3' : {
+        'name' : 'axial.exchange',
+        'rewardToken' : '0xcf8419a615c57511807236751c0af38db4ba3351',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTokens',
+        'masterChef' : '0x958C0d0baA8F220846d3966742D4Fb5edc5493D3',
+        'featured' : 2,
+        'network' : 'avax',
     },
 }
 
