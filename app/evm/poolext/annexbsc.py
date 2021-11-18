@@ -1,0 +1,16 @@
+vaults = [
+    {'address' : '0x4f5d48D3d28Ff10113283A896952A7722Eaaacd8', 'decimal' : 18, 'want' : '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 'collat_rate' : .8},
+    {'address' : '0x35b2a25087a4d33dadbfb7625bfa7f1e0853f723', 'decimal' : 18, 'want' : '0x55d398326f99059ff775485246999027b3197955', 'collat_rate' : .8},
+    {'address' : '0x8401aaba08f0be0d30b7d136c50fe5c461dbfa05', 'decimal' : 18, 'want' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'collat_rate' : .8},
+    {'address' : '0xc5a83ad9f3586e143d2c718e8999206887ef9ddc', 'decimal' : 18, 'want' : '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 'collat_rate' : .75},
+    {'address' : '0xe4145407d1952b6c1d5be9039a2effa3a0ed3baa', 'decimal' : 18, 'want' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'collat_rate' : .75},
+    {'address' : '0x1aa4bdb03f27b08ad203aa083e88eb425cedd330', 'decimal' : 18, 'want' : '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 'collat_rate' : .75},
+    {'address' : '0xf2ebff3814df3d0dfa997cd5f6bf72f128b414fe', 'decimal' : 18, 'want' : '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b', 'collat_rate' : .6},
+    {'address' : '0x4ec10ecd924119edd23babe8e16cd7907ef62541', 'decimal' : 18, 'want' : '0x7083609fce4d1d8dc0c979aab8c869ea2c873402', 'collat_rate' : .6},
+    {'address' : '0x1c7e0cc5d057296d877b1aa30cc376ecd0f07649', 'decimal' : 18, 'want' : '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47', 'collat_rate' : .6},
+    {'address' : '0x09666617a0b1854c3859c7588529c6fc8cd89f6a', 'decimal' : 18, 'want' : '0x14016e85a25aeb13065688cafb43044c2ef86784', 'collat_rate' : .75},
+    {'address' : '0xafd1b8d9e32c88f0b65902bf3e71aa8de18b2065', 'decimal' : 18, 'want' : '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63', 'collat_rate' : .3},
+    {'address' : '0x8348a2f71a34600e0603669b7a9db1923f179f9f', 'decimal' : 18, 'want' : '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', 'collat_rate' : .6},
+    {'address' : '0x93b7f7af9c401b1b3c49101bb470dfc19637ab56', 'decimal' : 18, 'want' : '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd', 'collat_rate' : .6},
+    {'address' : '0x530cfcd7d91301700bfca6023af8df095779e908', 'decimal' : 18, 'want' : '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe', 'collat_rate' : .6},
+]

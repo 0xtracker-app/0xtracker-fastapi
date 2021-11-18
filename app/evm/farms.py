@@ -1612,6 +1612,22 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xBeefyCronos' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0xe6801928061CDbE32AC5AD0634427E140EFd05F9',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyCronos',
+        'featured' : 2,
+        'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes, farm_templates.get_fh_pools],
+            'vaults' : [external_contracts.get_beefy_cronos_pools, external_contracts.get_beefy_boosts_cronos],
+            'args' : [{'farm_id' : '0xBeefyCronos', 'network' : 'cro'}, {'farm_id' : '0xBeefyCronos', 'network' : 'cro', 'stake_func' : 'stakedToken'}],
+            'vault_args' : [{}, {}]
+        }
+    },
                 '0xBeefyArb' : {
         'name' : 'beefy.finance',
         'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
@@ -2491,14 +2507,26 @@ class Farms:
         'featured' : 2,
         'network' : 'matic',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_vault_style],
-            'vaults' : [external_contracts.get_polycrystal_staking],
+            'functions' : [farm_templates.get_vault_style, farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.get_polycrystal_staking, external_contracts.dummy_vault],
             'args' : [
                 {
                     'farm_id' : '0xeBCC84D2A73f0c9E23066089C6C24F4629Ef1e6d',
                     'network' : 'matic',
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo'
+                },
+                {
+                    'farm_id' : '0xeBCC84D2A73f0c9E23066089C6C24F4629Ef1e6d',
+                    'network_id' : 'matic',
+                    'farm_data' :{
+                        'rewardToken' : '0x76bf0c28e604cc3fe9967c83b3c3f31c213cfe64',
+                        'decimal' : 18,
+                        'stakedFunction' : 'stakedWantTokens',
+                        'pendingFunction' : None,
+                        'masterChef' : '0xD4d696ad5A7779F4D3A0Fc1361adf46eC51C632d',
+                        'rewardSymbol' : 'CRYSTL',
+                    }
                 }
                     ],
             'vault_args' : [{}]
@@ -5231,6 +5259,58 @@ class Farms:
         'masterChef' : '0x958C0d0baA8F220846d3966742D4Fb5edc5493D3',
         'featured' : 2,
         'network' : 'avax',
+    },
+                '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533' : {
+        'name' : 'crystl.finance',
+        'rewardToken' : '0x7f426F6Dc648e50464a0392E60E1BB465a67E9cf',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533',
+        'featured' : 2,
+        'network' : 'cro',
+    },
+                '0xEF6d860B22cEFe19Ae124b74eb80F0c0eb8201F4' : {
+        'name' : 'annex.finance',
+        'rewardToken' : '0x98936bde1cf1bff1e7a8012cee5e2583851f2067',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingAnnex',
+        'masterChef' : '0xEF6d860B22cEFe19Ae124b74eb80F0c0eb8201F4',
+        'featured' : 2,
+        'network' : 'cro',
+    },
+                '0xAnnexBSC' : {
+        'name' : 'annex.finance (Lending)',
+        'rewardToken' : '0x98936Bde1CF1BFf1e7a8012Cee5e2583851f2067',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAnnexBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_annex_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xAnnexBSC',
+                        'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1' : {
+        'name' : 'annex.finance',
+        'rewardToken' : '0x98936bde1cf1bff1e7a8012cee5e2583851f2067',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingAnnex',
+        'masterChef' : '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1',
+        'featured' : 2,
+        'network' : 'bsc',
     },
 }
 
