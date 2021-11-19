@@ -151,8 +151,8 @@ class CosmosNetwork:
         },
             'juno' : {
             'wallet' : from_atom(wallet,'juno'),
-            'rpc' : 'https://rpc.juno.omniflix.co',
-            'rest' : 'https://api.juno.omniflix.co',
+            'rpc' : 'https://rpc-juno.itastakers.com',
+            'rest' : 'https://lcd-juno.itastakers.com',
             'chain_id' : 'juno-1',
             'chain_name' : 'Juno Mainnet',
             'explorer' : 'https://www.mintscan.io/juno',
@@ -177,6 +177,36 @@ class CosmosNetwork:
                 'symbol' : 'LUNA',
                 'decimals' : 6,
                 'coin_gecko_id' : 'terra-luna'
+            }
+        },
+            'bitcanna' : {
+            'wallet' : from_atom(wallet,'bcna'),
+            'rpc' : 'https://rpc.bitcanna.io',
+            'rest' : 'https://lcd.bitcanna.io',
+            'chain_id' : 'bitcanna-1',
+            'chain_name' : 'BitCanna',
+            'explorer' : 'https://www.mintscan.io/bitcanna/txs/',
+            'bech_prefix' : 'bcna',
+            'stake_token' : {
+                'denom' : 'ubcna',
+                'symbol' : 'BCNA',
+                'decimals' : 6,
+                'coin_gecko_id' : 'bitcanna'
+            }
+        },
+            'bitsong' : {
+            'wallet' : from_atom(wallet,'bitsong'),
+            'rpc' : 'https://rpc.explorebitsong.com',
+            'rest' : 'https://lcd.explorebitsong.com',
+            'chain_id' : 'bitsong-2b',
+            'chain_name' : 'BitSong',
+            'explorer' : 'https://explorebitsong.com/transactions/',
+            'bech_prefix' : 'bitsong',
+            'stake_token' : {
+                'denom' : 'ubtsg',
+                'symbol' : 'BTSG',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:ubtsg'
             }
         },
     }

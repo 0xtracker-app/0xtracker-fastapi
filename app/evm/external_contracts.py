@@ -81,6 +81,10 @@ async def get_vsafes(session):
     r = await make_get_json(session,'https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
     return [x['id'] for x in r['data']]
 
+async def get_grim_vaults(session):
+    r = await make_get_json(session,'https://api.grim.finance/vaults')
+    return [x['earnedTokenAddress'] for x in r]
+
 async def get_firebird_vaults():
     r = await make_get_json(session,'https://farm-api-polygon.firebird.finance/api/farming-scan/get-farming-scans?group=fvault')
     return [x['id'] for x in r['data']]
@@ -124,7 +128,7 @@ async def get_wault_pools_matic(session):
     return r
 
 async def get_blockmine(session):
-    return ['0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a']
+    return ['0x45E6729373db693e1422FbBdF0EaF530E09Bd388','0x7794318ddbcd30287f77F54a500a04494Af7C174','0x8052D595E75c2E6e452bd2302aa1E66eAdBE2b42','0xDbd85332d6f6Edd1b66ba0594355aAAA140c1F07', '0x5e5964dfcbe523387cb86f7fbd283f64acd6c21a', '0xa3eb5952Db45dB016C62333d91aF087cB44ac51e', '0x690d605a6f6fEA6069e5B946D1226d443421e870', '0x0c85C19a0ad8317Ce1b5d0A31097F8d0B4cd8981', '0x9cd3208AdB17F5976e949b0D0c5A37797B44f9a0', '0x0E512e81d5A686d5921eB116DAE7F706b58A726f']
 
 async def get_farmhero_staking_matic(session):
     return poolext.farmhero.matic_staking
@@ -192,6 +196,26 @@ async def euler_staking(session):
 async def tomb_staking(session):
     return ['0x8764DE60236C5843D9faEB1B638fbCE962773B67']
 
+async def bouje_staking(session):
+    return ['0x5BE35C02996320688F9E5968148dE5bC31635f15']
+
+async def knight_staking(session):
+    return ['0xe790a0683b669089AdC199996F89Bd40FEd4C559', '0x3b8B92D882127b5e14c9476615374a69e55d4Ca1', '0xF928BB46273043F98cc731CeFFc16A1ccC177707']
+
+async def crodex_vaults(session):
+    return [
+    "0xDb752eB155F6075d4Ba0e09c371eB5eBB0D4bAA5",
+    "0xc2FF850F3921C1dbeD263aa1Fa94FE2A898870a8",
+    "0x681E1dC139FEB9024F1C63b37673cFCD630817Bb",
+    "0xcdd27c1C74631700CA0Fa165f3450435C8D009f4",
+    "0x81E200976B7928aEFD34CE51544e65FE73e88bE4",
+    "0x8857591ea846cB23795538a7521c868f0E0D6844",
+    "0x0f1e250f10F6AEb95A1B73DFd1d7f47a420236C4",
+    "0x5d05Ce6ae9FDC9dC3fBba240a98320Bc604f80a7",
+    "0x55B0FC13045B0bf6CD74631246b92f7abCFcCca2",
+    "0x12EE4bc798Fd985195b0d293c2c61fBf3DcDfe04",
+  ]
+
 async def dummy_vault(session):
     return ['0xDummy']
 
@@ -221,6 +245,17 @@ async def get_beefy_fantom_pools(session):
 
     return vault_data
 
+async def get_beefy_moon_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/moonriver_pools.js')
+    s2 = "export const moonriverPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
+
 async def get_beefy_arb_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/arbitrum_pools.js')
     s2 = "export const arbitrumPools = "
@@ -235,6 +270,17 @@ async def get_beefy_arb_pools(session):
 async def get_beefy_harmony_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/harmony_pools.js')
     s2 = "export const harmonyPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
+
+async def get_beefy_cronos_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/cronos_pools.js')
+    s2 = "export const cronosPools = "
     
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
@@ -341,7 +387,7 @@ async def pull_koge_vaults_moon(session):
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
-    return [x for x in r['apy'] if x not in ['0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D']]
+    return [x for x in r['apy'] if x not in ['0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
 
 async def get_balancer_pools(session):
     balancer_pools = await call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None}, session)
@@ -359,6 +405,26 @@ async def get_apeswap_pools_new(session):
 async def get_beefy_boosts_poly(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/polygon_stake.js')
     s2 = "export const polygonStakePools = ["
+    data = r[r.index(s2) + len(s2) :len(r)-3].strip()
+    regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
+    hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
+    t = json.loads(json.dumps(hson))
+
+    return [x['earnContractAddress'] for x in t if x['status'] == 'active']
+
+async def get_beefy_boosts_cronos(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/cronos_stake.js')
+    s2 = "export const cronosStakePools = ["
+    data = r[r.index(s2) + len(s2) :len(r)-3].strip()
+    regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
+    hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
+    t = json.loads(json.dumps(hson))
+
+    return [x['earnContractAddress'] for x in t if x['status'] == 'active']
+
+async def get_beefy_boosts_moon(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/moonriver_stake.js')
+    s2 = "export const moonriverStakePools = ["
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
     hson = hjson.loads(f'[{regex}]'.replace('partners: ,','').replace('assets: ,',''))
@@ -498,6 +564,9 @@ async def get_ironlend_rewards(session):
 async def get_benqi_vaults(session):
     return poolext.benqi.vaults
 
+async def get_annex_vaults(session):
+    return poolext.annexbsc.vaults
+
 async def get_zombie_pools(session):
     return poolext.rugzombie.pools
 
@@ -524,7 +593,7 @@ async def get_jetswap_vaults(network, session):
         return r
 
 async def get_elk_vaults(network, session):
-        ROUNDS = 7
+        ROUNDS = 8
         STAKING = {"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
         r = await cf_make_get_json(session, 'https://api.elk.finance/v1/info/farms')
         
