@@ -6,6 +6,7 @@ from toolz.itertoolz import get
 from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
 from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
+from terra import get_wallet_balances as terra_wallet_balances
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -13,6 +14,8 @@ from httpsession.session import ClientSession, get_session
 from httpsession.session_utils import session_start, session_stop
 from solsession.session import AsyncClient, get_solana
 from solsession.session_utils import solana_start, solana_stop
+from terrasession.session import AsyncLCDClient, get_terra
+from terrasession.session_utils import terra_start, terra_stop
 from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
 from db.queries import user_info_by_time
 
@@ -27,12 +30,14 @@ async def startup_event():
     await connect_to_mongo()
     await session_start()
     await solana_start()
+    await terra_start()
 
 @app.on_event("shutdown")
 def shutdown_event():
     close_mongo_connection()
     session_stop()
     solana_stop()
+    terra_stop()
 
 
 app.include_router(api_router, prefix="/api/v1")
@@ -51,6 +56,11 @@ def main_endpoint_test():
 @app.get('/solana-wallet/{wallet}')
 async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana)):
     results = await solana_wallet_balances(wallet, mongo_db, session, client)
+    return results
+
+@app.get('/terra-wallet/{wallet}')
+async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra)):
+    results = await terra_wallet_balances(wallet, mongo_db, session, client)
     return results
 
 @app.get('/farms-list/')

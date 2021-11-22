@@ -5312,6 +5312,16 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc',
     },
+                '0x6eC89CCcDb563Ac442d2370F6E47bC1C78e023fC' : {
+        'name' : 'stormswap.finance',
+        'rewardToken' : '0x48713151e5afb7b4cc45f3653c1c59cf81e88d4b',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingStorm',
+        'masterChef' : '0x6eC89CCcDb563Ac442d2370F6E47bC1C78e023fC',
+        'featured' : 2,
+        'network' : 'cro',
+    },
 }
 
 
