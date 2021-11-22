@@ -36,27 +36,28 @@ async def single_token_finder(token, session, client):
     return None
 
 async def lp_token_finder(token, session, client):
+
     try:
-        lp_token = await client.wasm.contract_query(token, {"pool": {} })
-        
-        token_0 = await single_token_finder()
-        token_1 = await single_token_finder()
+        minter = await client.wasm.contract_info(token)
+        lp_token = await client.wasm.contract_query(minter['init_msg']['mint']['minter'], {"pool": {} })
+
+        token_0 = await single_token_finder(lp_token['assets'][0]['info']['token']['contract_addr'], session, client)
+        token_1 = await single_token_finder(lp_token['assets'][1]['info']['native_token']['denom'], session, client)
 
         lp_token = {
             'tokenID': token,
             'token_decimal': 6,
             "network" : "terra",
             "type": "lp",
-            "symbol": token_metadata['symbol'],
-            'tkn0s': found_token0['symbol'],
-            'tkn0d': found_token0['decimals'],
-            'tkn1s': found_token1['symbol'],
-            'tkn0d': found_token1['decimals'],
-            'token0': found_token0['mint_address'],
-            'token1': found_token1['mint_address'],
-            'token_decimals': [found_token0['decimals'], found_token1['decimals']],
-            'all_tokens': [found_token0['mint_address'], found_token1['mint_address']]}
-        
+            "symbol": minter['init_msg']['symbol'],
+            'tkn0s': token_0['tkn0s'],
+            'tkn0d': token_0['tkn0d'],
+            'tkn1s': token_1['tkn0s'],
+            'tkn0d': token_1['tkn0d'],
+            'token0': token_0['tokenID'],
+            'token1': token_1['tokenID'],
+            'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
+            'all_tokens': [token_0['tokenID'], token_1['tokenID']]}
         return lp_token
     except:
         return None
@@ -76,12 +77,18 @@ class TokenMetaData:
         if found_token:
             return found_token
         else:
-            denom_lookup = await single_token_finder(self.tokenID, self.session, self.client)
+            denom_lookup = await lp_token_finder(self.tokenID, self.session, self.client)
 
             if denom_lookup:
                 await self.terra_tokens.update_one({'tokenID': self.tokenID}, {"$set": denom_lookup}, upsert=True)
                 self.token_metadata = denom_lookup
             else:
-                None
+                denom_lookup = await single_token_finder(self.tokenID, self.session, self.client)
+
+                if denom_lookup:
+                    await self.terra_tokens.update_one({'tokenID': self.tokenID}, {"$set": denom_lookup}, upsert=True)
+                    self.token_metadata = denom_lookup
+                else:
+                    None
 
         return self.token_metadata
