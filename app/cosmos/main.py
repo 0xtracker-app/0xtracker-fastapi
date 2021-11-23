@@ -25,25 +25,29 @@ async def get_wallet_balances(wallet, session, mongo_client):
 
     return_wallets = []
     total_balance = 0
-    for balance in balances:
-
+    for i, balance in enumerate(balances):
+        token_network = list(net_config.keys())[i]
         if balance['tokens']:
             for token in balance['tokens']:
-
                 token_denom = transform_trace[0][token['denom']] if token['denom'] in transform_trace[0] else token['denom']
-                token_decimal = transform_trace[1][token_denom]['decimal'] if token_denom in transform_trace[1] else 6
-            
-            total_balance += prices[token_denom] * helpers.from_custom(token['amount'], token_decimal)
-            return_wallets.append(
-                {
-                    "token_address": token['denom'],
-                    "symbol": transform_trace[1][token_denom]['display_denom'] if token_denom in transform_trace[1] else token_denom.upper(),
-                    "tokenBalance": helpers.from_custom(token['amount'], token_decimal),
-                    "tokenPrice": prices[token_denom],
-                    "wallet" : balance['wallet'],
-                    'network' : 'cosmos'
-                }
-                )
+                token_metadata = await TokenMetaData(address=token_denom, mongodb=mongo_client, network=net_config[token_network], session=session).lookup()
+                if token_metadata:
+                    token_decimal = token_metadata['tkn0d']
+                else:
+                    token_decimal = transform_trace[1][token_denom]['decimal'] if token_denom in transform_trace[1] else 6
+                token_price = 0 if token_denom not in prices else prices[token_denom]
+
+                total_balance += token_price * helpers.from_custom(token['amount'], token_decimal)
+                return_wallets.append(
+                    {
+                        "token_address": token['denom'],
+                        "symbol": transform_trace[1][token_denom]['display_denom'] if token_denom in transform_trace[1] else token_denom.upper(),
+                        "tokenBalance": helpers.from_custom(token['amount'], token_decimal),
+                        "tokenPrice": token_price,
+                        "wallet" : balance['wallet'],
+                        'network' : 'cosmos'
+                    }
+                    )
 
     if total_balance > 0:
         mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)

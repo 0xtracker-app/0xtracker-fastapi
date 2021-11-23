@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno']
+        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -207,6 +207,36 @@ class CosmosNetwork:
                 'symbol' : 'BTSG',
                 'decimals' : 6,
                 'coin_gecko_id' : 'pool:ubtsg'
+            }
+        },
+            'secret' : {
+            'wallet' : from_atom(wallet,'secret'),
+            'rpc' : 'https://rpc-secret.keplr.app',
+            'rest' : 'https://lcd-secret.keplr.app',
+            'chain_id' : 'secret-4',
+            'chain_name' : 'Secret Network',
+            'explorer' : 'https://secretnodes.com/secret/chains/secret-4/transactions/',
+            'bech_prefix' : 'secret',
+            'stake_token' : {
+                'denom' : 'uscrt',
+                'symbol' : 'SCRT',
+                'decimals' : 6,
+                'coin_gecko_id' : 'secret'
+            }
+        },
+            'sif' : {
+            'wallet' : from_atom(wallet,'sif'),
+            'rpc' : 'https://rpc-sifchain.keplr.app',
+            'rest' : 'https://lcd-sifchain.keplr.app',
+            'chain_id' : 'sifchain-1',
+            'chain_name' : 'Sifchain',
+            'explorer' : 'https://secretnodes.com/secret/chains/secret-4/transactions/',
+            'bech_prefix' : 'sif',
+            'stake_token' : {
+                'denom' : 'rowan',
+                'symbol' : 'ROWAN',
+                'decimals' : 18,
+                'coin_gecko_id' : 'sifchain'
             }
         },
     }

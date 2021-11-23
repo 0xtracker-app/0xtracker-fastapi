@@ -27,6 +27,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
                 staked_position = {'staked' : 0, 'gambitRewards' : [], 'validators' : [], 'network' : 'cosmos'}
                 reward_token = {'pending': 0}
                 want_token = each['delegation_responses'][0]['balance']['denom']
+
                 staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb).lookup())
 
                 for position in each['delegation_responses']:
