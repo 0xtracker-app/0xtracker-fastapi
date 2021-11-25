@@ -5322,6 +5322,16 @@ class Farms:
         'featured' : 2,
         'network' : 'cro',
     },
+                '0xe5AFC91CEA5df74748A2b07e1d48E4e01aacF52B' : {
+        'name' : 'fastyield.app',
+        'rewardToken' : '0x0299461ee055bbb6de11fafe5a0636a0c3bd5e8d',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedWantTokens',
+        'pendingFunction' : 'pendingNATIVE',
+        'masterChef' : '0xe5AFC91CEA5df74748A2b07e1d48E4e01aacF52B',
+        'featured' : 2,
+        'network' : 'ftm',
+    },
 }
 
 
