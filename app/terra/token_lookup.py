@@ -42,7 +42,10 @@ async def lp_token_finder(token, session, client):
         lp_token = await client.wasm.contract_query(minter['init_msg']['mint']['minter'], {"pool": {} })
 
         token_0 = await single_token_finder(lp_token['assets'][0]['info']['token']['contract_addr'], session, client)
-        token_1 = await single_token_finder(lp_token['assets'][1]['info']['native_token']['denom'], session, client)
+        if 'native_token' in lp_token['assets'][1]['info']:
+            token_1 = await single_token_finder(lp_token['assets'][1]['info']['native_token']['denom'], session, client)
+        else:
+            token_1 = await single_token_finder(lp_token['assets'][1]['info']['token']['contract_addr'], session, client)
 
         lp_token = {
             'tokenID': token,

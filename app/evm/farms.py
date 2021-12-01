@@ -1278,6 +1278,7 @@ class Farms:
         'masterChef' : '0x864A0B7F8466247A0e44558D29cDC37D4623F213',
         'featured' : 2,
         'network' : 'avax',
+        'death_index' : [67],
     },
                 '0xAutoCro' : {
         'name' : 'autofarm.network',
@@ -2529,7 +2530,7 @@ class Farms:
                     }
                 }
                     ],
-            'vault_args' : [{}]
+            'vault_args' : [{}, {}]
         }
     },
                 '0xApeSwapMatic' : {
@@ -5331,6 +5332,28 @@ class Farms:
         'masterChef' : '0xe5AFC91CEA5df74748A2b07e1d48E4e01aacF52B',
         'featured' : 2,
         'network' : 'ftm',
+    },
+                '0xJadeProtocol' : {
+        'name' : 'jadeprotocol.io',
+        'rewardToken' : '0x7ad7242A99F21aa543F9650A56D141C57e4F6081',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xJadeProtocol',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_ohm],
+            'vaults' : [external_contracts.get_jade_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xJadeProtocol',
+                        'network_id' : 'bsc',
+                        'reward_symbol' : 'JADE'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
 }
 

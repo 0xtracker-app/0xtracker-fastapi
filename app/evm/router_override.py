@@ -4,6 +4,7 @@ router_override = {
     '0x2612F31fD829578F3f9c8DF1c4793C15340520FE'.lower() : {'token' : '0x6f6350d5d347aa8f7e9731756b60b774a7acf95b'.lower(), 'decimal' : 18},
     '0x0c0bf2bd544566a11f59dc70a8f43659ac2fe7c2'.lower() : {'token' : '0x56e344be9a7a7a1d27c854628483efd67c11214f'.lower(), 'decimal' : 18},
     '0x136acd46c134e8269052c62a67042d6bdedde3c9'.lower() : {'token' : '0xb54f16fb19478766a268f172c9480f8da1a7c9c3'.lower(), 'decimal' : 9},
+    '0x94cea04c51e7d3ec0a4a97ac0c3b3c9254c2ad41'.lower() : {'token' : '0x7ad7242a99f21aa543f9650a56d141c57e4f6081'.lower(), 'decimal' : 9},
 }
 
 stable_override = {
@@ -15,4 +16,5 @@ stable_override = {
     '0xE8d17b127BA8b9899a160D9a07b69bCa8E08bfc6'.lower() : {'token' : '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'.lower(), 'decimal' : 6},
     '0xdb25f211ab05b1c97d595516f45794528a807ad8'.lower() : {'token' : '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'.lower(), 'decimal' : 6},
     '0xE5417Af564e4bFDA1c483642db72007871397896'.lower() : {'token' : '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063'.lower(), 'decimal' : 18},
+    '0x7ad7242a99f21aa543f9650a56d141c57e4f6081'.lower() : {'token' : '0xe9e7cea3dedca5984780bafc599bd69add087d56'.lower(), 'decimal' : 18}
 }
