@@ -2820,14 +2820,15 @@ async def get_singular_masterchef(wallet,farm_id,network_id,farm_data,vaults):
         pool_length = await Call(farm_data['masterChef'], [f'poolLength()(uint256)'],None,network)()
 
         for pid in range(0,pool_length):
-            calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_staked', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'pendingSing(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_pending', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'pendingEarned(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_pending1', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'poolInfo(uint256)(address)', pid], [[f'{pid}s_want', None]]))
-            if network_id == 'ftm':
-                calls.append(Call(farm_data['masterChef'], [f'poolInfo(uint256)((address,uint256,uint256,uint256,uint16,uint256,bool,uint256))', pid], [[f'{pid}s_rewardtoken', parsers.parse_singular_reward]]))
-            else:
-                calls.append(Call(farm_data['masterChef'], [f'WL_earn()(address)'], [[f'{pid}s_rewardtoken', None]]))
+            if pid not in [14]:
+                calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_staked', parsers.from_wei]]))
+                calls.append(Call(farm_data['masterChef'], [f'pendingSing(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_pending', parsers.from_wei]]))
+                calls.append(Call(farm_data['masterChef'], [f'pendingEarned(uint256,address)(uint256)', pid, wallet], [[f'{pid}s_pending1', parsers.from_wei]]))
+                calls.append(Call(farm_data['masterChef'], [f'poolInfo(uint256)(address)', pid], [[f'{pid}s_want', None]]))
+                if network_id == 'ftm':
+                    calls.append(Call(farm_data['masterChef'], [f'poolInfo(uint256)((address,uint256,uint256,uint256,uint16,uint256,bool,uint256))', pid], [[f'{pid}s_rewardtoken', parsers.parse_singular_reward]]))
+                else:
+                    calls.append(Call(farm_data['masterChef'], [f'WL_earn()(address)'], [[f'{pid}s_rewardtoken', None]]))
 
         stakes=await Multicall(calls, network)()
 
@@ -3023,3 +3024,53 @@ async def get_balance_earn(wallet, vaults, farm_id, network, reward_info, want_f
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_ohm(wallet, vaults, farm_id, network_id, reward_symbol):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        MEMO_ADDRESS = vaults['MEMO_ADDRESS']
+        TIME_ADDRESS = vaults['TIME_ADDRESS']
+
+        BONDS = vaults['BONDS']
+
+        for i,vault in enumerate(BONDS):
+                calls.append(Call(vault, [f'bondInfo(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_custom, 9]]))
+                calls.append(Call(vault, [f'pendingPayoutFor(address)(uint256)', wallet], [[f'{vault}_pending', parsers.from_custom, 9]]))
+                calls.append(Call(vault, [f'percentVestedFor(address)(uint256)', wallet], [[f'{vault}_vested', None]]))
+
+        calls.append(Call(MEMO_ADDRESS, [f'balanceOf(address)(uint256)', wallet], [[f'{MEMO_ADDRESS}_staked', parsers.from_custom, 9]]))
+        calls.append(Call(vaults['OHM_CONTRACT'], [f"{vaults['OHM_FUNCTION']}()(address)"], [[f'{MEMO_ADDRESS}_want', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        token_decimals = await template_helpers.get_token_list_decimals(stakes,network_id,True)
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    percentage = stakes[f'{breakdown[0]}_vested'] / 10000 if f'{breakdown[0]}_vested' in stakes else 1
+                    staked = stakes[each]
+                    staked_offset = staked * percentage
+                    actual_staked = staked if staked == staked_offset else staked - staked_offset
+                    want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
+                    token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    if f'{breakdown[0]}_pending' in stakes:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : TIME_ADDRESS, 'decimal' : 9}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'] = [reward_token_0]
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None

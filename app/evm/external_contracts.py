@@ -693,3 +693,12 @@ async def get_buffer_vaults(session):
 
 async def get_wonderland_bonds(session):
     return []
+
+async def get_jade_ohm(session):
+    return {
+        'BONDS' : ['0xD6C73ef5e71A350f8AE642C01Aad3d7637a0c1C8', '0xB855Ee49DE8F05A441104C4E053A3be7FF45ae56', '0x266a93EA88C002ff223E81E40300056289938142'],
+        'MEMO_ADDRESS' : '0x94CEA04C51E7d3EC0a4A97Ac0C3B3c9254c2aD41',
+        'TIME_ADDRESS' : '0x7ad7242A99F21aa543F9650A56D141C57e4F6081',
+        'OHM_CONTRACT' : '0x097d72e1D9bbb8d0263477f9b20bEBF66f243AF4',
+        'OHM_FUNCTION' : 'sOHM'
+    }
