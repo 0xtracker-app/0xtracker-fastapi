@@ -4,7 +4,6 @@ router_override = {
     '0x2612F31fD829578F3f9c8DF1c4793C15340520FE'.lower() : {'token' : '0x6f6350d5d347aa8f7e9731756b60b774a7acf95b'.lower(), 'decimal' : 18},
     '0x0c0bf2bd544566a11f59dc70a8f43659ac2fe7c2'.lower() : {'token' : '0x56e344be9a7a7a1d27c854628483efd67c11214f'.lower(), 'decimal' : 18},
     '0x136acd46c134e8269052c62a67042d6bdedde3c9'.lower() : {'token' : '0xb54f16fb19478766a268f172c9480f8da1a7c9c3'.lower(), 'decimal' : 9},
-    '0x94cea04c51e7d3ec0a4a97ac0c3b3c9254c2ad41'.lower() : {'token' : '0x7ad7242a99f21aa543f9650a56d141c57e4f6081'.lower(), 'decimal' : 9},
 }
 
 stable_override = {
