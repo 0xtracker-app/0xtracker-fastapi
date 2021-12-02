@@ -2166,18 +2166,16 @@ class Farms:
         'perBlock' : 'alloyPerBlock',
         'featured' : 2,
         'network' : 'bsc',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_vault_style],
-            'vaults' : [external_contracts.get_hyperjump_vaults],
-            'args' : [
-                {
-                    'farm_id' : '0x4F1818Ff649498a2441aE1AD29ccF55a8E1C6250',
-                    'network' : 'bsc',
-                    '_pps' : 'getPricePerFullShare'
-                },
-                    ],
-            'vault_args' : [{}, {}]
-        }
+    },
+                '0x7A0De9A006129A18AE8d3C4e609fa866EE29A5B3' : {
+        'name' : 'hyperjump.app',
+        'rewardToken' : '0x130025ee738a66e691e6a7a62381cb33c6d9ae83',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x7A0De9A006129A18AE8d3C4e609fa866EE29A5B3',
+        'featured' : 2,
+        'network' : 'bsc',
     },
                 '0x90Df158ff7c31aD1d81ddDb1D8ab9d0eCBCeDa20' : {
         'name' : 'hyperjump.fi',
@@ -2188,18 +2186,16 @@ class Farms:
         'masterChef' : '0x90Df158ff7c31aD1d81ddDb1D8ab9d0eCBCeDa20',
         'featured' : 2,
         'network' : 'ftm',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_vault_style],
-            'vaults' : [external_contracts.get_hyperjump_vaults_ftm],
-            'args' : [
-                {
-                    'farm_id' : '0x90Df158ff7c31aD1d81ddDb1D8ab9d0eCBCeDa20',
-                    'network' : 'ftm',
-                    '_pps' : 'getPricePerFullShare'
-                },
-                    ],
-            'vault_args' : [{}, {}]
-        }
+    },
+                '0x2E03284727Ff6E50BB00577381059a11e5Bb01dE' : {
+        'name' : 'hyperjump.app',
+        'rewardToken' : '0x78de9326792ce1d6eca0c978753c6953cdeedd73',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x2E03284727Ff6E50BB00577381059a11e5Bb01dE',
+        'featured' : 2,
+        'network' : 'ftm',
     },
                 '0xCEd39CF6221a10331e2349224BB1Eeb03A5c146f' : {
         'name' : 'polydragon.io',
