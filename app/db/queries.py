@@ -33,3 +33,23 @@ def user_info_by_time(wallets, days, farms):
     }
 }
 ]
+
+def get_terra_pool(token0, token1):
+   return     { 
+        "$and" : [
+            { 
+                "all_tokens" : { 
+                    "$in" : [
+                        token0
+                    ]
+                }
+            }, 
+            { 
+                "all_tokens" : { 
+                    "$in" : [
+                        token1
+                    ]
+                }
+            }
+        ]
+    }
