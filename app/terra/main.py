@@ -12,13 +12,18 @@ import time
 from . import utils
 from .helpers import from_custom
 from .token_lookup import TokenMetaData
+from .queries import get_cw_tokens
 # def return_farms_list():
 #     cosmos = Farms()
 #     return cosmos.farms
 
 async def get_wallet_balances(wallet, mongo_client, session, client):
     user_balance = await client.bank.balance(wallet)
-    cw_tokens = await utils.make_get_json(session, 'https://api.terraswap.io/tokens')
+    cw_tokens = await get_cw_tokens(session)
+
+    # for token in cw_tokens:
+
+    #     x = await client.wasm.contract_query(token['contract_addr'], {"balance":{"address": wallet}})
     cw_token_balances =  await asyncio.gather(*[client.wasm.contract_query(token['contract_addr'], {"balance":{"address": wallet}}) for token in cw_tokens])
 
     # prices = await oracles.cosmostation_prices(session)
