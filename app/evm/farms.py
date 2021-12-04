@@ -5351,6 +5351,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xNidhi' : {
+        'name' : 'nidhidao.finance',
+        'rewardToken' : '0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xNidhi',
+        'featured' : 2,
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_ohm],
+            'vaults' : [external_contracts.get_nidhi_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xNidhi',
+                        'network_id' : 'matic',
+                        'reward_symbol' : 'GURU'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

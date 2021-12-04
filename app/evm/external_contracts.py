@@ -702,3 +702,12 @@ async def get_jade_ohm(session):
         'OHM_CONTRACT' : '0x097d72e1D9bbb8d0263477f9b20bEBF66f243AF4',
         'OHM_FUNCTION' : 'sOHM'
     }
+
+async def get_nidhi_ohm(session):
+    return {
+        'BONDS' : ['0xbbA07bd5B20B63249398b831082ace6415afB7E0', '0xFDAACD04f8ad605e928F4A44864FF825dCd4796d'],
+        'MEMO_ADDRESS' : '0x04568467f0AAe5fb85Bf0e031ee66FF2C200a6Fb',
+        'TIME_ADDRESS' : '0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e',
+        'OHM_CONTRACT' : '0x4Eef9cb4D2DA4AB2A76a4477E9d2b07f403f0675',
+        'OHM_FUNCTION' : 'sGURU'
+    }
