@@ -1,3 +1,4 @@
+from eth_typing import encoding
 from . import queries
 from . import slicers
 from . import utils
@@ -126,27 +127,30 @@ class TokenMetaData:
         if found_token:
             return found_token
         else:
+            pair_lookup = await queries.get_raydium_pairs(self.session)
             token_lookup = await queries.get_raydium_tokens(self.session)
 
-            if self.tokenID in token_lookup:
-                token_metadata = token_lookup[self.tokenID]
+            if self.tokenID in pair_lookup:
+                token_metadata = pair_lookup[self.tokenID]
                 if token_metadata['coin_mint_address']:
                     found_token0 = token_lookup[token_metadata['coin_mint_address']]
                     found_token1 = token_lookup[token_metadata['pc_mint_address']]
+                    lp_decimal = await self.client.get_account_info(self.tokenID, encoding='jsonParsed')
+
                     lp_token = {
                         'tokenID': self.tokenID,
-                        'token_decimal': token_metadata['decimals'],
+                        'token_decimal': lp_decimal['result']['value']['data']['parsed']['info']['decimals'],
                         "network" : "solana",
                         "type": "lp",
-                        "symbol": token_metadata['symbol'],
+                        "symbol": token_metadata['name'],
                         'tkn0s': found_token0['symbol'],
                         'tkn0d': found_token0['decimals'],
                         'tkn1s': found_token1['symbol'],
                         'tkn0d': found_token1['decimals'],
-                        'token0': found_token0['mint_address'],
-                        'token1': found_token1['mint_address'],
+                        'token0': found_token0['address'],
+                        'token1': found_token1['address'],
                         'token_decimals': [found_token0['decimals'], found_token1['decimals']],
-                        'all_tokens': [found_token0['mint_address'], found_token1['mint_address']]}
+                        'all_tokens': [found_token0['address'], found_token1['address']]}
 
                     rayv4 = await self.client.get_program_accounts('675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8', data_size=752, encoding='base64', memcmp_opts=slicers.memcmp_owner(self.tokenID, 464))
                     

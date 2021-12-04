@@ -3,9 +3,14 @@ from . helpers import from_custom
 from . import stake_layout
 
 async def get_raydium_tokens(session):
-    r = await make_get_json(session, f'https://api.raydium.io/token')
+    r = await make_get_json(session, f'https://api.raydium.io/cache/solana-token-list')
 
-    return { x['mint_address'] : x for x in r }
+    return { x['address'] : x for x in r['tokens'] }
+
+async def get_raydium_pairs(session):
+    r = await make_get_json(session, f'https://api.raydium.io/pairs')
+
+    return { x['lp_mint'] : {**x, **{'coin_mint_address' : x['pair_id'].split('-')[0], 'pc_mint_address' : x['pair_id'].split('-')[1]}} for x in r }
 
 async def get_solana_tokenlist(session):
     r = await make_get_json(session, f'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json')
