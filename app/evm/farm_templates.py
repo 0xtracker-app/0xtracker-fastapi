@@ -3074,3 +3074,42 @@ async def get_ohm(wallet, vaults, farm_id, network_id, reward_symbol):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_wagmi_bonds(wallet, vaults, farm_id, network_id, reward_symbol):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        BONDS = vaults['BONDS']
+
+        for i,vault in enumerate(BONDS):
+                calls.append(Call(vault, [f'userInfo(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_custom, 18]]))
+                calls.append(Call(vault, [f'claimablePayout(address)(uint256)', wallet], [[f'{vault}_pending', parsers.from_custom, 18]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = stakes[each]
+                    pending = stakes[f'{breakdown[0]}_pending']
+                    actual_staked = staked - pending
+                    want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    if f'{breakdown[0]}_pending' in stakes:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : vaults['REWARD'], 'decimal' : 18}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'] = [reward_token_0]
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None

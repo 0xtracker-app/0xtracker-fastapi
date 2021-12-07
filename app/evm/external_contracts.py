@@ -160,6 +160,9 @@ async def get_space_pool_poly(session):
 async def get_apolyyeld(session):
     return ['0xc49bc7118a73Ca6CB36Bfa454FD40eCAE079a463']
 
+async def get_wagmi(session):
+    return ['0xaa2c3396cc6b3dc7b857e6bf1c30eb9717066366']
+
 async def panther_jungles(session):
     return ['0x3B5Ed7B0F8bf5D2b485352e15A416092Ca741C2c', '0xf31cbe0b2bb2e704310c90a6f74300b3d4627ce8', '0x85ff09374D1f59288b6978EB9254377a51BE0B7c']
 
@@ -564,6 +567,9 @@ async def get_ironlend_rewards(session):
 async def get_benqi_vaults(session):
     return poolext.benqi.vaults
 
+async def get_tranquil_vaults(session):
+    return poolext.tranquil.vaults
+
 async def get_annex_vaults(session):
     return poolext.annexbsc.vaults
 
@@ -710,4 +716,10 @@ async def get_nidhi_ohm(session):
         'TIME_ADDRESS' : '0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e',
         'OHM_CONTRACT' : '0x4Eef9cb4D2DA4AB2A76a4477E9d2b07f403f0675',
         'OHM_FUNCTION' : 'sGURU'
+    }
+
+async def get_wagmi_ohm(session):
+    return {
+        'BONDS' : ['0xe443f63564216f60625520465f1324043fcc47b9', '0x8c4300a7a71eff73b24dcd8f849f82a8b36b5d8a', '0xa31a22d9dec269f512cf62b83039190fbe67f7d2', '0x08d44c114e3c0102ace43e9656f478dd4a71cd1d', '0xefb7dde5261100a32657c9606507a130257d93c6'],
+        'REWARD' : '0x8750f5651af49950b5419928fecefca7c82141e3',
     }
