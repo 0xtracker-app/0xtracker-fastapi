@@ -51,3 +51,4 @@ from . import cherry
 from . import gmx
 from . import geist
 from . import annexbsc
+from . import tranquil

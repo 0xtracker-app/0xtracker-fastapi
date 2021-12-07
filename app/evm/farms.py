@@ -5373,6 +5373,57 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xf046e84439813bb0a26fb26944001c7bb4490771' : {
+        'name' : 'wagmidao.io',
+        'rewardToken' : '0x8750F5651AF49950b5419928Fecefca7c82141E3',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingWagmi',
+        'masterChef' : '0xf046e84439813bb0a26fb26944001c7bb4490771',
+        'featured' : 2,
+        'network' : 'harmony',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style, farm_templates.get_wagmi_bonds],
+            'vaults' : [external_contracts.get_wagmi, external_contracts.get_wagmi_ohm],
+            'args' : [
+                {
+                    'farm_id' : '0xf046e84439813bb0a26fb26944001c7bb4490771',
+                    'network' : 'harmony',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo',
+                    'want_token' : 'wagmi'
+                },
+                {
+                    'farm_id' : '0xf046e84439813bb0a26fb26944001c7bb4490771',
+                    'network_id' : 'harmony',
+                    'reward_symbol' : 'GMI'
+                },
+                    ],
+            'vault_args' : [{}, {}]
+        }
+    },
+                '0xTranquilLending' : {
+        'name' : 'tranquil.finance (lending)',
+        'rewardToken' : '0xcf1709ad76a79d5a60210f23e81ce2460542a836',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xTranquilLending',
+        'featured' : 2,
+        'network' : 'harmony',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_tranquil_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xTranquilLending',
+                        'network' : 'harmony',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

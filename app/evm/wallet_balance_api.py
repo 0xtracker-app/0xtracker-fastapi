@@ -27,9 +27,9 @@ async def get_balance_of(token_list, wallet, network, network_info):
     calls = []
 
     for token in token_list:
-        if token.lower() not in ['0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'.lower(), '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e'.lower(), '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(), '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower()]:
+        if token.lower() not in ['0x52903256dd18D85c2Dc4a6C999907c9793eA61E3'.lower(), '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'.lower(), '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e'.lower(), '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(), '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower()]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
-    
+
     if len(calls) > 2100:
         chunks = len(calls) / 2000
         x = np.array_split(calls, math.ceil(chunks))
@@ -47,10 +47,10 @@ async def get_balance_of(token_list, wallet, network, network_info):
     token_symbol = []
     for x in multi_return:
         if 'balance' in x:
-            if multi_return[x] > 0:
+            if multi_return[x] > 0 and x.split('_')[0] not in ['0x48c80f1f4d53d5951e5d5438b54cba84f29f32a5'.lower(), '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0'.lower(), '0x31A240648e2baf4f9F17225987f6f53fceB1699A'.lower(), '0xB31C219959E06f9aFBeB36b388a4BaD13E802725'.lower()]:
                 token = x.split('_')[0]
                 token_symbol.append(Call(token, ['symbol()(string)'], [[f'{token}_symbol', None]]))
-                token_symbol.append(Call(token, ['decimals()(uint8)'], [[f'{token}_decimal', None]]))
+                token_symbol.append(Call(token, ['decimals()(uint256)'], [[f'{token}_decimal', None]]))
 
     multi_return = {**multi_return, **await Multicall(token_symbol, WEB3_NETWORKS[network], _strict=False)()}
 
@@ -106,7 +106,7 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     for token in wallet_data[0]:
         address = wallet_data[0][token]['token']
 
-        if address not in ['0x9e2d266d6c90f6c0d80a88159b15958f7135b8af']:
+        if address not in ['0x9e2d266d6c90f6c0d80a88159b15958f7135b8af', '0x0000000000000000000000000000000000001010']:
             symbol = wallet_data[0][token]['token_symbol']
 
             price = router_prices[address] if address in router_prices else 0
