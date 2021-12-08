@@ -42,7 +42,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
                     "token_address": token_metadata['token0'],
                     "symbol": token_metadata['tkn0s'],
                     "tokenBalance": from_custom(int(balance['balance']), token_metadata['tkn0d']),
-                    # "tokenPrice": prices[token_denom],
+                    "tokenPrice": 0,
                     "wallet" : wallet,
                     'network' : 'terra'
                 }
