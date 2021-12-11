@@ -12,29 +12,27 @@ import time
 from . import utils
 from .helpers import from_custom
 from .token_lookup import TokenMetaData
-from .queries import get_cw_tokens
+from .queries import get_luna_price
+from .oracles import get_price_from_pool
+
 # def return_farms_list():
 #     cosmos = Farms()
 #     return cosmos.farms
 
 async def get_wallet_balances(wallet, mongo_client, session, client):
     user_balance = await client.bank.balance(wallet)
-    cw_tokens = await get_cw_tokens(session)
-
-    # for token in cw_tokens:
-
-    #     x = await client.wasm.contract_query(token['contract_addr'], {"balance":{"address": wallet}})
-    cw_token_balances =  await asyncio.gather(*[client.wasm.contract_query(token['contract_addr'], {"balance":{"address": wallet}}) for token in cw_tokens])
-
-    # prices = await oracles.cosmostation_prices(session)
+    cw_tokens = await mongo_client.xtracker['terra_tokens'].find({"type" : "single", "$expr": { "$gt": [ { "$strLenCP": "$token0" }, 6 ] }}, {'_id': False}).to_list(length=None)
+    cw_token_balances =  await asyncio.gather(*[client.wasm.contract_query(token['tokenID'], {"balance":{"address": wallet}}) for token in cw_tokens])
+    luna_price = await get_luna_price(client)
 
     return_wallets = []
     total_balance = 0
     
-    for i,balance in enumerate(cw_token_balances):       
+    for i,balance in enumerate(cw_token_balances):
         if int(balance['balance']) > 0:
-            token_metadata = await TokenMetaData(cw_tokens[i]['contract_addr'], mongo_client, client, session).lookup()
- 
+            token_metadata = await TokenMetaData(cw_tokens[i]['tokenID'], mongo_client, client, session).lookup()
+            token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, luna_price)
+
             #total_balance += prices[token_denom] * helpers.from_custom(token['amount'], token_decimal)
 
             return_wallets.append(
@@ -42,7 +40,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
                     "token_address": token_metadata['token0'],
                     "symbol": token_metadata['tkn0s'],
                     "tokenBalance": from_custom(int(balance['balance']), token_metadata['tkn0d']),
-                    "tokenPrice": 0,
+                    "tokenPrice": token_price,
                     "wallet" : wallet,
                     'network' : 'terra'
                 }
@@ -51,7 +49,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
     for balance in user_balance.to_list():
         if balance.amount > 0:
             token_metadata = await TokenMetaData(balance.denom, mongo_client, client, session).lookup()
-     
+            token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, luna_price)
             #total_balance += prices[token_denom] * helpers.from_custom(token['amount'], token_decimal)
 
             return_wallets.append(
@@ -59,7 +57,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
                     "token_address": token_metadata['token0'],
                     "symbol": token_metadata['tkn0s'],
                     "tokenBalance": from_custom(balance.amount, token_metadata['tkn0d']),
-                    # "tokenPrice": prices[token_denom],
+                    "tokenPrice": token_price,
                     "wallet" : wallet,
                     'network' : 'terra'
                 }
