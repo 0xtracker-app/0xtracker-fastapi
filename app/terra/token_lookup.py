@@ -1,6 +1,6 @@
 from . import queries
 import bech32
-
+from db.queries import get_terra_pool
 
 async def single_token_finder(token, session, client):
     single_token = await queries.find_native_denom(token, session)
@@ -20,7 +20,7 @@ async def single_token_finder(token, session, client):
 
     non_native_single = await client.wasm.contract_info(token)   
 
-    if 'mint' not in non_native_single['init_msg']:
+    if 'decimals' in non_native_single['init_msg']:
         meta_data = {
                         "network": "terra",
                         "tokenID": token,
@@ -55,12 +55,13 @@ async def lp_token_finder(token, session, client):
             'tokenID': token,
             'token_decimal': 6,
             "network" : "terra",
+            "minter" : minter['init_msg']['mint']['minter'],
             "type": "lp",
             "symbol": minter['init_msg']['symbol'],
             'tkn0s': token_0['tkn0s'],
             'tkn0d': token_0['tkn0d'],
             'tkn1s': token_1['tkn0s'],
-            'tkn0d': token_1['tkn0d'],
+            'tkn1d': token_1['tkn0d'],
             'token0': token_0['tokenID'],
             'token1': token_1['tokenID'],
             'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
@@ -68,6 +69,12 @@ async def lp_token_finder(token, session, client):
         return lp_token
     except:
         return None
+
+async def find_lp_address(token, session, client):
+    
+    lp_token = await client.wasm.contract_query(token, {"pair": {} })
+
+    return lp_token
 
 class TokenMetaData:
 
@@ -96,6 +103,31 @@ class TokenMetaData:
                     await self.terra_tokens.update_one({'tokenID': self.tokenID}, {"$set": denom_lookup}, upsert=True)
                     self.token_metadata = denom_lookup
                 else:
-                    None
+                    unknown_token = {'tokenID': self.tokenID, 'network': 'terra', 'tkn0d': 6, 'tkn0s': 'UNKNOWN', 'token0': self.tokenID, 'token_decimal': 6, 'type': 'single'}
+                    await self.terra_tokens.update_one({'tokenID': self.tokenID}, {"$set": unknown_token}, upsert=True)
+                    self.token_metadata = unknown_token
 
         return self.token_metadata
+
+    async def find_pool(self, token0):
+
+        uusd = await self.terra_tokens.find_one(get_terra_pool(token0,'uusd'))
+        if uusd:
+            if 'minter' not in uusd:
+                minter = await self.client.wasm.contract_info(uusd['tokenID'])
+                uusd.update({'minter' : minter['init_msg']['mint']['minter']})
+                await self.terra_tokens.update_one({'_id': uusd['_id']}, {"$set": uusd}, upsert=True)
+
+            return {'pair' : 'uusd', 'pool' : uusd['minter']}
+
+        else:
+            uluna = await self.terra_tokens.find_one(get_terra_pool(token0,'uluna'))
+            if uluna:
+                if 'minter' not in uluna:
+                    minter = await self.client.wasm.contract_info(uluna['tokenID'])
+                    uluna.update({'minter' : minter['init_msg']['mint']['minter']})
+                    await self.terra_tokens.update_one({'_id': uluna['_id']}, {"$set": uluna}, upsert=True)
+
+                return {'pair' : 'uluna', 'pool' : uluna['minter']}
+
+        return None
