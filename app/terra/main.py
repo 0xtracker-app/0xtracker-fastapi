@@ -32,8 +32,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
         if int(balance['balance']) > 0:
             token_metadata = await TokenMetaData(cw_tokens[i]['tokenID'], mongo_client, client, session).lookup()
             token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, luna_price)
-
-            #total_balance += prices[token_denom] * helpers.from_custom(token['amount'], token_decimal)
+            total_balance += token_price * from_custom(int(balance['balance']), token_metadata['tkn0d'])
 
             return_wallets.append(
                 {
@@ -50,7 +49,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
         if balance.amount > 0:
             token_metadata = await TokenMetaData(balance.denom, mongo_client, client, session).lookup()
             token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, luna_price)
-            #total_balance += prices[token_denom] * helpers.from_custom(token['amount'], token_decimal)
+            total_balance += token_price * from_custom(balance.amount, token_metadata['tkn0d'])
 
             return_wallets.append(
                 {
@@ -63,8 +62,8 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
                 }
                 )
 
-    # if total_balance > 0:
-    #     mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)
+    if total_balance > 0:
+        mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'terra', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 
