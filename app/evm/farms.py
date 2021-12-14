@@ -5424,6 +5424,78 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x138c4dB5D4Ab76556769e4ea09Bce1D452c2996F' : {
+        'name' : 'xmas-past.com',
+        'rewardToken' : '0xd3111fb8bdf936b11ffc9eba3b597bea21e72724',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingXpast',
+        'masterChef' : '0x138c4dB5D4Ab76556769e4ea09Bce1D452c2996F',
+        'featured' : 2,
+        'network' : 'ftm',
+    },
+                '0xVikings' : {
+        'name' : 'vikings.finance',
+        'rewardToken' : '0xe0474c15bc7f8213ee5bfb42f9e68b2d6be2e136',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVikings',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_ohm],
+            'vaults' : [external_contracts.get_viking_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xVikings',
+                        'network_id' : 'avax',
+                        'reward_symbol' : 'VAL'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0x6bE34986Fdd1A91e4634eb6b9F8017439b7b5EDc' : {
+        'name' : 'mm.finance',
+        'rewardToken' : '0x97749c9b61f878a880dfe312d2594ae07aed7656',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingMeerkat',
+        'masterChef' : '0x6bE34986Fdd1A91e4634eb6b9F8017439b7b5EDc',
+        'featured' : 2,
+        'network' : 'cro',
+    },
+                '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02' : {
+        'name' : 'libredefi.io',
+        'rewardToken' : '0x63db060697b01c6f4a26561b1494685dcbbd998c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingLib',
+        'masterChef' : '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02',
+        'featured' : 2,
+        'network' : 'bsc',
+    },
+                '0xE6DCE53f17FBF673f4FA60A38746F110517457B2' : {
+        'name' : 'libredefi.io',
+        'rewardToken' : '0x8afa62fa8dde8888405c899d7da077a61a87eed3',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingLib',
+        'masterChef' : '0xE6DCE53f17FBF673f4FA60A38746F110517457B2',
+        'featured' : 2,
+        'network' : 'avax',
+    },
+                '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285' : {
+        'name' : 'libredefi.io',
+        'rewardToken' : '0xF52d69BC301BE21cbed7D3ca652D1708FF8a1162',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingLib',
+        'masterChef' : '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285',
+        'featured' : 2,
+        'network' : 'matic',
+    },
 }
 
 

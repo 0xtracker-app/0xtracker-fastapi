@@ -2184,7 +2184,14 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
             pool_length = 'poolLength'
 
         
-        if farm_info[pool]['stakedFunction'] is not None and pool.lower() not in ['0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'.lower(), '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower(), '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43'.lower()]:
+        if farm_info[pool]['stakedFunction'] is not None and pool.lower() not in [
+            '0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'.lower(),
+            '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower(),
+            '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43'.lower(),
+            '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02'.lower(),
+            '0xE6DCE53f17FBF673f4FA60A38746F110517457B2'.lower(),
+            '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285'.lower()
+            ]:
             calls.append(Call(pool, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
             calls.append(Call(pool, 'getRewardsLength()(uint256)', [[pool, None]]))
@@ -2198,6 +2205,21 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
         poolLengths = {
         **await Multicall(calls, network_conn)(),
         **{'0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43' : 2}
+        }
+    elif '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02' : 6}
+        }
+    elif '0xE6DCE53f17FBF673f4FA60A38746F110517457B2' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0xE6DCE53f17FBF673f4FA60A38746F110517457B2' : 5}
+        }
+    elif '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285' : 4}
         }
     else:
         poolLengths = await Multicall(calls, network_conn)()
