@@ -5,7 +5,7 @@
 # from . import helpers
 # from .calculator import calculate_prices
 # from .token_lookup import TokenMetaData
-# from .farms import Farms
+from .farms import Farms
 # from .networks import CosmosNetwork
 import asyncio
 import time
@@ -15,9 +15,9 @@ from .token_lookup import TokenMetaData
 from .queries import get_luna_price
 from .oracles import get_price_from_pool
 
-# def return_farms_list():
-#     cosmos = Farms()
-#     return cosmos.farms
+def return_farms_list():
+    terra = Farms()
+    return terra.farms
 
 async def get_wallet_balances(wallet, mongo_client, session, client):
     user_balance = await client.bank.balance(wallet)
@@ -67,30 +67,30 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
 
     return return_wallets
 
-# async def get_terra_positions(wallet, farm_id, mongo_db, http_session):
-#     set_farms = Farms(wallet, farm_id)
-#     farm_configuraiton = set_farms.farms[farm_id]
+async def get_terra_positions(wallet, farm_id, mongo_db, http_session):
+    set_farms = Farms(wallet, farm_id)
+    farm_configuraiton = set_farms.farms[farm_id]
     
-#     args = {'wallet' : wallet}
-#     returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
+    args = {'wallet' : wallet}
+    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
 
-#     if 'extraFunctions' in farm_configuraiton:
+    if 'extraFunctions' in farm_configuraiton:
         
-#         if farm_configuraiton['extraFunctions']['vaults'] is not None:
-#             vaults = await asyncio.gather(*[v(session=http_session, **farm_configuraiton['extraFunctions']['vault_args'][i]) for i, v in enumerate(farm_configuraiton['extraFunctions']['vaults'])])
+        if farm_configuraiton['extraFunctions']['vaults'] is not None:
+            vaults = await asyncio.gather(*[v(session=http_session, **farm_configuraiton['extraFunctions']['vault_args'][i]) for i, v in enumerate(farm_configuraiton['extraFunctions']['vaults'])])
 
-#         farm_infos = await asyncio.gather(*[f(vaults=vaults[i], session=http_session, mongodb=mongo_db, **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
+        farm_infos = await asyncio.gather(*[f(vaults=vaults[i], session=http_session, mongodb=mongo_db, **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
 
-#         for farm_info in farm_infos:
-#             if farm_info is not None:
-#                 returned_object[0].update(farm_info[0])
-#                 returned_object[1][farm_id]['userData'].update(farm_info[1][farm_id]['userData'])
+        for farm_info in farm_infos:
+            if farm_info is not None:
+                returned_object[0].update(farm_info[0])
+                returned_object[1][farm_id]['userData'].update(farm_info[1][farm_id]['userData'])
 
-#     if len(returned_object[0]) < 1:
-#         return {}
+    if len(returned_object[0]) < 1:
+        return {}
 
-#     prices = await oracles.cosmostation_prices(http_session)
+    prices = await oracles.cosmostation_prices(http_session)
 
-#     response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
+    response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
 
-#     return response
+    return response
