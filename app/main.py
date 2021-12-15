@@ -6,7 +6,7 @@ from toolz.itertoolz import get
 from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
 from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
-from terra import get_wallet_balances as terra_wallet_balances
+from terra import get_wallet_balances as terra_wallet_balances, get_terra_positions, return_farms_list as terra_farms_list
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
@@ -65,7 +65,7 @@ async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_databa
 
 @app.get('/farms-list/')
 async def get_farm_list():
-    farm_list = {**return_farms_list(), **cosmos_farms_list(), **solana_farms_list()}
+    farm_list = {**return_farms_list(), **cosmos_farms_list(), **solana_farms_list(), **terra_farms_list()}
     results = [{'sendValue' : farm_list[x]['masterChef'], 'name' : farm_list[x]['name'], 'network': farm_list[x]['network'], 'featured' : farm_list[x]['featured']} for x in farm_list if 'show' not in farm_list[x]]
     return results
 
@@ -82,6 +82,11 @@ async def get_cosmos_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depend
 @app.get('/solana-farms/{wallet}/{farm_id}')
 async def get_solana_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana)):
     results = await get_solana_positions(wallet, farm_id, mongo_db, session, client)
+    return results
+
+@app.get('/terra-farms/{wallet}/{farm_id}')
+async def get_terra_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra)):
+    results = await get_terra_positions(wallet, farm_id, mongo_db, session, client)
     return results
 
 @app.get('/wallet/{wallet}/{network}')

@@ -1,6 +1,7 @@
 from . import queries
 import bech32
 from db.queries import get_terra_pool
+from .helpers import from_custom
 
 async def single_token_finder(token, session, client):
     single_token = await queries.find_native_denom(token, session)
@@ -53,7 +54,7 @@ async def lp_token_finder(token, session, client):
 
         lp_token = {
             'tokenID': token,
-            'token_decimal': 6,
+            'token_decimal': int(minter['init_msg']['decimals']),
             "network" : "terra",
             "minter" : minter['init_msg']['mint']['minter'],
             "type": "lp",
@@ -65,7 +66,10 @@ async def lp_token_finder(token, session, client):
             'token0': token_0['tokenID'],
             'token1': token_1['tokenID'],
             'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
-            'all_tokens': [token_0['tokenID'], token_1['tokenID']]}
+            'all_tokens': [token_0['tokenID'], token_1['tokenID']],
+            'total_shares' : from_custom(int(lp_token['total_share']), int(minter['init_msg']['decimals'])),
+            'reserves' : [lp_token['assets'][0]['amount'], lp_token['assets'][1]['amount']]
+            }
         return lp_token
     except:
         return None
@@ -75,6 +79,12 @@ async def find_lp_address(token, session, client):
     lp_token = await client.wasm.contract_query(token, {"pair": {} })
 
     return lp_token
+
+async def total_supply_reserves(token, session, client):
+    lp_balances = await client.wasm.contract_query(token['minter'], {"pool": {} })
+    
+    return {'total_shares' : from_custom(int(lp_balances['total_share']), token['token_decimal']), 'reserves' : [lp_balances['assets'][0]['amount'], lp_balances['assets'][1]['amount']]}
+
 
 class TokenMetaData:
 
@@ -89,6 +99,10 @@ class TokenMetaData:
         found_token = await self.terra_tokens.find_one({'tokenID': self.tokenID}, {'_id': False})
 
         if found_token:
+            if found_token['type'] == 'lp':
+                found_token.update(await total_supply_reserves(found_token, self.session, self.client))
+
+
             return found_token
         else:
             denom_lookup = await lp_token_finder(self.tokenID, self.session, self.client)

@@ -5,7 +5,7 @@ class Farms:
     def __init__(self, wallet=None, selected_farm=None):
         self.wallet = wallet
         self.farms = {
-    '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A' : {
+    '0xValkyrie' : {
         'name' : 'valkyrieprotocol.com',
         'masterChef' : '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A',
         'featured' : 2,
@@ -15,7 +15,7 @@ class Farms:
             'vaults' : [external_contracts.dummy_vault],
             'args' : [
                 {
-                    'farm_id' : '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A',
+                    'farm_id' : '0xValkyrie',
                     'network' : 'terra',
                     },],
             'vault_args' : [{}]

@@ -67,7 +67,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
 
     return return_wallets
 
-async def get_terra_positions(wallet, farm_id, mongo_db, http_session):
+async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_client):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
     
@@ -79,7 +79,7 @@ async def get_terra_positions(wallet, farm_id, mongo_db, http_session):
         if farm_configuraiton['extraFunctions']['vaults'] is not None:
             vaults = await asyncio.gather(*[v(session=http_session, **farm_configuraiton['extraFunctions']['vault_args'][i]) for i, v in enumerate(farm_configuraiton['extraFunctions']['vaults'])])
 
-        farm_infos = await asyncio.gather(*[f(vaults=vaults[i], session=http_session, mongodb=mongo_db, **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
+        farm_infos = await asyncio.gather(*[f(vaults=vaults[i], session=http_session, mongodb=mongo_db, lcd_client=lcd_client, **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
 
         for farm_info in farm_infos:
             if farm_info is not None:
@@ -89,6 +89,7 @@ async def get_terra_positions(wallet, farm_id, mongo_db, http_session):
     if len(returned_object[0]) < 1:
         return {}
 
+    print(returned_object)
     prices = await oracles.cosmostation_prices(http_session)
 
     response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
