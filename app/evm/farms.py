@@ -5195,6 +5195,23 @@ class Farms:
         'masterChef' : '0x77ea4a4cF9F77A034E4291E8f457Af7772c2B254',
         'featured' : 2,
         'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.crona_vaults, external_contracts.crona_staking],
+            'args' : [
+                {
+                    'farm_id' : '0x77ea4a4cF9F77A034E4291E8f457Af7772c2B254',
+                    'network_id' : 'cro',
+                },
+                {
+                    'farm_id' : '0x77ea4a4cF9F77A034E4291E8f457Af7772c2B254',
+                    'network' : 'cro',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo'
+                }, 
+                    ],
+            'vault_args' : [{}, {}]
+        }
     },
                 '0xDccd6455AE04b03d785F12196B492b18129564bc' : {
         'name' : 'vvs.finance',
@@ -5205,6 +5222,23 @@ class Farms:
         'masterChef' : '0xDccd6455AE04b03d785F12196B492b18129564bc',
         'featured' : 2,
         'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.vvs_vaults, external_contracts.vvs_staking],
+            'args' : [
+                {
+                    'farm_id' : '0xDccd6455AE04b03d785F12196B492b18129564bc',
+                    'network_id' : 'cro',
+                },
+                {
+                    'farm_id' : '0xDccd6455AE04b03d785F12196B492b18129564bc',
+                    'network' : 'cro',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo'
+                }, 
+                    ],
+            'vault_args' : [{}, {}]
+        }
     },
                 '0xCroDex' : {
         'name' : 'crodex.app',

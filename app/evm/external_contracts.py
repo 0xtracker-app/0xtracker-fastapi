@@ -205,6 +205,18 @@ async def bouje_staking(session):
 async def knight_staking(session):
     return ['0xe790a0683b669089AdC199996F89Bd40FEd4C559', '0x3b8B92D882127b5e14c9476615374a69e55d4Ca1', '0xF928BB46273043F98cc731CeFFc16A1ccC177707']
 
+async def crona_staking(session):
+    return ['0xDf3EBc46F283eF9bdD149Bb24c9b201a70d59389']
+
+async def crona_vaults(session):
+    return ['0x507Ee4C2dA5fdc12Fa7DDDb66a338230D5ED1f41', '0xc0Ace9DEF4b1cCE2c91A6c90BB720a90718ecf80']
+
+async def vvs_staking(session):
+    return ['0xA6fF77fC8E839679D4F7408E8988B564dE1A2dcD']
+
+async def vvs_vaults(session):
+    return ['0xc0Ace9DEF4b1cCE2c91A6c90BB720a90718ecf80']
+
 async def crodex_vaults(session):
     return [
     "0xDb752eB155F6075d4Ba0e09c371eB5eBB0D4bAA5",

@@ -25,8 +25,9 @@ async def check_osmosis_pricing(session):
         if 'ibc' in each['denom']:
             route = each['denom'].replace('ibc/', '')
             d = await make_get_json(session, f'https://lcd-osmosis.keplr.app/ibc/applications/transfer/v1beta1/denom_traces/{route}')
-            denom = d['denom_trace']['base_denom']
-            osmo_prices[denom] = each['price']
+            if 'denom_trace' in d:
+                denom = d['denom_trace']['base_denom']
+                osmo_prices[denom] = each['price']
         else:
             osmo_prices[each['denom']] = each['price']
 
