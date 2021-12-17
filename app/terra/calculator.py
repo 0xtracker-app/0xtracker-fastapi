@@ -62,6 +62,6 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client):
             finalResponse[f]['total'] = 0
 
         if finalResponse[f]['total'] > 0:
-            mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'terra', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
+            mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'terra', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
         
     return finalResponse

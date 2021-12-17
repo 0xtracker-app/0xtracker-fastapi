@@ -7,7 +7,9 @@ class Farms:
         self.farms = {
     '0xValkyrie' : {
         'name' : 'valkyrieprotocol.com',
-        'masterChef' : '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A',
+        'masterChef' : '0xValkyrie',
+        'rewardToken' : 'terra1dy9kmlm4anr92e42mrkjwzyvfqwz66un00rwr5',
+        'decimal' : 6,
         'featured' : 2,
         'network' : 'terra',
         'extraFunctions' : {
@@ -16,6 +18,24 @@ class Farms:
             'args' : [
                 {
                     'farm_id' : '0xValkyrie',
+                    'network' : 'terra',
+                    },],
+            'vault_args' : [{}]
+        }
+    },
+    '0xLunaStaking' : {
+        'name' : 'Luna Staking',
+        'masterChef' : '0xLunaStaking',
+        'rewardToken' : 'uluna',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_luna_staking,],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xLunaStaking',
                     'network' : 'terra',
                     },],
             'vault_args' : [{}]
