@@ -10,10 +10,11 @@ from .farms import Farms
 import asyncio
 import time
 from . import utils
-from .helpers import from_custom
+from .helpers import from_custom, token_list_from_stakes
 from .token_lookup import TokenMetaData
 from .queries import get_luna_price
 from .oracles import get_price_from_pool
+from .calculator import calculate_prices
 
 def return_farms_list():
     terra = Farms()
@@ -89,9 +90,11 @@ async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_clien
     if len(returned_object[0]) < 1:
         return {}
 
-    print(returned_object)
-    prices = await oracles.cosmostation_prices(http_session)
+    luna_price = await get_luna_price(lcd_client)
+    token_list = token_list_from_stakes(returned_object[1], farm_configuraiton)
 
-    response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
+    prices = dict(zip([x['token'] for x in token_list], await asyncio.gather(*[get_price_from_pool(x['token'], x['decimal'], lcd_client, mongo_db, luna_price) for x in token_list])))
+
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
 
     return response

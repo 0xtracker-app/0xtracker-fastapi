@@ -253,6 +253,8 @@ async def list_router_prices(tokens_in, network, check_liq=False):
         else:
             if token.lower() == '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'.lower() and each.split('_')[0] == 'BURGER':
                 liq = 0
+            elif token.lower() == '0x2d03bece6747adc00e1a131bba1469c15fd11e03'.lower() and each.split('_')[0] != 'VVS':
+                liq = 0
             else:
                 liq = network_route.minliq + 1
         looped_value = multi[each] if liq > network_route.minliq else 0

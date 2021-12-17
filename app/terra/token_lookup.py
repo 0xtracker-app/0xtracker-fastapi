@@ -6,6 +6,9 @@ from .helpers import from_custom
 async def single_token_finder(token, session, client):
     single_token = await queries.find_native_denom(token, session)
 
+    if 'ibc/' in token:
+        return None
+
     if single_token:
         meta_data = {
                         "network": "terra",
@@ -18,7 +21,7 @@ async def single_token_finder(token, session, client):
                     }
 
         return meta_data
-
+    
     non_native_single = await client.wasm.contract_info(token)   
 
     if 'decimals' in non_native_single['init_msg']:
@@ -118,7 +121,6 @@ class TokenMetaData:
                     self.token_metadata = denom_lookup
                 else:
                     unknown_token = {'tokenID': self.tokenID, 'network': 'terra', 'tkn0d': 6, 'tkn0s': 'UNKNOWN', 'token0': self.tokenID, 'token_decimal': 6, 'type': 'single'}
-                    await self.terra_tokens.update_one({'tokenID': self.tokenID}, {"$set": unknown_token}, upsert=True)
                     self.token_metadata = unknown_token
 
         return self.token_metadata
