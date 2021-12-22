@@ -12,7 +12,7 @@ async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
         if base_denom:
             await cosmos_routes.update_one({'hash' : token},{ "$set": base_denom}, upsert=True)
             denom = base_denom['base_denom']
-            print(denom)
+
             found_token = await cosmos_tokens.find_one({'tokenID' : denom}, {'_id': False})        
             
             if found_token:
@@ -64,7 +64,7 @@ class TokenMetaData:
                 self.token_metadata = found_token
             else:
                 get_pool = await queries.get_gamm_pool(self.tokenID, self.network, self.session)
-
+                print(get_pool)
                 found_token0 = await get_ibc(get_pool['token0'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
                 found_token1 = await get_ibc(get_pool['token1'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
 

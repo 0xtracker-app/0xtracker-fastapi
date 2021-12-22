@@ -18,7 +18,8 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider('https
                 'meter': { 'connection' : Web3(Web3.HTTPProvider('https://rpc.meter.io')), 'id' : 82},
                 'cro': { 'connection' : Web3(Web3.HTTPProvider('https://evm-cronos.crypto.org')), 'id' : 25},
                 'polis': { 'connection' : Web3(Web3.HTTPProvider('https://rpc.polis.tech')), 'id' : 333999},
-                'boba': { 'connection' : Web3(Web3.HTTPProvider('https://mainnet.boba.network/')), 'id' : 288},            
+                'boba': { 'connection' : Web3(Web3.HTTPProvider('https://mainnet.boba.network/')), 'id' : 288},
+                'theta': { 'connection' : Web3(Web3.HTTPProvider('https://eth-rpc-api.thetatoken.org/rpc')), 'id' : 361},             
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://nd-718-288-301.p2pify.com/c8aa321fc47fa093d4bd974da375e863'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
@@ -39,6 +40,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://nd
                 'cro': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://evm-cronos.crypto.org'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 25},
                 'polis': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://rpc.polis.tech'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 333999},
                 'boba': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://mainnet.boba.network/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 288},
+                'theta': { 'connection' : Web3(Web3.AsyncHTTPProvider('https://eth-rpc-api.thetatoken.org/rpc'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 361},
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : '4VRVI4YKCSN4YN33MQ2BDCWXAQPHMBCZ4D', 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

@@ -2897,7 +2897,7 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
                 calls.append(Call(geyser['id'], [f'getCurrentVaultReward(address)(uint256)', vault['id']], [[f"{geyser['id']}_{vault['id']}_reward", None]]))
 
         stakes=await Multicall(calls, network)()
-        
+
         poolNest = {poolKey: 
         { 'userData': { } } }
 
