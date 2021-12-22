@@ -129,4 +129,7 @@ class PolisRouter():
 class BobaRouter():
     OOLONG = '0x17C83E2B96ACfb5190d63F5E46d93c107eC0b514'
 
+class ThetaRouter():
+    VOLT = '0x8b962374AE63c628B1cd5dec8B08A95787F611E5'
+
 

@@ -4720,6 +4720,16 @@ class Farms:
         'featured' : 2,
         'network' : 'arb',
     },
+                '0x06408571e0ad5e8f52ead01450bde74e5074dc74' : {
+        'name' : 'abracadabra.money',
+        'rewardToken' : '0xce1bffbd5374dac86a2893119683f4911a2f7814',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingIce',
+        'masterChef' : '0x06408571e0ad5e8f52ead01450bde74e5074dc74',
+        'featured' : 2,
+        'network' : 'avax',
+    },
                 '0xc7B8285a9E099e8c21CA5516D23348D8dBADdE4a' : {
         'name' : 'marsecosystem.com',
         'rewardToken' : '0x7859B01BbF675d67Da8cD128a50D155cd881B576',
@@ -4850,6 +4860,27 @@ class Farms:
                     {
                         'farm_id' : '0xVoltSwap',
                         'network_id' : 'meter',
+                    },
+                    ],
+            'vault_args' : [{'wallet' : wallet}]
+        }
+    },
+                '0xVoltSwapTheta' : {
+        'name' : 'voltswap.finance',
+        'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVoltSwapTheta',
+        'featured' : 2,
+        'network' : 'theta',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_voltswap],
+            'vaults' : [external_contracts.get_voltswap_theta],
+            'args' : [
+                    {
+                        'farm_id' : '0xVoltSwapTheta',
+                        'network_id' : 'theta',
                     },
                     ],
             'vault_args' : [{'wallet' : wallet}]

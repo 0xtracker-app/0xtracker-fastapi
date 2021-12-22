@@ -28,6 +28,14 @@ async def get_voltswap(wallet, session):
     else:
         return {'geysers' : [], 'user_vaults' : []}
 
+async def get_voltswap_theta(wallet, session):
+    geysers = await call_graph('https://geyser-graph-on-theta.voltswap.finance/subgraphs/name/theta/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
+    vault = await call_graph('https://geyser-graph-on-theta.voltswap.finance/subgraphs/name/theta/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
+    if vault['data']['user']:
+        return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
+    else:
+        return {'geysers' : [], 'user_vaults' : []}
+
 async def get_mai_graph(wallet, session):
 
     obj = """{

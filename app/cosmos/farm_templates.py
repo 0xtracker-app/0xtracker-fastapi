@@ -77,6 +77,7 @@ async def get_osmosis_staking(wallet, session, vaults, farm_id, mongodb, network
 
             staked_position = {'staked' : 0, 'gambitRewards' : [], 'network' : 'cosmos'}
             want_token = each['denom']
+            print(want_token)
             staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, network=net_config, session=session).lookup())
             staked_position['want'] = want_token
             staked_position['staked'] = helpers.from_custom(each['amount'], 18)
