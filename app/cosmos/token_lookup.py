@@ -61,10 +61,12 @@ class TokenMetaData:
         elif 'gamm/pool' in self.tokenID:
             found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
             if found_token:
+                get_pool = await queries.get_gamm_balances(self.tokenID, self.network, self.session)
+                if get_pool:
+                    found_token.update(get_pool)
                 self.token_metadata = found_token
             else:
                 get_pool = await queries.get_gamm_pool(self.tokenID, self.network, self.session)
-                print(get_pool)
                 found_token0 = await get_ibc(get_pool['token0'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
                 found_token1 = await get_ibc(get_pool['token1'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
 
