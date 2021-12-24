@@ -76,3 +76,16 @@ async def get_gamm_pool(pool,network_data,session):
             }
     else:
         return None
+
+async def get_gamm_balances(pool,network_data,session):
+    endpoint = network_data['rest']
+    pool_id = pool.split('/')[2]
+    r = await make_get_json(session, f'{endpoint}/osmosis/gamm/v1beta1/pools/{pool_id}')
+
+    if 'pool' in r:
+        return {
+            'total_shares' : from_custom(int(r['pool']['totalShares']['amount']), 18),
+            'reserves' : [int(r['pool']['poolAssets'][0]['token']['amount']),int(r['pool']['poolAssets'][1]['token']['amount'])], 
+            }
+    else:
+        return None
