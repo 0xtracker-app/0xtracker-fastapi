@@ -41,4 +41,29 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    '0xSpectrum' : {
+        'name' : 'spec.finance',
+        'masterChef' : '0xSpectrum',
+        'rewardToken' : 'terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_spectrum_farms,farm_templates.get_spectrum_staking],
+            'vaults' : [external_contracts.spectrum_farm_contract, external_contracts.spectrum_staking_contract],
+            'args' : [
+                {
+                    'farm_id' : '0xSpectrum',
+                    'network' : 'terra',
+                },
+                {
+                    'farm_id' : '0xSpectrum',
+                    'network' : 'terra',
+                    'want_token' : 'terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr'
+                },                
+                
+                ],
+            'vault_args' : [{},{}]
+        }
+    },
 }
