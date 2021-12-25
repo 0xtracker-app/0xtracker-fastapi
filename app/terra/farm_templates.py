@@ -96,3 +96,86 @@ async def get_luna_staking(wallet, lcd_client, session, vaults, farm_id, mongodb
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_spectrum_farms(wallet, lcd_client, vaults, farm_id, mongodb, network, session):
+    poolKey = farm_id
+
+    tasks = []
+    response_key = []
+    for contract in vaults:
+        tasks.append(lcd_client.wasm.contract_query(contract, { "reward_info": { "staker_addr": wallet }}))
+        response_key.append(f'{contract}_userinfo')
+        tasks.append(lcd_client.wasm.contract_query(contract, { "pools": {}}))
+        response_key.append(f'{contract}_pools')     
+
+    stakes = dict(zip(response_key, await asyncio.gather(*tasks)))
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if 'userinfo' in each:
+
+            if stakes[each]['reward_infos']:
+                breakdown = each.split('_')
+                want_token_meta = await TokenMetaData(stakes[f'{breakdown[0]}_pools']['pools'][0]['staking_token'], mongodb, lcd_client, session).lookup()
+                staked = from_custom(stakes[each]['reward_infos'][0]['bond_amount'], want_token_meta['token_decimal'])
+                pending = from_custom(stakes[each]['reward_infos'][0]['pending_spec_reward'], 6)
+                want_token = stakes[f'{breakdown[0]}_pools']['pools'][0]['staking_token']
+                reward_token = 'terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr'
+                reward_symbol = 'SPEC'
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]].update(want_token_meta)
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+            
+                reward_token_0 = {'pending': pending, 'symbol' : reward_symbol, 'token' : reward_token}
+                poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
+
+async def get_spectrum_staking(wallet, lcd_client, vaults, farm_id, mongodb, network, session, want_token):
+    poolKey = farm_id
+
+    tasks = []
+    response_key = []
+    for contract in vaults:
+        tasks.append(lcd_client.wasm.contract_query(contract, { "balance": { "address": wallet }}))
+        response_key.append(f'{contract}_userinfo')
+ 
+    stakes = dict(zip(response_key, await asyncio.gather(*tasks)))
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if 'userinfo' in each:
+            for i, pool in enumerate(stakes[each]['pools']):
+                if int(pool['balance']) > 0:
+                    breakdown = each.split('_')
+                    want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+                    staked = from_custom(int(pool['balance']), want_token_meta['token_decimal'])
+                    pending = from_custom(int(pool['pending_aust']), 6)
+                    reward_token = 'terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu'
+                    reward_symbol = 'aUST'
+
+                    poolNest[poolKey]['userData'][f'{breakdown[0]}{i}'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][f'{breakdown[0]}{i}'].update(want_token_meta)
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+                
+                    reward_token_0 = {'pending': pending, 'symbol' : reward_symbol, 'token' : reward_token}
+                    poolNest[poolKey]['userData'][f'{breakdown[0]}{i}']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
