@@ -290,6 +290,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     prices['0x2744861accb5bd435017c1cfee789b6ebab42082'.lower()] = 0
     prices['0x265befe2b1a0f4f646dea96ba09c1656b74bda91'.lower()] = 0
     prices['0x2ba6204c23fbd5698ed90abc911de263e5f41266'.lower()] = 0
+    prices['0xd35f9ab96d04adb02fd549ef6a576ce4e2c1d935'.lower()] = 0
 
     return prices
 
