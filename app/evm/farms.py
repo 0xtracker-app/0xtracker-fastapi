@@ -4936,8 +4936,8 @@ class Farms:
         'featured' : 2,
         'network' : 'celo',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_sushi_masterchef],
-            'vaults' : [external_contracts.dummy_vault],
+            'functions' : [farm_templates.get_sushi_masterchef, farm_templates.get_sushi_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
             'args' : [
                 {
                     'farm_id' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
@@ -4950,9 +4950,21 @@ class Farms:
                         'r0t' : '0xd15ec721c2a896512ad29c671997dd68f9593226',
                         'r1t' : '0x471EcE3750Da237f93B8E339c536989b8978a438'
                     }
+                },
+                {
+                    'farm_id' : '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+                    'network_id' : 'celo',
+                    'farm_data' :{
+                        'masterChef' : '0x8084936982D089130e001b470eDf58faCA445008',
+                        'rewarder' : '0xfa3de59edd2500ba725dad355b98e6a4346ada7d',
+                        'r0sym' : 'SUSHI',
+                        'r1sym' : 'CELO',
+                        'r0t' : '0xd15ec721c2a896512ad29c671997dd68f9593226',
+                        'r1t' : '0x471EcE3750Da237f93B8E339c536989b8978a438'
+                    }
                 }
                     ],
-            'vault_args' : [{}]
+            'vault_args' : [{},{}]
         }
     },
                 '0x35cA0e02C4c16c94c4cC8B67D13d660b78414f95' : {
