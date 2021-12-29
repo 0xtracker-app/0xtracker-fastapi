@@ -5,6 +5,10 @@ from . import template_helpers
 from .thegraph import call_graph
 from .utils import set_pool
 from . import abi
+import asyncio
+import math
+import numpy as np
+from functools import reduce
 
 async def get_multireward_masterchef(wallet,farm_id,network_id,vaults):
         poolKey = farm_id
@@ -986,8 +990,14 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
             calls.append(Call(vault, [f'{want_token}()(address)'], [[f'{vault}_want', None]]))
         
         calls.append(Call(vault, [f'{pps}()(uint256)'], [[f'{vault}_getPricePerFullShare', parsers.from_wei]]))
-    
-    stakes=await Multicall(calls, WEB3_NETWORKS[network], _strict=strict)()
+
+    if len(calls) > 1500:
+        chunks = len(calls) / 1000
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network], _strict=strict)() for call in x])
+        stakes = reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        stakes = await Multicall(calls, WEB3_NETWORKS[network], _strict=strict)()
 
     poolNest = {poolKey: 
     { 'userData': { } } }
@@ -2290,7 +2300,20 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 calls.append(Call(address, ['rewardsInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
             elif address == '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904':
                 calls.append(Call(address, ['poolInfo(uint256)((address,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
-            elif address in ['0x0769fd68dFb93167989C6f7254cd0D766Fb2841F','0x67da5f2ffaddff067ab9d5f025f8810634d84287', '0x7875Af1a6878bdA1C129a4e2356A3fD040418Be5', '0x8F5BBB2BB8c2Ee94639E55d5F41de9b4839C1280', '0x3a01521F8E7F012eB37eAAf1cb9490a5d9e18249', '0xd10eF2A513cEE0Db54E959eF16cAc711470B62cF', '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3', '0x73186f2Cf2493f20836b17b21ae79fc12934E207', '0xaeD5b25BE1c3163c907a471082640450F928DDFE', '0xd5609cD0e1675331E4Fb1d43207C8d9D83AAb17C']:
+            elif address in [
+                '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+                '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
+                '0x7875Af1a6878bdA1C129a4e2356A3fD040418Be5',
+                '0x8F5BBB2BB8c2Ee94639E55d5F41de9b4839C1280',
+                '0x3a01521F8E7F012eB37eAAf1cb9490a5d9e18249',
+                '0xd10eF2A513cEE0Db54E959eF16cAc711470B62cF',
+                '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
+                '0x73186f2Cf2493f20836b17b21ae79fc12934E207',
+                '0xaeD5b25BE1c3163c907a471082640450F928DDFE',
+                '0xd5609cD0e1675331E4Fb1d43207C8d9D83AAb17C',
+                '0x13cc0A2644f4f727db23f5B9dB3eBd72134085b7',
+                '0x7ecc7163469f37b777d7b8f45a667314030ace24'
+                ]:
                 calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533']:
                 calls.append(Call(address, ['poolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
@@ -2927,7 +2950,7 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
         else:
             return None
 
-async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults):
+async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults,pending_function='pendingSushi'):
         poolKey = farm_id
         calls = []
         network = WEB3_NETWORKS[network_id]
@@ -2936,7 +2959,7 @@ async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults):
 
         for pid in range(0,pool_length):
             calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'pendingSushi(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
             calls.append(Call(farm_data['rewarder'], [f'pendingToken(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_extra', parsers.from_wei]]))
             calls.append(Call(farm_data['masterChef'], [f'lpToken(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
 

@@ -5573,6 +5573,217 @@ class Farms:
         'featured' : 2,
         'network' : 'matic',
     },
+                '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B' : {
+        'name' : 'trisolaris.io',
+        'rewardToken' : '0xFa94348467f64D5A457F75F8bc40495D33c65aBB',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTri',
+        'masterChef' : '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
+        'featured' : 2,
+        'network' : 'aurora',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_tri_staking],
+            'args' : [
+                    {
+                        'farm_id' : '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
+                        'network' : 'aurora',
+                        'receipt_token' : '0x802119e4e253D5C19aA06A5d567C5a41596D6803'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+
+    },
+                '0x2B2e72C232685fC4D350Eaa92f39f6f8AD2e1593' : {
+        'name' : 'wannaswap.finance',
+        'rewardToken' : '0x7faa64faf54750a2e3ee621166635feaf406ab22',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingWanna',
+        'masterChef' : '0x2B2e72C232685fC4D350Eaa92f39f6f8AD2e1593',
+        'featured' : 2,
+        'network' : 'aurora',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_wanna_staking],
+            'args' : [
+                    {
+                        'farm_id' : '0x2B2e72C232685fC4D350Eaa92f39f6f8AD2e1593',
+                        'network' : 'aurora',
+                        'receipt_token' : '0x5205c30bf2E37494F8cF77D2c19C6BA4d2778B9B'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xVaporwave' : {
+        'name' : 'vaporwave.farm',
+        'rewardToken' : '0xca3f508b8e4dd382ee878a314789373d80a5190a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVaporwave',
+        'featured' : 2,
+        'network' : 'aurora',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_vaporware_vaults],
+            'args' : [{'farm_id' : '0xVaporwave', 'network' : 'aurora'}],
+            'vault_args' : [{}]
+        }
+    },
+                '0x35CC71888DBb9FfB777337324a4A60fdBAA19DDE' : {
+        'name' : 'auroraswap.finance',
+        'rewardToken' : '0x7faa64faf54750a2e3ee621166635feaf406ab22',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBRL',
+        'masterChef' : '0x35CC71888DBb9FfB777337324a4A60fdBAA19DDE',
+        'featured' : 2,
+        'network' : 'aurora',
+    },
+                '0x2aeF68F92cfBAFA4b542F60044c7596e65612D20' : {
+        'name' : 'nearpad.io',
+        'rewardToken' : '0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0x2aeF68F92cfBAFA4b542F60044c7596e65612D20',
+        'featured' : 2,
+        'network' : 'aurora',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_nearpad_staking],
+            'args' : [
+                    {
+                        'farm_id' : '0x2aeF68F92cfBAFA4b542F60044c7596e65612D20',
+                        'network' : 'aurora',
+                        'receipt_token' : '0x5a9B5fE4fAb31280A6397e3D87F3565BbfeEb995'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0x13cc0A2644f4f727db23f5B9dB3eBd72134085b7' : {
+        'name' : 'pickle.finance',
+        'rewardToken' : '0x291c8fceaca3342b29cc36171deb98106f712c66',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingPickle',
+        'masterChef' : '0x13cc0A2644f4f727db23f5B9dB3eBd72134085b7',
+        'featured' : 2,
+        'network' : 'aurora',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_pickle_addresses],
+            'args' : [
+                {
+                    'farm_id' : '0x13cc0A2644f4f727db23f5B9dB3eBd72134085b7',
+                    'network' : 'aurora',
+                }
+                    ],
+            'vault_args' : [{'network' : 'aurora'}]
+        }
+    },
+                '0xPickleOKEX' : {
+        'name' : 'pickle.finance',
+        'rewardToken' : '0xf290f3d843826d00f8176182fd76550535f6dbb4',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xPickleOKEX',
+        'featured' : 2,
+        'network' : 'oke',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sushi_masterchef, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_pickle_addresses],
+            'args' : [
+                {
+                    'farm_id' : '0xPickleOKEX',
+                    'network_id' : 'oke',
+                    'pending_function' : 'pendingPickle',
+                    'farm_data' :{
+                        'masterChef' : '0x7446BF003b98B7B0D90CE84810AC12d6b8114B62',
+                        'rewarder' : '0x48394297ed0a9e9edcc556faaf4222a932605c56',
+                        'r0sym' : 'PICKLE',
+                        'r1sym' : 'WOKT',
+                        'r0t' : '0xf290f3d843826d00f8176182fd76550535f6dbb4',
+                        'r1t' : '0x8f8526dbfd6e38e3d8307702ca8469bae6c56c15'
+                    }
+                },
+                {
+                    'farm_id' : '0xPickleOKEX',
+                    'network' : 'oke',
+                }
+                    ],
+            'vault_args' : [{},{'network' : 'okex'}]
+        }
+    },
+                '0x7ecc7163469f37b777d7b8f45a667314030ace24' : {
+        'name' : 'pickle.finance',
+        'rewardToken' : '0x965772e0e9c84b6f359c8597c891108dcf1c5b1a',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingPickle',
+        'masterChef' : '0x7ecc7163469f37b777d7b8f45a667314030ace24',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_pickle_addresses],
+            'args' : [
+                {
+                    'farm_id' : '0x7ecc7163469f37b777d7b8f45a667314030ace24',
+                    'network' : 'arb',
+                }
+                    ],
+            'vault_args' : [{'network' : 'arbitrum'}]
+        }
+    },
+                '0xPickleMoon' : {
+        'name' : 'pickle.finance',
+        'rewardToken' : '0x965772e0e9c84b6f359c8597c891108dcf1c5b1a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xPickleMoon',
+        'featured' : 2,
+        'network' : 'moon',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_pickle_addresses],
+            'args' : [
+                {
+                    'farm_id' : '0xPickleMoon',
+                    'network' : 'moon',
+                }
+                    ],
+            'vault_args' : [{'network' : 'moonriver'}]
+        }
+    },
+                '0xPickleCro' : {
+        'name' : 'pickle.finance',
+        'rewardToken' : '0x965772e0e9c84b6f359c8597c891108dcf1c5b1a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xPickleCro',
+        'featured' : 2,
+        'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_pickle_addresses],
+            'args' : [
+                {
+                    'farm_id' : '0xPickleCro',
+                    'network' : 'cro',
+                }
+                    ],
+            'vault_args' : [{'network' : 'cronos'}]
+        }
+    },
 }
 
 

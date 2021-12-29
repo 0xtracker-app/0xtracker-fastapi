@@ -40,8 +40,11 @@ async def get_balance_of(token_list, wallet, network, network_info):
     
     
     native_balance = await get_native_balance(wallet, network)
+    if network == "aurora":
+        user_holdings = {f'native+{network}' : {'token' : '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'.lower(), 'decimal' : 18, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18), 'network' : network}}
+    else:
+        user_holdings = {f'native+{network}' : {'token' : network_info.native.lower(), 'decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18), 'network' : network}}
 
-    user_holdings = {f'native+{network}' : {'token' : network_info.native.lower(), 'decimal' : network_info.dnative, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18), 'network' : network}}
     user_tokens = [network_info.native]
 
     token_symbol = []

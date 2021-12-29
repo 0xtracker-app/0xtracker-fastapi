@@ -221,7 +221,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
                 else:
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
-                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
 
     if len(calls) > 2100:
         chunks = len(calls) / 2000
@@ -387,6 +387,26 @@ async def get_xjoe_price():
         joe_price_usd = multi_call['avax_price'] * multi_call['joe_price']
 
         return {'0x57319d41f71e81f3c65f2a47ca4e001ebafd4f33'.lower() : joe_ratio * joe_price_usd}
+
+async def get_xtoken_price(native, xnative, decimal, network, router_address):
+        calls = []
+
+        joe = native
+        xjoe = xnative
+        network_route = NetworkRoutes(network)
+
+        calls.append(Call(joe, [f'balanceOf(address)(uint256)', xjoe], [[f'ext_xjoe', parsers.from_custom, decimal]]))
+        calls.append(Call(xjoe, [f'totalSupply()(uint256)'], [[f'ext_xjoets', parsers.from_custom, decimal]]))
+        calls.append(Call(router_address, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [joe, network_route.native]], [[f'joe_price', parsers.parse_router_custom, network_route.dnative]]))
+        calls.append(Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [network_route.native, network_route.stable]], [[f'native_price', parsers.parse_router_native, network_route.dstable]]))
+
+        multi_call = await Multicall(calls, WEB3_NETWORKS[network])()
+
+        joe_ratio = multi_call[f'ext_xjoe'] / multi_call[f'ext_xjoets']
+        joe_price_usd = multi_call['native_price'] * multi_call['joe_price']
+
+        return {xjoe.lower() : joe_ratio * joe_price_usd}
+
 
 async def get_xboo_price():
         calls = []
