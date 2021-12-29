@@ -156,6 +156,9 @@ def parse_router(data, native=None):
     else:
         return from_wei(data[1]) * native
 
+def parse_router_custom(data, decimal=18):
+        return from_custom(data[1], decimal)
+
 def parse_router_native(data, native=None):
     if native is None:
         return from_wei(data[1])

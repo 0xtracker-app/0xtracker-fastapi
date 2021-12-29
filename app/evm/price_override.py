@@ -1,4 +1,4 @@
-from .oracles import get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, get_ygg_price, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
+from .oracles import get_xtoken_price, get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, get_ygg_price, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
 from . import routers
 
 class TokenOverride:
@@ -10,6 +10,8 @@ class TokenOverride:
             '0x398a2d1b343d09261df990c2fcc97b5d5d62c1b5'.lower() : [get_price_from_synpool, {'token_in' : '0x398a2d1b343d09261df990c2fcc97b5d5d62c1b5','swap_address' : '0x85fCD7Dd0a1e1A9FCD5FD886ED522dE8221C3EE5', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'matic'}],
             '0x08928492691b64e6fe6ff9dead42f557d20a4a18'.lower() : [get_price_from_synpool, {'token_in' : '0x08928492691b64e6fe6ff9dead42f557d20a4a18','swap_address' : '0x2913E812Cf0dcCA30FB28E6Cac3d2DCFF4497688', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'ftm'}],
             '0xF1FD0b04b9508B7e9498C7bB389D3452Cc008757'.lower() : [get_price_from_synpool, {'token_in' : '0xF1FD0b04b9508B7e9498C7bB389D3452Cc008757','swap_address' : '0x0Db3FE3B770c95A0B99D1Ed6F2627933466c0Dd8', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'arb'}],
+            '0x5205c30bf2E37494F8cF77D2c19C6BA4d2778B9B'.lower() : [get_xtoken_price, {'native' : '0x7faA64Faf54750a2E3eE621166635fEAF406Ab22', 'xnative' : '0x5205c30bf2E37494F8cF77D2c19C6BA4d2778B9B', 'decimal' : 18, 'network' : 'aurora', 'router_address' : routers.AuroraRouter.WANNA}],
+            '0x802119e4e253D5C19aA06A5d567C5a41596D6803'.lower() : [get_xtoken_price, {'native' : '0xFa94348467f64D5A457F75F8bc40495D33c65aBB', 'xnative' : '0x802119e4e253D5C19aA06A5d567C5a41596D6803', 'decimal' : 18, 'network' : 'aurora', 'router_address' : routers.AuroraRouter.TRI}],
             '0x57319d41f71e81f3c65f2a47ca4e001ebafd4f33'.lower() : [get_xjoe_price, {}],
             '0xa48d959AE2E88f1dAA7D5F611E01908106dE7598'.lower() : [get_xboo_price, {}],
             '0x24f6ECAF0B9E99D42413F518812d2c4f3EeFEB12'.lower() : [get_goldbar_price, {}],

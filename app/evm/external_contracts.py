@@ -72,6 +72,17 @@ async def get_beefy_bsc(session):
     vault_data.append({'vault' : '0x6BE4741AB0aD233e4315a10bc783a7B923386b71', 'want' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'})
 
     return vault_data
+
+async def get_vaporware_vaults(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/VaporwaveFinance/vwave-app-pub/c87be24cfaa2ba13914b18f11ac8d8c17bc19585/src/features/configure/vault/aurora_pools.js')
+    s2 = "export const auroraPools = "
+
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x if x['status'] == 'active']
+
+    return vault_data
         
 async def get_beefy_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
@@ -410,7 +421,7 @@ async def pull_koge_vaults_moon(session):
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
-    return [x for x in r['apy'] if x not in ['0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
+    return [x for x in r['apy'] if x not in ['0x4aA9B812BB65eB31f22068eE6a7C92442Af37eA9', '0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
 
 async def get_balancer_pools(session):
     balancer_pools = await call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None}, session)
@@ -488,7 +499,7 @@ async def get_baby_auto(session):
     return ['0x3e1eaD5cBe817689F4bDB96bceeb112FdBE94dBc']
 
 async def get_pickle_addresses(session,network):
-    r = await make_get_json(session, 'https://d38jrn41whs0ud.cloudfront.net/prod/protocol/pools')
+    r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
     return [x['jarAddress'] for x in r if x['network'] == network]
 
 async def get_wault_pool_contracts(session):
@@ -577,6 +588,15 @@ async def get_polyfund_vault(session):
 
 async def get_dk_jewel(session):
     return ['0x72Cb10C6bfA5624dD07Ef608027E366bd690048F']
+
+async def get_wanna_staking(session):
+    return ['0x7faA64Faf54750a2E3eE621166635fEAF406Ab22']
+
+async def get_tri_staking(session):
+    return ['0xFa94348467f64D5A457F75F8bc40495D33c65aBB']
+
+async def get_nearpad_staking(session):
+    return ['0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781']
 
 async def get_ironlend_vaults(session):
     return poolext.ironlend.vaults

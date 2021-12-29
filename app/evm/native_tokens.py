@@ -20,6 +20,7 @@ class NativeToken():
     POLIS = '0x6FC851B8D66116627Fb1137b9D5FE4E2e1BeA978'
     BOBA = '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
     THETA = '0x4dc08b15ea0e10b96c41aec22fab934ba15c983e'
+    AURORA = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -40,6 +41,7 @@ class NativeSymbol():
     POLIS = 'POLIS'
     BOBA = 'ETH'
     THETA = 'TFUEL'
+    AURORA = 'ETH'
 
 class NativeDecimal():
     BSC = 18
@@ -60,6 +62,7 @@ class NativeDecimal():
     POLIS = 18
     BOBA = 18
     THETA = 18
+    AURORA = 24
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -80,6 +83,7 @@ class StableToken():
     POLIS = '0x247123e806a27ea322bfd93e0273d04602dc942d'
     BOBA = '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc'
     THETA = '0x3ca3fefa944753b43c751336a5df531bdd6598b6'
+    AURORA = '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802'
 
 class StableDecimal():
     BSC = 18
@@ -100,6 +104,7 @@ class StableDecimal():
     POLIS = 18
     BOBA = 6
     THETA = 6
+    AURORA = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -120,6 +125,7 @@ class DefaultRouter():
     POLIS = routers.PolisRouter.HADES
     BOBA = routers.BobaRouter.OOLONG
     THETA = routers.ThetaRouter.VOLT
+    AURORA = routers.AuroraRouter.TRI
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -140,6 +146,7 @@ class RouteClass():
     POLIS = routers.PolisRouter
     BOBA = routers.BobaRouter
     THETA = routers.ThetaRouter
+    AURORA = routers.AuroraRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -160,6 +167,7 @@ class CoinGecko():
     POLIS = ''
     BOBA = ''
     THETA = ''
+    AURORA = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -180,6 +188,7 @@ class LiqCheck():
     POLIS = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
     BOBA = '0xCf5FA464580Df67E359108B14404EF2204c09842'
     THETA = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
+    AURORA = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
 
 class MinLiq():
     BSC = 49999
@@ -200,6 +209,7 @@ class MinLiq():
     POLIS = 9999
     BOBA = 9999
     THETA = 9999
+    AURORA = 9999
 
 class NetworkRoutes():
 
