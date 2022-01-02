@@ -23,6 +23,7 @@ colorama==0.4.4
 construct==2.10.67
 cytoolz==0.11.0
 databases==0.4.3
+DateTime==4.3
 dnspython==1.16.0
 ecdsa==0.16.1
 eth-abi==2.1.1
@@ -101,3 +102,4 @@ websockets==9.1
 wrapt==1.13.2
 yarl==1.6.3
 zipp==3.5.0
+zope.interface==5.4.0

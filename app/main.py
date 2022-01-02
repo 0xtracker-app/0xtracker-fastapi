@@ -1,9 +1,11 @@
 from typing import List, Optional
 from fastapi import FastAPI, Depends, Path, Query
+from pydantic import BaseModel
+from typing import List
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
-from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract
+from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract, delete_user_records
 from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
 from terra import get_wallet_balances as terra_wallet_balances, get_terra_positions, return_farms_list as terra_farms_list
@@ -49,6 +51,11 @@ app.add_middleware(
     allow_headers=["x-apigateway-header", "Content-Type", "X-Amz-Date"],
 )
 
+class DeletionItem(BaseModel):
+    wallet: str
+    signature: str
+    timestamps: List
+
 @app.get("/",  tags=["Endpoint Test"])
 def main_endpoint_test():
     return {"message": "Test Message"}
@@ -73,6 +80,11 @@ async def get_farm_list():
 async def get_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
     results = await get_evm_positions(wallet, farm_id, mongo_db, session)
     return results
+
+@app.post("/delete_user_records/")
+async def create_item(item: DeletionItem, mongo_db: AsyncIOMotorClient = Depends(get_database)):
+    result = await delete_user_records(item.wallet, item.signature, item.timestamps, mongo_db)
+    return result
 
 @app.get('/cosmos-farms/{wallet}/{farm_id}')
 async def get_cosmos_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):

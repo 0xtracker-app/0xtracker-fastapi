@@ -1,4 +1,5 @@
 import time
+import datetime
 
 def user_info_by_time(wallets, days, farms):
     return [
@@ -49,6 +50,28 @@ def get_terra_pool(token0, token1):
                     "$in" : [
                         token1
                     ]
+                }
+            }
+        ]
+    }
+
+def get_user_records(wallet, timestamp):
+
+    gte = int(datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.000Z").replace(tzinfo=datetime.timezone.utc).timestamp())
+
+    return     { 
+        "$and" : [
+            { 
+                "wallet" : wallet.lower()
+            }, 
+            { 
+                "timeStamp" : { 
+                    "$gte" : gte
+                }
+            }, 
+            { 
+                "timeStamp" : { 
+                    "$lte" : gte - 1
                 }
             }
         ]
