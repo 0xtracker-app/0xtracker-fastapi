@@ -2,11 +2,14 @@ from .farms import Farms
 from . import external_contracts
 from . import farm_templates
 from . import oracles
+import datetime
 from .price_override import TokenOverride
 from .find_token_type import get_token_data, token_list_from_stakes
 from .calculator import calculate_prices
 from . import routers
 import asyncio
+from eth_account.messages import encode_defunct
+from web3.auto import w3
 
 INCH_SUPPORTED = ['bsc','matic','eth']
 
@@ -58,6 +61,34 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
 
     return response
 
+async def delete_user_records(wallet, signature, timestamps, mongo_db):
+    message = encode_defunct(text='I authorize deletion of these records.')
+    recovered_address = w3.eth.account.recover_message(message, signature=signature)
+
+    if recovered_address == wallet:
+        for each in timestamps:
+            gte = int(datetime.datetime.strptime(each, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=datetime.timezone.utc).timestamp())
+            deletions = await mongo_db.xtracker['user_data'].delete_many({ 
+        "$and" : [
+            { 
+                "wallet" : wallet.lower()
+            }, 
+            { 
+                "timeStamp" : { 
+                    "$gte" : gte
+                }
+            }, 
+            { 
+                "timeStamp" : { 
+                    "$lte" : gte + (60 * 60) - 1
+                }
+            }
+        ]
+    })
+
+        return {'message' : 'Deletion Succesfull'}
+    else:
+        return {'message' : 'Signature does not match wallet.'}
 
 
 
