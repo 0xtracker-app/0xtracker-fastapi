@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif']
+        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif', 'chihuahua']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -237,6 +237,21 @@ class CosmosNetwork:
                 'symbol' : 'ROWAN',
                 'decimals' : 18,
                 'coin_gecko_id' : 'sifchain'
+            }
+        },
+            'chihuahua' : {
+            'wallet' : from_atom(wallet,'chihuahua'),
+            'rpc' : 'https://rpc.chihuahua.wtf',
+            'rest' : 'https://api.chihuahua.wtf',
+            'chain_id' : 'chihuahua-1',
+            'chain_name' : 'Chihuahua',
+            'explorer' : 'https://www.mintscan.io/chihuahua',
+            'bech_prefix' : 'chihuahua',
+            'stake_token' : {
+                'denom' : 'uhuahua',
+                'symbol' : 'HUAHUA',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:uhuahua'
             }
         },
     }
