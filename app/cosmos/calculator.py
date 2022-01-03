@@ -31,7 +31,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client):
             if 'gambitRewards' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
                 for i, gr in enumerate(lastReturn[f]['userData'][x]['gambitRewards']):
-                        finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * prices[gr['token'].lower()]
+                        finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * (prices[gr['token'].lower()] if gr['token'].lower() in prices else 0.1)
                         finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount']
 
 
