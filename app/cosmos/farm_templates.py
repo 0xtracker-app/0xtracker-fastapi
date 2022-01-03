@@ -8,7 +8,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
     poolKey = farm_id
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks
-
+    print(net_config)
     staking = await asyncio.gather(*[queries.get_network_staking(network, net_config[network], session) for network in net_config])
     unbonded = await asyncio.gather(*[queries.get_network_staking_unbonded(network, net_config[network], session) for network in net_config])
     rewards = await asyncio.gather(*[queries.get_network_staking_rewards(network, net_config[network], session) for network in net_config])
@@ -27,7 +27,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
                 staked_position = {'staked' : 0, 'gambitRewards' : [], 'validators' : [], 'network' : 'cosmos'}
                 reward_token = {'pending': 0}
                 want_token = each['delegation_responses'][0]['balance']['denom']
-
+                
                 staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb).lookup())
 
                 for position in each['delegation_responses']:

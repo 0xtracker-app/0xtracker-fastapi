@@ -20,7 +20,7 @@ async def get_wallet_balances(wallet, session, mongo_client):
 
     balances = await asyncio.gather(*[queries.get_bank_balances(network, net_config[network], session) for network in net_config])
     traces =  await asyncio.gather(*[queries.get_ibc_tokens(net_config[network['network']], session) for network in balances])
-    prices = await oracles.cosmostation_prices(session)
+    prices = await oracles.cosmostation_prices(session, mongo_client)
     transform_trace = helpers.transform_trace_routes(traces)
 
     return_wallets = []
@@ -76,7 +76,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
     if len(returned_object[0]) < 1:
         return {}
 
-    prices = await oracles.cosmostation_prices(http_session)
+    prices = await oracles.cosmostation_prices(http_session, mongo_db)
 
     response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
 
