@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif', 'chihuahua', 'comdex', 'lum']
+        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -297,6 +297,36 @@ class CosmosNetwork:
                 'symbol' : 'STARS',
                 'decimals' : 6,
                 'coin_gecko_id' : 'pool:ustars'
+            }
+        },
+            'desmos' : {
+            'wallet' : from_atom(wallet,'desmos'),
+            'rpc' : 'https://rpc.mainnet.desmos.network',
+            'rest' : 'https://api.mainnet.desmos.network',
+            'chain_id' : 'desmos-1',
+            'chain_name' : 'Desmos',
+            'explorer' : 'https://www.mintscan.io/desmos/txs',
+            'bech_prefix' : 'desmos',
+            'stake_token' : {
+                'denom' : 'udsm',
+                'symbol' : 'DSM',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:ustars'
+            }
+        },
+            'bostrom' : {
+            'wallet' : from_atom(wallet,'bostrom'),
+            'rpc' : 'https://rpc.bostrom.cybernode.ai',
+            'rest' : 'https://lcd.bostrom.cybernode.ai',
+            'chain_id' : 'bostrom',
+            'chain_name' : 'Bostrom',
+            'explorer' : 'https://cyb.ai/network/bostrom/tx',
+            'bech_prefix' : 'bostrom',
+            'stake_token' : {
+                'denom' : 'boot',
+                'symbol' : 'BOOT',
+                'decimals' : 0,
+                'coin_gecko_id' : 'pool:boot'
             }
         },
     }
