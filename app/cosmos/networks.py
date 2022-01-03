@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif', 'chihuahua']
+        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif', 'chihuahua', 'comdex', 'lum']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -252,6 +252,51 @@ class CosmosNetwork:
                 'symbol' : 'HUAHUA',
                 'decimals' : 6,
                 'coin_gecko_id' : 'pool:uhuahua'
+            }
+        },
+            'comdex' : {
+            'wallet' : from_atom(wallet,'comdex'),
+            'rpc' : 'https://rpc.comdex.one',
+            'rest' : 'https://rest.comdex.one',
+            'chain_id' : 'comdex-1',
+            'chain_name' : 'Comdex',
+            'explorer' : 'https://www.mintscan.io/comdex/txs/',
+            'bech_prefix' : 'comdex',
+            'stake_token' : {
+                'denom' : 'ucmdx',
+                'symbol' : 'CMDX',
+                'decimals' : 6,
+                'coin_gecko_id' : 'comdex'
+            }
+        },
+            'lum' : {
+            'wallet' : from_atom(wallet,'lum'),
+            'rpc' : 'https://node0.mainnet.lum.network/rpc',
+            'rest' : 'https://node0.mainnet.lum.network/rest',
+            'chain_id' : 'lum-network-1',
+            'chain_name' : 'Lum Network',
+            'explorer' : 'https://www.mintscan.io/lum/txs',
+            'bech_prefix' : 'lum',
+            'stake_token' : {
+                'denom' : 'ulum',
+                'symbol' : 'LUM',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:ulum'
+            }
+        },
+            'stargaze' : {
+            'wallet' : from_atom(wallet,'stars'),
+            'rpc' : 'https://rpc.stargaze.publicawesome.dev',
+            'rest' : 'https://rest.stargaze.publicawesome.dev',
+            'chain_id' : 'stargaze-1',
+            'chain_name' : 'Stargaze',
+            'explorer' : 'https://www.mintscan.io/stargaze/txs',
+            'bech_prefix' : 'stars',
+            'stake_token' : {
+                'denom' : 'ustars',
+                'symbol' : 'STARS',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:ustars'
             }
         },
     }
