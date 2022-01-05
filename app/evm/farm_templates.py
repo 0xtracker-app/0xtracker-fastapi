@@ -186,7 +186,7 @@ async def get_moonpot_contracts(wallet,farm_id,network_id,vaults):
                             pending_reward_symbol = reward_symbols_decimals[f'{pending_reward_contract}_symbol']
                             pending_reward_decimal = reward_symbols_decimals[f'{pending_reward_contract}_decimals']
                             if pending_reward > 0:
-                                reward_token_0 = {'pending': parsers.from_custom(pending_reward, pending_reward_decimal), 'symbol' : pending_reward_symbol, 'token' : pending_reward_contract}
+                                reward_token_0 = {'pending': parsers.from_custom(pending_reward, pending_reward_decimal), 'symbol' : pending_reward_symbol, 'token' : pending_reward_contract, 'decimal' : pending_reward_decimal}
                                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
 
 
@@ -639,7 +639,7 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
         vault_list.append(vault_address)
         want_list.append(want_address)
         want_lookup[vault_address] = want_address
-
+    
     stakes= await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
 
     poolNest = {poolKey: 
@@ -3113,6 +3113,60 @@ async def get_ohm(wallet, vaults, farm_id, network_id, reward_symbol):
 
                     if f'{breakdown[0]}_pending' in stakes:
                         reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : TIME_ADDRESS, 'decimal' : 9}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'] = [reward_token_0]
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+async def get_native_ohm(wallet, vaults, farm_id, network_id, reward_symbol):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        OHM_ADDRESS = vaults['OHM_ADDRESS']
+        SOHM_ADDRESS = vaults['SOHM_ADDRESS']
+        GOHM_ADDRESS = vaults['GOHM_ADDRESS']
+
+        BONDS = vaults['BONDS']
+
+        for i,vault in enumerate(BONDS):
+                calls.append(Call(vault, [f'bondInfo(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_custom, 9]]))
+                calls.append(Call(vault, [f'pendingPayoutFor(address)(uint256)', wallet], [[f'{vault}_pending', parsers.from_custom, 9]]))
+                calls.append(Call(vault, [f'percentVestedFor(address)(uint256)', wallet], [[f'{vault}_vested', None]]))
+
+        calls.append(Call(SOHM_ADDRESS, [f'balanceOf(address)(uint256)', wallet], [[f'{SOHM_ADDRESS}_staked', parsers.from_custom, 9]]))
+        calls.append(Call(vaults['OHM_CONTRACT'], [f"{vaults['SOHM_FUNCTION']}()(address)"], [[f'{SOHM_ADDRESS}_want', None]]))
+
+        calls.append(Call(GOHM_ADDRESS, [f'balanceOf(address)(uint256)', wallet], [[f'{GOHM_ADDRESS}_staked', parsers.from_custom, 18]]))
+        calls.append(Call(vaults['OHM_CONTRACT'], [f"{vaults['GOHM_FUNCTION']}()(address)"], [[f'{GOHM_ADDRESS}_want', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        token_decimals = await template_helpers.get_token_list_decimals(stakes,network_id,True)
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    percentage = stakes[f'{breakdown[0]}_vested'] / 10000 if f'{breakdown[0]}_vested' in stakes else 1
+                    staked = stakes[each]
+                    staked_offset = staked * percentage
+                    actual_staked = staked if staked == staked_offset else staked - staked_offset
+                    want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
+                    token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    if f'{breakdown[0]}_pending' in stakes:
+                        reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : OHM_ADDRESS, 'decimal' : 9}
                         poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'] = [reward_token_0]
 
         if len(poolIDs) > 0:

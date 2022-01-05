@@ -27,7 +27,15 @@ async def get_balance_of(token_list, wallet, network, network_info):
     calls = []
 
     for token in token_list:
-        if token.lower() not in ['0x52903256dd18D85c2Dc4a6C999907c9793eA61E3'.lower(), '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'.lower(), '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e'.lower(), '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(), '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower()]:
+        if token.lower() not in [
+            '0x52903256dd18D85c2Dc4a6C999907c9793eA61E3'.lower(),
+            '0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2'.lower(),
+            '0xf1df869abfbcc0af1c9dd859e1c264d4d18d9f8e'.lower(),
+            '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(),
+            '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower(),
+            '0x04906695d6d12cf5459975d7c3c03356e4ccd460'.lower(),
+            '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f'.lower()
+            ]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
 
     if len(calls) > 2100:

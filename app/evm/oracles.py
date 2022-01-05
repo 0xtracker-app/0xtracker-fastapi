@@ -197,7 +197,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
         native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable], 0], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
     else:
         native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
-        
+
     for token in tokens_in:
         for contract in network_route.lrouters:
              
@@ -483,5 +483,36 @@ async def get_synth_price(address,aggregator,network):
     price = await Call(aggregator, [f'latestAnswer()(uint256)'], _w3=WEB3_NETWORKS[network])()
 
     return {address.lower() : parsers.from_custom(price, 8)}
+
+async def get_gohm_price(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None, return_token=None, gohm_token=None):
+    chain_w3 = WEB3_NETWORKS[network]
+    chain = network.upper()
+
+    if token_out is None:
+        token_out = getattr(native_tokens.StableToken, chain)
+    else:
+        token_out = token_out
+
+    if return_token is None:
+        return_token = token_in
+    else:
+        return_token = return_token
+
+    if bypass_token is None:
+        native_token = getattr(native_tokens.NativeToken, chain)
+    else:
+        native_token = bypass_token
+    default_router = getattr(native_tokens.DefaultRouter, chain)
+        
+    if native is True:
+        stable_decimal = getattr(native_tokens.StableDecimal, chain)
+        native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router_native, stable_decimal]], chain_w3)()
+        token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, native_token]], [[f'token_in', parsers.parse_router, native_price['token_in']]],chain_w3)()
+    else:
+        token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, token_out]], [[f'token_in', parsers.parse_router]],chain_w3)()
+
+    gohm_index = await Call(return_token, ['index()(uint256)'], None, _w3=chain_w3)()
+    print(token_price, gohm_index)
+    return {return_token.lower() : token_price['token_in'] * parsers.from_custom(gohm_index, 9)}
 
 

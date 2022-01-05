@@ -1,4 +1,4 @@
-from .oracles import get_xtoken_price, get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, get_ygg_price, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
+from .oracles import get_gohm_price, get_xtoken_price, get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, get_ygg_price, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
 from . import routers
 
 class TokenOverride:
@@ -44,4 +44,8 @@ class TokenOverride:
             '0x9D7283A6AeeD9BCd4Ac70876fEA2b69a63DD8cb9'.lower() : [get_price_from_synpool, {'token_in' : '0x9D7283A6AeeD9BCd4Ac70876fEA2b69a63DD8cb9','swap_address' : '0x75FF037256b36F15919369AC58695550bE72fead', 'token_out_index' : 0, 'decimal' : 18, 'network' : 'boba'}],
             '0x04568467f0AAe5fb85Bf0e031ee66FF2C200a6Fb'.lower() : [get_price_from_router, {'token_in' : '0x057E0bd9B797f9Eeeb8307B35DbC8c12E534c41E', 'network' : 'matic', 'router' : routers.MATICRouter.SUSHI, 'token_out' : '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 'decimal': 9, 'return_token' : '0x04568467f0AAe5fb85Bf0e031ee66FF2C200a6Fb'.lower()}],
             '0x91d680545a1ff4411c1ff4c927f86cd34adb932a'.lower() : [get_price_from_router, {'token_in' : '0xe0474c15bc7f8213ee5bfb42f9e68b2d6be2e136', 'network' : 'avax', 'router' : routers.AVAXRouter.JOE, 'token_out' : '0x130966628846bfd36ff31a822705796e8cb8c18d', 'decimal': 9, 'return_token' : '0x91d680545a1ff4411c1ff4c927f86cd34adb932a'.lower()}],
+            '0x04906695d6d12cf5459975d7c3c03356e4ccd460'.lower() : [get_price_from_router, {'token_in' : '0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5', 'network' : 'eth', 'router' : routers.ETHRouter.UNI, 'token_out' : '0x6B175474E89094C44Da98b954EedeAC495271d0F', 'decimal': 9, 'return_token' : '0x04906695d6d12cf5459975d7c3c03356e4ccd460'.lower()}],
+            '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f'.lower() : [get_gohm_price, {'token_in' : '0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5', 'network' : 'eth', 'router' : routers.ETHRouter.UNI, 'token_out' : '0x6B175474E89094C44Da98b954EedeAC495271d0F', 'decimal': 9, 'return_token' : '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f'.lower()}],
+            '0x0955f99963b1aec8d0fe18a35ad830f562b113bc'.lower() : [get_price_from_router, {'token_in' : '0x000c6322df760155bbe4f20f2edd8f4cd35733a6', 'network' : 'bsc', 'router' : routers.BSCRouter.PCSV2, 'token_out' : '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 'decimal': 9, 'return_token' : '0x0955f99963b1aec8d0fe18a35ad830f562b113bc'.lower()}],
+
 }
