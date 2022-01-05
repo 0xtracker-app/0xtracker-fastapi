@@ -61,6 +61,13 @@ async def get_mai_graph(wallet, session):
 
     return {'VAULTS_staked' : staked, 'VAULTS_pending' : pending}
 
+async def get_reaper_ftm(session):
+    r = await make_get_json(session, 'https://yzo0r3ahok.execute-api.us-east-1.amazonaws.com/dev/api/crypts')
+
+    vault_data = [{'vault' : x['cryptContent']['vault']['address'], 'want' : x['cryptContent']['lpToken']['address']} for x in r['data']]
+
+    return vault_data
+
 async def get_beefy_bsc(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/bsc_pools.js')
     s2 = "export const bscPools = "
@@ -498,6 +505,9 @@ async def get_pcs_auto(session):
 async def get_baby_auto(session):
     return ['0x3e1eaD5cBe817689F4bDB96bceeb112FdBE94dBc']
 
+async def get_thorus_auto(session):
+    return ['0x63468133ed352E602bEB61DD254D6060Ad2fe419']
+
 async def get_pickle_addresses(session,network):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
     return [x['jarAddress'] for x in r if x['network'] == network]
@@ -749,6 +759,15 @@ async def get_jade_ohm(session):
         'OHM_FUNCTION' : 'sOHM'
     }
 
+async def get_metareserve_ohm(session):
+    return {
+        'BONDS' : ['0xec788d7fa07adb9ca488032172f3bb3437e017b6', '0xeea8075f0ada3c7a6af4bbb1497a73ed372c6e7e'],
+        'MEMO_ADDRESS' : '0x0955f99963b1aec8d0fe18a35ad830f562b113bc',
+        'TIME_ADDRESS' : '0x000c6322df760155bbe4f20f2edd8f4cd35733a6',
+        'OHM_CONTRACT' : '0x5c643737AF2aD7A0B9ae62158b715793505967bE',
+        'OHM_FUNCTION' : 'HONOR'
+    }
+
 async def get_nidhi_ohm(session):
     return {
         'BONDS' : ['0xbbA07bd5B20B63249398b831082ace6415afB7E0', '0xFDAACD04f8ad605e928F4A44864FF825dCd4796d'],
@@ -771,4 +790,15 @@ async def get_wagmi_ohm(session):
     return {
         'BONDS' : ['0xe443f63564216f60625520465f1324043fcc47b9', '0x8c4300a7a71eff73b24dcd8f849f82a8b36b5d8a', '0xa31a22d9dec269f512cf62b83039190fbe67f7d2', '0x08d44c114e3c0102ace43e9656f478dd4a71cd1d', '0xefb7dde5261100a32657c9606507a130257d93c6'],
         'REWARD' : '0x8750f5651af49950b5419928fecefca7c82141e3',
+    }
+
+async def get_ohm_ohm(session):
+    return {
+        'BONDS' : ['0xc60a6656e08b62dd2644dc703d7855301363cc38', '0x99e9b0a9dc965361c2cbc07525ea591761aeaa53'],
+        'OHM_ADDRESS' : '0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5',
+        'SOHM_ADDRESS' : '0x04906695d6d12cf5459975d7c3c03356e4ccd460',
+        'GOHM_ADDRESS' : '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f',
+        'OHM_CONTRACT' : '0xb63cac384247597756545b500253ff8e607a8020',
+        'SOHM_FUNCTION' : 'sOHM',
+        'GOHM_FUNCTION' : 'gOHM'
     }

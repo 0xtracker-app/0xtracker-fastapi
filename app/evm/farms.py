@@ -324,6 +324,22 @@ class Farms:
             'vault_args' : [{}, {}]
         }
     },
+                '0xReaperFTM' : {
+        'name' : 'reaper.farm',
+        'rewardToken' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xReaperFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_reaper_ftm],
+            'args' : [{'farm_id' : '0xReaperFTM', 'network' : 'ftm'}],
+            'vault_args' : [{}]
+        }
+    },
                 '0x8cf7044DDedbE502892B120aAf8692FeCFb71420' : {
         'name' : 'dragonballfinance.org',
         'rewardToken' : '0xceb2f5e9c7f2d3bcd12a7560d73c56f3396af3f9',
@@ -5428,6 +5444,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xOHM' : {
+        'name' : 'olympusdao.finance',
+        'rewardToken' : '0x64aa3364f17a4d01c6f1751fd97c2bd3d7e7f1d5',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xOHM',
+        'featured' : 2,
+        'network' : 'eth',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_native_ohm],
+            'vaults' : [external_contracts.get_ohm_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xOHM',
+                        'network_id' : 'eth',
+                        'reward_symbol' : 'OHM'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0xNidhi' : {
         'name' : 'nidhidao.finance',
         'rewardToken' : '0x057e0bd9b797f9eeeb8307b35dbc8c12e534c41e',
@@ -5782,6 +5820,49 @@ class Farms:
                 }
                     ],
             'vault_args' : [{'network' : 'cronos'}]
+        }
+    },
+                '0x871d68cFa4994170403D9C1c7b3D3E037c76437d' : {
+        'name' : 'thorus.fi',
+        'rewardToken' : '0xae4aa155d2987b454c29450ef4f862cf00907b61',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingThorus',
+        'masterChef' : '0x871d68cFa4994170403D9C1c7b3D3E037c76437d',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_thorus_auto],
+            'args' : [
+                {
+                    'farm_id' : '0x871d68cFa4994170403D9C1c7b3D3E037c76437d',
+                    'network' : 'avax',
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xMetaReserve' : {
+        'name' : 'metareserve.finance',
+        'rewardToken' : '0x000c6322df760155bbe4f20f2edd8f4cd35733a6',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xMetaReserve',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_ohm],
+            'vaults' : [external_contracts.get_metareserve_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xMetaReserve',
+                        'network_id' : 'bsc',
+                        'reward_symbol' : 'POWER'
+                    },
+                    ],
+            'vault_args' : [{}]
         }
     },
 }
