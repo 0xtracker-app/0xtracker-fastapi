@@ -12,7 +12,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
     staking = await asyncio.gather(*[queries.get_network_staking(network, net_config[network], session) for network in net_config])
     unbonded = await asyncio.gather(*[queries.get_network_staking_unbonded(network, net_config[network], session) for network in net_config])
     rewards = await asyncio.gather(*[queries.get_network_staking_rewards(network, net_config[network], session) for network in net_config])
-    print(net_config)
+
     poolNest = {
         poolKey: {
             'userData': {},
