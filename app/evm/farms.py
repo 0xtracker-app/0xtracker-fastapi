@@ -5392,6 +5392,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xVenusBSC' : {
+        'name' : 'venus.io (Lending)',
+        'rewardToken' : '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVenusBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_venus_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xVenusBSC',
+                        'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1' : {
         'name' : 'annex.finance',
         'rewardToken' : '0x98936bde1cf1bff1e7a8012cee5e2583851f2067',
@@ -5862,6 +5884,28 @@ class Farms:
                         'farm_id' : '0xMetaReserve',
                         'network_id' : 'bsc',
                         'reward_symbol' : 'POWER'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xPegasusDAO' : {
+        'name' : 'pegasusdao.finance',
+        'rewardToken' : '0x000c6322df760155bbe4f20f2edd8f4cd35733a6',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xPegasusDAO',
+        'featured' : 2,
+        'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_ohm],
+            'vaults' : [external_contracts.get_pegasus_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xPegasusDAO',
+                        'network_id' : 'cro',
+                        'reward_symbol' : 'SUS'
                     },
                     ],
             'vault_args' : [{}]

@@ -512,7 +512,7 @@ async def get_gohm_price(token_in, network, router, native=False, decimal=18, by
         token_price = await Call(router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** decimal, [token_in, token_out]], [[f'token_in', parsers.parse_router]],chain_w3)()
 
     gohm_index = await Call(return_token, ['index()(uint256)'], None, _w3=chain_w3)()
-    print(token_price, gohm_index)
+
     return {return_token.lower() : token_price['token_in'] * parsers.from_custom(gohm_index, 9)}
 
 
