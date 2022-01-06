@@ -11,6 +11,7 @@ from functools import reduce
 import math
 import numpy as np
 import asyncio
+from .external_contracts import get_venus_vaults
 
 SCAN_SUPPORTED = [x for x in SCAN_APIS]
 
@@ -35,7 +36,7 @@ async def get_balance_of(token_list, wallet, network, network_info):
             '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower(),
             '0x04906695d6d12cf5459975d7c3c03356e4ccd460'.lower(),
             '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f'.lower()
-            ]:
+            ] + [x['address'].lower() for x in await get_venus_vaults('session')]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
 
     if len(calls) > 2100:

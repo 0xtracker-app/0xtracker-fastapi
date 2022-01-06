@@ -623,6 +623,35 @@ async def get_tranquil_vaults(session):
 async def get_annex_vaults(session):
     return poolext.annexbsc.vaults
 
+async def get_venus_vaults(session):
+    return [
+    {'address' : '0xecA88125a5ADbe82614ffC12D0DB554E2e2867C8', 'decimal' : 18, 'want' : '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d', 'collat_rate' : .8},
+    {'address' : '0xfD5840Cd36d94D7229439859C0112a4185BC0255', 'decimal' : 18, 'want' : '0x55d398326f99059ff775485246999027b3197955', 'collat_rate' : .8},
+    {'address' : '0x95c78222B3D6e262426483D42CfA53685A67Ab9D', 'decimal' : 18, 'want' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'collat_rate' : .8},
+    {'address' : '0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0', 'decimal' : 18, 'want' : '0x47bead2563dcbf3bf2c9407fea4dc236faba485a', 'collat_rate' : .5},
+    {'address' : '0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D', 'decimal' : 18, 'want' : '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63', 'collat_rate' : .6},
+    {'address' : '0xA07c5b74C9B40447a954e1466938b865b6BBea36', 'decimal' : 18, 'want' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', 'collat_rate' : .8},
+    {'address' : '0x882C173bC7Ff3b7786CA16dfeD3DFFfb9Ee7847B', 'decimal' : 18, 'want' : '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 'collat_rate' : .8},
+    {'address' : '0xf508fCD89b8bd15579dc79A6827cB4686A3592c8', 'decimal' : 18, 'want' : '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 'collat_rate' : .8},
+    {'address' : '0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B', 'decimal' : 18, 'want' : '0x4338665cbb7b2485a8855a139b75d5e34ab0db94', 'collat_rate' : .6},
+    {'address' : '0xB248a295732e0225acd3337607cc01068e3b9c10', 'decimal' : 18, 'want' : '0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe', 'collat_rate' : .6},
+    {'address' : '0x5F0388EBc2B94FA8E123F404b79cCF5f40b29176', 'decimal' : 18, 'want' : '0x8ff795a6f4d97e7887c79bea79aba5cc76444adf', 'collat_rate' : .6},
+    {'address' : '0x1610bc33319e9398de5f57B33a5b184c806aD217', 'decimal' : 18, 'want' : '0x7083609fce4d1d8dc0c979aab8c869ea2c873402', 'collat_rate' : .6},
+    {'address' : '0x650b940a1033B8A1b1873f78730FcFC73ec11f1f', 'decimal' : 18, 'want' : '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd', 'collat_rate' : .6},
+    {'address' : '0x334b3eCB4DCa3593BCCC3c7EBD1A1C1d1780FBF1', 'decimal' : 18, 'want' : '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', 'collat_rate' : .6},
+    {'address' : '0xf91d58b5aE142DAcC749f58A49FCBac340Cb0343', 'decimal' : 18, 'want' : '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153', 'collat_rate' : .6},
+    {'address' : '0x972207A639CC1B374B893cc33Fa251b55CEB7c07', 'decimal' : 18, 'want' : '0x250632378e573c6be1ac2f97fcdf00515d0aa91b', 'collat_rate' : .6},
+    {'address' : '0xeBD0070237a0713E8D94fEf1B728d3d993d290ef', 'decimal' : 18, 'want' : '0x20bff4bbeda07536ff00e073bd8359e5d80d733d', 'collat_rate' : .0},
+    {'address' : '0x9A0AF7FDb2065Ce470D72664DE73cAE409dA28Ec', 'decimal' : 18, 'want' : '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47', 'collat_rate' : .6},
+    {'address' : '0xec3422Ef92B2fb59e84c8B02Ba73F1fE84Ed8D71', 'decimal' : 8, 'want' : '0xba2ae424d960c26247dd6c32edc70b295c744c43', 'collat_rate' : .4},
+    {'address' : '0x5c9476FcD6a4F9a3654139721c949c2233bBbBc8', 'decimal' : 18, 'want' : '0xcc42724c6683b7e57334c4e856f4c9965ed682bd', 'collat_rate' : .6},
+    {'address' : '0x86aC3974e2BD0d60825230fa6F355fF11409df5c', 'decimal' : 18, 'want' : '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', 'collat_rate' : .55},
+    {'address' : '0x26DA28954763B92139ED49283625ceCAf52C6f94', 'decimal' : 18, 'want' : '0xfb6115445bff7b52feb98650c87f44907e58f802', 'collat_rate' : .55},
+    {'address' : '0x08CEB3F4a7ed3500cA0982bcd0FC7816688084c3', 'decimal' : 18, 'want' : '0x14016e85a25aeb13065688cafb43044c2ef86784', 'collat_rate' : .8},
+    {'address' : '0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93', 'decimal' : 18, 'want' : '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b', 'collat_rate' : .6},
+
+]
+
 async def get_zombie_pools(session):
     return poolext.rugzombie.pools
 
@@ -766,6 +795,15 @@ async def get_metareserve_ohm(session):
         'TIME_ADDRESS' : '0x000c6322df760155bbe4f20f2edd8f4cd35733a6',
         'OHM_CONTRACT' : '0x5c643737AF2aD7A0B9ae62158b715793505967bE',
         'OHM_FUNCTION' : 'HONOR'
+    }
+
+async def get_pegasus_ohm(session):
+    return {
+        'BONDS' : ['0xD2f78eDAb0Ab0425577C92Bc42a23EE29A3c8f95', '0xE66b63907527DF5fd02f85be9fd3E8c01890568a'],
+        'MEMO_ADDRESS' : '0x304857afdd16da07a2e61ca2f2b5103deedcf000',
+        'TIME_ADDRESS' : '0x5b5fe1238aca91c65683acd7f9d9bf922e271eaa',
+        'OHM_CONTRACT' : '0x423159bdCa615c718F8C23b373DBf03d1A96D3C1',
+        'OHM_FUNCTION' : 'sSUS'
     }
 
 async def get_nidhi_ohm(session):
