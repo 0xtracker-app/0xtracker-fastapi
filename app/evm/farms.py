@@ -5838,6 +5838,8 @@ class Farms:
                 {
                     'farm_id' : '0x871d68cFa4994170403D9C1c7b3D3E037c76437d',
                     'network' : 'avax',
+                    'want_token' : 'thorus',
+                    '_pps' : 'getPricePerFullShare'
                 }
                     ],
             'vault_args' : [{}]
