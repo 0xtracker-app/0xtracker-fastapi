@@ -214,12 +214,13 @@ async def list_router_prices(tokens_in, network, check_liq=False):
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token], 25], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))  
             else:
-                if token_address.lower() in stable_override:
+                if token_address.lower() in stable_override and network != 'harmony' and token_address.lower() != '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8':
                     override_out = stable_override[token_address]['token']
                     override_decimal = stable_override[token_address]['decimal']
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, override_out], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : override_decimal, 'price' : 1}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
                 else:
+                    # print(1 * 10 ** token_dec, token_in_address, out_token, contract, token_address)
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
 
@@ -230,7 +231,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
         multi = reduce(lambda a, b: dict(a, **b), all_calls)
     else:
         multi=await Multicall(calls,network_conn, _strict=False)()
-
+                                                         
     if check_liq:
         if len(liq_calls) > 2100:
             chunks = len(liq_calls) / 2000
