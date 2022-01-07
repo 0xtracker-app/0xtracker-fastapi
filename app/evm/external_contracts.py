@@ -761,6 +761,11 @@ async def get_adamant_boosts(session):
 async def get_adamant_boosts_arb(session):
     return ['0x097b15dC3Bcfa7D08ea246C09B6A9a778e5b007B']
 
+async def get_manorfarm_pools(session):
+    return [
+        '0xa9a079f4a5b7fdc127df64f3a84f3fab3a0eb46e',
+        ]
+
 async def get_fortress_vaults(session):
     return poolext.fortress.forts
 

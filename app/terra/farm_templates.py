@@ -179,3 +179,90 @@ async def get_spectrum_staking(wallet, lcd_client, vaults, farm_id, mongodb, net
         return poolIDs, poolNest
     else:
         return None
+
+async def get_loop_farming(wallet, lcd_client, vaults, farm_id, mongodb, network, session, query_contract):
+    poolKey = farm_id
+
+    tasks = []
+    response_key = []
+
+    vaults = await lcd_client.wasm.contract_query(query_contract, { "query_list_of_stakeable_tokens": {}})
+
+    for contract in vaults:
+        tasks.append(lcd_client.wasm.contract_query(query_contract, { "query_staked_by_user": { "wallet": wallet, "staked_token" : contract['token']['token']['contract_addr'] }}))
+        response_key.append(f'{contract["token"]["token"]["contract_addr"]}_userinfo')
+
+        tasks.append(lcd_client.wasm.contract_query(query_contract, { "query_user_reward_in_pool": { "wallet": wallet, "pool" : { "token" : { "contract_addr" : contract['token']['token']['contract_addr'] }}}}))
+        response_key.append(f'{contract["token"]["token"]["contract_addr"]}_pending')
+ 
+    stakes = dict(zip(response_key, await asyncio.gather(*tasks)))
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if 'userinfo' in each:
+            if int(stakes[each]) > 0:
+                breakdown = each.split('_')
+                want_token = breakdown[0]
+                want_token_meta = await TokenMetaData(breakdown[0], mongodb, lcd_client, session).lookup()
+                staked = from_custom(int(stakes[each]), want_token_meta['token_decimal'])
+
+                poolNest[poolKey]['userData'][f'{breakdown[0]}'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][f'{breakdown[0]}'].update(want_token_meta)
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                for i,reward in enumerate(stakes[f'{want_token}_pending'][0]['rewards_info']):
+                        pending_token = stakes[f'{want_token}_pending'][0]['rewards_info'][i]['info']['token']['contract_addr']
+                        reward_token_meta = await TokenMetaData(pending_token, mongodb, lcd_client, session).lookup()
+                        reward_token_0 = {'pending': from_custom(stakes[f'{want_token}_pending'][0]['rewards_info'][i]['amount'], reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+                        poolNest[poolKey]['userData'][f'{breakdown[0]}']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
+
+async def get_loop_staking(wallet, lcd_client, vaults, farm_id, staking_token, mongodb, network, session):
+    poolKey = farm_id
+
+    tasks = []
+    response_key = []
+
+    for contract in vaults:
+        tasks.append(lcd_client.wasm.contract_query(contract, { "query_staked_by_user": { "wallet": wallet }}))
+        response_key.append(f'{contract}_userinfo')
+
+        tasks.append(lcd_client.wasm.contract_query(contract, { "query_user_reward": { "wallet": wallet }}))
+        response_key.append(f'{contract}_pending')
+ 
+    stakes = dict(zip(response_key, await asyncio.gather(*tasks)))
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if 'userinfo' in each:
+            if int(stakes[each]) > 0:
+                breakdown = each.split('_')
+                want_token = staking_token
+                want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+                staked = from_custom(int(stakes[each]), want_token_meta['token_decimal'])
+
+                poolNest[poolKey]['userData'][f'{breakdown[0]}'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][f'{breakdown[0]}'].update(want_token_meta)
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                reward_token_0 = {'pending': from_custom(stakes[f'{breakdown[0]}_pending'], want_token_meta['token_decimal']), 'symbol' : want_token_meta['tkn0s'], 'token' : want_token}
+                poolNest[poolKey]['userData'][f'{breakdown[0]}']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None

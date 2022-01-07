@@ -5911,6 +5911,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xc027dd6fc63e73b59425b10b6e26d6e458889ca9' : {
+        'name' : 'themanor.farm',
+        'rewardToken' : '0x276b440fdb4c54631c882cac9e4317929e751ff8',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingRevolution',
+        'masterChef' : '0xc027dd6fc63e73b59425b10b6e26d6e458889ca9',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_manorfarm_pools],
+            'args' : [
+                {
+                    'farm_id' : '0xc027dd6fc63e73b59425b10b6e26d6e458889ca9',
+                    'network_id' : 'bsc',
+                    'pending_reward' : 'earned',
+                    'user_info' : 'balanceOf'
+                }],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

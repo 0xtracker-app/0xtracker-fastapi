@@ -66,4 +66,29 @@ class Farms:
             'vault_args' : [{},{}]
         }
     },
+    '0xLoopr' : {
+        'name' : 'loop.markets',
+        'masterChef' : '0xLoopr',
+        'rewardToken' : 'terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_loop_farming, farm_templates.get_loop_staking],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.loopr_staking_contract],
+            'args' : [
+                {
+                    'farm_id' : '0xLoopr',
+                    'network' : 'terra',
+                    'query_contract' : 'terra1cr7ytvgcrrkymkshl25klgeqxfs48dq4rv8j26'
+                },
+                {
+                    'farm_id' : '0xLoopr',
+                    'network' : 'terra',
+                    'staking_token' : 'terra1nef5jf6c7js9x6gkntlehgywvjlpytm7pcgkn4'
+                },        
+                ],
+            'vault_args' : [{},{}]
+        }
+    },
 }
