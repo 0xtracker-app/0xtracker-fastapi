@@ -1,4 +1,4 @@
-from .oracles import get_gohm_price, get_xtoken_price, get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, get_ygg_price, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
+from .oracles import get_gnana_price, get_gohm_price, get_xtoken_price, get_price_from_uni3, get_gmx_price, get_price_from_firebird, get_price_from_router, get_price_from_synpool, get_synth_price, get_xboo_price, get_xjoe_price, get_blackswan_lp, coingecko_by_address_network_single, get_ygg_price, return_stable, get_goldbar_price, get_glp_price, get_tranchess_price
 from . import routers
 
 class TokenOverride:
@@ -22,7 +22,7 @@ class TokenOverride:
             '0xf42Ae1D54fd613C9bb14810b0588FaAa09a426cA'.lower() : [get_gmx_price, {'return_token' : '0xf42Ae1D54fd613C9bb14810b0588FaAa09a426cA'}],
             '0xc581b735a1688071a1746c968e0798d642ede491'.lower() : [return_stable, {'token_in' : '0xc581b735a1688071a1746c968e0798d642ede491'}],
             '0xd016caae879c42cb0d74bb1a265021bf980a7e96'.lower() : [get_price_from_router, {'token_in' : '0xd016caae879c42cb0d74bb1a265021bf980a7e96', 'network' : 'matic', 'router' : routers.MATICRouter.APESWAP, 'native' : True, 'bypass_token' : '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619'}],
-            '0xddb3bd8645775f59496c821e4f55a7ea6a6dc299'.lower() : [get_price_from_router, {'token_in' : '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95', 'network' : 'bsc', 'router' : routers.BSCRouter.APESWAP, 'native' : True}],
+            '0xddb3bd8645775f59496c821e4f55a7ea6a6dc299'.lower() : [get_gnana_price, {}],
             '0x080f6aed32fc474dd5717105dba5ea57268f46eb'.lower() : [get_price_from_router, {'token_in' : '0x0f2d719407fdbeff09d87557abb7232601fd9f29', 'network' : 'eth', 'router' : routers.ETHRouter.UNI, 'native' : True, 'return_token' : '0x080f6aed32fc474dd5717105dba5ea57268f46eb'}],
             '0xe55e19fb4f2d85af758950957714292dac1e25b2'.lower() : [get_price_from_router, {'token_in' : '0x0f2d719407fdbeff09d87557abb7232601fd9f29', 'network' : 'eth', 'router' : routers.ETHRouter.UNI, 'native' : True, 'return_token' : '0xe55e19fb4f2d85af758950957714292dac1e25b2'}],
             '0xb554A55358fF0382Fb21F0a478C3546d1106Be8c'.lower() : [get_price_from_router, {'token_in' : '0x0f2d719407fdbeff09d87557abb7232601fd9f29', 'network' : 'eth', 'router' : routers.ETHRouter.UNI, 'native' : True, 'return_token' : '0xb554A55358fF0382Fb21F0a478C3546d1106Be8c'}],
