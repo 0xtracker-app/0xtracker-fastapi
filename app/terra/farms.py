@@ -91,4 +91,46 @@ class Farms:
             'vault_args' : [{},{}]
         }
     },
+    '0xMirror' : {
+        'name' : 'mirrorprotocol.app',
+        'masterChef' : '0xMirror',
+        'rewardToken' : 'terra15gwkyepfc6xgca5t5zefzwy42uts8l2m4g40k6',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_mirror_farming],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xMirror',
+                    'network' : 'terra',
+                    'query_contract' : 'terra17f7zu97865jmknk7p2glqvxzhduk78772ezac5',
+                    'reward_token' : 'terra15gwkyepfc6xgca5t5zefzwy42uts8l2m4g40k6'
+                },        
+                ],
+            'vault_args' : [{}]
+        }
+    },
+    '0xMirrorLending' : {
+        'name' : 'mirrorprotocol.app',
+        'masterChef' : '0xMirrorLending',
+        'rewardToken' : 'terra15gwkyepfc6xgca5t5zefzwy42uts8l2m4g40k6',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_mirror_lending],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xMirrorLending',
+                    'network' : 'terra',
+                    'query_contract' : 'terra1wfz7h3aqf4cjmjcvc6s8lxdhh7k30nkczyf0mj',
+                },        
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }

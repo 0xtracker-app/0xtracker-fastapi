@@ -120,10 +120,10 @@ async def get_spectrum_farms(wallet, lcd_client, vaults, farm_id, mongodb, netwo
 
             if stakes[each]['reward_infos']:
                 breakdown = each.split('_')
-                want_token_meta = await TokenMetaData(stakes[f'{breakdown[0]}_pools']['pools'][0]['staking_token'], mongodb, lcd_client, session).lookup()
+                want_token = stakes[f'{breakdown[0]}_pools']['pools'][0]['staking_token'] if 'staking_token' in stakes[f'{breakdown[0]}_pools']['pools'][0] else stakes[f'{breakdown[0]}_pools']['pools'][0]['asset_token']
+                want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
                 staked = from_custom(stakes[each]['reward_infos'][0]['bond_amount'], want_token_meta['token_decimal'])
                 pending = from_custom(stakes[each]['reward_infos'][0]['pending_spec_reward'], 6)
-                want_token = stakes[f'{breakdown[0]}_pools']['pools'][0]['staking_token']
                 reward_token = 'terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr'
                 reward_symbol = 'SPEC'
 
@@ -264,5 +264,103 @@ async def get_loop_staking(wallet, lcd_client, vaults, farm_id, staking_token, m
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest
+    else:
+        return None
+
+
+
+async def get_mirror_farming(wallet, lcd_client, vaults, farm_id, mongodb, network, session, query_contract, reward_token):
+    poolKey = farm_id
+
+    tasks = []
+    response_key = []
+
+
+    tasks.append(lcd_client.wasm.contract_query(query_contract, {"reward_info":{"staker_addr": wallet}}))
+
+ 
+    stakes = await asyncio.gather(*tasks)
+    reward_token_meta = await TokenMetaData(reward_token, mongodb, lcd_client, session).lookup()
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes[0]['reward_infos']:
+
+        if each['is_short']:
+            want_token = each['asset_token']
+            position_type = 'short'
+        else:
+            pool_info = await lcd_client.wasm.contract_query(query_contract, { "pool_info": { "asset_token":  each['asset_token']}})
+            want_token = pool_info['staking_token']
+            position_type = 'long'
+
+        
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = from_custom(int(each['bond_amount']), want_token_meta['token_decimal'])
+
+        poolNest[poolKey]['userData'][f'{want_token}{position_type}'] = {'want': want_token, 'staked' : staked, 'mirror_position' : position_type, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'{want_token}{position_type}'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, f'{want_token}{position_type}')] = want_token
+
+                
+        reward_token_0 = {'pending': from_custom(each['pending_reward'], reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : reward_token}
+        poolNest[poolKey]['userData'][f'{want_token}{position_type}']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
+
+async def get_mirror_lending(wallet, lcd_client, vaults, farm_id, mongodb, network, session, query_contract):
+
+    poolKey = farm_id
+    tasks = []
+
+    tasks.append(lcd_client.wasm.contract_query(query_contract, {"positions":{"owner_addr": wallet}}))
+
+    stakes = await asyncio.gather(*tasks)
+    print(stakes)
+    poolNest = {poolKey: 
+    { 'userData': { }
+     } }
+
+    poolIDs = {}
+
+    for stake in stakes[0]['positions']:
+
+        collat_address = stake['collateral']['info']['native_token']['denom'] if 'native_token' in stake['collateral']['info'] else stake['collateral']['info']['token']['contract_addr']
+        borrow_address = stake['asset']['info']['native_token']['denom'] if 'native_token' in stake['asset']['info'] else stake['asset']['info']['token']['contract_addr']
+
+        want_token_meta = await TokenMetaData(collat_address, mongodb, lcd_client, session).lookup()
+        collat = from_custom(int(stake['collateral']['amount']), want_token_meta['token_decimal'])
+        borrow_rate = await lcd_client.wasm.contract_query(query_contract, { "asset_config" : { "asset_token": borrow_address}})
+
+        if collat_address in poolNest[poolKey]['userData']:
+            poolNest[poolKey]['userData'][collat_address]['rate'] = float(borrow_rate['min_collateral_ratio'])
+            poolNest[poolKey]['userData'][collat_address]['staked'] += collat
+        else:
+            poolNest[poolKey]['userData'][collat_address] = {'staked' : collat, 'want': collat_address, 'borrowed' : 0, 'rate' : float(borrow_rate['min_collateral_ratio']), 'gambitRewards' : []}
+            poolNest[poolKey]['userData'][collat_address].update(want_token_meta)
+            poolIDs['%s_%s_want' % (poolKey, collat_address)] = collat_address
+        
+
+
+        borrow_token_meta = await TokenMetaData(borrow_address, mongodb, lcd_client, session).lookup()
+        borrowed = from_custom(int(stake['asset']['amount']), borrow_token_meta['token_decimal'])
+
+
+        if borrow_address in poolNest[poolKey]['userData']:
+            poolNest[poolKey]['userData'][borrow_address]['borrowed'] += borrowed
+            poolNest[poolKey]['userData'][borrow_address]['rate'] = float(borrow_rate['min_collateral_ratio'])
+        else:
+            poolNest[poolKey]['userData'][borrow_address] = {'staked' : 0, 'want': borrow_address, 'borrowed' : borrowed, 'rate' : float(borrow_rate['min_collateral_ratio']), 'gambitRewards' : []}
+            poolNest[poolKey]['userData'][borrow_address].update(borrow_token_meta)
+            poolIDs['%s_%s_want' % (poolKey, borrow_address)] = borrow_address
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
     else:
         return None

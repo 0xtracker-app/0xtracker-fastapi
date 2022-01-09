@@ -13,7 +13,7 @@ from . import utils
 from .helpers import from_custom, token_list_from_stakes
 from .token_lookup import TokenMetaData
 from .queries import get_luna_price
-from .oracles import get_price_from_pool
+from .oracles import get_price_from_pool, TokenOverride
 from .calculator import calculate_prices
 
 def return_farms_list():
@@ -32,7 +32,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
     for i,balance in enumerate(cw_token_balances):
         if int(balance['balance']) > 0:
             token_metadata = await TokenMetaData(cw_tokens[i]['tokenID'], mongo_client, client, session).lookup()
-            token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, luna_price)
+            token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, {}, luna_price)
             total_balance += token_price * from_custom(int(balance['balance']), token_metadata['tkn0d'])
 
             return_wallets.append(
@@ -49,7 +49,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
     for balance in user_balance.to_list():
         if balance.amount > 0:
             token_metadata = await TokenMetaData(balance.denom, mongo_client, client, session).lookup()
-            token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, luna_price)
+            token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, {}, luna_price)
             total_balance += token_price * from_custom(balance.amount, token_metadata['tkn0d'])
 
             return_wallets.append(
@@ -92,8 +92,10 @@ async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_clien
 
     luna_price = await get_luna_price(lcd_client)
     token_list = token_list_from_stakes(returned_object[1], farm_configuraiton)
+    token_over = TokenOverride(lcd_client).tokens
 
-    prices = dict(zip([x['token'] for x in token_list], await asyncio.gather(*[get_price_from_pool(x['token'], x['decimal'], lcd_client, mongo_db, luna_price) for x in token_list])))
-    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
+    prices = dict(zip([x['token'] for x in token_list], await asyncio.gather(*[get_price_from_pool(x['token'], x['decimal'], lcd_client, mongo_db, token_over, luna_price) for x in token_list])))
+
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, farm_configuraiton)
 
     return response

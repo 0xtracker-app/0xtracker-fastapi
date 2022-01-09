@@ -56,7 +56,7 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
 
     for each in price_overrides:
         prices.update(each)
-
+    print(prices)
     response = await calculate_prices(build_meta_data, prices, farm_configuraiton, wallet, mongo_db)
 
     return response

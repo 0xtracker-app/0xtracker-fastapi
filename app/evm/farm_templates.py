@@ -986,6 +986,8 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
             calls.append(Call(vault, [f'wmatic()(address)'], [[f'{vault}_want', None]]))
         elif vault in ['0x929e9dEfF1070bA346FB45EB841F035dCC29D131','0x5cD44E5Aa00b8D77c8c7102E530d947AB86c9551','0xA0FfC3b52c315B00ea3DaFbC3094059D46aA5Daf','0x2bffD2442C4509c32Cc4bcACC4aC85B89A0076BA','0x6F5be5d7Ecdd948dB34C111C06AEa1E2fE2D2c2F','0xCf2CF4B53B62022F81Ad73cAe04E433936eca6c0']:
             calls.append(Call(vault, [f'want()(address)'], [[f'{vault}_want', None]]))
+        elif vault in ['0xb409ffdaa37f8b98766e5b11d183accfc7ca6822']:
+            calls.append(Call(vault, [f'pool()(address)'], [[f'{vault}_want', None]]))
         else:
             calls.append(Call(vault, [f'{want_token}()(address)'], [[f'{vault}_want', None]]))
         
@@ -1048,7 +1050,6 @@ async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contrac
                 info_calls.append(Call(dashboard_contract, [f'infoOfPool(address,address)(({decode}))', vault, wallet], [[f'{vault}_userinfo', parsers.parse_pancake_bunny_info]]))
                 calls.append(Call(vault, [f'stakingToken()(address)'], [[f'{vault}_want', None]]))
                 calls.append(Call(vault, [f'rewardsToken()(address)'], [[f'{vault}_rewardtoken', None]]))
-
 
         stakes=await Multicall(info_calls, network)()
         ainfo=await Multicall(calls, network)()

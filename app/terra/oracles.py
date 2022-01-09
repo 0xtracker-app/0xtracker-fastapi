@@ -2,8 +2,21 @@ import asyncio
 from .token_lookup import TokenMetaData
 from .helpers import from_custom
 from .router_override import router_override
+from . import token_routes
 
-async def get_price_from_pool(token_in, decimal, client, mongo_db, luna_price=None):
+class TokenOverride:
+
+    def __init__(self, session=None):
+        self.tokens = {
+            'terra1zsaswh926ey8qa5x4vj93kzzlfnef0pstuca0y' : [get_price_from_terraswap, {'query' : token_routes.bPsiDP24m(), 'amount' : '1000000', 'decimal' : 6, 'router' : 'terra19qx5xe6q9ll4w0890ux7lv2p4mf3csd4qvt3ex', 'client' : session}],
+}
+
+async def get_price_from_pool(token_in, decimal, client, mongo_db, token_override, luna_price=None):
+    
+    otkn = token_override
+    if token_in in otkn:
+        return await otkn[token_in][0](**otkn[token_in][1])
+
 
     if not luna_price:
         get_luna =  await client.wasm.contract_query('terra1tndcaqxkpc5ce9qee5ggqf430mr2z3pefe5wj6', {"simulation":{"offer_asset":{"amount":"1000000","info":{"native_token":{"denom":"uluna"}}}}})
@@ -24,3 +37,18 @@ async def get_price_from_pool(token_in, decimal, client, mongo_db, luna_price=No
         return from_custom(int(price_quote['return_amount']), 6) if find_pool['pair'] != 'uluna' else from_custom(int(price_quote['return_amount']), 6) * luna_price
     else:
         return 0
+    
+async def get_price_from_terraswap(query, amount, decimal, router, client):
+
+    get_luna =  await client.wasm.contract_query(
+        router, 
+        {
+            "simulate_swap_operations":{
+                "offer_amount": amount,
+                "operations": query
+            }
+        }
+    )
+
+    return from_custom(int(get_luna['amount']), decimal)
+

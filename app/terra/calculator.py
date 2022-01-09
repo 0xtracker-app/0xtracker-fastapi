@@ -20,7 +20,7 @@ def get_balancer_ratio(token_data,quote_price):
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'lpBalances' : lp_values, 'actualStaked' : token_data['staked']}
 
-async def calculate_prices(lastReturn, prices, wallet, mongo_client):
+async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_configuraiton):
 
     finalResponse = lastReturn
     
@@ -51,6 +51,10 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client):
                     if 'tokenPair' not in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x]['tokenPair'] = lastReturn[f]['userData'][x]['tkn0s']
                         finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s']]
+
+                    if 'borrowed' in finalResponse[f]['userData'][x]:
+                        finalResponse[f]['userData'][x]['borrowedUSD'] = finalResponse[f]['userData'][x]['borrowed'] * quotePrice
+
         try:
             pending_user_amount = sum(d['pendingAmount'] for d in finalResponse[f]['userData'].values() if d)
             finalResponse[f]['poolTotal'] = sum(d['lpPrice'] for d in finalResponse[f]['userData'].values() if d)
@@ -60,6 +64,13 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client):
             finalResponse[f]['poolTotal'] = 0
             finalResponse[f]['pendingTotal'] = 0
             finalResponse[f]['total'] = 0
+
+
+        if 'type' in farm_configuraiton:
+            finalResponse[f]['type'] = farm_configuraiton['type']
+            if farm_configuraiton['type'] == 'lending':
+                finalResponse[f]['availableLimit'] = sum(d['lpPrice'] * d['rate'] for d in finalResponse[f]['userData'].values() if 'rate' in d)
+                finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
 
         if finalResponse[f]['total'] > 0:
             mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'terra', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)

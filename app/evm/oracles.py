@@ -371,6 +371,12 @@ async def get_price_from_synpool(token_in,swap_address, token_out_index, decimal
 
         return {token_in.lower() : price['price']}
 
+async def get_gnana_price():
+
+        banana_price = await Call('0xcF0feBd3f17CEf5b47b0cD257aCf6025c5BFf3b7', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95', '0xe9e7cea3dedca5984780bafc599bd69add087d56']], None, WEB3_NETWORKS['bsc'])()
+
+        return {'0xddb3bd8645775f59496c821e4f55a7ea6a6dc299'.lower() : parsers.from_custom(banana_price[1], 18) * 1.389}
+
 async def get_xjoe_price():
         calls = []
 

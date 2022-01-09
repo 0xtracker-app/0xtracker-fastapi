@@ -428,7 +428,7 @@ async def pull_koge_vaults_moon(session):
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
-    return [x for x in r['apy'] if x not in ['0x4aA9B812BB65eB31f22068eE6a7C92442Af37eA9', '0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
+    return [x for x in r['apy'] if x not in ['0xfb8358f34133c275B0393E3883BDd8764Cb610DE','0xe0fB5Cd342BCA2229F413DA7a2684506b0397fF3','0xb04D1A8266Ff97Ee9f48d48Ad2F2868b77F1C668','0xD75f3E4e8ed51ec98ED57386Cb47DF457308Ad08','0x8626Af388F0B69BB15C36422cE67f9638BA2B800','0x12B7b4BEc740A7F438367ff3117253507eF605A7','0x4aA9B812BB65eB31f22068eE6a7C92442Af37eA9', '0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
 
 async def get_balancer_pools(session):
     balancer_pools = await call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None}, session)
