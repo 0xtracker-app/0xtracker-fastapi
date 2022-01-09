@@ -5561,6 +5561,27 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    #             '0xTranquilLendingStaking' : {
+    #     'name' : 'tranquil.finance',
+    #     'rewardToken' : '0xcf1709ad76a79d5a60210f23e81ce2460542a836',
+    #     'decimal' : 18,
+    #     'stakedFunction' : None,
+    #     'pendingFunction' : None,
+    #     'masterChef' : '0xTranquilLendingStaking',
+    #     'featured' : 2,
+    #     'network' : 'harmony',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_lending_protocol],
+    #         'vaults' : [external_contracts.get_tranquil_vaults],
+    #         'args' : [
+    #                 {
+    #                     'farm_id' : '0xTranquilLendingStaking',
+    #                     'network' : 'harmony',
+    #                 },
+    #                 ],
+    #         'vault_args' : [{}]
+    #     }
+    # },
                 '0x138c4dB5D4Ab76556769e4ea09Bce1D452c2996F' : {
         'name' : 'xmas-past.com',
         'rewardToken' : '0xd3111fb8bdf936b11ffc9eba3b597bea21e72724',
