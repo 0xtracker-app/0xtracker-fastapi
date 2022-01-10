@@ -21,6 +21,7 @@ class NativeToken():
     BOBA = '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
     THETA = '0x4dc08b15ea0e10b96c41aec22fab934ba15c983e'
     AURORA = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'
+    METIS = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -42,6 +43,7 @@ class NativeSymbol():
     BOBA = 'ETH'
     THETA = 'TFUEL'
     AURORA = 'ETH'
+    METIS = 'METIS'
 
 class NativeDecimal():
     BSC = 18
@@ -63,6 +65,7 @@ class NativeDecimal():
     BOBA = 18
     THETA = 18
     AURORA = 24
+    METIS = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -84,6 +87,7 @@ class StableToken():
     BOBA = '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc'
     THETA = '0x3ca3fefa944753b43c751336a5df531bdd6598b6'
     AURORA = '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802'
+    METIS = '0xea32a96608495e54156ae48931a7c20f0dcc1a21'
 
 class StableDecimal():
     BSC = 18
@@ -105,6 +109,7 @@ class StableDecimal():
     BOBA = 6
     THETA = 6
     AURORA = 6
+    METIS = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -126,6 +131,7 @@ class DefaultRouter():
     BOBA = routers.BobaRouter.OOLONG
     THETA = routers.ThetaRouter.VOLT
     AURORA = routers.AuroraRouter.TRI
+    METIS = routers.MetisRouter.NETSWAP
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -147,6 +153,7 @@ class RouteClass():
     BOBA = routers.BobaRouter
     THETA = routers.ThetaRouter
     AURORA = routers.AuroraRouter
+    METIS = routers.MetisRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -168,6 +175,7 @@ class CoinGecko():
     BOBA = ''
     THETA = ''
     AURORA = ''
+    METIS = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -189,6 +197,7 @@ class LiqCheck():
     BOBA = '0xCf5FA464580Df67E359108B14404EF2204c09842'
     THETA = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
     AURORA = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
+    METIS = '0x3f0b450c9453c4d49675AF2016ABe17E08E1f0fB'
 
 class MinLiq():
     BSC = 49999
@@ -210,6 +219,7 @@ class MinLiq():
     BOBA = 9999
     THETA = 9999
     AURORA = 9999
+    METIS = 9999
 
 class NetworkRoutes():
 

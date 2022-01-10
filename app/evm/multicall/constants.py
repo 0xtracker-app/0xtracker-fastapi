@@ -25,6 +25,7 @@ class Network(IntEnum):
     BOBA = 288
     Theta = 361
     Aurora = 1313161554
+    Metis = 1088
 
 
 MULTICALL_ADDRESSES = {
@@ -50,6 +51,7 @@ MULTICALL_ADDRESSES = {
     Network.Polis: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33',
     Network.BOBA: '0x0C8be7B6864538b7086bF5611aB6940b510749a4',
     Network.Theta: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc',
-    Network.Aurora: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc'
+    Network.Aurora: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc',
+    Network.Metis: '0x6ddB0845aeB285eD7ef712768a0E123c8F2Eab0E'
 
 }
