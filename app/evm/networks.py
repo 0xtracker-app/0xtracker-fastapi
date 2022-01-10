@@ -23,7 +23,8 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider(os.get
                 'polis': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("POLIS_RPC"))), 'id' : 333999},
                 'boba': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("BOBA_RPC"))), 'id' : 288},
                 'theta': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("THETA_RPC"))), 'id' : 361},
-                'aurora': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("AURORA_RPC"))), 'id' : 1313161554},             
+                'aurora': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("AURORA_RPC"))), 'id' : 1313161554},
+                'metis': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("METIS_RPC"))), 'id' : 1088},             
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BSC_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
@@ -46,6 +47,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'boba': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BOBA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 288},
                 'theta': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("THETA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 361},
                 'aurora': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("AURORA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1313161554},
+                'metis': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("METIS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1088},
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN"), 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

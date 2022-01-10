@@ -272,6 +272,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
             prices[token['token']] = 0
 
     prices[out_token.lower()] = native_price['native_price']
+
+    if out_token == '0x98878B06940aE243284CA214f92Bb71a2b032B8A':
+        prices['0xf50225a84382c74CbdeA10b0c176f71fc3DE0C4d'.lower()] = native_price['native_price']
+
     ##Set Dead Tokens To Zero
     prices['0x0184316f58b9a44acdd3e683257259dc0cf2202a'.lower()] = 0
     prices['0x714a84632ed7edbbbfeb62dacf02db4beb4c69d9'.lower()] = 0

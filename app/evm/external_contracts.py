@@ -608,6 +608,9 @@ async def get_tri_staking(session):
 async def get_nearpad_staking(session):
     return ['0x885f8CF6E45bdd3fdcDc644efdcd0AC93880c781']
 
+async def get_tethys_staking(session):
+    return ['0x69fdb77064ec5c84fa2f21072973eb28441f43f3']
+
 async def get_ironlend_vaults(session):
     return poolext.ironlend.vaults
 
@@ -657,6 +660,9 @@ async def get_zombie_pools(session):
 
 async def get_tengu_stakes(session):
     return ['0xd38cE88CAf05FFDb193Ba95fce552c5129E42C89']
+
+async def get_netswap_stakes(session):
+    return ['0x4d2F0f5409B51172dc229b3c8dCaa1365a9C9C27']
 
 async def get_macaron_syrup(session):
     return ['0xCded81aa5Ab3A433CadF77Fd5aC8B6fD973906e1', '0xF69bdcDB577F98753d4890Cc5aCfF3BE00177584', '0x7DB34B681c759918079C67EeF08868225F34fbcB', '0x13ED683DDf483d1f0bd2AE02b01D4d1D451D6c5b', '0x0f819C8E6A7c0F0906CBc84b9b1e6642f9634E61', '0x903A20CDbAC174250eAcc7437720929f0dE97B99', '0x82cF07a989835b68260989F13Bc853f8fe48ad04', '0xc8De98F603af53a5D52AF6AA153d9e15b0002B2c', '0xf3D514263239672455306D188DD5f045E61deD03', '0xC85C50988AEC8d260853443B345CAE63B7432b7A', '0xF60EDbF7D95E79878f4d448F0CA5622479eB8790']

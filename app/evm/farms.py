@@ -5954,6 +5954,53 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x9d1dbB49b2744A1555EDbF1708D64dC71B0CB052' : {
+        'name' : 'netswap.io',
+        'rewardToken' : '0x90fe084f877c65e1b577c7b2ea64b8d8dd1ab278',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTokens',
+        'masterChef' : '0x9d1dbB49b2744A1555EDbF1708D64dC71B0CB052',
+        'featured' : 2,
+        'network' : 'metis',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_netswap_stakes],
+            'args' : [
+                {
+                    'farm_id' : '0x9d1dbB49b2744A1555EDbF1708D64dC71B0CB052',
+                    'network_id' : 'metis',
+                    'staked' : 'stakingToken',
+                    'reward' : 'rewardsToken',
+                    'pending_reward' : 'earned',
+                    'user_info' : 'balanceOf'
+                },     
+                ],
+            'vault_args' : [{}]
+        }
+    },
+                '0x54A8fB8c634dED694D270b78Cb931cA6bF241E21' : {
+        'name' : 'tethys.finance',
+        'rewardToken' : '0x69fdb77064ec5c84fa2f21072973eb28441f43f3',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTethys',
+        'masterChef' : '0x54A8fB8c634dED694D270b78Cb931cA6bF241E21',
+        'featured' : 2,
+        'network' : 'metis',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_tethys_staking],
+            'args' : [
+                    {
+                        'farm_id' : '0x54A8fB8c634dED694D270b78Cb931cA6bF241E21',
+                        'network' : 'metis',
+                        'receipt_token' : '0x716678968fd6E518cb1d56C9720fC8eeEBA6CeAb'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
