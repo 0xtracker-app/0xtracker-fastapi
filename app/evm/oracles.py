@@ -220,9 +220,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, override_out], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : override_decimal, 'price' : 1}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
                 else:
-                    # print(1 * 10 ** token_dec, token_in_address, out_token, contract, token_address)
+                    out_token = '0x75cb093E4D61d2A2e65D8e0BBb01DE8d89b53481' if contract in ['STANDARD'] and network in ['metis'] else out_token
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
+                    out_token = network_route.native
 
     if len(calls) > 2100:
         chunks = len(calls) / 2000
@@ -275,6 +276,9 @@ async def list_router_prices(tokens_in, network, check_liq=False):
 
     if out_token == '0x98878B06940aE243284CA214f92Bb71a2b032B8A':
         prices['0xf50225a84382c74CbdeA10b0c176f71fc3DE0C4d'.lower()] = native_price['native_price']
+    
+    if out_token == '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000':
+        prices['0x75cb093e4d61d2a2e65d8e0bbb01de8d89b53481'.lower()] = native_price['native_price']
 
     ##Set Dead Tokens To Zero
     prices['0x0184316f58b9a44acdd3e683257259dc0cf2202a'.lower()] = 0
