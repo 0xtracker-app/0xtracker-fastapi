@@ -35,7 +35,14 @@ async def get_balance_of(token_list, wallet, network, network_info):
             '0x87230146E138d3F296a9a77e497A2A83012e9Bc5'.lower(),
             '0x9531c509a24ceec710529645fc347341ff9f15ea'.lower(),
             '0x04906695d6d12cf5459975d7c3c03356e4ccd460'.lower(),
-            '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f'.lower()
+            '0x0ab87046fbb341d058f17cbc4c1133f25a20a52f'.lower(),
+            '0x27F8D03b3a2196956ED754baDc28D73be8830A6e'.lower(),
+            '0x1a13F4Ca1d028320A707D99520AbFefca3998b7F'.lower(),
+            '0x60D55F02A771d515e077c9C2403a1ef324885CeC'.lower(),
+            '0x5c2ed810328349100A66B82b78a1791B101C9D61'.lower(),
+            '0x28424507fefb6f7f8E9D3860F56504E4e5f5f390'.lower(),
+            '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4'.lower(),
+            '0x1d2a0E5EC8E5bBDCA5CB219e649B565d8e5c3360'.lower(),
             ] + [x['address'].lower() for x in await get_venus_vaults('session')]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
 

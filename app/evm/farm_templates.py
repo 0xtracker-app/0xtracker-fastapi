@@ -2071,6 +2071,48 @@ async def get_lending_protocol(wallet,vaults,farm_id,network):
     else:
         return None
 
+async def get_aave_protocol(wallet,vaults,farm_id,network):
+
+    lending_vaults = vaults
+    poolKey = farm_id
+    calls = []
+
+    for vault in lending_vaults:
+        calls.append(Call(vault["aTokenAddress"], [f'balanceOf(address)(uint256)', wallet], [[f'{vault["underlyingAsset"]}_staked', parsers.from_custom, vault["decimals"] ]]))
+        calls.append(Call(vault["variableDebtTokenAddress"], [f'balanceOf(address)(uint256)', wallet], [[f'{vault["underlyingAsset"]}_borrowed', parsers.from_custom, vault["decimals"]]]))
+        
+    stakes=await Multicall(calls, WEB3_NETWORKS[network])()
+
+    poolNest = {poolKey: 
+    { 'userData': { }
+     } }
+
+    poolIDs = {}
+
+    hash_map = {x['underlyingAsset'] : x for x in lending_vaults}
+
+    for stake in stakes:
+        if 'stake' in stake:
+            loaned = stakes[stake]
+            borrowed = stakes[f'{stake.split("_")[0]}_borrowed']
+            if loaned > 0 or borrowed > 0:
+                addPool = stake.split('_')
+                if addPool[0] not in poolNest[poolKey]['userData']:
+
+                    underlying = addPool[0]       
+                    collat = loaned
+                    collat_rate = int(hash_map[addPool[0]]['baseLTVasCollateral']) / 10000
+                    borrow = borrowed
+                    #rate = parsers.from_wei(snapshot[3])
+                    poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate}
+                    poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
+
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
+
 async def get_just_pending(wallet,vaults,network,farm_id,reward_method,reward_token):
     contracts = vaults
     poolKey = farm_id
