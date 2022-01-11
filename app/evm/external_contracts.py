@@ -536,6 +536,10 @@ async def get_snowball_guage(session):
 
     return [x['gaugeAddress'] for x in balancer_pools['data']['SnowglobeContracts']]
 
+async def get_aave_matic(session):
+    markets = await call_graph('https://cache-api-polygon.aave.com/graphql', {'operationName' : 'Main', 'query' : bitquery.aave_markets.aave_markets, 'variables' : {'lendingPool': '0xd05e3e715d945b59290df0ae8ef85c1bdb684744'}}, session)
+    return markets['data']['protocolData']['reserves']
+
 async def get_snowball_globe(session):
     balancer_pools = await call_graph('https://snob-backend-api.herokuapp.com/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
 

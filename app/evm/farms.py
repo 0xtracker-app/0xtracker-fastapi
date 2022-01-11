@@ -5392,6 +5392,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xAaveMatic' : {
+        'name' : 'aave.com',
+        'rewardToken' : '0xd6df932a45c0f255f85145f286ea0b292b21c90b',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAaveMatic',
+        'featured' : 2,
+        'network' : 'matic',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_aave_protocol],
+            'vaults' : [external_contracts.get_aave_matic],
+            'args' : [
+                    {
+                        'farm_id' : '0xAaveMatic',
+                        'network' : 'matic',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0xVenusBSC' : {
         'name' : 'venus.io (Lending)',
         'rewardToken' : '0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63',
