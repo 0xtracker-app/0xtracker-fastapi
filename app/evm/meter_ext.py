@@ -93,12 +93,12 @@ async def get_passport_llama(mongodb, session):
             'ampl_contract' : ''
         },
         'polis' : {
-            'handler' : None,
+            'handler' : '0x911F32FD5d347b4EEB61fDb80d9F1063Be1E78E6',
             'token_list' : 'Polis',
             'ampl_contract' : ''
         },
         'theta' : {
-            'handler' : None,
+            'handler' : '0x48A6fd66512D45006FC0426576c264D03Dfda304',
             'token_list' : 'Theta',
             'ampl_contract' : ''
         },
@@ -106,7 +106,6 @@ async def get_passport_llama(mongodb, session):
 
     passport_tokens = json.loads(await make_get(session, 'https://raw.githubusercontent.com/meterio/token-list/master/generated/passport-tokens.json'))
 
-    collection = mongodb.xtracker['full_tokens']
     calls = []
     r = {}
     grand_total = 0
@@ -114,6 +113,7 @@ async def get_passport_llama(mongodb, session):
     for network in NETWORK_DATA:
         network_total = 0
         r[network] = { 'tokens' : [] }
+        r[network]['handler'] = NETWORK_DATA[network]['handler']
         for token in passport_tokens[NETWORK_DATA[network]['token_list']]:
             if NETWORK_DATA[network]['handler']:
                 calls.append(Call(token['address'], ['balanceOf(address)(uint256)', NETWORK_DATA[network]['handler']], [[f'{token["address"]}_{token["decimals"]}_{token["symbol"]}', parsers.from_custom, token["decimals"]]]))

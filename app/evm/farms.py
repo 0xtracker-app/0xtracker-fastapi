@@ -6001,6 +6001,16 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x23423292396a37c0c2e4d384dce7ab67738bec28' : {
+        'name' : 'standard.tech',
+        'rewardToken' : '0xc12cac7090baa48ec750cceec57c80768f6ee58e',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0x23423292396a37c0c2e4d384dce7ab67738bec28',
+        'featured' : 2,
+        'network' : 'metis',
+                },
 }
 
 
