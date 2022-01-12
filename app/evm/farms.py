@@ -5142,6 +5142,16 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm',
     },
+                '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75' : {
+        'name' : 'yieldwolf.finance',
+        'rewardToken' : '0x9a92b5ebf1f6f6f7d93696fcd44e5cf75035a756',
+        'decimal' : 18,
+        'stakedFunction' : 'stakedTokens',
+        'pendingFunction' : None,
+        'masterChef' : '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75',
+        'featured' : 2,
+        'network' : 'bsc',
+    },
                 '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9' : {
         'name' : 'yieldwolf.finance',
         'rewardToken' : '0x9a92b5ebf1f6f6f7d93696fcd44e5cf75035a756',
@@ -6032,7 +6042,29 @@ class Farms:
         'masterChef' : '0x23423292396a37c0c2e4d384dce7ab67738bec28',
         'featured' : 2,
         'network' : 'metis',
-                },
+        },
+                '0xBA438A6F03c03fb1Cf86567F6bb866CCFc9B2da7' : {
+        'name' : 'hakuswap.com',
+        'rewardToken' : '0x695Fa794d59106cEbd40ab5f5cA19F458c723829',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCake',
+        'masterChef' : '0xBA438A6F03c03fb1Cf86567F6bb866CCFc9B2da7',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_haku_staking],
+            'args' : [
+                    {
+                        'farm_id' : '0xBA438A6F03c03fb1Cf86567F6bb866CCFc9B2da7',
+                        'network' : 'avax',
+                        'receipt_token' : '0xa95c238b5a72f481f6abd50f951f01891130b441'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

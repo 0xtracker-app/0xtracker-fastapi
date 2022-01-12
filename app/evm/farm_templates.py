@@ -2359,7 +2359,7 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 '0x23423292396a37c0c2e4d384dce7ab67738bec28'
                 ]:
                 calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
-            elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533']:
+            elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533', '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75']:
                 calls.append(Call(address, ['poolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0xEF6d860B22cEFe19Ae124b74eb80F0c0eb8201F4', '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1']:
                 calls.append(Call(address, ['getPoolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))         

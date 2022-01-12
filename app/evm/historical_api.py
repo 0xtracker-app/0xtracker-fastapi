@@ -1,5 +1,5 @@
 from .multicall import Call, Multicall, parsers
-from .utils import make_get_json
+from .utils import make_get, make_get_json
 import json
 import os
 from dotenv import load_dotenv
@@ -51,3 +51,46 @@ async def get_tx_to_contract(network, wallet, token, contract, session):
                         })
 
     return response
+
+async def get_router_details(network, contract, session):
+    query = json.dumps({"$or": [{"from_address": contract},{"to_address": contract}]})
+    sorting = json.dumps({'block_height': 1})
+    network = NETWORK_MAP[network]
+
+    primer = json.dumps([
+    {
+        "$match": {
+            "log_events": {
+                "$elemmatch": {
+                    "decoded.name": "Transfer"
+                }
+            }
+        }
+    },
+    {
+        "$group": {
+            "_id": {
+                "month": {
+                    "$month": "block_signed_at"
+                },
+                "day": {
+                    "$dayOfMonth": "block_signed_at"
+                },
+                "year": {
+                    "$year": "block_signed_at"
+                },
+                "hour": {
+                    "$hourOfDay": "block_signed_at"
+                }
+            },
+            "transfer_count": {
+                "$sum": 1
+            }
+        }
+    }
+])
+
+    url = f'https://api.covalenthq.com/v1/{network}/address/{contract}/transactions_v2/?page-size=10000&primer={primer}&key={COVALENT_KEY}'
+    x = await make_get_json(session, url)
+
+    return x
