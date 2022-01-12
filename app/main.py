@@ -5,7 +5,7 @@ from typing import List
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
-from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract, delete_user_records, get_voltswap_llama, get_passport_llama
+from evm import return_farms_list, get_evm_positions, get_wallet_balance, scan_ethlogs_approval, get_tx_to_contract, delete_user_records, get_voltswap_llama, get_passport_llama, get_router_details
 from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
 from terra import get_wallet_balances as terra_wallet_balances, get_terra_positions, return_farms_list as terra_farms_list
@@ -143,6 +143,11 @@ async def get_token_approvals(wallet,network, mongo_db: AsyncIOMotorClient = Dep
 async def historical_transactions(wallet,network,contract,token, session: ClientSession = Depends(get_session)):
     results = await get_tx_to_contract(network, wallet, token, contract, session)
     return results
+
+# @app.get('/router-details/{network}/{contract}')
+# async def router_details(network, contract, session: ClientSession = Depends(get_session)):
+#     results = await get_router_details(network, contract, session)
+#     return results
 
 # @app.get('/write-tokens/{wallet}')
 # async def get_cosmos_farms(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):

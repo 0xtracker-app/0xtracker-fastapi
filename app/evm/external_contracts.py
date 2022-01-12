@@ -615,6 +615,9 @@ async def get_nearpad_staking(session):
 async def get_tethys_staking(session):
     return ['0x69fdb77064ec5c84fa2f21072973eb28441f43f3']
 
+async def get_haku_staking(session):
+    return ['0x695fa794d59106cebd40ab5f5ca19f458c723829']
+
 async def get_ironlend_vaults(session):
     return poolext.ironlend.vaults
 
