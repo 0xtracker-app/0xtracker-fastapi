@@ -28,6 +28,19 @@ async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
         else:
             return None
 
+async def get_single(token, network, session):
+
+    osmosis_tokens = await queries.get_osmosis_assets(session)
+
+    if token in osmosis_tokens:
+        return osmosis_tokens[token]
+    
+    sif_tokens = await queries.get_sif_assets(session)
+
+    if token in sif_tokens:
+        return sif_tokens[token]
+
+    return None
 
 class TokenMetaData:
 
@@ -75,7 +88,7 @@ class TokenMetaData:
                     'tkn0s': found_token0['tkn0s'],
                     'tkn0d': found_token0['tkn0d'],
                     'tkn1s': found_token1['tkn0s'],
-                    'tkn0d': found_token1['tkn0d'],
+                    'tkn1d': found_token1['tkn0d'],
                     'token0' : found_token0['token0'],
                     'token1' : found_token1['token0'],
                     'token_decimals': [found_token0['tkn0d'],found_token1['tkn0d']],
@@ -86,5 +99,13 @@ class TokenMetaData:
             found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
             if found_token:
                 self.token_metadata = found_token
+            else:
+                single = await get_single(self.denom, self.network, self.session)
+
+                if single:
+                    self.token_metadata = { "tokenID" : single['denom'], "tkn0d" : single['decimal'], "tkn0s" : single['symbol'], "token0" : single['denom']}
+                    await self.cosmos_tokens.update_one({'tokenID': self.denom}, {"$set": self.token_metadata}, upsert=True)
+                else:
+                    self.token_metadata = { "tokenID" : self.denom, "tkn0d" : 6, "tkn0s" : self.denom.upper(), "token0" : self.denom}
 
         return self.token_metadata   

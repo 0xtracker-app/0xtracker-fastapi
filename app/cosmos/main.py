@@ -78,7 +78,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
 
     prices = await oracles.cosmostation_prices(http_session, mongo_db, CosmosNetwork(wallet).all_networks)
 
-    response = await calculate_prices(returned_object[1], prices, CosmosNetwork(wallet).all_networks['cosmos']['wallet'], mongo_db)
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
 
     return response
 

@@ -6,10 +6,15 @@ async def cosmostation_prices(session, mongo_db, network_data):
     r = await make_get_json(session, 'https://api-utility.cosmostation.io/v1/market/prices')
     dict_of_prices = {x['denom'] : x['prices'][0]['current_price'] for x in r if x['prices'][0]['currency'] == 'usd'}
     osmos_prices = await check_osmosis_pricing(session, mongo_db, network_data)
+    sif_prices = await check_sif_pricing(session, network_data)
 
     for each in osmos_prices:
         if each not in dict_of_prices:
             dict_of_prices[each] = osmos_prices[each]
+
+    for each in sif_prices:
+        if each not in dict_of_prices:
+            dict_of_prices[each] = sif_prices[each]    
 
     return dict_of_prices
 
@@ -42,3 +47,13 @@ async def check_osmosis_pricing(session, mongo_db, network_data):
             osmo_prices[each['denom']] = each['price']
 
     return osmo_prices
+
+
+async def check_sif_pricing(session, network_data):
+    r = await make_get_json(session, 'https://data.sifchain.finance/beta/asset/tokenStats')
+    sif_prices = {}
+
+    for each in r['body']['pools']:
+        sif_prices[f'c{each["symbol"]}'] = each["priceToken"]
+
+    return sif_prices

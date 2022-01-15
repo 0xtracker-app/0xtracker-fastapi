@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'juno', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom']
+        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -326,6 +326,21 @@ class CosmosNetwork:
                 'denom' : 'boot',
                 'symbol' : 'BOOT',
                 'decimals' : 0,
+                'coin_gecko_id' : 'pool:boot'
+            }
+        },
+            'emoney' : {
+            'wallet' : from_atom(wallet,'emoney'),
+            'rpc' : 'https://rpc-emoney.keplr.app',
+            'rest' : 'https://lcd-emoney.keplr.app',
+            'chain_id' : 'emoney-3',
+            'chain_name' : 'e-Money',
+            'explorer' : 'https://www.mintscan.io/emoney',
+            'bech_prefix' : 'emoney',
+            'stake_token' : {
+                'denom' : 'ungm',
+                'symbol' : 'NGM',
+                'decimals' : 6,
                 'coin_gecko_id' : 'pool:boot'
             }
         },
