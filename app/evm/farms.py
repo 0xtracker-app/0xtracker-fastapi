@@ -6065,6 +6065,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xHunnyDAO' : {
+        'name' : 'dao.hunny.finance',
+        'rewardToken' : '0x9505dbd77dacd1f6c89f101b98522d4b871d88c5',
+        'decimal' : 9,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xHunnyDAO',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_ohm],
+            'vaults' : [external_contracts.get_hunny_ohm],
+            'args' : [
+                    {
+                        'farm_id' : '0xHunnyDAO',
+                        'network_id' : 'bsc',
+                        'reward_symbol' : 'LOVE'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

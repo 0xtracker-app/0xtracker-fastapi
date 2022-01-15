@@ -833,6 +833,15 @@ async def get_nidhi_ohm(session):
         'OHM_FUNCTION' : 'sGURU'
     }
 
+async def get_hunny_ohm(session):
+    return {
+        'BONDS' : ['0x5b669D9cCb3208eD9c7CbDD09f88357C1cB90Efb'],
+        'MEMO_ADDRESS' : '0x153629b8ce84f5e6dd6044af779aa37adb431393',
+        'TIME_ADDRESS' : '0x9505dbd77dacd1f6c89f101b98522d4b871d88c5',
+        'OHM_CONTRACT' : '0x31dd9Be51cC7A96359cAaE6Cb4f5583C89D81985',
+        'OHM_FUNCTION' : 'HUG'
+    }
+
 async def get_viking_ohm(session):
     return {
         'BONDS' : ['0xbc5299aa63cf9ce9f30b7274845207668d4a1304', '0x46d81a637ea28134439b4922ec4a34660aec057d'],

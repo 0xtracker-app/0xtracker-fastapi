@@ -30,4 +30,16 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    'Sifchain' : {
+        'name' : 'sifchain.finance',
+        'masterChef' : 'Sifchain',
+        'featured' : 2,
+        'network' : 'cosmos',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sifchain_assets],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [{'farm_id' : 'Sifchain', 'network' : 'sif'}],
+            'vault_args' : [{}]
+        }
+    },
 }
