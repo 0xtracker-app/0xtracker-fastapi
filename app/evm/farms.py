@@ -6087,6 +6087,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311' : {
+        'name' : 'starstream.finance',
+        'rewardToken' : '0xb26f58f0b301a077cfa779c0b0f8281c7f936ac0',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311',
+        'featured' : 2,
+        'network' : 'metis',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_starstream_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311',
+                        'network' : 'metis',
+                        '_pps' : 'getPricePerFullShare'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

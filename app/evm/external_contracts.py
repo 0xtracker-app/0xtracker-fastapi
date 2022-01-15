@@ -183,6 +183,20 @@ async def get_boneswap_vaults(session):
 async def get_space_pool_poly(session):
     return ['0xBa56A30ec2Ee2B4C3c7EE75e0CFEbcD1b22dE8cd']
 
+async def get_starstream_vaults(session):
+    return [
+        '0xFB050923d8fd638c4d03eeB9B6d2e5234892dE8C',
+        '0x4fa0594B5347a0e1640ABf167aefE58AD610be63',
+        '0x4ba560e193f928df42350944540215639cbB4614',
+        '0xa18B53d8E700708a399d63Dff5704D84F54A35ce',
+        '0xC28Be7A75ab513543d166B6B41dEbF0A3Cd3FFa2',
+        '0xABBF10582632C5460859A2877f063DFb23B1f7Bf',
+        '0xCDaBe937bcFb7aB18FBB021fE4D4308E0662191e',
+        '0xAc7D4805f12e57594FC5EB7FE5E5bff0Cbb4712f',
+        '0x8377eb57113919086d41F0511f97474D57dDd8e9',
+        '0x5Ec8Bd9Fc606A0a5AbC7937CfA99ca22c0040266'
+        ]
+
 async def get_apolyyeld(session):
     return ['0xc49bc7118a73Ca6CB36Bfa454FD40eCAE079a463']
 
