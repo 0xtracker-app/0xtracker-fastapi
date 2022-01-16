@@ -2357,7 +2357,8 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 '0x13cc0A2644f4f727db23f5B9dB3eBd72134085b7',
                 '0x7ecc7163469f37b777d7b8f45a667314030ace24',
                 '0x23423292396a37c0c2e4d384dce7ab67738bec28',
-                '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311'
+                '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311',
+                '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21'
                 ]:
                 calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533', '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75']:
