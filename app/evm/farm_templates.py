@@ -3001,14 +3001,19 @@ async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults,pendin
         network = WEB3_NETWORKS[network_id]
         
         pool_length = await Call(farm_data['masterChef'], [f'poolLength()(uint256)'],None,network)() 
+        if 'dead_pools' in farm_data:
+            dead_pools = farm_data['dead_pools']
+        else:
+            dead_pools = []
 
         for pid in range(0,pool_length):
-            calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
-            calls.append(Call(farm_data['rewarder'], [f'pendingToken(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_extra', parsers.from_wei]]))
-            calls.append(Call(farm_data['masterChef'], [f'lpToken(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
-
-        stakes=await Multicall(calls, network)()
+            if pid not in dead_pools:
+                calls.append(Call(farm_data['masterChef'], [f'userInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
+                calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
+                calls.append(Call(farm_data['rewarder'], [f'pendingToken(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_extra', parsers.from_wei]]))
+                calls.append(Call(farm_data['masterChef'], [f'lpToken(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
+        
+        stakes=await Multicall(calls, network, _strict=False)()
 
         poolNest = {poolKey: 
         { 'userData': { } } }

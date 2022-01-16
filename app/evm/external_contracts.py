@@ -446,8 +446,10 @@ async def get_pancakebunny_pools(network, session):
 
 async def get_balancer_pools(session):
     balancer_pools = await call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None}, session)
-
-    return [x['address'] for x in balancer_pools['data']['pools']]
+    if 'errors' not in balancer_pools:
+        return [x['address'] for x in balancer_pools['data']['pools']]
+    else:
+        return []
 
 async def get_apeswap_pools_old(session):
     r = await make_get_json(session, 'https://api.apeswap.finance/stats')
@@ -543,7 +545,7 @@ async def get_paprprintr_vaults(network, session):
 
 async def get_superfarm_pools(session):
     r = await make_get_json(session, 'https://superlauncher.io/farms/farms.json')
-    return [x['farmAddresses'] for x in r]
+    return [x['farmAddresses'] for x in r if '56' not in x['farmAddresses']]
 
 async def get_snowball_guage(session):
     balancer_pools = await call_graph('https://snob-backend-api.herokuapp.com/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
@@ -880,4 +882,12 @@ async def get_ohm_ohm(session):
         'OHM_CONTRACT' : '0xb63cac384247597756545b500253ff8e607a8020',
         'SOHM_FUNCTION' : 'sOHM',
         'GOHM_FUNCTION' : 'gOHM'
+    }
+
+async def get_strongblock(session):
+    return {
+     "" :  {
+            'token' : '',
+            'contract' : '',
+        }
     }
