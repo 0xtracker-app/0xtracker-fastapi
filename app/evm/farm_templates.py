@@ -2769,7 +2769,10 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
         poolKey = farm_id
         network = WEB3_NETWORKS[network_id]
         tranch = ['M', 'A', 'B']
-        helper = '0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6'
+        helper = ['0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6', '0xB13a07C57bA5297506c71e9c958210Fea8bbCEF0', '0x42867df3c1ce62613aae3f4238cbcf3d7630880b']
+        want_helper = ['0xd6B3B86209eBb3C608f3F42Bf52818169944E402', '0x677b7304cb944b413d3c9aebc4d4b5da1a698a6b', '0x629d4562033e432b390d0808b54a82b0c4a0896b']
+        fee_distribution = ['0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8', '0x67EB546A69c7e4d83F3c66018Fa549Dff5FED35b', '0xE06F85862af08c1C5F67F96e41eA663E29639DAe']
+        market = ['0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D', '0x57C8041C6Aa3440843b5E48B16016A95F822195f', '0x15F2FeFcF313d397F9933C1Cb7590ab925d5cb59']
 
         primaryMarketAddress = Web3.toChecksumAddress(0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D)
         exchangeAddress = Web3.toChecksumAddress(0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6)
@@ -2781,14 +2784,16 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
         
 
         calls = []
-        for i,stake in enumerate(tranch):
-            calls.append(Call(helper,['availableBalanceOf(uint256,address)(uint256)',i, wallet], [[f'{stake}{i}_staked', parsers.from_wei]]))
-            calls.append(Call('0xd6B3B86209eBb3C608f3F42Bf52818169944E402',[f'token{stake}()(address)'], [[f'{stake}{i}_want', None]]))
+        reward_calls = []
+        for w,help in enumerate(helper):
+            for i,stake in enumerate(tranch):
+                calls.append(Call(help,['availableBalanceOf(uint256,address)(uint256)',i, wallet], [[f'{stake}{w}{i}_staked', parsers.from_wei]]))
+                calls.append(Call(want_helper[w],[f'token{stake}()(address)'], [[f'{stake}{w}{i}_want', None]]))
 
-        chess_info = await Call('0x44073262764d7cce3ded8882e637e957dcc7c503', [f'getProtocolData(address,address,address,address,address){protocol_format}', primaryMarketAddress, exchangeAddress, pancakePairAddress, feeDistributorAddress, address], _w3=network)()
-
+            #reward_calls.append(Call('0x44073262764d7cce3ded8882e637e957dcc7c503', [f'getProtocolData(address,address,address,address,address){protocol_format}', Web3.toChecksumAddress(market[w]), Web3.toChecksumAddress(help), pancakePairAddress, Web3.toChecksumAddress(fee_distribution[w]), address], [[w, None]]))
+            reward_calls.append(Call(fee_distribution[w],['claimRewards(address)(uint256)', wallet], [[f'{stake}{w}{i}_pending', parsers.from_wei]]))
         stakes = await Multicall(calls, network)() 
-        chess_position = parsers.tranchess_reward(chess_info)
+        chess_position = await Multicall(reward_calls, network)()
 
         poolNest = {poolKey: 
         { 'userData': { } } }
@@ -2805,9 +2810,9 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
                     poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
-        if chess_position['total_chess'] > 0:
-            poolNest[poolKey]['userData']['chessPosition'] = {'want': '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6', 'staked' : parsers.from_wei(chess_position['staked_chess']), 'pending' : parsers.from_wei(chess_position['pending_chess'])}
-            poolIDs['%s_%s_want' % (poolKey, 'chessPosition')] = '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6'
+        # if chess_position['total_chess'] > 0:
+        #     poolNest[poolKey]['userData']['chessPosition'] = {'want': '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6', 'staked' : parsers.from_wei(chess_position['staked_chess']), 'pending' : parsers.from_wei(chess_position['pending_chess'])}
+        #     poolIDs['%s_%s_want' % (poolKey, 'chessPosition')] = '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6'
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest
