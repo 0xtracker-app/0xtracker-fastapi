@@ -40,8 +40,8 @@ async def get_price_from_firebird(token_in, token_out, amount, out_d, session):
     return {token_in.lower() : parsers.from_custom(int(r['outputAmount']), out_d)}
 
 
-async def get_tranchess_price(tranch,address,session):
-    response = await Call('0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6', ['estimateNavs(uint256)((uint256,uint256,uint256))', round_to_hour()], [[f'estimateNavs',parsers.parse_tranchess]], _w3=WEB3_NETWORKS['bsc'])()
+async def get_tranchess_price(helper,tranch,address,session):
+    response = await Call(helper, ['estimateNavs(uint256)((uint256,uint256,uint256))', round_to_hour()], [[f'estimateNavs',parsers.parse_tranchess]], _w3=WEB3_NETWORKS['bsc'])()
 
     return {address.lower() : response['estimateNavs'][tranch] / 1e18}
 
@@ -300,6 +300,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     prices['0x265befe2b1a0f4f646dea96ba09c1656b74bda91'.lower()] = 0
     prices['0x2ba6204c23fbd5698ed90abc911de263e5f41266'.lower()] = 0
     prices['0xd35f9ab96d04adb02fd549ef6a576ce4e2c1d935'.lower()] = 0
+    prices['0x8bd0e87273364ebbe3482efc166f7e0d34d82c25'.lower()] = 0
 
     return prices
 
