@@ -6110,6 +6110,16 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21' : {
+        'name' : 'avtocross.finance',
+        'rewardToken' : '0x6ef20ca7e493c52095e892dab78a7fd0e7e2a279',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCross',
+        'masterChef' : '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21',
+        'featured' : 2,
+        'network' : 'cro',
+        },
 }
 
 
