@@ -2790,11 +2790,16 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
                 calls.append(Call(help,['availableBalanceOf(uint256,address)(uint256)',i, wallet], [[f'{stake}{w}{i}_staked', parsers.from_wei]]))
                 calls.append(Call(want_helper[w],[f'token{stake}()(address)'], [[f'{stake}{w}{i}_want', None]]))
 
-            #reward_calls.append(Call('0x44073262764d7cce3ded8882e637e957dcc7c503', [f'getProtocolData(address,address,address,address,address){protocol_format}', Web3.toChecksumAddress(market[w]), Web3.toChecksumAddress(help), pancakePairAddress, Web3.toChecksumAddress(fee_distribution[w]), address], [[w, None]]))
-            reward_calls.append(Call(fee_distribution[w],['claimRewards(address)(uint256)', wallet], [[f'{stake}{w}{i}_pending', parsers.from_wei]]))
+            #reward_calls.append(Call('0x81e32a0d408a55c1319a7761688ab0d7c2ec218f', [f'getProtocolData(address,address,address,address,address){protocol_format}', Web3.toChecksumAddress(market[w]), Web3.toChecksumAddress(help), pancakePairAddress, Web3.toChecksumAddress(fee_distribution[w]), address], [[w, None]]))
+            reward_calls.append(Call(help,['claimableRewards(address)(uint256)', wallet], [[f'{help}_pending', parsers.from_wei]]))
+            reward_calls.append(Call(fee_distribution[w],['claimableRewards(address)(uint256)', wallet], [[f'{fee_distribution[w]}_pending', parsers.from_wei]]))
+            reward_calls.append(Call(fee_distribution[w],['rewardToken()(address)'], [[f'{fee_distribution[w]}_want', None]]))
+
+        reward_calls.append(Call(fee_distribution[0],['userLockedBalances(address)(uint256)', wallet], [[f'chess_staked', parsers.from_wei]]))
+
         stakes = await Multicall(calls, network)() 
         chess_position = await Multicall(reward_calls, network)()
-
+        print(chess_position)
         poolNest = {poolKey: 
         { 'userData': { } } }
 
@@ -2810,9 +2815,20 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
                     poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
-        # if chess_position['total_chess'] > 0:
-        #     poolNest[poolKey]['userData']['chessPosition'] = {'want': '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6', 'staked' : parsers.from_wei(chess_position['staked_chess']), 'pending' : parsers.from_wei(chess_position['pending_chess'])}
-        #     poolIDs['%s_%s_want' % (poolKey, 'chessPosition')] = '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6'
+        total_pending_chess = sum([chess_position[f'{n}_pending'] for n in helper])
+
+        if chess_position['chess_staked'] > 0 or total_pending_chess > 0:
+            poolNest[poolKey]['userData']['chessPosition'] = {'want': '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6', 'staked' : chess_position['chess_staked'], 'pending' : total_pending_chess}
+            poolIDs['%s_%s_want' % (poolKey, 'chessPosition')] = '0x20de22029ab63cf9A7Cf5fEB2b737Ca1eE4c82A6'
+
+        reward_tokens = {'0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c' : 'BTCB', '0x2170ed0880ac9a755fd29b2688956bd959f933f8' : 'ETH', '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' : 'BNB'}
+
+        for fee in fee_distribution:
+            if chess_position[f'{fee}_pending'] > 0:
+                    poolNest[poolKey]['userData'][chess_position[f'{fee}_want']] = {'want': chess_position[f'{fee}_want'], 'staked' : 0, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, chess_position[f'{fee}_want'])] = chess_position[f'{fee}_want']
+                    reward_token_0 = {'pending': chess_position[f'{fee}_pending'], 'symbol' : reward_tokens[chess_position[f'{fee}_want']], 'token' : chess_position[f'{fee}_want']}
+                    poolNest[poolKey]['userData'][chess_position[f'{fee}_want']]['gambitRewards'].append(reward_token_0)
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest
