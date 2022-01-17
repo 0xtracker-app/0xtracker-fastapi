@@ -6120,6 +6120,22 @@ class Farms:
         'featured' : 2,
         'network' : 'cro',
         },
+                '0xBeefyMetis' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0xca3f508b8e4dd382ee878a314789373d80a5190a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyMetis',
+        'featured' : 2,
+        'network' : 'metis',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes, farm_templates.get_fh_pools],
+            'vaults' : [external_contracts.get_beefy_metis_pools, external_contracts.get_beefy_metis_boosts],
+            'args' : [{'farm_id' : '0xBeefyMetis', 'network' : 'metis'}, {'farm_id' : '0xBeefyMetis', 'network' : 'metis', 'stake_func' : 'stakedToken'}],
+            'vault_args' : [{}, {}]
+        }
+    },
 }
 
 

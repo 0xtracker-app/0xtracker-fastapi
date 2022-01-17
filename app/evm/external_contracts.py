@@ -103,6 +103,18 @@ async def get_beefy_boosts(session):
 
     return [x['earnContractAddress'] for x in t]
 
+async def get_beefy_metis_boosts(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/metis_stake.js')
+    s2 = "export const metisStakePools = ["
+    
+    data = r[r.index(s2) + len(s2) :len(r)-3].strip()
+    regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
+    x = f'[{regex}]'.replace('partners: ,','').replace('assets: ,','')
+    hson = hjson.loads(x)
+    t = json.loads(json.dumps(hson))
+
+    return [x['earnContractAddress'] for x in t]
+
 async def get_vsafes(session):
     r = await make_get_json(session,'https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
     return [x['id'] for x in r['data']]
@@ -321,6 +333,17 @@ async def get_beefy_fantom_pools(session):
 async def get_beefy_moon_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/moonriver_pools.js')
     s2 = "export const moonriverPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
+
+async def get_beefy_metis_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/metis_pools.js')
+    s2 = "export const metisPools = "
     
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
