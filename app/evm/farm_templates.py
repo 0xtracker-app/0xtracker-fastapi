@@ -2774,15 +2774,6 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
         fee_distribution = ['0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8', '0x67EB546A69c7e4d83F3c66018Fa549Dff5FED35b', '0xE06F85862af08c1C5F67F96e41eA663E29639DAe']
         market = ['0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D', '0x57C8041C6Aa3440843b5E48B16016A95F822195f', '0x15F2FeFcF313d397F9933C1Cb7590ab925d5cb59']
 
-        primaryMarketAddress = Web3.toChecksumAddress(0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D)
-        exchangeAddress = Web3.toChecksumAddress(0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6)
-        pancakePairAddress = Web3.toChecksumAddress(0x1472976E0B97F5B2fC93f1FFF14e2b5C4447b64F)
-        feeDistributorAddress = Web3.toChecksumAddress(0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8)
-        address = Web3.toChecksumAddress(wallet)
-        protocol_format = '(uint256,uint256,((uint256,uint256,uint256,uint256,uint256,uint256),(uint256,(uint256,uint256,uint256,uint256),uint256)),(bool,bool,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,(uint256,uint256,uint256,uint256,uint256)),(uint256,uint256,(uint256,uint256,uint256,uint256,uint256,uint256)),((uint256,uint256,uint256),uint256,uint256,((uint256,uint256,uint256),(uint256,uint256,uint256),uint256,uint256,(uint256,uint256,uint256),bool,uint256)))'
-
-        
-
         calls = []
         reward_calls = []
         for w,help in enumerate(helper):
@@ -2790,7 +2781,6 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
                 calls.append(Call(help,['availableBalanceOf(uint256,address)(uint256)',i, wallet], [[f'{stake}{w}{i}_staked', parsers.from_wei]]))
                 calls.append(Call(want_helper[w],[f'token{stake}()(address)'], [[f'{stake}{w}{i}_want', None]]))
 
-            #reward_calls.append(Call('0x81e32a0d408a55c1319a7761688ab0d7c2ec218f', [f'getProtocolData(address,address,address,address,address){protocol_format}', Web3.toChecksumAddress(market[w]), Web3.toChecksumAddress(help), pancakePairAddress, Web3.toChecksumAddress(fee_distribution[w]), address], [[w, None]]))
             reward_calls.append(Call(help,['claimableRewards(address)(uint256)', wallet], [[f'{help}_pending', parsers.from_wei]]))
             reward_calls.append(Call(fee_distribution[w],['claimableRewards(address)(uint256)', wallet], [[f'{fee_distribution[w]}_pending', parsers.from_wei]]))
             reward_calls.append(Call(fee_distribution[w],['rewardToken()(address)'], [[f'{fee_distribution[w]}_want', None]]))
@@ -2799,7 +2789,7 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
 
         stakes = await Multicall(calls, network)() 
         chess_position = await Multicall(reward_calls, network)()
-        print(chess_position)
+
         poolNest = {poolKey: 
         { 'userData': { } } }
 
