@@ -6136,6 +6136,22 @@ class Farms:
             'vault_args' : [{}, {}]
         }
     },
+                '0xStrongBlock' : {
+        'name' : 'strongblock.com',
+        'rewardToken' : '0xca3f508b8e4dd382ee878a314789373d80a5190a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xStrongBlock',
+        'featured' : 2,
+        'network' : 'eth',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_strong_block],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [{'farm_id' : '0xStrongBlock', 'network_id' : 'eth'}],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

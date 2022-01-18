@@ -15,7 +15,6 @@ from . import bitquery
 import asyncio
 import ast
 
-
 async def get_quickswap_lps(wallet, session):
     x = await call_graph('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03', {'operationName' : 'liquidityPositions', 'query' : bitquery.quickswap_lps.query, 'variables' : {'user': wallet.lower()}}, session)
     return x
@@ -715,9 +714,7 @@ async def get_venus_vaults(session):
     {'address' : '0x86aC3974e2BD0d60825230fa6F355fF11409df5c', 'decimal' : 18, 'want' : '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', 'collat_rate' : .55},
     {'address' : '0x26DA28954763B92139ED49283625ceCAf52C6f94', 'decimal' : 18, 'want' : '0xfb6115445bff7b52feb98650c87f44907e58f802', 'collat_rate' : .55},
     {'address' : '0x08CEB3F4a7ed3500cA0982bcd0FC7816688084c3', 'decimal' : 18, 'want' : '0x14016e85a25aeb13065688cafb43044c2ef86784', 'collat_rate' : .8},
-    {'address' : '0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93', 'decimal' : 18, 'want' : '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b', 'collat_rate' : .6},
-
-]
+    {'address' : '0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93', 'decimal' : 18, 'want' : '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b', 'collat_rate' : .6},]
 
 async def get_zombie_pools(session):
     return poolext.rugzombie.pools
@@ -763,8 +760,6 @@ async def get_elk_vaults(network, session):
         vaults.append(STAKING[network]['ELK'])
 
         return vaults
-
-
 
 async def stadium_farm_info(session):
     return poolext.ext_masterchef.stadium_farm_info
@@ -932,3 +927,51 @@ async def get_strongblock(session):
             'contract' : '',
         }
     }
+
+async def get_strongblock_nodes(session, wallet):
+    markets = await call_graph('https://gql.strongblock.com', {'query' : """query ($cursor: Int, $take: Int = 15, $address: String, $search: String, $orderBy: NodesOrderBy) {
+  nodes(
+    cursor: $cursor
+    take: $take
+    address: $address
+    search: $search
+    orderBy: $orderBy
+  ) {
+    cursor
+    totalItems
+    hasMoreItems
+    items {
+      id
+      uid
+      type
+      address
+      node_id
+      node_type
+      name
+      description
+      location
+      logo
+      staked_nft
+      rpc_url
+      ws_url
+      web_url
+      json_url
+      dvpn_address
+      created_at
+      added_at
+      city {
+        name
+        state
+        country
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}
+""", 'variables' : {
+  "take": 400,
+  "address": wallet
+}}, session)
+    return markets

@@ -3056,7 +3056,6 @@ async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults,pendin
         else:
             return None
 
-
 async def get_euler_staking(wallet,farm_id,network_id,vaults):
         poolKey = farm_id
         calls = []
@@ -3269,6 +3268,40 @@ async def get_wagmi_bonds(wallet, vaults, farm_id, network_id, reward_symbol):
                     if f'{breakdown[0]}_pending' in stakes:
                         reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : vaults['REWARD'], 'decimal' : 18}
                         poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'] = [reward_token_0]
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+async def get_strong_block(wallet,farm_id,network_id, vaults):
+
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+        
+        pool_length = await Call('0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655', [f'entityNodeCount(address)(uint128)', wallet],None,network)() 
+
+        for pid in range(0,pool_length):
+                calls.append(Call('0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655', [f'getReward(address,uint128)(uint256)', wallet, pid], [[f'{pid}_pending', parsers.from_wei]]))
+
+        stakes=await Multicall(calls, network, _strict=False)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        total_pending = sum([stakes[n] for n in stakes])
+
+        if total_pending > 0:
+            want_token = '0x990f341946a3fdb507ae7e52d17851b87168017c'
+
+            poolNest[poolKey]['userData']['nodes'] = {'want': want_token, 'staked' : 0, 'gambitRewards' : []}
+            poolIDs['%s_%s_want' % (poolKey, 'nodes')] = want_token
+
+            reward_token_0 = {'pending': total_pending, 'symbol' : 'STRONG', 'token' : want_token}
+            poolNest[poolKey]['userData']['nodes']['gambitRewards'].append(reward_token_0)
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest    
