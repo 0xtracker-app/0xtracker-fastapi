@@ -33,7 +33,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
                 staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, session=session).lookup())
 
                 for position in each['result']:
-                    staked_position['validators'].append(position['delegation']['validator_address'])
+                    staked_position['validators'].append(position['delegation']['validator_address'] if 'delegation' in position else position['validator_address'])
                     staked_position['staked'] += float(position['balance']['amount'])
                     staked_position['want'] = position['balance']['denom']
 
@@ -80,15 +80,15 @@ async def get_osmosis_staking(wallet, session, vaults, farm_id, mongodb, network
     poolIDs = {}
 
     for i,each in enumerate(staking[0]['coins']):
-
-            staked_position = {'staked' : 0, 'gambitRewards' : [], 'network' : 'cosmos'}
-            want_token = each['denom']
-            staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, network=net_config, session=session).lookup())
-            staked_position['want'] = want_token
-            staked_position['staked'] = helpers.from_custom(each['amount'], 18)
-        
-            poolNest[poolKey]['userData'][want_token] = staked_position
-            poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+            if 'coins' in staking[0]:
+                staked_position = {'staked' : 0, 'gambitRewards' : [], 'network' : 'cosmos'}
+                want_token = each['denom']
+                staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, network=net_config, session=session).lookup())
+                staked_position['want'] = want_token
+                staked_position['staked'] = helpers.from_custom(each['amount'], 18)
+            
+                poolNest[poolKey]['userData'][want_token] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
 
     if 'coins' in staking[1]:
         for i,each in enumerate(staking[1]['coins']):
