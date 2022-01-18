@@ -24,28 +24,30 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
 
     for i,each in enumerate(staking):
 
-        if 'delegation_responses' in each:
-            if len(each['delegation_responses']) > 0:
+        if 'result' in each:
+            if len(each['result']) > 0:
                 staked_position = {'staked' : 0, 'gambitRewards' : [], 'validators' : [], 'network' : 'cosmos'}
                 reward_token = {'pending': 0}
-                want_token = each['delegation_responses'][0]['balance']['denom']
+                want_token = each['result'][0]['balance']['denom']
 
-                staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb).lookup())
+                staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, session=session).lookup())
 
-                for position in each['delegation_responses']:
+                for position in each['result']:
                     staked_position['validators'].append(position['delegation']['validator_address'])
                     staked_position['staked'] += float(position['balance']['amount'])
                     staked_position['want'] = position['balance']['denom']
 
-                if 'unbonding_responses' in unbonded[i] and unbonded[i]['unbonding_responses']:
-                    for entry in unbonded[i]['unbonding_responses']:
-                        for pending in entry['entries']:
-                            staked_position['staked'] += float(pending['balance'])
+                if 'result' in unbonded[i]:
+                    if len(unbonded[i]['result']) > 0:
+                        for entry in unbonded[i]['result']:
+                            for pending in entry['entries']:
+                                staked_position['staked'] += float(pending['balance'])
 
-                if 'total' in rewards[i] and rewards[i]['total']:
-                    for reward_position in rewards[i]['total']:
-                        reward_token['pending'] += float(reward_position['amount'])
-                        reward_token['token'] = reward_position['denom']
+                if 'result' in rewards[i]:
+                    if len(rewards[i]['result']) > 0:
+                        for reward_position in rewards[i]['result']['total']:
+                            reward_token['pending'] += float(reward_position['amount'])
+                            reward_token['token'] = reward_position['denom']
 
                 staked_position['staked'] = helpers.from_custom(staked_position['staked'], staked_position['tkn0d'])
                 poolNest[poolKey]['userData'][want_token] = staked_position
