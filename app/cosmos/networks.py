@@ -10,14 +10,14 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno']
+        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
         'osmosis' : {
             'wallet' : from_atom(wallet,'osmo'),
             'rpc' : 'https://rpc-osmosis.keplr.app',
-            'rest' : 'https://lcd-osmosis.keplr.app',
+            'rest' : 'https://lcd-osmosis.cosmostation.io',
             'chain_id' : 'osmosis-1',
             'chain_name' : 'Osmosis',
             'explorer' : 'https://www.mintscan.io/osmosis/txs/',
@@ -32,7 +32,7 @@ class CosmosNetwork:
             'cosmos' : {
             'wallet' : from_atom(wallet,'cosmos'),
             'rpc' : 'https://rpc-cosmoshub.keplr.app',
-            'rest' : 'https://lcd-cosmoshub.keplr.app',
+            'rest' : 'https://lcd-cosmos.cosmostation.io',
             'chain_id' : 'cosmoshub-4',
             'chain_name' : 'Cosmos Hub',
             'explorer' : 'https://www.mintscan.io/cosmos/txs/',
@@ -152,7 +152,7 @@ class CosmosNetwork:
             'juno' : {
             'wallet' : from_atom(wallet,'juno'),
             'rpc' : 'https://rpc-juno.itastakers.com',
-            'rest' : 'https://lcd-juno.itastakers.com',
+            'rest' : 'https://lcd-juno.cosmostation.io',
             'chain_id' : 'juno-1',
             'chain_name' : 'Juno Mainnet',
             'explorer' : 'https://www.mintscan.io/juno',
@@ -287,7 +287,7 @@ class CosmosNetwork:
             'stargaze' : {
             'wallet' : from_atom(wallet,'stars'),
             'rpc' : 'https://rpc.stargaze.publicawesome.dev',
-            'rest' : 'https://rest.stargaze.publicawesome.dev',
+            'rest' : 'https://lcd-stargaze.cosmostation.io',
             'chain_id' : 'stargaze-1',
             'chain_name' : 'Stargaze',
             'explorer' : 'https://www.mintscan.io/stargaze/txs',
@@ -340,6 +340,21 @@ class CosmosNetwork:
             'stake_token' : {
                 'denom' : 'ungm',
                 'symbol' : 'NGM',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:boot'
+            }
+        },
+            'kava' : {
+            'wallet' : from_atom(wallet,'kava'),
+            'rpc' : 'https://rpc-kava.cosmostation.io',
+            'rest' : 'https://lcd-kava.cosmostation.io',
+            'chain_id' : 'kava-7',
+            'chain_name' : 'kava',
+            'explorer' : 'https://www.mintscan.io/emoney',
+            'bech_prefix' : 'kava',
+            'stake_token' : {
+                'denom' : 'ukava',
+                'symbol' : 'KAVA',
                 'decimals' : 6,
                 'coin_gecko_id' : 'pool:boot'
             }
