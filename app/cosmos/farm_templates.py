@@ -151,3 +151,50 @@ async def get_sifchain_assets(wallet, session, vaults, farm_id, mongodb, network
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_junoswap(wallet, session, vaults, farm_id, mongodb, network):
+    poolKey = farm_id
+    cosmos = CosmosNetwork(wallet)
+    net_config = cosmos.all_networks[network]
+
+    
+    lp_info = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x, {"info":{}}) for x in vaults])
+    staking = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x['lp_token_address'], {"balance":{"address": net_config['wallet']}}) for x in lp_info])
+
+    poolNest = {
+        poolKey: {
+            'userData': {},
+            }
+        }
+
+    poolIDs = {}
+       
+    for i,each in enumerate(staking):
+            staked_balanced = int(each['balance'])
+            if staked_balanced > 0:
+                lp_data = lp_info[i]
+                staked_position = {'staked' : helpers.from_custom(staked_balanced, 6), 'gambitRewards' : [], 'network' : 'cosmos'}
+                want_token = lp_data['lp_token_address']
+                token_0 = await TokenMetaData(address=lp_info[i]['token1_denom']['native'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_1 = await TokenMetaData(address=lp_info[i]['token2_denom']['native'], mongodb=mongodb, network=net_config, session=session).lookup()
+
+                staked_position.update({
+                    'tokenID': want_token,
+                    'tkn0s': token_0['tkn0s'],
+                    'tkn0d': token_0['tkn0d'],
+                    'tkn1s': token_1['tkn0s'],
+                    'tkn1d': token_1['tkn0d'],
+                    'token0' : token_0['token0'],
+                    'token1' : token_1['token0'],
+                    'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
+                    'all_tokens': [token_0['token0'], token_1['token0']],
+                    'total_shares' : helpers.from_custom(int(lp_data['lp_token_supply']), 6),
+                    'reserves' : [int(lp_data['token1_reserve']),int(lp_data['token2_reserve'])]
+                })
+                poolNest[poolKey]['userData'][want_token] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None

@@ -31,7 +31,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client):
             if 'gambitRewards' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
                 for i, gr in enumerate(lastReturn[f]['userData'][x]['gambitRewards']):
-                        finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * (prices[gr['token'].lower()] if gr['token'].lower() in prices else 0.1)
+                        finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * (prices[gr['token'].lower()] if gr['token'].lower() in prices else 0)
                         finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount']
 
 
@@ -43,7 +43,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client):
                     finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
                    
             else:
-                    quotePrice = prices[lastReturn[f]['userData'][x]['token0'].lower()] if lastReturn[f]['userData'][x]['token0'].lower() in prices else 0.1
+                    quotePrice = prices[lastReturn[f]['userData'][x]['token0'].lower()] if lastReturn[f]['userData'][x]['token0'].lower() in prices else 0
                     singleStake = lastReturn[f]['userData'][x]['staked']
                     
                     finalResponse[f]['userData'][x]['actualStaked'] = singleStake

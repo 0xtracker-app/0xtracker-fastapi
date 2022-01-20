@@ -42,4 +42,16 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    'JunoSwap' : {
+        'name' : 'junoswap.com',
+        'masterChef' : 'JunoSwap',
+        'featured' : 2,
+        'network' : 'cosmos',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_junoswap],
+            'vaults' : [external_contracts.junoswap_vaults],
+            'args' : [{'farm_id' : 'JunoSwap', 'network' : 'juno'}],
+            'vault_args' : [{}]
+        }
+    },
 }
