@@ -1,6 +1,9 @@
-from .utils import make_get_json, make_get
+from .utils import make_get_json, make_get, make_post_json
 from .helpers import from_custom
+import base64
+from cosmpy.protos.cosmwasm.wasm.v1beta1.query_pb2 import QuerySmartContractStateRequest, QuerySmartContractStateResponse
 import js2py
+import json
 
 async def get_bank_balances(network, network_data, session):
     endpoint = network_data['rest']
@@ -148,3 +151,21 @@ async def get_osmosis_assets(session):
         'decimal' : x['denom_units'][1]['exponent']
         
         }  for x in r if 'ibc' in x}
+
+async def query_contract_state(client, rpc, contract_address, message):
+
+    payload = json.dumps({
+                "jsonrpc":"2.0",
+                "id":-1,
+                "method":"abci_query",
+                "params":
+                    {
+                        "path":"/cosmwasm.wasm.v1.Query/SmartContractState",
+                        "data": QuerySmartContractStateRequest(address=contract_address, query_data=json.dumps(message).encode("UTF8")).SerializeToString().hex(),
+                        "prove": False
+                    }
+            })
+
+    r = await make_post_json(client, rpc, {'data' : payload})
+    offset = base64.b64decode(r['result']["response"]["value"]).find('{'.encode())
+    return json.loads(base64.b64decode(r['result']["response"]["value"])[offset:].decode('utf8'))
