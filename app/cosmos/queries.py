@@ -47,7 +47,7 @@ async def get_network_staking_rewards(network, network_data, session):
 async def find_trace_route(ibc,network_data, session):
     endpoint = network_data['rest']
     route = ibc.replace('ibc/', '')
-    if network_data['chain_id'] == 'osmosis-1':
+    if network_data['chain_id'] in ['osmosis-1', 'juno-1']:
         r = await make_get_json(session, f'{endpoint}/ibc/apps/transfer/v1/denom_traces/{route}')
     else:
         r = await make_get_json(session, f'{endpoint}/ibc/applications/transfer/v1beta1/denom_traces/{route}')
