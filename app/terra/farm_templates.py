@@ -267,8 +267,6 @@ async def get_loop_staking(wallet, lcd_client, vaults, farm_id, staking_token, m
     else:
         return None
 
-
-
 async def get_mirror_farming(wallet, lcd_client, vaults, farm_id, mongodb, network, session, query_contract, reward_token):
     poolKey = farm_id
 
@@ -362,5 +360,37 @@ async def get_mirror_lending(wallet, lcd_client, vaults, farm_id, mongodb, netwo
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest    
+    else:
+        return None
+
+async def get_astroport_locks(wallet, lcd_client, vaults, farm_id, mongodb, network, session):
+    poolKey = farm_id
+
+    stakes = await lcd_client.wasm.contract_query('terra1627ldjvxatt54ydd3ns6xaxtd68a2vtyu7kakj', { "user_info": { "address" : wallet }})
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+    if 'lockup_infos' in stakes:
+        for i, each in enumerate(stakes['lockup_infos']):
+            if int(each['lp_units_locked']) > 0:
+                want_token = each['terraswap_lp_token']
+                want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+                staked = from_custom(int(each['lp_units_locked']), want_token_meta['token_decimal'])
+
+                poolNest[poolKey]['userData'][f'{want_token}{i}'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][f'{want_token}{i}'].update(want_token_meta)
+                poolIDs['%s_%s_want' % (poolKey, f'{want_token}{i}')] = want_token
+
+
+                pending_token = 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3'
+                reward_token_meta = await TokenMetaData(pending_token, mongodb, lcd_client, session).lookup()
+                reward_token_0 = {'pending': from_custom(each['claimable_generator_astro_debt'], reward_token_meta['tkn0d']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+                poolNest[poolKey]['userData'][f'{want_token}{i}']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
     else:
         return None

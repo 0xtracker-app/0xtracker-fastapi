@@ -133,4 +133,23 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    '0xAstroport' : {
+        'name' : 'astroport.fi',
+        'masterChef' : '0xAstroport',
+        'rewardToken' : 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_astroport_locks],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xAstroport',
+                    'network' : 'terra',
+                },        
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }

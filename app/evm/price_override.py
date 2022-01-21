@@ -58,5 +58,5 @@ class TokenOverride:
             '0x0955f99963b1aec8d0fe18a35ad830f562b113bc'.lower() : [get_price_from_router, {'token_in' : '0x000c6322df760155bbe4f20f2edd8f4cd35733a6', 'network' : 'bsc', 'router' : routers.BSCRouter.PCSV2, 'token_out' : '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 'decimal': 9, 'return_token' : '0x0955f99963b1aec8d0fe18a35ad830f562b113bc'.lower()}],
             '0x304857afdd16da07a2e61ca2f2b5103deedcf000'.lower() : [get_price_from_router, {'token_in' : '0x5b5fe1238aca91c65683acd7f9d9bf922e271eaa', 'network' : 'cro', 'router' : routers.CroRouter.CRONA, 'token_out' : '0xF2001B145b43032AAF5Ee2884e456CCd805F677D', 'decimal': 9, 'return_token' : '0x304857afdd16da07a2e61ca2f2b5103deedcf000'.lower()}],
             '0x153629b8ce84f5e6dd6044af779aa37adb431393'.lower() : [get_price_from_router, {'token_in' : '0x9505dbd77dacd1f6c89f101b98522d4b871d88c5', 'network' : 'bsc', 'router' : routers.BSCRouter.PCSV2, 'token_out' : '0xe9e7cea3dedca5984780bafc599bd69add087d56', 'decimal': 9, 'return_token' : '0x153629b8ce84f5e6dd6044af779aa37adb431393'.lower()}],
-
+            '0x990f341946a3fdb507ae7e52d17851b87168017c'.lower() : [get_price_from_uni3, {'return_token' : '0x990f341946a3fdb507ae7e52d17851b87168017c', 'pool' : '0xd34e4855146ac0c6d0e4a652bd5fb54830f91ba8', 'network' : 'eth', 'token_decimals' : [18,18], 'native' : True}],
 }

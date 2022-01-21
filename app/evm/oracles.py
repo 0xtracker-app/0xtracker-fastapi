@@ -39,7 +39,6 @@ async def get_price_from_firebird(token_in, token_out, amount, out_d, session):
     r = await make_get_json(session, url)
     return {token_in.lower() : parsers.from_custom(int(r['outputAmount']), out_d)}
 
-
 async def get_tranchess_price(helper,tranch,address,session):
     response = await Call(helper, ['estimateNavs(uint256)((uint256,uint256,uint256))', round_to_hour()], [[f'estimateNavs',parsers.parse_tranchess]], _w3=WEB3_NETWORKS['bsc'])()
 
@@ -423,7 +422,6 @@ async def get_xtoken_price(native, xnative, decimal, network, router_address):
 
         return {xjoe.lower() : joe_ratio * joe_price_usd}
 
-
 async def get_xboo_price():
         calls = []
 
@@ -488,11 +486,16 @@ async def get_ygg_price():
 
     return {'0x63cf309500d8be0b9fdb8f1fb66c821236c0438c'.lower() : ETH['0x6983d1e6def3690c4d616b13597a09e6193ea013'] * x['0x63cf309500d8be0b9fdb8f1fb66c821236c0438c']}
 
-async def get_price_from_uni3(return_token, pool, network, token_decimals):
-
+async def get_price_from_uni3(return_token, pool, network, token_decimals, native=False):
     x = await Call(pool, 'slot0()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'slot0',parsers.parse_slot_0]], _w3=WEB3_NETWORKS[network])()
 
-    return {return_token.lower() : uniSqrtPrice(token_decimals, x['slot0']['sqrtPriceX96'])}
+    if native:
+        network_route = NetworkRoutes(network)
+        native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [network_route.native, network_route.stable]], [[f'native_price', parsers.parse_router_native, network_route.dstable]], WEB3_NETWORKS[network])()
+
+        return {return_token.lower() : native_price['native_price'] / uniSqrtPrice(token_decimals, x['slot0']['sqrtPriceX96'])}
+    else:
+        return {return_token.lower() : uniSqrtPrice(token_decimals, x['slot0']['sqrtPriceX96'])}
 
 async def get_synth_price(address,aggregator,network):
 
