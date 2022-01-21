@@ -31,6 +31,7 @@ async def get_wallet_balances(wallet, session, mongo_client):
             for token in balance['tokens']:
                 token_denom = transform_trace[0][token['denom']] if token['denom'] in transform_trace[0] else token['denom']
                 token_metadata = await TokenMetaData(address=token_denom, mongodb=mongo_client, network=net_config[token_network], session=session).lookup()
+
                 if token_metadata:
                     token_decimal = token_metadata['tkn0d']
                 else:
