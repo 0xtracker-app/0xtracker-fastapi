@@ -85,7 +85,7 @@ class AVAXRouter():
 
 class ETHRouter():
     UNI = '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F'
-    UNIV2 = '0x7a250d5630b4cf539739df2c5dacb4c659f2488d'
+    SUSHI = '0x7a250d5630b4cf539739df2c5dacb4c659f2488d'
 
 class MoonRouter():
     SOLAR = '0xAA30eF758139ae4a7f798112902Bf6d65612045f'
