@@ -25,6 +25,16 @@ async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
                 await cosmos_tokens.update_one({'tokenID': token}, {"$set": single_token}, upsert=True)
 
                 return single_token
+            else:
+                single = await get_single(denom, network, session)
+
+                if single:
+                    token_metadata = { "tokenID" : single['denom'], "tkn0d" : single['decimal'], "tkn0s" : single['symbol'], "token0" : single['denom']}
+                    await cosmos_tokens.update_one({'tokenID': denom}, {"$set": token_metadata}, upsert=True)
+                    return token_metadata
+                else:
+                    return None
+                
         else:
             return None
 
@@ -34,7 +44,7 @@ async def get_single(token, network, session):
 
     if token in osmosis_tokens:
         return osmosis_tokens[token]
-    
+
     sif_tokens = await queries.get_sif_assets(session)
 
     if token in sif_tokens:

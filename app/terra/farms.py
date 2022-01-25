@@ -152,4 +152,24 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    '0xAnchorLending' : {
+        'name' : 'anchorprotocol.com (Lending)',
+        'masterChef' : '0xAnchorLending',
+        'rewardToken' : 'terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_anchor_lending],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xAnchorLending',
+                    'network' : 'terra',
+                },        
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }

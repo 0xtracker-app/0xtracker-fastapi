@@ -70,7 +70,7 @@ async def check_raydium_lp(client, token, session):
         "type": "lp",
     }
 
-    rayv4 = await client.get_program_accounts('675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8', data_size=752, encoding='base64', memcmp_opts=slicers.memcmp_owner(token, 464))
+    rayv4 = await client.get_program_accounts('675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8', data_size=752, encoding='jsonParsed', memcmp_opts=slicers.memcmp_owner(token, 464))
     
     if rayv4['result']:
         account_data = stake_layout.RAYDIUM_AMM_V4.parse(utils.decode_byte_string(rayv4['result'][0]['account']['data'][0]))
