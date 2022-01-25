@@ -35,6 +35,14 @@ async def get_voltswap_theta(wallet, session):
     else:
         return {'geysers' : [], 'user_vaults' : []}
 
+async def get_voltswap_moon(wallet, session):
+    geysers = await call_graph('https://geyser-graph-on-moonbeam.voltswap.finance/subgraphs/name/moonbeam/token-geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
+    vault = await call_graph('https://geyser-graph-on-moonbeam.voltswap.finance/subgraphs/name/moonbeam/token-geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
+    if vault['data']['user']:
+        return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
+    else:
+        return {'geysers' : [], 'user_vaults' : []}
+
 async def get_mai_graph(wallet, session):
 
     obj = """{
@@ -808,6 +816,9 @@ async def gambit_vaults(session):
 
 async def gmx_vaults(session):
     return poolext.gmx.vaults
+
+async def gmx_avax_vaults(session):
+    return poolext.gmx.vaults_avax
 
 async def squirrel_vaults(session):
     return poolext.squirrel.nuts

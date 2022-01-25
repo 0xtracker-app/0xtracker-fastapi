@@ -4902,6 +4902,27 @@ class Farms:
             'vault_args' : [{'wallet' : wallet}]
         }
     },
+    #             '0xVoltSwapMoon' : {
+    #     'name' : 'voltswap.finance',
+    #     'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
+    #     'decimal' : 18,
+    #     'stakedFunction' : None,
+    #     'pendingFunction' : None,
+    #     'masterChef' : '0xVoltSwapMoon',
+    #     'featured' : 2,
+    #     'network' : 'moon',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_voltswap],
+    #         'vaults' : [external_contracts.get_voltswap_moon],
+    #         'args' : [
+    #                 {
+    #                     'farm_id' : '0xVoltSwapMoon',
+    #                     'network_id' : 'moon',
+    #                 },
+    #                 ],
+    #         'vault_args' : [{'wallet' : wallet}]
+    #     }
+    # },
                 '0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a' : {
         'name' : 'towerfinance.io',
         'rewardToken' : '0x88a3acac5c48f93121d4d7771a068a1fcde078bc',
@@ -6149,6 +6170,27 @@ class Farms:
             'functions' : [farm_templates.get_strong_block],
             'vaults' : [external_contracts.dummy_vault],
             'args' : [{'farm_id' : '0xStrongBlock', 'network_id' : 'eth'}],
+            'vault_args' : [{}]
+        }
+    },
+                '0xGMXAvax' : {
+        'name' : 'gmx.io',
+        'rewardToken' : '0x62edc0692BD897D2295872a9FFCac5425011c661',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xGMXAvax',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_gmx],
+            'vaults' : [external_contracts.gmx_avax_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xGMXAvax',
+                    'network_id' : 'avax'
+                }
+                    ],
             'vault_args' : [{}]
         }
     },

@@ -320,7 +320,7 @@ async def get_mirror_lending(wallet, lcd_client, vaults, farm_id, mongodb, netwo
     tasks.append(lcd_client.wasm.contract_query(query_contract, {"positions":{"owner_addr": wallet}}))
 
     stakes = await asyncio.gather(*tasks)
-    print(stakes)
+
     poolNest = {poolKey: 
     { 'userData': { }
      } }
@@ -439,5 +439,117 @@ async def get_anchor_lending(wallet, lcd_client, vaults, farm_id, mongodb, netwo
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest    
+    else:
+        return None
+
+async def get_anchor_staking(wallet, lcd_client, vaults, farm_id, mongodb, network, session):
+    poolKey = farm_id
+    pending_token = 'terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76'
+    tasks = []
+    response_key = []
+
+    #Staked UST
+    tasks.append(lcd_client.wasm.contract_query('terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu', { "balance": { "address": wallet }}))
+    response_key.append(f'stakedust')
+    #LP Staking
+    tasks.append(lcd_client.wasm.contract_query('terra1897an2xux840p9lrh6py3ryankc6mspw49xse3', { "staker_info": { "staker": wallet }}))
+    response_key.append(f'lpstaking')
+    #Staked ANC
+    tasks.append(lcd_client.wasm.contract_query('terra1f32xyep306hhcxxxf7mlyh0ucggc00rm2s9da5', { "staker": { "address": wallet }}))
+    response_key.append(f'ancstaking')
+    #bLUNA Rewards
+    tasks.append(lcd_client.wasm.contract_query('terra17yap3mhph35pcwvhza38c2lkj7gzywzy05h7l0', { "accrued_rewards": { "address": wallet }}))
+    response_key.append(f'blunarewards')
+    #bETH Rewards
+    tasks.append(lcd_client.wasm.contract_query('terra1939tzfn4hn960ychpcsjshu8jds3zdwlp8jed9', { "accrued_rewards": { "address": wallet }}))
+    response_key.append(f'bethrewards')
+    #Unbonded LUNA
+    tasks.append(lcd_client.wasm.contract_query('terra1mtwph2juhj0rvjz7dy92gvl6xvukaxu8rfv8ts', { "withdrawable_unbonded": { "address": wallet }}))
+    response_key.append(f'unlocked')
+    #Unbonded LUNA
+    tasks.append(lcd_client.wasm.contract_query('terra1mtwph2juhj0rvjz7dy92gvl6xvukaxu8rfv8ts', { "unbond_requests": { "address": wallet }}))
+    response_key.append(f'requests')
+    #Collateral Rewards
+    tasks.append(lcd_client.wasm.contract_query('terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s', { "borrower_info": { "borrower": wallet }}))
+    response_key.append(f'collateral')
+
+    stakes = dict(zip(response_key, await asyncio.gather(*tasks)))
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    total_pending_rewards = int(stakes['blunarewards']['rewards']) + int(stakes['bethrewards']['rewards'])
+    total_unbonded_luna = sum([int(x[1]) for x in stakes['requests']['requests']])
+
+    if int(stakes['stakedust']['balance']) > 0:
+        want_token = 'terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu'
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = from_custom(int(stakes['stakedust']['balance']), want_token_meta['token_decimal'])
+
+        poolNest[poolKey]['userData'][f'stakedusd'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'stakedusd'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, 'stakedusd')] = want_token
+
+    if int(stakes['lpstaking']['bond_amount']) > 0:
+        want_token = 'terra1gecs98vcuktyfkrve9czrpgtg0m3aq586x6gzm'
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = from_custom(int(stakes['lpstaking']['bond_amount']), want_token_meta['token_decimal'])
+
+        poolNest[poolKey]['userData'][f'lpstaking'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'lpstaking'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, 'lpstaking')] = want_token
+
+        reward_token_meta = await TokenMetaData(pending_token, mongodb, lcd_client, session).lookup()
+        reward_token_0 = {'pending': from_custom(int(stakes['lpstaking']['pending_reward']), reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+        poolNest[poolKey]['userData'][f'lpstaking']['gambitRewards'].append(reward_token_0)
+
+    if int(stakes['ancstaking']['balance']) > 0:
+        want_token = pending_token
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = from_custom(int(stakes['ancstaking']['balance']), want_token_meta['token_decimal'])
+
+        poolNest[poolKey]['userData'][f'ancstaking'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'ancstaking'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, 'ancstaking')] = want_token
+
+    if total_pending_rewards > 0:
+        want_token = 'uusd'
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = 0
+
+        poolNest[poolKey]['userData'][f'total_pending_rewards'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'total_pending_rewards'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, 'total_pending_rewards')] = want_token
+
+        reward_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        reward_token_0 = {'pending': from_custom(total_pending_rewards, reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+        poolNest[poolKey]['userData'][f'total_pending_rewards']['gambitRewards'].append(reward_token_0)
+
+    if int(float(stakes['collateral']['pending_rewards'])) > 0:
+        want_token = pending_token
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = 0
+
+        poolNest[poolKey]['userData'][f'total_collateral_rewards'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'total_collateral_rewards'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, 'total_collateral_rewards')] = want_token
+
+        reward_token_meta = await TokenMetaData(pending_token, mongodb, lcd_client, session).lookup()
+        reward_token_0 = {'pending': from_custom(int(float(stakes['collateral']['pending_rewards'])), reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+        poolNest[poolKey]['userData'][f'total_collateral_rewards']['gambitRewards'].append(reward_token_0)
+            
+    if total_unbonded_luna > 0:
+        want_token = 'terra1kc87mu460fwkqte29rquh4hc20m54fxwtsx7gp'
+        want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+        staked = from_custom(int(total_unbonded_luna), want_token_meta['token_decimal'])
+
+        poolNest[poolKey]['userData'][f'total_unbonded_luna'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][f'total_unbonded_luna'].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, 'total_unbonded_luna')] = want_token
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
     else:
         return None

@@ -172,4 +172,23 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    '0xAnchor' : {
+        'name' : 'anchorprotocol.com',
+        'masterChef' : '0xAnchor',
+        'rewardToken' : 'terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_anchor_staking],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xAnchor',
+                    'network' : 'terra',
+                },        
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }

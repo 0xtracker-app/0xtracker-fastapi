@@ -469,6 +469,17 @@ async def get_glp_price():
 
     return {'0x4277f8F2c384827B5273592FF7CeBd9f2C1ac258'.lower() : glp_price}
 
+async def get_glp_price_avax():
+
+    x = [] 
+    x.append(Call('0xe1ae4d4b06A5Fe1fc288f6B4CD72f9F8323B107F', [f'getAumInUsdg(bool)(uint256)', True], [[f'getAum', parsers.from_wei]]))
+    x.append(Call('0x01234181085565ed162a948b6a5e88758CD7c7b8','totalSupply()(uint256)', [['totalSupply', parsers.from_wei]]))
+
+    multi = await Multicall(x,WEB3_NETWORKS['avax'])()
+    glp_price = multi['getAum'] / multi['totalSupply']
+
+    return {'0x01234181085565ed162a948b6a5e88758CD7c7b8'.lower() : glp_price}
+
 async def get_gmx_price(return_token):
 
     ETH = await get_price_from_router(token_in='0x82af49447d8a07e3bd95bd0d56f35241523fbab1',network='arb',router=ArbRouter.SUSHI)
