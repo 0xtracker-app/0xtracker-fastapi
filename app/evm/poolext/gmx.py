@@ -50,3 +50,56 @@ vaults = [
 
 },
 ]
+
+vaults_avax = [
+{
+    'name' : 'GMX',
+    'contract' : '0x956d63dd6540230487Eb7E599ef8B0C6FDcA4Ab8',
+    'stakeToken' : '0x62edc0692BD897D2295872a9FFCac5425011c661',
+    'rewardTracker' : '0x2bD10f8E93B3669b6d42E74eEedC65dd1B0a1342',
+    'rewards' : [
+        {
+            'yieldTracker' : '0x2bD10f8E93B3669b6d42E74eEedC65dd1B0a1342',
+            'symbol' : 'esGMX',
+            'rewardToken' : '0xFf1489227BbAAC61a9209A08929E4c2a526DdD17',
+            'rewardFunction' : 'claimable'
+        },
+        {
+            'yieldTracker' : '0x4d268a7d4C16ceB5a606c173Bd974984343fea13',
+            'symbol' : 'AVAX',
+            'rewardToken' : '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+            'rewardFunction' : 'claimable'
+        }
+    ]
+
+},
+{
+    'name' : 'esGMX',
+    'contract' : '0x956d63dd6540230487Eb7E599ef8B0C6FDcA4Ab8',
+    'stakeToken' : '0xFf1489227BbAAC61a9209A08929E4c2a526DdD17',
+    'rewardTracker' : '0x2bD10f8E93B3669b6d42E74eEedC65dd1B0a1342',
+    'rewards' : []
+
+},
+{
+    'name' : 'GLP',
+    'contract' : '0x956d63dd6540230487Eb7E599ef8B0C6FDcA4Ab8',
+    'stakeToken' : '0x01234181085565ed162a948b6a5e88758CD7c7b8',
+    'rewardTracker' : '0xd2D1162512F927a7e282Ef43a362659E4F2a728F',
+    'rewards' : [
+        {
+            'yieldTracker' : '0x9e295B5B976a184B14aD8cd72413aD846C299660',
+            'symbol' : 'esGMX',
+            'rewardToken' : '0xFf1489227BbAAC61a9209A08929E4c2a526DdD17',
+            'rewardFunction' : 'claimable'
+        },
+        {
+            'yieldTracker' : '0xd2D1162512F927a7e282Ef43a362659E4F2a728F',
+            'symbol' : 'AVAX',
+            'rewardToken' : '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+            'rewardFunction' : 'claimable'
+        }
+    ]
+
+},
+]
