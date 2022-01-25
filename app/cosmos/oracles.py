@@ -53,7 +53,8 @@ async def check_sif_pricing(session, network_data):
     r = await make_get_json(session, 'https://data.sifchain.finance/beta/asset/tokenStats')
     sif_prices = {}
 
-    for each in r['body']['pools']:
-        sif_prices[f'c{each["symbol"]}'] = each["priceToken"]
+    if 'body' in r:
+        for each in r['body']['pools']:
+            sif_prices[f'c{each["symbol"]}'] = each["priceToken"]
 
     return sif_prices

@@ -143,14 +143,15 @@ async def get_sif_assets(session):
 
 async def get_osmosis_assets(session):
     endpoint = f'https://raw.githubusercontent.com/osmosis-labs/assetlists/main/osmosis-1/osmosis-1.assetlist.json'
-    r = await make_get_json(session, endpoint)
+    r =  json.loads(await make_get(session, endpoint))
 
-    return {x['ibc']['source_denom'] : { 
-        'denom' : x['ibc']['source_denom'],
-        'symbol': x['symbol'],
-        'decimal' : x['denom_units'][1]['exponent']
-        
-        }  for x in r if 'ibc' in x}
+    token_dict = {}
+
+    for x in r['assets']:
+        if 'ibc' in x and len(x['denom_units']) == 2:
+            token_dict[x['ibc']['source_denom']] = { 'denom' : x['ibc']['source_denom'], 'symbol': x['symbol'], 'decimal' : x['denom_units'][1]['exponent']}
+
+    return token_dict
 
 async def query_contract_state(client, rpc, contract_address, message):
 

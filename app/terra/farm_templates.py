@@ -394,3 +394,50 @@ async def get_astroport_locks(wallet, lcd_client, vaults, farm_id, mongodb, netw
         return poolIDs, poolNest
     else:
         return None
+
+async def get_anchor_lending(wallet, lcd_client, vaults, farm_id, mongodb, network, session):
+
+    poolKey = farm_id
+    tasks = []
+    response_key = []
+
+
+    tasks.append(lcd_client.wasm.contract_query('terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8', { "collaterals": { "borrower": wallet }}))
+    response_key.append(f'collateral')
+
+    tasks.append(lcd_client.wasm.contract_query('terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s', { "borrower_info": { "borrower": wallet }}))
+    response_key.append(f'borrowed')
+
+    stakes = dict(zip(response_key, await asyncio.gather(*tasks)))
+
+    poolNest = {poolKey: 
+    { 'userData': { }
+     } }
+
+    poolIDs = {}
+
+    for each in stakes['collateral']['collaterals']:
+        collat_address = each[0]
+        want_token_meta = await TokenMetaData(each[0], mongodb, lcd_client, session).lookup()
+        collat = from_custom(int(each[1]), want_token_meta['token_decimal'])
+        borrow_rate = .6
+        
+        poolNest[poolKey]['userData'][collat_address] = {'staked' : collat, 'want': collat_address, 'borrowed' : 0, 'rate' : borrow_rate, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][collat_address].update(want_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, collat_address)] = collat_address
+        
+
+    if int(stakes['borrowed']['loan_amount']) > 0:
+        borrow_address = 'uusd'
+        borrow_token_meta = await TokenMetaData('uusd', mongodb, lcd_client, session).lookup()
+        borrowed = from_custom(int(stakes['borrowed']['loan_amount']), borrow_token_meta['token_decimal'])
+
+
+        poolNest[poolKey]['userData'][borrow_address] = {'staked' : 0, 'want': borrow_address, 'borrowed' : borrowed, 'rate' : 0, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][borrow_address].update(borrow_token_meta)
+        poolIDs['%s_%s_want' % (poolKey, borrow_address)] = borrow_address
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
