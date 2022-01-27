@@ -4902,27 +4902,27 @@ class Farms:
             'vault_args' : [{'wallet' : wallet}]
         }
     },
-    #             '0xVoltSwapMoon' : {
-    #     'name' : 'voltswap.finance',
-    #     'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
-    #     'decimal' : 18,
-    #     'stakedFunction' : None,
-    #     'pendingFunction' : None,
-    #     'masterChef' : '0xVoltSwapMoon',
-    #     'featured' : 2,
-    #     'network' : 'moon',
-    #     'extraFunctions' : {
-    #         'functions' : [farm_templates.get_voltswap],
-    #         'vaults' : [external_contracts.get_voltswap_moon],
-    #         'args' : [
-    #                 {
-    #                     'farm_id' : '0xVoltSwapMoon',
-    #                     'network_id' : 'moon',
-    #                 },
-    #                 ],
-    #         'vault_args' : [{'wallet' : wallet}]
-    #     }
-    # },
+                '0xVoltSwapMoon' : {
+        'name' : 'voltswap.finance',
+        'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVoltSwapMoon',
+        'featured' : 2,
+        'network' : 'moonbeam',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_voltswap],
+            'vaults' : [external_contracts.get_voltswap_moon],
+            'args' : [
+                    {
+                        'farm_id' : '0xVoltSwapMoon',
+                        'network_id' : 'moonbeam',
+                    },
+                    ],
+            'vault_args' : [{'wallet' : wallet}]
+        }
+    },
                 '0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a' : {
         'name' : 'towerfinance.io',
         'rewardToken' : '0x88a3acac5c48f93121d4d7771a068a1fcde078bc',
@@ -6194,6 +6194,35 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xEDFB330F5FA216C9D2039B99C8cE9dA85Ea91c1E' : {
+        'name' : 'stellaswap.com',
+        'rewardToken' : '0x0e358838ce72d5e61e0018a2ffac4bec5f4c88d2',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingStella',
+        'masterChef' : '0xEDFB330F5FA216C9D2039B99C8cE9dA85Ea91c1E',
+        'featured' : 2,
+        'network' : 'moonbeam',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xEDFB330F5FA216C9D2039B99C8cE9dA85Ea91c1E',
+                    'network_id' : 'moonbeam',
+                    'farm_data' :{
+                        'rewardToken' : '0x0e358838ce72d5e61e0018a2ffac4bec5f4c88d2',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingStella',
+                        'masterChef' : '0x54e2d14Df9348B3FBA7E372328595b9F3Ae243fE',
+                        'rewardSymbol' : 'STELLA',
+                    }
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+        },
 }
 
 
