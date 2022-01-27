@@ -2727,7 +2727,7 @@ async def get_gmx(wallet, vaults, farm_id, network_id):
         gmx = vaults
         poolKey = farm_id
         network = WEB3_NETWORKS[network_id]
-        
+
         calls = []
         for stake in gmx:
             stake_token = stake['stakeToken']
