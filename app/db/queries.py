@@ -76,3 +76,130 @@ def get_user_records(wallet, timestamp):
             }
         ]
     }
+
+def addresses_per_day():
+    return     [
+        { 
+            "$addFields" : { 
+                "date" : { 
+                    "$toDate" : { 
+                        "$subtract" : [
+                            { 
+                                "$toLong" : { 
+                                    "$toDate" : { 
+                                        "$multiply" : [
+                                            "$timeStamp", 
+                                            1000.0
+                                        ]
+                                    }
+                                }
+                            }, 
+                            { 
+                                "$mod" : [
+                                    { 
+                                        "$toLong" : { 
+                                            "$toDate" : { 
+                                                "$multiply" : [
+                                                    "$timeStamp", 
+                                                    1000.0
+                                                ]
+                                            }
+                                        }
+                                    }, 
+                                    86400000.0
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        }, 
+        { 
+            "$group" : { 
+                "_id" : { 
+                    "date" : "$date", 
+                    "wallet" : "$wallet"
+                }
+            }
+        }, 
+        { 
+            "$group" : { 
+                "_id" : "$_id.date", 
+                "total" : { 
+                    "$sum" : 1.0
+                }
+            }
+        }, 
+        { 
+            "$sort" : { 
+                "_id" : -1.0
+            }
+        }
+    ] 
+
+def farms_over_last_30_days():
+    return     [
+        { 
+            "$addFields" : { 
+                "date" : { 
+                    "$toDate" : { 
+                        "$subtract" : [
+                            { 
+                                "$toLong" : { 
+                                    "$toDate" : { 
+                                        "$multiply" : [
+                                            "$timeStamp", 
+                                            1000.0
+                                        ]
+                                    }
+                                }
+                            }, 
+                            { 
+                                "$mod" : [
+                                    { 
+                                        "$toLong" : { 
+                                            "$toDate" : { 
+                                                "$multiply" : [
+                                                    "$timeStamp", 
+                                                    1000.0
+                                                ]
+                                            }
+                                        }
+                                    }, 
+                                    86400000.0
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        }, 
+        { 
+            "$match" : { 
+                "farm" : { 
+                    "$ne" : "wallet"
+                }, 
+                "timeStamp" : { 
+                    "$gte" : time.time() - 86400*30
+                }
+            }
+        }, 
+        { 
+            "$group" : { 
+                "_id" : { 
+                    "farm" : "$farm"
+                }, 
+                "total" : { 
+                    "$sum" : 1.0
+                }
+            }
+        }, 
+        { 
+            "$sort" : { 
+                "total" : -1.0
+            }
+        },
+        { 
+            "$limit" : 20.0
+        }
+    ] 

@@ -19,7 +19,7 @@ from solsession.session_utils import solana_start, solana_stop
 from terrasession.session import AsyncLCDClient, get_terra
 from terrasession.session_utils import terra_start, terra_stop
 from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
-from db.queries import user_info_by_time
+from db.queries import user_info_by_time, addresses_per_day, farms_over_last_30_days
 
 app = FastAPI(title='FastAPI')
 #app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
@@ -143,6 +143,19 @@ async def get_token_approvals(wallet,network, mongo_db: AsyncIOMotorClient = Dep
 async def historical_transactions(wallet,network,contract,token, session: ClientSession = Depends(get_session)):
     results = await get_tx_to_contract(network, wallet, token, contract, session)
     return results
+
+@app.get('/stats/{type}', include_in_schema=False)
+async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
+    
+    stat_types  =  {
+        "users" : db.xtracker['user_data'].aggregate(addresses_per_day()),
+        "farms" : db.xtracker['user_data'].aggregate(farms_over_last_30_days())
+    }
+
+    
+    x = await stat_types[type].to_list(length=None)
+    
+    return x
 
 # @app.get('/router-details/{network}/{contract}')
 # async def router_details(network, contract, session: ClientSession = Depends(get_session)):
