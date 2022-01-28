@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava']
+        self.supported_networks = ['dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -357,6 +357,21 @@ class CosmosNetwork:
                 'symbol' : 'KAVA',
                 'decimals' : 6,
                 'coin_gecko_id' : 'pool:boot'
+            }
+        },
+            'dig' : {
+            'wallet' : from_atom(wallet,'dig'),
+            'rpc' : 'https://rpc-1-dig.notional.ventures',
+            'rest' : 'https://api-1-dig.notional.ventures',
+            'chain_id' : 'dig-1',
+            'chain_name' : 'Dig',
+            'explorer' : 'https://ping.pub/dig/tx/',
+            'bech_prefix' : 'dig',
+            'stake_token' : {
+                'denom' : 'udig',
+                'symbol' : 'DIG',
+                'decimals' : 6,
+                'coin_gecko_id' : 'pool:udig'
             }
         },
     }
