@@ -408,7 +408,7 @@ async def get_qs_vaults(session):
         r = scraper.get('https://quickswap.exchange/staking.json')
         cleaner = r.text[1:-1].replace("\\","")
         cleaned = json.loads(cleaner)
-        return [each['stakingRewardAddress'] for each in cleaned if each['ended'] == False]
+        return [each['stakingRewardAddress'] for each in cleaned if each['ended'] == False and each['stakingRewardAddress'] != '0x0000000000000000000000000000000000000000']
     
 async def get_dfyn_vaults(session):
     tasks = []
@@ -825,7 +825,7 @@ async def squirrel_vaults(session):
 
 async def get_adamant_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/current_vaults.json')
-    return json.loads(r)
+    return [each for each in json.loads(r) if each['vaultAddress'] != '0xe938A5D0fEbDbfEbf2bD11B8d012C9e055D4AB92']
 
 async def get_adamant_vaults_arb(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/arbitrum_vaults.json')
