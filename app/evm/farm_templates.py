@@ -3274,16 +3274,16 @@ async def get_wagmi_bonds(wallet, vaults, farm_id, network_id, reward_symbol):
         else:
             return None
 
-async def get_strong_block(wallet,farm_id,network_id, vaults):
+async def get_strong_block(wallet,farm_id,network_id, vaults, contract, reward_function):
 
         poolKey = farm_id
         calls = []
         network = WEB3_NETWORKS[network_id]
         
-        pool_length = await Call('0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655', [f'entityNodeCount(address)(uint128)', wallet],None,network)() 
+        pool_length = await Call(contract, [f'entityNodeCount(address)(uint128)', wallet],None,network)() 
 
-        for pid in range(0,pool_length):
-                calls.append(Call('0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655', [f'getReward(address,uint128)(uint256)', wallet, pid], [[f'{pid}_pending', parsers.from_wei]]))
+        for pid in range(0,pool_length+1):
+                calls.append(Call(contract, [f'{reward_function}(uint256)', wallet, pid], [[f'{pid}_pending', parsers.from_wei]]))
 
         stakes=await Multicall(calls, network, _strict=False)()
 
@@ -3297,11 +3297,11 @@ async def get_strong_block(wallet,farm_id,network_id, vaults):
         if total_pending > 0:
             want_token = '0x990f341946a3fdb507ae7e52d17851b87168017c'
 
-            poolNest[poolKey]['userData']['nodes'] = {'want': want_token, 'staked' : 0, 'gambitRewards' : []}
-            poolIDs['%s_%s_want' % (poolKey, 'nodes')] = want_token
+            poolNest[poolKey]['userData'][contract] = {'want': want_token, 'staked' : 0, 'gambitRewards' : []}
+            poolIDs['%s_%s_want' % (poolKey, contract)] = want_token
 
             reward_token_0 = {'pending': total_pending, 'symbol' : 'STRONG', 'token' : want_token}
-            poolNest[poolKey]['userData']['nodes']['gambitRewards'].append(reward_token_0)
+            poolNest[poolKey]['userData'][contract]['gambitRewards'].append(reward_token_0)
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest    
