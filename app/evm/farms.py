@@ -6182,10 +6182,14 @@ class Farms:
         'featured' : 2,
         'network' : 'eth',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_strong_block],
-            'vaults' : [external_contracts.dummy_vault],
-            'args' : [{'farm_id' : '0xStrongBlock', 'network_id' : 'eth'}],
-            'vault_args' : [{}]
+            'functions' : [farm_templates.get_strong_block, farm_templates.get_strong_block, farm_templates.get_strong_block],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault, external_contracts.dummy_vault],
+            'args' : [
+                {'farm_id' : '0xStrongBlock', 'network_id' : 'eth', 'contract' : '0xfbddadd80fe7bda00b901fbaf73803f2238ae655', 'reward_function' : 'getReward(address,uint128)'},
+                {'farm_id' : '0xStrongBlock', 'network_id' : 'eth', 'contract' : '0xc5622f143972a5da6aabc5f5379311ee5eb48568', 'reward_function' : 'getNodeReward(address,uint256)'},
+                {'farm_id' : '0xStrongBlock', 'network_id' : 'eth', 'contract' : '0xF9D986340EfBf992cA1E7ce074db1D3b8EECf578', 'reward_function' : 'getReward(address,uint128)'},
+                ],
+            'vault_args' : [{},{},{}]
         }
     },
                 '0xGMXAvax' : {
