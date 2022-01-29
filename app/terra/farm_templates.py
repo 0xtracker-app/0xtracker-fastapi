@@ -524,7 +524,7 @@ async def get_anchor_staking(wallet, lcd_client, vaults, farm_id, mongodb, netwo
         poolIDs['%s_%s_want' % (poolKey, 'total_pending_rewards')] = want_token
 
         reward_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
-        reward_token_0 = {'pending': from_custom(total_pending_rewards, reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+        reward_token_0 = {'pending': from_custom(total_pending_rewards, reward_token_meta['token_decimal']), 'symbol' : reward_token_meta['tkn0s'], 'token' : want_token}
         poolNest[poolKey]['userData'][f'total_pending_rewards']['gambitRewards'].append(reward_token_0)
 
     if int(float(stakes['collateral']['pending_rewards'])) > 0:
