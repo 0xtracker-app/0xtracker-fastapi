@@ -93,7 +93,7 @@ async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_clien
     luna_price = await get_luna_price(lcd_client)
     token_list = token_list_from_stakes(returned_object[1], farm_configuraiton)
     token_over = TokenOverride(lcd_client).tokens
-
+    
     prices = dict(zip([x['token'] for x in token_list], await asyncio.gather(*[get_price_from_pool(x['token'], x['decimal'], lcd_client, mongo_db, token_over, luna_price) for x in token_list])))
 
     response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, farm_configuraiton)

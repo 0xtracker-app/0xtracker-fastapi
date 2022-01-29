@@ -41,7 +41,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_config
                     finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
                    
             else:
-                    quotePrice = prices[lastReturn[f]['userData'][x]['token0']] if lastReturn[f]['userData'][x]['token0'] in prices else 0.1
+                    quotePrice = prices[lastReturn[f]['userData'][x]['token0']] if lastReturn[f]['userData'][x]['token0'] in prices else 0
                     singleStake = lastReturn[f]['userData'][x]['staked']
                     
                     finalResponse[f]['userData'][x]['actualStaked'] = singleStake
