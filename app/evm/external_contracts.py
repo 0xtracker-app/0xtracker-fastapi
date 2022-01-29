@@ -820,6 +820,32 @@ async def gmx_vaults(session):
 async def gmx_avax_vaults(session):
     return poolext.gmx.vaults_avax
 
+async def thor_nodes(session):
+    return {'nodes' : [
+        '0xbA4400C4619Cd15267c2FeCd4Dbc39d310CEe3f1',
+        '0x37DA69aa9b436D3Bf6cC7530E11Ef98A5a052441',
+        '0x79190a9c108F6cc1CE956eA8f7ba03cD4e3260b9',
+        '0x9C0200F3e9673BCfe6D80076aa976F446d74758A'],
+        'reward_token' : '0x8F47416CaE600bccF9530E9F3aeaA06bdD1Caa79',
+        'reward_symbol' : 'THOR'
+        }
+
+async def power_nodes(session):
+    return {'nodes' : [
+        '0x0033FA9888028dD4BC5905241cbf312a8d0b21B3',
+        '0xFb717Be387F0FAB42A55772ef5CC55B4c324DabD',
+        '0x928a833b65d967fb0b785ecdce6ccf1a867f3c28',
+        '0xC8007751603bB3E45834A59af64190Bb618b4a83'],
+        'reward_token' : '0x131c7afb4E5f5c94A27611f7210dfEc2215E85Ae',
+        'reward_symbol' : 'POWER'
+        }
+
+#HEIMDALL : 0xbA4400C4619Cd15267c2FeCd4Dbc39d310CEe3f1
+#THOR : 0x37DA69aa9b436D3Bf6cC7530E11Ef98A5a052441
+#FREYA : 0x79190a9c108F6cc1CE956eA8f7ba03cD4e3260b9
+#ODIN: 0x9C0200F3e9673BCfe6D80076aa976F446d74758A
+
+
 async def squirrel_vaults(session):
     return poolext.squirrel.nuts
 

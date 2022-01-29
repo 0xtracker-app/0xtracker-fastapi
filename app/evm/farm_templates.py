@@ -993,8 +993,8 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
         
         calls.append(Call(vault, [f'{pps}()(uint256)'], [[f'{vault}_getPricePerFullShare', parsers.from_wei]]))
 
-    if len(calls) > 1500:
-        chunks = len(calls) / 1000
+    if len(calls) > 1000:
+        chunks = len(calls) / 500
         x = np.array_split(calls, math.ceil(chunks))
         all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network], _strict=strict)() for call in x])
         stakes = reduce(lambda a, b: dict(a, **b), all_calls)
@@ -3302,6 +3302,50 @@ async def get_strong_block(wallet,farm_id,network_id, vaults):
 
             reward_token_0 = {'pending': total_pending, 'symbol' : 'STRONG', 'token' : want_token}
             poolNest[poolKey]['userData']['nodes']['gambitRewards'].append(reward_token_0)
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+async def get_node_layout(wallet,farm_id,network_id,vaults):
+
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+        
+        for i,node in enumerate(vaults['nodes']):
+                calls.append(Call(node, [f'_getNodesCreationTime(address)(string)', wallet], [[f"{i}", None]]))
+
+        node_strings = await Multicall(calls, network, _strict=False)()
+
+        pending_calls = []
+
+        for node in node_strings:
+            node_id = int(node)
+            for i, timestamp in enumerate(node_strings[node].split('#')):
+
+                pending_calls.append(Call(vaults['nodes'][node_id], [f'_getNodeRewardAmountOf(address,uint256)(uint256)', wallet, int(timestamp)], [[f"{node_id}_{i}", parsers.from_wei]]))
+
+        stakes=await Multicall(pending_calls, network, _strict=False)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for pending in node_strings:
+            node_id = int(pending)
+            want_token = vaults['reward_token']
+            node_length = len(node_strings[pending].split('#'))
+
+            total_pending = sum([stakes[f'{node_id}_{n}'] for n in range(0, node_length)])
+            
+            poolNest[poolKey]['userData'][node_id] = {'want': want_token, 'staked' : 0, 'gambitRewards' : []}
+            poolIDs['%s_%s_want' % (poolKey, node_id)] = want_token
+
+            reward_token_0 = {'pending': total_pending, 'symbol' : vaults['reward_symbol'], 'token' : want_token}
+            poolNest[poolKey]['userData'][node_id]['gambitRewards'].append(reward_token_0)
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest    
