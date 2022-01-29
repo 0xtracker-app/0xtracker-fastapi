@@ -6237,7 +6237,49 @@ class Farms:
                     ],
             'vault_args' : [{}]
         }
-        },
+    },
+                '0xThorNodes' : {
+        'name' : 'thor.financial',
+        'rewardToken' : '0x8F47416CaE600bccF9530E9F3aeaA06bdD1Caa79',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xThorNodes',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_node_layout],
+            'vaults' : [external_contracts.thor_nodes],
+            'args' : [
+                {
+                    'farm_id' : '0xThorNodes',
+                    'network_id' : 'avax'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xPowerNodes' : {
+        'name' : 'powernode.io',
+        'rewardToken' : '0x131c7afb4E5f5c94A27611f7210dfEc2215E85Ae',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xPowerNodes',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_node_layout],
+            'vaults' : [external_contracts.power_nodes],
+            'args' : [
+                {
+                    'farm_id' : '0xPowerNodes',
+                    'network_id' : 'ftm'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
