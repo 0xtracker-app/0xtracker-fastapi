@@ -5952,9 +5952,46 @@ class Farms:
                     'network' : 'avax',
                     'want_token' : 'thorus',
                     '_pps' : 'getPricePerFullShare'
-                }
+                },
+                {
+                    'farm_id' : '0x871d68cFa4994170403D9C1c7b3D3E037c76437d',
+                    'network_id' : 'avax',
+                    'staked' : 'thorus',
+                    'reward' : 'thorus',
+                    'pending_reward' : 'claimablePayout'
+                },
                     ],
-            'vault_args' : [{}]
+            'vault_args' : [{},{}]
+        }
+    },
+                '0xEeB84a24e10502D8A5c97B11df381D1550B25b9d' : {
+        'name' : 'thorus.fi',
+        'rewardToken' : '0x735abe48e8782948a37c7765ecb76b98cde97b0f',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingThorus',
+        'masterChef' : '0xEeB84a24e10502D8A5c97B11df381D1550B25b9d',
+        'featured' : 2,
+        'network' : 'moonbeam',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_thorus_mb],
+            'args' : [
+                {
+                    'farm_id' : '0xEeB84a24e10502D8A5c97B11df381D1550B25b9d',
+                    'network' : 'moonbeam',
+                    'want_token' : 'thorus',
+                    '_pps' : 'getPricePerFullShare'
+                },
+                {
+                    'farm_id' : '0xEeB84a24e10502D8A5c97B11df381D1550B25b9d',
+                    'network_id' : 'moonbeam',
+                    'staked' : 'thorus',
+                    'reward' : 'thorus',
+                    'pending_reward' : 'claimablePayout'
+                },
+                    ],
+            'vault_args' : [{},{}]
         }
     },
                 '0xMetaReserve' : {

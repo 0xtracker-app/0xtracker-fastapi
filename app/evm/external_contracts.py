@@ -172,6 +172,22 @@ async def get_wault_pools_matic(session):
     r = [x['contractAddress'] for x in r if x['tvl'] > 1]
     return r
 
+async def get_thorus_bonds(session):
+    round_time = round(time.time())
+    url = f'https://api.thorus.fi/bonds.json?t={round_time}'
+    r = await make_get_json(session, url)
+
+    r = [x['address'] for x in r]
+    return r
+
+async def get_thorus_bonds_moonbeam(session):
+    round_time = round(time.time())
+    url = f'https://api.thorus.fi/moonbeam_bonds.json?t={round_time}'
+    r = await make_get_json(session, url)
+
+    r = [x['address'] for x in r]
+    return r
+
 async def get_blockmine(session):
     return [
         '0x45E6729373db693e1422FbBdF0EaF530E09Bd388',
@@ -568,6 +584,9 @@ async def get_pcs_auto(session):
 
 async def get_baby_auto(session):
     return ['0x3e1eaD5cBe817689F4bDB96bceeb112FdBE94dBc']
+
+async def get_thorus_mb(session):
+    return ['0x4c4BF319237D98a30A929A96112EfFa8DA3510EB']
 
 async def get_thorus_auto(session):
     return ['0x63468133ed352E602bEB61DD254D6060Ad2fe419']
