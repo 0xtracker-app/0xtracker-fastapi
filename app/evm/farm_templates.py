@@ -2970,6 +2970,7 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
         poolKey = farm_id
         calls = []
         network = WEB3_NETWORKS[network_id]
+        
         for geyser in vaults['geysers']:
             calls.append(Call(geyser['id'], [f'getGeyserData()((uint256,address,address))'], [[f"{geyser['id']}_tokens", None]]))
             for vault in vaults['user_vaults']:
@@ -2984,7 +2985,7 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
         poolIDs = {}
 
         token_symbols = await template_helpers.get_token_list_decimals_symbols([stakes[x][2] for x in stakes if 'tokens' in x],network_id)
-
+        geysers = {}
         for each in stakes:
             if 'user' in each:
                 if stakes[each][1] > 0:
@@ -2996,11 +2997,18 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
                     reward_symbol = token_symbols[f'{reward_token}_symbol']
                     reward_decimal = token_symbols[f'{reward_token}_decimals']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
-                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
-                
-                    reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token}
-                    poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+                    if want_token in geysers:
+                        geyser_key = geysers[want_token]
+                        reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token}
+                        poolNest[poolKey]['userData'][geyser_key]['gambitRewards'].append(reward_token_0)
+                    else:
+                        geysers[want_token] = breakdown[0]
+                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                        poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+                    
+                        reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token}
+                        poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+        
 
         if len(poolIDs) > 0:
             return poolIDs, poolNest    
