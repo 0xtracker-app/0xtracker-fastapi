@@ -7,6 +7,8 @@ from .calculator import calculate_prices
 from .token_lookup import TokenMetaData
 from .farms import Farms
 from .networks import CosmosNetwork
+from .oracles import TokenOverride
+from .helpers import token_list_from_stakes
 import asyncio
 import time
 
@@ -17,32 +19,45 @@ def return_farms_list():
 async def get_wallet_balances(wallet, session, mongo_client):
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks
-
+    token_overrides = TokenOverride(session).tokens
+    cw20_tokens = ['juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr']
     balances = await asyncio.gather(*[queries.get_bank_balances(network, net_config[network], session) for network in net_config])
     traces =  await asyncio.gather(*[queries.get_ibc_tokens(net_config[network['network']], session) for network in balances])
     prices = await oracles.cosmostation_prices(session, mongo_client, net_config)
     transform_trace = helpers.transform_trace_routes(traces)
+    cw20_balances = await asyncio.gather(*[queries.query_contract_state(session, net_config['juno']['rpc'], x, { "balance" : { "address": net_config['juno']['wallet']}}) for x in cw20_tokens])
 
     return_wallets = []
     total_balance = 0
     for i, balance in enumerate(balances):
         token_network = list(net_config.keys())[i]
         if balance['tokens']:
+
+            if token_network == 'juno':
+                for i, cw in enumerate(cw20_balances):
+                    balance['tokens'].append({'denom' : cw20_tokens[i], 'amount' : cw['balance']})
+
             for token in balance['tokens']:
                 token_denom = transform_trace[0][token['denom']] if token['denom'] in transform_trace[0] else token['denom']
                 token_metadata = await TokenMetaData(address=token_denom, mongodb=mongo_client, network=net_config[token_network], session=session).lookup()
-
+                
                 if token_metadata:
                     token_decimal = token_metadata['tkn0d']
+                    token_symbol = f"{token_metadata['tkn0s']}-{token_metadata['tkn1s']}" if 'tkn1s' in token_metadata else token_metadata['tkn0s']
                 else:
                     token_decimal = transform_trace[1][token_denom]['decimal'] if token_denom in transform_trace[1] else 6
-                token_price = 0 if token_denom not in prices else prices[token_denom]
+                    token_symbol = transform_trace[1][token_denom]['display_denom'] if token_denom in transform_trace[1] else token_denom.upper()
+                if token_denom in token_overrides:
+                    fetch_price = await token_overrides[token_denom][0](**token_overrides[token_denom][1])
+                    token_price = fetch_price[token_denom]
+                else:
+                    token_price = 0 if token_denom not in prices else prices[token_denom]
 
                 total_balance += token_price * helpers.from_custom(token['amount'], token_decimal)
                 return_wallets.append(
                     {
                         "token_address": token['denom'],
-                        "symbol": transform_trace[1][token_denom]['display_denom'] if token_denom in transform_trace[1] else token_denom.upper(),
+                        "symbol": token_symbol,
                         "tokenBalance": helpers.from_custom(token['amount'], token_decimal),
                         "tokenPrice": token_price,
                         "wallet" : balance['wallet'],
@@ -77,7 +92,15 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
     if len(returned_object[0]) < 1:
         return {}
 
+
+    token_list = token_list_from_stakes(returned_object[1], farm_configuraiton)
     prices = await oracles.cosmostation_prices(http_session, mongo_db, CosmosNetwork(wallet).all_networks)
+    otkn = TokenOverride(http_session).tokens
+    
+    price_overrides = await asyncio.gather(*[otkn[v['token']][0](**otkn[v['token']][1]) for i, v in enumerate(token_list) if v['token'] in otkn])
+
+    for each in price_overrides:
+        prices.update(each)
 
     response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
 

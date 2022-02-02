@@ -25,12 +25,13 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
     cw_tokens = await mongo_client.xtracker['terra_tokens'].find({"type" : "single", "$expr": { "$gt": [ { "$strLenCP": "$token0" }, 6 ] }}, {'_id': False}).to_list(length=None)
     cw_token_balances =  await asyncio.gather(*[client.wasm.contract_query(token['tokenID'], {"balance":{"address": wallet}}) for token in cw_tokens])
     luna_price = await get_luna_price(client)
+    skip_tokens = ['terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu']
 
     return_wallets = []
     total_balance = 0
     
     for i,balance in enumerate(cw_token_balances):
-        if int(balance['balance']) > 0:
+        if int(balance['balance']) > 0 and cw_tokens[i]['tokenID'] not in skip_tokens:
             token_metadata = await TokenMetaData(cw_tokens[i]['tokenID'], mongo_client, client, session).lookup()
             token_price = await get_price_from_pool(token_metadata['token0'], token_metadata['tkn0d'], client, mongo_client, {}, luna_price)
             total_balance += token_price * from_custom(int(balance['balance']), token_metadata['tkn0d'])

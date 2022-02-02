@@ -1,6 +1,25 @@
 from .utils import make_get_json
 from .token_lookup import TokenMetaData
 import time
+from . import queries
+from .helpers import from_custom
+
+class TokenOverride:
+
+    def __init__(self, session=None):
+        self.tokens = {
+            'juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr', 'swap_address' : 'juno1e8n6ch7msks487ecznyeagmzd5ml2pq9tgedqt2u63vra0q0r9mqrjy6ys', 'session' : session}],
+}
+
+async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
+    if native:
+        juno_price = await queries.query_contract_state(session, 'https://rpc-juno.itastakers.com', 'juno1hue3dnrtgf9ly2frnnvf8z5u7e224ctc4hk7wks2xumeu3arj6rs9vgzec', {"token1_for_token2_price":{"token1_amount":"1000000"}})
+    else:
+        juno_price = {'token2_amount': '1000000'}
+
+    token_price = await queries.query_contract_state(session, 'https://rpc-juno.itastakers.com', swap_address, {"token2_for_token1_price":{"token2_amount":str(1 * 10 ** decimal)}})
+
+    return {token_in : from_custom(int(juno_price['token2_amount']), 6) * from_custom(int(token_price['token1_amount']), decimal)}
 
 async def cosmostation_prices(session, mongo_db, network_data):
     r = await make_get_json(session, 'https://api-utility.cosmostation.io/v1/market/prices')
@@ -47,7 +66,6 @@ async def check_osmosis_pricing(session, mongo_db, network_data):
             osmo_prices[each['denom']] = each['price']
 
     return osmo_prices
-
 
 async def check_sif_pricing(session, network_data):
     r = await make_get_json(session, 'https://data.sifchain.finance/beta/asset/tokenStats')
