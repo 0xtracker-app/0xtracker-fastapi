@@ -52,9 +52,15 @@ async def get_single(token, network, session):
 
     return None
 
+async def get_cw20(token, network, session):
+
+    cw20 = await queries.query_contract_state(session, network['rpc'], token, { "token_info": {} })
+    
+    return { 'denom' : token, 'symbol': cw20['symbol'], 'decimal' : cw20['decimals']}
+
 class TokenMetaData:
 
-    def __init__(self, address=None, mongodb=None, network=None, session=None):
+    def __init__(self, address=None, mongodb=None, network=None, session=None, cw20=False):
         self.tokenID = address
         self.cosmos_tokens = mongodb.xtracker['cosmos_tokens']
         self.cosmos_routes = mongodb.xtracker['cosmos_routes']
@@ -63,6 +69,7 @@ class TokenMetaData:
         self.token_metadata = None
         self.session = session
         self.network = network
+        self.cw20 = cw20
     
     async def lookup(self):
 
@@ -83,7 +90,13 @@ class TokenMetaData:
                         self.token_metadata = found_token
         elif 'gamm/pool' in self.tokenID:
             found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
+
             if found_token:
+
+                if 'tkn1d' not in found_token:
+                    found_token['tkn1d'] = found_token['token_decimals'][1]
+                    await self.cosmos_tokens.update_one({'tokenID': found_token['tokenID']}, {"$set": found_token}, upsert=True)
+
                 get_pool = await queries.get_gamm_balances(self.tokenID, self.network, self.session)
                 if get_pool:
                     found_token.update(get_pool)
@@ -110,7 +123,11 @@ class TokenMetaData:
             if found_token:
                 self.token_metadata = found_token
             else:
-                single = await get_single(self.denom, self.network, self.session)
+
+                if self.cw20:
+                    single = await get_cw20(self.denom, self.network, self.session)
+                else:
+                    single = await get_single(self.denom, self.network, self.session)
 
                 if single:
                     self.token_metadata = { "tokenID" : single['denom'], "tkn0d" : single['decimal'], "tkn0s" : single['symbol'], "token0" : single['denom']}

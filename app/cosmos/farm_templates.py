@@ -160,7 +160,7 @@ async def get_junoswap(wallet, session, vaults, farm_id, mongodb, network):
     
     lp_info = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x, {"info":{}}) for x in vaults])
     staking = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x['lp_token_address'], {"balance":{"address": net_config['wallet']}}) for x in lp_info])
-
+    
     poolNest = {
         poolKey: {
             'userData': {},
@@ -175,8 +175,9 @@ async def get_junoswap(wallet, session, vaults, farm_id, mongodb, network):
                 lp_data = lp_info[i]
                 staked_position = {'staked' : helpers.from_custom(staked_balanced, 6), 'gambitRewards' : [], 'network' : 'cosmos'}
                 want_token = lp_data['lp_token_address']
-                token_0 = await TokenMetaData(address=lp_info[i]['token1_denom']['native'], mongodb=mongodb, network=net_config, session=session).lookup()
-                token_1 = await TokenMetaData(address=lp_info[i]['token2_denom']['native'], mongodb=mongodb, network=net_config, session=session).lookup()
+
+                token_0 = await TokenMetaData(address=lp_info[i]['token1_denom']['cw20'] if 'cw20' in lp_info[i]['token1_denom'] else lp_info[i]['token1_denom']['native'], mongodb=mongodb, network=net_config, session=session, cw20=True if 'cw20' in lp_info[i]['token1_denom'] else False).lookup()
+                token_1 = await TokenMetaData(address=lp_info[i]['token2_denom']['cw20'] if 'cw20' in lp_info[i]['token2_denom'] else lp_info[i]['token2_denom']['native'], mongodb=mongodb, network=net_config, session=session, cw20=True if 'cw20' in lp_info[i]['token2_denom'] else False).lookup()
 
                 staked_position.update({
                     'tokenID': want_token,
