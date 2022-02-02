@@ -1,1 +1,1 @@
-web: gunicorn -w 6 -k uvicorn.workers.UvicornWorker --pythonpath app main:app
+web: gunicorn -w 5 -k uvicorn.workers.UvicornWorker --pythonpath app main:app
