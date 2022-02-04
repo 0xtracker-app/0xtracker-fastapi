@@ -2985,8 +2985,8 @@ class Farms:
         'featured' : 2,
         'network' : 'matic',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_pickle_chef, farm_templates.get_vault_style],
-            'vaults' : [external_contracts.dummy_vault, external_contracts.get_pickle_addresses],
+            'functions' : [farm_templates.get_pickle_chef, farm_templates.get_vault_style, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_pickle_addresses, external_contracts.get_pickle_addresses_uni],
             'args' : [
                 {
                     'farm_id' : '0xPickle',
@@ -2997,9 +2997,14 @@ class Farms:
                 {
                     'farm_id' : '0xPickle',
                     'network' : 'matic',
+                },
+                {
+                    'farm_id' : '0xPickle',
+                    'network' : 'matic',
+                    'want_token' : 'pool'
                 }
                     ],
-            'vault_args' : [{},{'network' : 'polygon'}]
+            'vault_args' : [{},{'network' : 'polygon'},{'network' : 'polygon'}]
         }
     },
                 '0xCurvePolygon' : {
@@ -6316,6 +6321,30 @@ class Farms:
                 {
                     'farm_id' : '0xPowerNodes',
                     'network_id' : 'ftm'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xUniv' : {
+        'name' : 'univ.money',
+        'rewardToken' : '0x959b88966fC5B261dF8359961357d34F4ee27b4a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xUniv',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_planets],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xUniv',
+                    'network_id' : 'avax',
+                    'contract' : '0x89323f00a621d4ed6a56a93295c5f10f4df57ffa',
+                    'reward_symbol' : 'UNIV',
+                    'reward_token' : '0x959b88966fC5B261dF8359961357d34F4ee27b4a'
                 }
                     ],
             'vault_args' : [{}]

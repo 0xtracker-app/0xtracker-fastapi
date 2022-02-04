@@ -2300,8 +2300,14 @@ async def get_only_staked(wallet, pools, network, farm_info):
                     calls.append(Call(pool, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
                 else:
                     calls.append(Call(pool, ['%s(uint256,address)(uint256)' % (stakedFunction), i, wallet], [['%s_%s' % (pool, i), None]]))
-    
-    stakes = await Multicall(calls, network_conn)()     
+
+    if len(calls) > 200:
+        chunks = len(calls) / 100
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network])() for call in x])
+        stakes = reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        stakes = await Multicall(calls, WEB3_NETWORKS[network])()    
 
     filteredStakes = []
     for stake in stakes:
@@ -3355,6 +3361,38 @@ async def get_node_layout(wallet,farm_id,network_id,vaults):
             reward_token_0 = {'pending': total_pending, 'symbol' : vaults['reward_symbol'], 'token' : want_token}
             poolNest[poolKey]['userData'][node_id]['gambitRewards'].append(reward_token_0)
 
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+async def get_planets(wallet,farm_id,network_id,contract,reward_symbol,reward_token,vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+       
+        planet_list = await Call(contract, [f'getPlanetIdsOf(address)(uint256[])', wallet],None, network)()
+
+        for planet in planet_list:
+            calls.append(Call(contract, [f'getPlanetsByIds(uint256[])(((uint256,uint256,uint256,uint256),uint256,uint256,uint256,uint256))', [planet]], [[f'planet{planet}', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        total_pending = sum([parsers.from_wei(stakes[each][2]) for each in stakes])
+
+        if total_pending > 0:
+            staked = 0
+            want_token = reward_token
+            pending = total_pending
+
+            poolNest[poolKey]['userData']['planetrewards'] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
+            poolIDs['%s_%s_want' % (poolKey, 'planetrewards')] = want_token
+                
         if len(poolIDs) > 0:
             return poolIDs, poolNest    
         else:
