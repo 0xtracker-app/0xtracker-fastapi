@@ -6321,6 +6321,30 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xUniv' : {
+        'name' : 'univ.money',
+        'rewardToken' : '0x959b88966fC5B261dF8359961357d34F4ee27b4a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xUniv',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_planets],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xUniv',
+                    'network_id' : 'avax',
+                    'contract' : '0x89323f00a621d4ed6a56a93295c5f10f4df57ffa',
+                    'reward_symbol' : 'UNIV',
+                    'reward_token' : '0x959b88966fC5B261dF8359961357d34F4ee27b4a'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
