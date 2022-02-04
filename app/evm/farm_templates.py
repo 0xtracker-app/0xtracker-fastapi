@@ -2300,8 +2300,14 @@ async def get_only_staked(wallet, pools, network, farm_info):
                     calls.append(Call(pool, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
                 else:
                     calls.append(Call(pool, ['%s(uint256,address)(uint256)' % (stakedFunction), i, wallet], [['%s_%s' % (pool, i), None]]))
-    print(len(calls))
-    stakes = await Multicall(calls, network_conn)()     
+
+    if len(calls) > 200:
+        chunks = len(calls) / 100
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network])() for call in x])
+        stakes = reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        stakes = await Multicall(calls, WEB3_NETWORKS[network])()    
 
     filteredStakes = []
     for stake in stakes:

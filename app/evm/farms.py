@@ -2985,8 +2985,8 @@ class Farms:
         'featured' : 2,
         'network' : 'matic',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_pickle_chef, farm_templates.get_vault_style],
-            'vaults' : [external_contracts.dummy_vault, external_contracts.get_pickle_addresses],
+            'functions' : [farm_templates.get_pickle_chef, farm_templates.get_vault_style, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_pickle_addresses, external_contracts.get_pickle_addresses_uni],
             'args' : [
                 {
                     'farm_id' : '0xPickle',
@@ -2997,9 +2997,14 @@ class Farms:
                 {
                     'farm_id' : '0xPickle',
                     'network' : 'matic',
+                },
+                {
+                    'farm_id' : '0xPickle',
+                    'network' : 'matic',
+                    'want_token' : 'pool'
                 }
                     ],
-            'vault_args' : [{},{'network' : 'polygon'}]
+            'vault_args' : [{},{'network' : 'polygon'},{'network' : 'polygon'}]
         }
     },
                 '0xCurvePolygon' : {
