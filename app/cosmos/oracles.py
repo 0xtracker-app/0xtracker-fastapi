@@ -9,6 +9,9 @@ class TokenOverride:
     def __init__(self, session=None):
         self.tokens = {
             'juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr', 'swap_address' : 'juno1e8n6ch7msks487ecznyeagmzd5ml2pq9tgedqt2u63vra0q0r9mqrjy6ys', 'session' : session}],
+            'juno1vn38rzq0wc7zczp4dhy0h5y5kxh2jjzeahwe30c9cc6dw3lkyk5qn5rmfa' : [get_price_from_junoswap, { 'decimal' : 3, 'token_in' : 'juno1vn38rzq0wc7zczp4dhy0h5y5kxh2jjzeahwe30c9cc6dw3lkyk5qn5rmfa', 'swap_address' : 'juno1acs6q36t6qje5k82h5g74plr258y2q90cjf9z4wnktt7caln0mhsx8mt7z', 'session' : session}],
+            'juno1wurfx334prlceydmda3aecldn2xh4axhqtly05n8gptgl69ee7msrewg6y' : [get_price_from_junoswap, { 'decimal' : 3, 'token_in' : 'juno1wurfx334prlceydmda3aecldn2xh4axhqtly05n8gptgl69ee7msrewg6y', 'swap_address' : 'juno133xa84qnue3uy0mj9emvauddxzw554rfl9rr6eadhfau50ws7gvs4ynm79', 'session' : session}],
+            'juno1pshrvuw5ng2q4nwcsuceypjkp48d95gmcgjdxlus2ytm4k5kvz2s7t9ldx' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno1pshrvuw5ng2q4nwcsuceypjkp48d95gmcgjdxlus2ytm4k5kvz2s7t9ldx', 'swap_address' : 'juno16zn96yf3vnxengke3vcf6mg9x7qyppgsdh3dnnmvdd8hvtpw58wsrjuu56', 'session' : session}],
 }
 
 async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
