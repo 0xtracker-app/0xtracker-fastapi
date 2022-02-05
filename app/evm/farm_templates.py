@@ -640,7 +640,13 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
         want_list.append(want_address)
         want_lookup[vault_address] = want_address
     
-    stakes= await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
+    if len(calls) > 200:
+        chunks = len(calls) / 100
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network], _strict=False)() for call in x])
+        stakes = reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        stakes = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
 
     poolNest = {poolKey: 
     { 'userData': { } } }
