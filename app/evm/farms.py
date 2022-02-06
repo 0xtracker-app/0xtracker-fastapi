@@ -43,7 +43,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingEleven',
         'masterChef' : '0x52B8bb74Cde6602AB9e6540e25E0A97f5B3226D7',
-        'perBlock' : 'elevenPerBlock',
+        'perBlock' : 'elevenPerSecond',
         'featured' : 2,
         'network' : 'avax',
         'extraFunctions' : {
@@ -93,6 +93,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingEleven',
         'masterChef' : '0x8eDCe6D0E0687DA9C07B36591781fB6641A53a12',
+        'perBlock' : 'elevenPerSecond',
         'featured' : 2,
         'network' : 'ftm',
         'extraFunctions' : {
