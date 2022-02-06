@@ -77,7 +77,8 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
                 'stable_only' : False,
                 'tvl' : balances[f'{pool}_balance'],
                 'ad' : False,
-                'chain' : WEB3_NETWORKS[farm_info['network']]['id']
+                'chain' : WEB3_NETWORKS[farm_info['network']]['id'],
+                'total_yearly_rewards' : [((parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy) * (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]))]
             }
 
             pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()
@@ -89,7 +90,7 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
     return {
         'farm_id' : '',
         'total_allocation' : stakes[f"{farm_info['masterChef']}_points"],
-        'reward_per_block' : stakes[f"{farm_info['masterChef']}_block"],
+        'reward_per_block' : parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']),
         'pools' : pools
     }
 
