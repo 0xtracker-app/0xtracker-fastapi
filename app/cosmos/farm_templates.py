@@ -44,7 +44,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
                                 staked_position['staked'] += float(pending['balance'])
 
                 if 'result' in rewards[i]:
-                    if len(rewards[i]['result']) > 0:
+                    if len(rewards[i]['result']) > 0 and rewards[i]['result'].get('total') != None:
                         for reward_position in rewards[i]['result']['total']:
                             reward_token['pending'] += float(reward_position['amount'])
                             reward_token['token'] = reward_position['denom']
@@ -56,7 +56,7 @@ async def get_delegations(wallet, session, vaults, farm_id, mongodb):
                 reward_token['pending'] = helpers.from_custom(reward_token['pending'], staked_position['tkn0d'])
                 reward_token['symbol'] = staked_position['tkn0s']
                 if 'token' not in reward_token:
-                    reward_token['pending'] = want_token
+                    reward_token['token'] = want_token
                 poolNest[poolKey]['userData'][want_token]['gambitRewards'].append(reward_token)
 
     if len(poolIDs) > 0:

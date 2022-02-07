@@ -39,7 +39,7 @@ class Multicall:
         result = {}
 
         for call, output in zip(self.calls, outputs):
-            if output[0] == True:
+            if output[0] == True and output[1]:
                 r = call.decode_output(output[1])
                 result.update(call.decode_output(output[1]))
             #print(r)
