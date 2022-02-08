@@ -123,16 +123,19 @@ async def get_beefy_metis_boosts(session):
     return [x['earnContractAddress'] for x in t]
 
 async def get_vsafes(session):
-    r = await make_get_json(session,'https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
+    try:
+        r = await make_get_json(session,'https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
+    except:
+        return []
     return [x['id'] for x in r['data']]
 
 async def get_grim_vaults(session):
     r = await make_get_json(session,'https://api.grim.finance/vaults')
     return [x['earnedTokenAddress'] for x in r]
 
-async def get_firebird_vaults():
-    r = await make_get_json(session,'https://farm-api-polygon.firebird.finance/api/farming-scan/get-farming-scans?group=fvault')
-    return [x['id'] for x in r['data']]
+async def get_firebird_vaults(session, network):
+    r = await make_get_json(session,f'https://api-be.firebird.finance/api/apy?group=vault&chain_id={network}')
+    return [x['farmingContractAddress'] for x in r['data']]
 
 async def get_ele_tokens(session,network=None):
     skip_tokens = ['0x3Ed531BfB3FAD41111f6dab567b33C4db897f991', '0x5C0E7b820fCC7cC66b787A204B2B31cbc027843f', '0x0D5BaE8f5232820eF56D98c04B8F531d2742555F', '0xDF098493bB4eeE18BB56BE45DC43BD655a27E1A9', '0x27DD6E51BF715cFc0e2fe96Af26fC9DED89e4BE8', '0x025E2e9113dC1f6549C83E761d70E647c8CDE187', '0x0FFb84A4c29147Bd745AAe0330f4F6f4Cb716c92']
@@ -889,6 +892,16 @@ async def get_adamant_boosts_arb(session):
 async def get_manorfarm_pools(session):
     return [
         '0xa9a079f4a5b7fdc127df64f3a84f3fab3a0eb46e',
+        ]
+
+async def get_spintop_pools(session):
+    return [
+        '0xB15655401E3018B7BF3F8c12BdD24A0936636Bc0',
+        '0x6bf651c0989dFd34a4E0Cc8A5Ed41ebB344f8ca6',
+        '0x6D28F46E0698a2F217c72fF4e86DBFBAc422B1C4',
+        '0x97523C0e91ede98a67E092D9600B37DC3188a8B2',
+        '0xEDCBBdb897E7A375CBA6B543698EfF8758505f1c',
+        '0x06F2bA50843e2D26D8FD3184eAADad404B0F1A67'
         ]
 
 async def get_fortress_vaults(session):
