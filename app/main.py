@@ -86,7 +86,7 @@ async def get_apy(farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database),
     results = await get_protocol_apy(farm_id, mongo_db, session)
     return results
 
-@app.get('/all_apy/', include_in_schema=False)
+@app.get('/all_apy/', include_in_schema=True)
 async def get_apy(mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
     results = await get_all_protocols(mongo_db, session)
     return results

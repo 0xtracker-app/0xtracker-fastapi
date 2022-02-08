@@ -111,7 +111,7 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
 
 
     return {
-        'farm_id' : '',
+        'farm_id' : farm_info['name'],
         'total_allocation' : stakes[f"{farm_info['masterChef']}_points"],
         'reward_per_block' : parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']),
         'pools' : pools
@@ -121,6 +121,6 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
 async def get_all_protocols(mongo_db, http_session):
     
     for i, farm in enumerate([Farms().farms[farm_id]['masterChef'] for farm_id in Farms().farms if Farms().farms[farm_id]['stakedFunction']]):
-        if i >= 219:
+        if i >= 256:
             print(f'/////// {i} Running {farm} ............')
             data = await get_protocol_apy(farm, mongo_db, http_session)

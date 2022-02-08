@@ -525,7 +525,7 @@ class Farms:
         'perBlock' : 'rewardPerSecond',
         'extraFunctions' : {
             'functions' : [farm_templates.get_vault_style],
-            'vaults' : [external_contracts.get_vsafes],
+            'vaults' : [external_contracts.get_firebird_vaults],
             'args' : [{
                 'farm_id' : '0xd56339F80586c08B7a4E3a68678d16D37237Bd96',
                 'network' : 'bsc',
@@ -533,7 +533,7 @@ class Farms:
                 '_stake' : 'balanceOf',
                 'want_token' : 'token'
             }],
-            'vault_args' : [{}]
+            'vault_args' : [{'network' : 137}]
         }
     },
                 '0xDiamondHands' : {
@@ -5566,6 +5566,7 @@ class Farms:
         'stakedFunction' : 'stakedWantTokens',
         'pendingFunction' : None,
         'masterChef' : '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533',
+        'perBlock' : None,
         'featured' : 2,
         'network' : 'cro',
     },
@@ -5576,6 +5577,10 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingAnnex',
         'masterChef' : '0xEF6d860B22cEFe19Ae124b74eb80F0c0eb8201F4',
+        'perBlock' : 'annexPerBlock',
+        'want' : 'getPoolInfo',
+        'pool_alloc' : 'getPoolInfo(uint256)((address,uint256,uint256,uint256))',
+        'alloc_offset' : 2,
         'featured' : 2,
         'network' : 'cro',
     },
@@ -5651,6 +5656,10 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingAnnex',
+        'perBlock' : 'annexPerBlock',
+        'want' : 'getPoolInfo',
+        'pool_alloc' : 'getPoolInfo(uint256)((address,uint256,uint256,uint256))',
+        'alloc_offset' : 2,
         'masterChef' : '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1',
         'featured' : 2,
         'network' : 'bsc',
@@ -5662,6 +5671,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingStorm',
         'masterChef' : '0x6eC89CCcDb563Ac442d2370F6E47bC1C78e023fC',
+        'perBlock' : 'StormPerBlock',
         'featured' : 2,
         'network' : 'cro',
     },
@@ -5672,6 +5682,7 @@ class Farms:
         'stakedFunction' : 'stakedWantTokens',
         'pendingFunction' : 'pendingNATIVE',
         'masterChef' : '0xe5AFC91CEA5df74748A2b07e1d48E4e01aacF52B',
+        'perBlock' : 'NATIVEPerSecond',
         'featured' : 2,
         'network' : 'ftm',
     },
@@ -5748,6 +5759,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingWagmi',
         'masterChef' : '0xf046e84439813bb0a26fb26944001c7bb4490771',
+        'perBlock' : 'wagmiPerBlock',
         'featured' : 2,
         'network' : 'harmony',
         'extraFunctions' : {
@@ -5819,6 +5831,7 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingXpast',
+        'perBlock' : 'XpastPerSecond',
         'masterChef' : '0x138c4dB5D4Ab76556769e4ea09Bce1D452c2996F',
         'featured' : 2,
         'network' : 'ftm',
@@ -5851,6 +5864,7 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingMeerkat',
+        'perBlock' : 'meerkatPerBlock',
         'masterChef' : '0x6bE34986Fdd1A91e4634eb6b9F8017439b7b5EDc',
         'featured' : 2,
         'network' : 'cro',
@@ -5861,6 +5875,7 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingLib',
+        'perBlock' : 'libPerBlock',
         'masterChef' : '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02',
         'featured' : 2,
         'network' : 'bsc',
@@ -5871,6 +5886,7 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingLib',
+        'perBlock' : 'libPerBlock',
         'masterChef' : '0xE6DCE53f17FBF673f4FA60A38746F110517457B2',
         'featured' : 2,
         'network' : 'avax',
@@ -5881,6 +5897,7 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingLib',
+        'perBlock' : 'libPerBlock',
         'masterChef' : '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285',
         'featured' : 2,
         'network' : 'matic',
@@ -5891,6 +5908,7 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingTri',
+        'perBlock' : 'triPerBlock',
         'masterChef' : '0x1f1Ed214bef5E83D8f5d0eB5D7011EB965D0D79B',
         'featured' : 2,
         'network' : 'aurora',
@@ -5916,6 +5934,7 @@ class Farms:
         'pendingFunction' : 'pendingWanna',
         'masterChef' : '0x2B2e72C232685fC4D350Eaa92f39f6f8AD2e1593',
         'featured' : 2,
+        'perBlock' : 'wannaPerBlock',
         'network' : 'aurora',
         'extraFunctions' : {
             'functions' : [farm_templates.get_sfeed],
@@ -5954,6 +5973,7 @@ class Farms:
         'pendingFunction' : 'pendingBRL',
         'masterChef' : '0x35CC71888DBb9FfB777337324a4A60fdBAA19DDE',
         'featured' : 2,
+        'perBlock' : 'BRLPerBlock',
         'network' : 'aurora',
     },
                 '0x2aeF68F92cfBAFA4b542F60044c7596e65612D20' : {
@@ -5964,6 +5984,7 @@ class Farms:
         'pendingFunction' : 'pendingSushi',
         'masterChef' : '0x2aeF68F92cfBAFA4b542F60044c7596e65612D20',
         'featured' : 2,
+        'perBlock' : 'sushiPerBlock',
         'network' : 'aurora',
         'extraFunctions' : {
             'functions' : [farm_templates.get_sfeed],
@@ -5984,6 +6005,10 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingPickle',
+        'perBlock' : 'picklePerSecond',
+        'want' : 'lpToken',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
         'masterChef' : '0x13cc0A2644f4f727db23f5B9dB3eBd72134085b7',
         'featured' : 2,
         'network' : 'aurora',
@@ -6039,6 +6064,10 @@ class Farms:
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingPickle',
+        'perBlock' : 'picklePerSecond',
+        'want' : 'lpToken',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
         'masterChef' : '0x7ecc7163469f37b777d7b8f45a667314030ace24',
         'featured' : 2,
         'network' : 'arb',
@@ -6104,6 +6133,7 @@ class Farms:
         'pendingFunction' : 'pendingThorus',
         'masterChef' : '0x871d68cFa4994170403D9C1c7b3D3E037c76437d',
         'featured' : 2,
+        'perBlock' : 'thorusPerSecond',
         'network' : 'avax',
         'extraFunctions' : {
             'functions' : [farm_templates.get_vault_style],
@@ -6134,6 +6164,7 @@ class Farms:
         'pendingFunction' : 'pendingThorus',
         'masterChef' : '0xEeB84a24e10502D8A5c97B11df381D1550B25b9d',
         'featured' : 2,
+        'perBlock' : 'thorusPerSecond',
         'network' : 'moonbeam',
         'extraFunctions' : {
             'functions' : [farm_templates.get_vault_style],
@@ -6208,6 +6239,9 @@ class Farms:
         'pendingFunction' : 'pendingRevolution',
         'masterChef' : '0xc027dd6fc63e73b59425b10b6e26d6e458889ca9',
         'featured' : 2,
+        'perBlock' : 'revolutionPerBlock',
+        'pool_alloc' : 'poolInfo(uint256)((address,address,uint256))',
+        'alloc_offset' : 2,
         'network' : 'bsc',
         'extraFunctions' : {
             'functions' : [farm_templates.get_syrup_pools],
@@ -6230,6 +6264,7 @@ class Farms:
         'pendingFunction' : 'pendingTokens',
         'masterChef' : '0x9d1dbB49b2744A1555EDbF1708D64dC71B0CB052',
         'featured' : 2,
+        'perBlock' : 'nettPerSec',
         'network' : 'metis',
         'extraFunctions' : {
             'functions' : [farm_templates.get_syrup_pools],
@@ -6255,6 +6290,7 @@ class Farms:
         'pendingFunction' : 'pendingTethys',
         'masterChef' : '0x54A8fB8c634dED694D270b78Cb931cA6bF241E21',
         'featured' : 2,
+        'perBlock' : 'tethysPerSecond',
         'network' : 'metis',
         'extraFunctions' : {
             'functions' : [farm_templates.get_sfeed],
@@ -6276,6 +6312,10 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingSushi',
         'masterChef' : '0x23423292396a37c0c2e4d384dce7ab67738bec28',
+        'perBlock' : 'sushiPerBlock',
+        'want' : 'lpToken',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
         'featured' : 2,
         'network' : 'metis',
         },
@@ -6287,6 +6327,7 @@ class Farms:
         'pendingFunction' : 'pendingCake',
         'masterChef' : '0xBA438A6F03c03fb1Cf86567F6bb866CCFc9B2da7',
         'featured' : 2,
+        'perBlock' : 'cakePerSecond',
         'network' : 'avax',
         'extraFunctions' : {
             'functions' : [farm_templates.get_sfeed],
@@ -6331,6 +6372,10 @@ class Farms:
         'pendingFunction' : 'pendingSushi',
         'masterChef' : '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311',
         'featured' : 2,
+        'want' : 'lpToken',
+        'perBlock' : 'sushiPerSecond',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
         'network' : 'metis',
         'extraFunctions' : {
             'functions' : [farm_templates.get_vault_style],
@@ -6353,6 +6398,10 @@ class Farms:
         'pendingFunction' : 'pendingCross',
         'masterChef' : '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21',
         'featured' : 2,
+        'want' : 'lpToken',
+        'perBlock' : 'crossPerSecond',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
         'network' : 'cro',
         },
                 '0xBeefyMetis' : {
@@ -6419,6 +6468,7 @@ class Farms:
         'stakedFunction' : 'userInfo',
         'pendingFunction' : 'pendingStella',
         'masterChef' : '0xEDFB330F5FA216C9D2039B99C8cE9dA85Ea91c1E',
+        'perBlock' : 'stellaPerBlock',
         'featured' : 2,
         'network' : 'moonbeam',
         'extraFunctions' : {
@@ -6504,6 +6554,30 @@ class Farms:
                     'reward_token' : '0x959b88966fC5B261dF8359961357d34F4ee27b4a'
                 }
                     ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xSpinTop' : {
+        'name' : 'spintop.network',
+        'rewardToken' : '0x6AA217312960A21aDbde1478DC8cBCf828110A67',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xSpinTop',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_spintop_pools],
+            'args' : [
+                {
+                    'farm_id' : '0xSpinTop',
+                    'network_id' : 'bsc',
+                    'pending_reward' : 'earned',
+                    'user_info' : 'balanceOf',
+                    'staked' : 'stakingToken',
+                    'reward' : 'rewardsToken'
+                }],
             'vault_args' : [{}]
         }
     },

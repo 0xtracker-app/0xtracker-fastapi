@@ -1141,7 +1141,7 @@ async def get_syrup_pools(wallet, vaults, network_id, farm_id, staked=None, rewa
                     reward_symbol = reward_data['symbol']
                     reward_decimal = reward_data['decimal']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked, token_decimal), 'pending' : parsers.from_custom(pendings, reward_decimal), 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'rewardDecimal' : reward_decimal}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'contractAddress' : breakdown[0],'want': want_token, 'staked' : parsers.from_custom(staked, token_decimal), 'pending' : parsers.from_custom(pendings, reward_decimal), 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'rewardDecimal' : reward_decimal}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
         if len(poolIDs) > 0:
