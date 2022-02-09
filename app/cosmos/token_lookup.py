@@ -120,6 +120,7 @@ class TokenMetaData:
                     'token1' : found_token1['token0'],
                     'token_decimals': [found_token0['tkn0d'],found_token1['tkn0d']],
                     'all_tokens': [found_token0['token0'], found_token1['token0']]})
+
                 await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
                 self.token_metadata = get_pool
         else:
