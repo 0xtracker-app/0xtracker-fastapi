@@ -21,14 +21,12 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
     network_info = NetworkRoutes(farm_info['network'])
 
     if farm_info['perBlock'] == None:
-        print({'error' : 'Null Per Block'})
-        return {'error' : 'Null Per Block'}
+        return {'error' : { 'type' : 'null_per_block', 'message' : 'Perblock function unavailable.'}}
 
     try:
         pool_length = await Call(farm_info['masterChef'], [f"{farm_info['poolLength']}()(uint256)" if 'poolLength' in farm_info else f'poolLength()(uint256)'],None,web_3)() 
     except:
-        print({'error' : 'poolLength failed.'})
-        return {'error' : 'poolLength failed.'}
+        return {'error' : { 'type' : 'pool_length', 'message' : 'Pool Length function has failed.'}}
     calls.append(Call(farm_info['masterChef'], [f"{farm_info['total_alloc']}()(uint256)" if 'total_alloc' in farm_info else f'totalAllocPoint()(uint256)'], [[f'{farm_info["masterChef"]}_points', None]]))
     calls.append(Call(farm_info['masterChef'], [f"{farm_info['perBlock']}()(uint256)"], [[f'{farm_info["masterChef"]}_block', None]]))
 
@@ -49,37 +47,39 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
     else:
         stakes = await Multicall(calls, web_3, _strict=False)()
 
-    balance = []
-    for x in range(0, pool_length): 
-        if stakes.get(f'{x}_want') and str(stakes.get(f'{x}_want') or '') not in [x.lower() for x in network_info.dead]:
-            balance.append(Call(stakes[f'{x}_want'], ['balanceOf(address)(uint256)', farm_info['masterChef']], [[f'{x}_balance', None]]))
-            balance.append(Call(stakes[f'{x}_want'], ['decimals()(uint8)'], [[f'{x}_decimals', None]]))
+    # balance = []
+    # for x in range(0, pool_length): 
+    #     if stakes.get(f'{x}_want') and str(stakes.get(f'{x}_want') or '') not in [x.lower() for x in network_info.dead]:
+    #         balance.append(Call(stakes[f'{x}_want'], ['balanceOf(address)(uint256)', farm_info['masterChef']], [[f'{x}_balance', None]]))
+    #         balance.append(Call(stakes[f'{x}_want'], ['decimals()(uint8)'], [[f'{x}_decimals', None]]))
 
-    if len(balance) > 600:
-        chunks = len(balance) / 200
-        x = np.array_split(calls, math.ceil(chunks))
-        all_calls=await asyncio.gather(*[Multicall(balance,web_3, _strict=False)() for call in x])
-        balances = reduce(lambda a, b: dict(a, **b), all_calls)
-    else:
-        balances = await Multicall(balance, web_3, _strict=False)()
+    # if len(balance) > 600:
+    #     chunks = len(balance) / 200
+    #     x = np.array_split(calls, math.ceil(chunks))
+    #     all_calls=await asyncio.gather(*[Multicall(balance,web_3, _strict=False)() for call in x])
+    #     balances = reduce(lambda a, b: dict(a, **b), all_calls)
+    # else:
+    #     balances = await Multicall(balance, web_3, _strict=False)()
 
     pools = []
 
     # print(stakes.get(f"{farm_info['masterChef']}_points"))
     # print(stakes.get(f"{farm_info['masterChef']}_block"))
 
-    if stakes.get(f"{farm_info['masterChef']}_points") is None or stakes.get(f"{farm_info['masterChef']}_block") is None:
-        print({'error' : 'Farm failed due to no totalAlloc and rewardPerBlock'})
-        return {'error' : 'Farm failed due to no totalAlloc and rewardPerBlock'}
+    if stakes.get(f"{farm_info['masterChef']}_points") == 0 or stakes.get(f"{farm_info['masterChef']}_block") == 0 or stakes.get(f"{farm_info['masterChef']}_points") is None or stakes.get(f"{farm_info['masterChef']}_block") is None:
+        return {'error' : { 'type' : 'alloc_reward', 'message' : 'Farm failed due to no totalAlloc and rewardPerBlock response.'}}
 
     for pool in range(0,pool_length):
-        if f'{pool}_want' in stakes and f'{pool}_balance' in balances:
+        if f'{pool}_want' in stakes: # and f'{pool}_balance' in balances:
             want_token = stakes[f'{pool}_want']
             found_token = await collection.find_one({'tokenID' : want_token, 'network' : farm_info['network']}, {'_id': False})
 
             if not found_token:
                 found_token = await token_router(want_token, None, farm_info['network'])
                 collection.update_one({'tokenID' : want_token, 'network' : farm_info['network']}, { "$set": found_token }, upsert=True)
+            
+            if found_token.get('type') not in ['lp', 'single']:
+                continue
 
 
             pool_data = {
@@ -95,13 +95,16 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
                 'decimals_rewards' : [farm_info['decimal']],
                 'allocation_point' : stakes[f'{pool}_alloc'],
                 'rewards_multiplier' : 0 if stakes[f"{farm_info['masterChef']}_points"] == 0 else (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]),
-                'apy' : 0,
-                'risk' : 0,
+                'apy' : None,
+                'risk' : None,
                 'stable_only' : False,
-                'tvl' : parsers.from_custom(balances[f'{pool}_balance'], balances.get(f'{pool}_decimals') if balances.get(f'{pool}_decimals') else 18),
+                'tvl' : None, ##parsers.from_custom(balances[f'{pool}_balance'], balances.get(f'{pool}_decimals') if balances.get(f'{pool}_decimals') else 18),
                 'ad' : False,
                 'chain' : WEB3_NETWORKS[farm_info['network']]['id'],
-                'total_yearly_rewards' : [((parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy) * 0 if stakes[f"{farm_info['masterChef']}_points"] == 0 else (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]))]
+                'total_yearly_rewards' : [(
+                    (
+                        parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy) * 
+                        (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]))]
             }
 
             pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()

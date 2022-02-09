@@ -460,10 +460,10 @@ async def catch_all(token, farm_id):
 
         network_chain = WEB3_NETWORKS[farm_id]
                         
-        single = Multicall([
-                        Call(token, 'symbol()(string)', [['tkn0s', None]]),
-                    ], network_chain)
+        # single = Multicall([
+        #                 Call(token, 'symbol()(string)', [['tkn0s', None]]),
+        #             ], network_chain)
 
-        add = {'token0' : token, 'tkn0d' : 1}
+        add = {'token0' : token, 'tkn0d' : 1, 'tkn0s' : 'UNKNOWN'}
 
-        return {**add, **await single()}
+        return add
