@@ -81,6 +81,7 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
             if found_token.get('type') not in ['lp', 'single']:
                 continue
 
+            blocks_per_year = parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * 60 * 60 * 24 * 365.4 if farm_info.get('apy_config') == 'second' else parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy
 
             pool_data = {
                 'name' : f"{found_token['tkn0s']}-{found_token['tkn1s']}" if 'tkn1s' in found_token else found_token['tkn0s'],
@@ -101,10 +102,7 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
                 'tvl' : None, ##parsers.from_custom(balances[f'{pool}_balance'], balances.get(f'{pool}_decimals') if balances.get(f'{pool}_decimals') else 18),
                 'ad' : False,
                 'chain' : WEB3_NETWORKS[farm_info['network']]['id'],
-                'total_yearly_rewards' : [(
-                    (
-                        parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy) * 
-                        (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]))]
+                'total_yearly_rewards' : [ blocks_per_year *  (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]) ]
             }
 
             pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()
