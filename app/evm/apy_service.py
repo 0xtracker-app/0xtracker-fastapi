@@ -81,7 +81,8 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
             if found_token.get('type') not in ['lp', 'single']:
                 continue
 
-            blocks_per_year = parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * 60 * 60 * 24 * 365.4 if farm_info.get('apy_config') == 'second' else parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy
+            blocks_per_year = parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * 60 * 60 * 24 * 365.4 if farm_info.get(
+                'apy_config') == 'second' else parsers.from_custom(stakes[f"{farm_info['masterChef']}_block"], farm_info['decimal']) * network_info.bpy
 
             pool_data = {
                 'name' : f"{found_token['tkn0s']}-{found_token['tkn1s']}" if 'tkn1s' in found_token else found_token['tkn0s'],
@@ -118,10 +119,38 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
         'pools' : pools
     }
 
-
 async def get_all_protocols(mongo_db, http_session):
     
     for i, farm in enumerate([Farms().farms[farm_id]['masterChef'] for farm_id in Farms().farms if Farms().farms[farm_id]['stakedFunction']]):
         if i >= 256 :
             print(f'/////// {i} Running {farm} ............')
             data = await get_protocol_apy(farm, mongo_db, http_session)
+
+async def get_dex_info(mongo_db, http_session):
+
+    dex_info = []
+
+    for network in [x for x  in WEB3_NETWORKS if x != 'optimism']:
+
+        network_id = WEB3_NETWORKS[network]['id']
+        network_conn = WEB3_NETWORKS[network]
+        network_route = NetworkRoutes(network)
+
+        router_factories = await Multicall([Call(
+            getattr(network_route.router, router),
+            ['factory()(address)'],
+            [[router, None]]) for router in network_route.lrouters], network_conn, _strict=False)()
+
+        for dex in network_route.lrouters:
+
+            if router_factories.get(dex):
+                dex_info.append({
+                    'id' : dex,
+                    'name' : None,
+                    'router' : getattr(network_route.router, dex),
+                    'factory' : router_factories.get(dex),
+                    'lp_fee' : None,
+                    'network' : network_id
+                })
+    
+    return dex_info

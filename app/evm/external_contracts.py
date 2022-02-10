@@ -557,9 +557,9 @@ async def get_beefy_boosts_moon(session):
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
 
 async def get_pcs_pools(session, offset):
-    r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.ts')
+    r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.tsx')
     s2 = "const pools: SerializedPoolConfig[] = "
-    s_end = "export default pools"
+    s_end = ".filter((p) => !!p.contractAddress[CHAIN_ID])"
     data = r[r.index(s2) + len(s2) :r.index(s_end)]
     hson = hjson.loads(data)
     t = json.loads(json.dumps(hson))
@@ -579,7 +579,7 @@ async def get_pcs_pools(session, offset):
                 pcs_older.append(contract_address)
 
     all_pools = [pcs_pools,pcs_older]
-    
+
     return all_pools[offset]
 
 async def get_pcs_auto(session):
