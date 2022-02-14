@@ -103,6 +103,7 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
                 'tvl' : None, ##parsers.from_custom(balances[f'{pool}_balance'], balances.get(f'{pool}_decimals') if balances.get(f'{pool}_decimals') else 18),
                 'ad' : False,
                 'chain' : WEB3_NETWORKS[farm_info['network']]['id'],
+                'staking_prices': [],
                 'total_yearly_rewards' : [ blocks_per_year *  (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]) ]
             }
 
