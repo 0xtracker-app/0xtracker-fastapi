@@ -25,7 +25,14 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider(os.get
                 'theta': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("THETA_RPC"))), 'id' : 361},
                 'aurora': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("AURORA_RPC"))), 'id' : 1313161554},
                 'metis': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("METIS_RPC"))), 'id' : 1088},
-                'moonbeam': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("MOONBEAM_RPC"))), 'id' : 1284},             
+                'moonbeam': { 'connection' : Web3(Web3.HTTPProvider(os.getenv("MOONBEAM_RPC"))), 'id' : 1284},
+                'fuse' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("FUSE_RPC"))), 'id' : 122},
+                'iotex' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("IOTEX_RPC"))), 'id' : 4689},
+                'elastos' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("ELASTOS_RPC"))), 'id' : 20},
+                'velas' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("VELAS_RPC"))), 'id' : 106},
+                'smartbch' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("SMARTBCH_RPC"))), 'id' : 10000},
+                'oasis' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("OASIS_RPC"))), 'id' : 42262},
+                'telos' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("TELOS_RPC"))), 'id' : 40},
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BSC_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56},
@@ -50,6 +57,13 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'aurora': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("AURORA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1313161554},
                 'metis': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("METIS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1088},
                 'moonbeam': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("MOONBEAM_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1284},
+                'fuse': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("FUSE_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 122},
+                'iotex': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("IOTEX_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 4689},
+                'elastos': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("ELASTOS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 20},
+                'velas': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("VELAS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 106},
+                'smartbch': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("SMARTBCH_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 10000},
+                'oasis': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("OASIS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 42262},
+                'telos': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("TELOS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 40},
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN"), 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

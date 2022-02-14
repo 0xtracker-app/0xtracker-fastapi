@@ -2370,7 +2370,8 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 '0x7ecc7163469f37b777d7b8f45a667314030ace24',
                 '0x23423292396a37c0c2e4d384dce7ab67738bec28',
                 '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311',
-                '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21'
+                '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21',
+                '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063'
                 ]:
                 calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533', '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75']:
@@ -3403,3 +3404,43 @@ async def get_planets(wallet,farm_id,network_id,contract,reward_symbol,reward_to
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_voltage_single(wallet,farm_id,network_id,vaults,reward_token):
+    poolKey = farm_id
+    calls = []
+    network = WEB3_NETWORKS[network_id]
+
+    for vault in vaults:
+        calls.append(Call(vault, [f'balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
+        calls.append(Call(vault, [f'earned(address,address)(uint256)', wallet, reward_token], [[f'{vault}_pending', parsers.from_wei]]))
+        calls.append(Call(vault, [f'stakingToken()(address)'], [[f'{vault}_want', None]]))
+
+    stakes=await Multicall(calls, network,_strict=False)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    token_decimals = await template_helpers.get_token_list_decimals(stakes,network_id,True)
+    reward_symbol = await Call(reward_token, [f'symbol()(string)'], _w3=network)()
+    
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                want_token = stakes[f'{breakdown[0]}_want']
+                staked = parsers.from_custom(stakes[each], 18 if want_token not in token_decimals else token_decimals[want_token])
+
+                reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : reward_token}
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None

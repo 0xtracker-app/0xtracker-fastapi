@@ -24,6 +24,13 @@ class NativeToken():
     METIS = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
     MOONBEAM = '0xAcc15dC74880C9944775448304B263D191c6077F'
     OPTIMISM = '0x4200000000000000000000000000000000000006'
+    FUSE = '0x0be9e53fd7edac9f859882afdda116645287c629'
+    IOTEX = '0xa00744882684c3e4747faefd68d283ea44099d03'
+    ELASTOS = '0x517e9e5d46c1ea8ab6f78677d6114ef47f71f6c4'
+    VELAS = '0xc579D1f3CF86749E05CD06f7ADe17856c2CE3126'
+    SMARTBCH = '0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04'
+    OASIS = '0x21C718C22D52d0F3a789b752D4c2fD5908a8A733'
+    TELOS = '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -48,6 +55,13 @@ class NativeSymbol():
     METIS = 'METIS'
     MOONBEAM = 'GLMR'
     OPTIMISM = 'ETH'
+    FUSE = 'FUSE'
+    IOTEX = 'IOTX'
+    ELASTOS = 'ELA'
+    VELAS = 'VLX'
+    SMARTBCH = 'BCH'
+    OASIS = 'ROSE'
+    TELOS = 'TLOS'
 
 class NativeDecimal():
     BSC = 18
@@ -72,6 +86,13 @@ class NativeDecimal():
     METIS = 18
     MOONBEAM = 18
     OPTIMISM = 18
+    FUSE = 18
+    IOTEX = 18
+    ELASTOS = 18
+    VELAS = 18
+    SMARTBCH = 18
+    OASIS = 18
+    TELOS = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -96,6 +117,13 @@ class StableToken():
     METIS = '0xea32a96608495e54156ae48931a7c20f0dcc1a21'
     MOONBEAM = '0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b'
     OPTIMISM = '0x7F5c764cBc14f9669B88837ca1490cCa17c31607'
+    FUSE = '0x620fd5fa44BE6af63715Ef4E65DDFA0387aD13F5'
+    IOTEX = '0x84abcb2832be606341a50128aeb1db43aa017449'
+    ELASTOS = '0xA06be0F5950781cE28D965E5EFc6996e88a8C141'
+    VELAS = '0xc111c29A988AE0C0087D97b33C6E6766808A3BD3'
+    SMARTBCH = '0x7b2B3C5308ab5b2a1d9a94d20D35CCDf61e05b72'
+    OASIS = '0xdC19A122e268128B5eE20366299fc7b5b199C8e3'
+    TELOS = '0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b'
 
 class StableDecimal():
     BSC = 18
@@ -120,6 +148,13 @@ class StableDecimal():
     METIS = 6
     MOONBEAM = 6
     OPTIMISM = 6
+    FUSE = 6
+    IOTEX = 18
+    ELASTOS = 6
+    VELAS = 18
+    SMARTBCH = 18
+    OASIS = 6
+    TELOS = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -144,6 +179,13 @@ class DefaultRouter():
     METIS = routers.MetisRouter.NETSWAP
     MOONBEAM = routers.MoonbeamRouter.STELLA
     OPTIMISM = routers.OptimismRouter.ZIPSWAP
+    FUSE = routers.FuseRouter.VOLTAGE
+    IOTEX = routers.IotexRouter.MIMO
+    ELASTOS = routers.ElastosRouter.GLIDE
+    VELAS = routers.VelasRouter.WAGYU
+    SMARTBCH = routers.SmartbchRouter.MIST
+    OASIS = routers.OasisRouter.YUZU
+    TELOS = routers.TelosRouter.OMNI
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -168,6 +210,13 @@ class RouteClass():
     METIS = routers.MetisRouter
     MOONBEAM = routers.MoonbeamRouter
     OPTIMISM = routers.OptimismRouter
+    FUSE = routers.FuseRouter
+    IOTEX = routers.IotexRouter
+    ELASTOS = routers.ElastosRouter
+    VELAS = routers.VelasRouter
+    SMARTBCH = routers.SmartbchRouter
+    OASIS = routers.OasisRouter
+    TELOS = routers.TelosRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -192,6 +241,13 @@ class CoinGecko():
     METIS = ''
     MOONBEAM = ''
     OPTIMISM = ''
+    FUSE = ''
+    IOTEX = ''
+    ELASTOS = ''
+    VELAS = ''
+    SMARTBCH = ''
+    OASIS = ''
+    TELOS = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -216,6 +272,13 @@ class LiqCheck():
     METIS = '0x3f0b450c9453c4d49675AF2016ABe17E08E1f0fB'
     MOONBEAM = '0x6ddB0845aeB285eD7ef712768a0E123c8F2Eab0E'
     OPTIMISM = ''
+    FUSE = '0x6ddB0845aeB285eD7ef712768a0E123c8F2Eab0E'
+    IOTEX = '0xbaB1DcfE955DFf2Fa0E84419C2d7580Ab926f0F1'
+    ELASTOS = '0x1AA8807dA05C959bdD93025118dB57d8796e3e33'
+    VELAS = '0x12AB889eb2886d76BC609f930D4DCb759E515bfc'
+    SMARTBCH = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
+    OASIS = '0x12AB889eb2886d76BC609f930D4DCb759E515bfc'
+    TELOS = '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c'
 
 class MinLiq():
     BSC = 49999
@@ -240,6 +303,13 @@ class MinLiq():
     METIS = 9999
     MOONBEAM = 9999
     OPTIMISM = 9999
+    FUSE = 9999
+    IOTEX = 9999
+    ELASTOS = 9999
+    VELAS = 9999
+    SMARTBCH = 9999
+    OASIS = 9999
+    TELOS = 9999
 
 class YearlyBlocks():
     BSC = 10407920.792079208
@@ -264,7 +334,13 @@ class YearlyBlocks():
     METIS = 0
     MOONBEAM = 0
     OPTIMISM = 0
-
+    FUSE = 0
+    IOTEX = 0
+    ELASTOS = 0
+    VELAS = 0
+    SMARTBCH = 0
+    OASIS = 0
+    TELOS = 0
 
 class DeadTokens():
     BSC = ['0x000000000000000000000000000000000000dEaD', '0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
@@ -289,6 +365,13 @@ class DeadTokens():
     METIS = []
     MOONBEAM = []
     OPTIMISM = []
+    FUSE = []
+    IOTEX = []
+    ELASTOS = []
+    VELAS = []
+    SMARTBCH = []
+    OASIS = []
+    TELOS = []
 
 class NetworkRoutes():
 

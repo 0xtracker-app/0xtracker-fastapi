@@ -27,6 +27,13 @@ class Network(IntEnum):
     Aurora = 1313161554
     Metis = 1088
     Moonbeam = 1284
+    Fuse = 122
+    Iotex = 4689
+    Elastos = 20
+    Velas = 106
+    SmartBCH = 10000
+    Oasis = 42262
+    Telos = 40
 
 
 MULTICALL_ADDRESSES = {
@@ -54,6 +61,12 @@ MULTICALL_ADDRESSES = {
     Network.Theta: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc',
     Network.Aurora: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc',
     Network.Metis: '0x6ddB0845aeB285eD7ef712768a0E123c8F2Eab0E',
-    Network.Moonbeam: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33'
-
+    Network.Moonbeam: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33',
+    Network.Fuse: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc',
+    Network.Iotex: '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c',
+    Network.Elastos: '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c',
+    Network.Velas: '0x6516953017799626f13aAD59dAa1bCCc68A3A247',
+    Network.SmartBCH: '0x12AB889eb2886d76BC609f930D4DCb759E515bfc',
+    Network.Oasis: '0x6516953017799626f13aAD59dAa1bCCc68A3A247',
+    Network.Telos: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33'
 }
