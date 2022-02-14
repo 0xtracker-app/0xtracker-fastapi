@@ -1686,6 +1686,22 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xBeefyFuse' : {
+        'name' : 'beefy.finance',
+        'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBeefyFuse',
+        'featured' : 2,
+        'network' : 'fuse',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_beefy_fuse_pools],
+            'args' : [{'farm_id' : '0xBeefyFuse', 'network' : 'fuse'}],
+            'vault_args' : [{}]
+        }
+    },
                 '0xBeefyAVAX' : {
         'name' : 'beefy.finance',
         'rewardToken' : '0xd6070ae98b8069de6B494332d1A1a81B6179D960',
@@ -4640,6 +4656,21 @@ class Farms:
         'featured' : 2,
         'network' : 'arb'
     },
+                '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063' : {
+        'name' : 'sushi.com',
+        'rewardToken' : '0x90708b20ccc1eb95a4fa7c8b18fd2c22a0ff9e78',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063',
+        'want' : 'lpToken',
+        'perBlock' : 'sushiPerSecond',
+        'apy_config' : 'second',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
+        'featured' : 2,
+        'network' : 'fuse'
+    },
                 '0x9180583C1ab03587b545629dd60D2be0bf1DF4f2' : {
         'name' : 'jetswap.finance',
         'rewardToken' : '0x3d8f1accee8e263f837138829b6c4517473d0688',
@@ -4819,6 +4850,27 @@ class Farms:
                     },
                     ],
             'vault_args' : [{'network' : 'bsc'}]
+        }
+    },
+                '0xElkFUSE' : {
+        'name' : 'elk.finance',
+        'rewardToken' : '0xE1C110E1B1b4A1deD0cAf3E42BfBdbB7b5d7cE1C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xElkFUSE',
+        'featured' : 2,
+        'network' : 'fuse',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.get_elk_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xElkFUSE',
+                        'network' : 'fuse',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'fuse'}]
         }
     },
                 '0xFcDE390bF7a8B8614EC11fa8bde7565b3E64fe0b' : {
@@ -6632,6 +6684,27 @@ class Farms:
                     'reward' : 'rewardsToken'
                 }],
             'vault_args' : [{}]
+        }
+    },
+                '0xVoltageFuse' : {
+        'name' : 'voltage.finance',
+        'rewardToken' : '0x0be9e53fd7edac9f859882afdda116645287c629',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVoltageFuse',
+        'featured' : 2,
+        'network' : 'fuse',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_voltage_single],
+            'vaults' : [external_contracts.get_voltage_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xVoltageFuse',
+                    'network_id' : 'fuse',
+                    'reward_token' : '0x0be9e53fd7edac9f859882afdda116645287c629',
+                }],
+            'vault_args' : [{'network' : 'fuse'}]
         }
     },
 }

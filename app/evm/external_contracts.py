@@ -389,6 +389,17 @@ async def get_beefy_arb_pools(session):
 
     return vault_data
 
+async def get_beefy_fuse_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fuse_pools.js')
+    s2 = "export const fusePools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+
+    return vault_data
+
 async def get_beefy_harmony_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/harmony_pools.js')
     s2 = "export const harmonyPools = "
@@ -491,6 +502,12 @@ async def get_thunder_pools(session):
 async def get_acryptos_vaults(session):
     r = await make_get_json(session, 'https://api.unrekt.net/api/v1/acryptos-asset')
     return [r['assets'][x]['addressvault'] for x in r['assets'] if r['assets'][x]['addressvault'] != '0xa82f327bbbf0667356d2935c6532d164b06ceced' and r['assets'][x]['addressvault'] != 'none']
+
+async def get_voltage_vaults(session, network):
+    r = await make_get(session, 'https://raw.githubusercontent.com/fuseio/fuse-lp-rewards/master/config/default.json')
+    r = json.loads(r)
+    return [r['contracts'][network][x]['contractAddress'] for x in r['contracts'][network]]
+
 
 async def pull_koge_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/vaultaddresses')
@@ -779,8 +796,8 @@ async def get_jetswap_vaults(network, session):
         return r
 
 async def get_elk_vaults(network, session):
-        ROUNDS = 8
-        STAKING = {"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
+        ROUNDS = 10
+        STAKING = {"fuse":{"ELK":"0xA83FF3b61c7b5812d6f0B39d5C7dDD920B2bDa61"},"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
         r = await cf_make_get_json(session, 'https://api.elk.finance/v1/info/farms')
         
         vaults = []
