@@ -22,7 +22,7 @@ def return_apy_list(parser=None):
     evm = Farms()
 
     if parser == 'master':
-        return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms if evm.farms[x]['stakedFunction']]
+        return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms if evm.farms[x].get('stakedFunction') not in [None, 'stakedWantTokens']]
     elif parser == None:
         return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms]
 

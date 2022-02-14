@@ -107,7 +107,7 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
                 'total_yearly_rewards' : [ blocks_per_year *  (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]) ]
             }
 
-            pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()
+            pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()
             
             pools.append(pool_data)
 
