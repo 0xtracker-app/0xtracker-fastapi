@@ -6707,6 +6707,28 @@ class Farms:
             'vault_args' : [{'network' : 'fuse'}]
         }
     },
+                '0xOla' : {
+        'name' : 'ola.finance',
+        'rewardToken' : '0x0be9e53fd7edac9f859882afdda116645287c629',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xOla',
+        'featured' : 2,
+        'network' : 'fuse',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_ola_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xOla',
+                        'network' : 'fuse',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

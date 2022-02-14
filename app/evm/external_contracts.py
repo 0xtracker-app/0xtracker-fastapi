@@ -734,6 +734,9 @@ async def get_ironlend_rewards(session):
 async def get_benqi_vaults(session):
     return poolext.benqi.vaults
 
+async def get_ola_vaults(session):
+    return poolext.ola.vaults
+
 async def get_tranquil_vaults(session):
     return poolext.tranquil.vaults
 
