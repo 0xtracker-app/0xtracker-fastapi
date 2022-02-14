@@ -1696,10 +1696,10 @@ class Farms:
         'featured' : 2,
         'network' : 'fuse',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_beefy_style_stakes],
-            'vaults' : [external_contracts.get_beefy_fuse_pools],
-            'args' : [{'farm_id' : '0xBeefyFuse', 'network' : 'fuse'}],
-            'vault_args' : [{}]
+            'functions' : [farm_templates.get_beefy_style_stakes, farm_templates.get_fh_pools],
+            'vaults' : [external_contracts.get_beefy_fuse_pools, external_contracts.get_beefy_boosts_fuse],
+            'args' : [{'farm_id' : '0xBeefyFuse', 'network' : 'fuse'},{'farm_id' : '0xBeefyFuse', 'network' : 'fuse', 'stake_func' : 'stakedToken'}],
+            'vault_args' : [{},{}]
         }
     },
                 '0xBeefyAVAX' : {

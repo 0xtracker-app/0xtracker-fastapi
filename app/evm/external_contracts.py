@@ -110,6 +110,18 @@ async def get_beefy_boosts(session):
 
     return [x['earnContractAddress'] for x in t]
 
+async def get_beefy_boosts_fuse(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/fuse_stake.js')
+    s2 = "export const fuseStakePools = ["
+    
+    data = r[r.index(s2) + len(s2) :len(r)-3].strip()
+    regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
+    x = f'[{regex}]'.replace('partners: ,','').replace('assets: ,','')
+    hson = hjson.loads(x)
+    t = json.loads(json.dumps(hson))
+
+    return [x['earnContractAddress'] for x in t]
+
 async def get_beefy_metis_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/metis_stake.js')
     s2 = "export const metisStakePools = ["
