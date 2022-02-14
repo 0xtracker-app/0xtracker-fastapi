@@ -31,6 +31,7 @@ class NativeToken():
     SMARTBCH = '0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04'
     OASIS = '0x21C718C22D52d0F3a789b752D4c2fD5908a8A733'
     TELOS = '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E'
+    # RSK = '0x542fDA317318eBF1d3DEAf76E0b632741A7e677d'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -62,6 +63,7 @@ class NativeSymbol():
     SMARTBCH = 'BCH'
     OASIS = 'ROSE'
     TELOS = 'TLOS'
+    # RSK = 'BTC'
 
 class NativeDecimal():
     BSC = 18
