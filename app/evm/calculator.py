@@ -47,7 +47,29 @@ def get_balancer_ratio(token_data,quote_price):
         lp_price += lp_balance * token_price
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'actualStaked' : token_data['staked'], 'tokenSymbols' : token_data['balancerSymbols'], 'lpBalances' : lp_values, 'tokenPair' : "/".join(token_data['balancerSymbols'])}
+
+def get_bancor_ratio(token_data,quote_price):
+
+    userPct = token_data['staked'] / token_data['totalSupply']
+
+    lp_multiplier = 1 / token_data['bancorWeights'][0]
+
+    lp_values = []
     
+    for i, each in enumerate(token_data['bancorBalances']):
+        lpvalue = (userPct * int(each)) / (10**token_data['bancorDecimals'][i])
+        lp_values.append(lpvalue)
+    
+    lp_price = 0
+
+    for i,lp_balance in enumerate(lp_values):
+        token_address = token_data['bancorTokens'][i]
+        token_price = quote_price[token_address.lower()]
+        lp_price += lp_balance * token_price
+
+    return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'actualStaked' : token_data['staked'], 'tokenSymbols' : token_data['bancorSymbols'], 'lpBalances' : lp_values, 'tokenPair' : "/".join(token_data['bancorSymbols'])}
+    
+
 async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
 
     finalResponse = lastReturn
@@ -226,6 +248,8 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
                     elif 'balancerBalances' in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x].update(get_balancer_ratio(finalResponse[f]['userData'][x], prices))
+                    elif 'bancorBalances' in finalResponse[f]['userData'][x]:
+                        finalResponse[f]['userData'][x].update(get_bancor_ratio(finalResponse[f]['userData'][x], prices))
                     
                     elif 'slot0' in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x].update(uniswapv3.get_uniswap_v3_balance(finalResponse[f]['userData'][x], farm_network, prices))

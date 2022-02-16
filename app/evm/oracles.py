@@ -192,6 +192,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     liq_calls = []
     out_token = network_route.native
     network_conn = network_route.network_conn
+
+    if network == 'rsk':
+        return await get_bancor_prices(tokens_in, network)
+
     if network_route.default_router == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
         native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable], 0], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
     else:
@@ -545,4 +549,41 @@ async def get_gohm_price(token_in, network, router, native=False, decimal=18, by
 
     return {return_token.lower() : token_price['token_in'] * parsers.from_custom(gohm_index, 9)}
 
+async def get_bancor_prices(tokens_in, network):
+
+    network_route = NetworkRoutes(network)
+    route_calls= []
+    price_calls = []
+    out_token = network_route.native
+    network_conn = network_route.network_conn
+
+    native_price = await Call('0x98ace08d2b759a265ae326f010496bcd63c15afc', ['rateByPath(address[],uint256)(uint256)',('0x542fda317318ebf1d3deaf76e0b632741a7e677d', '0x6f96096687952349dd5944e0eb1be327dcdeb705', '0xb5999795be0ebb5bab23144aa5fd6a02d080299f'), 1 * 10 ** 18], [['native_price', parsers.from_wei]], network_conn)()
+
+
+    for token in tokens_in:
+
+        token_address = token['token']
+        route_calls.append(Call('0x98ace08d2b759a265ae326f010496bcd63c15afc', ['conversionPath(address,address)(address[])', token_address, out_token], [[token_address, None]]))
+
+    token_routes = await Multicall(route_calls, network_conn)()
+
+    for token in tokens_in:
+        if token_routes.get(token['token']):
+            swap_route = token_routes.get(token['token'])
+            price_calls.append(Call('0x98ace08d2b759a265ae326f010496bcd63c15afc', ['rateByPath(address[],uint256)(uint256)',swap_route, 1 * 10 ** token['decimal']], [[ token['token'], parsers.parse_bancor, {'decimal' : network_route.dnative, 'price' : native_price['native_price']} ]]))
+
+    multi = await Multicall(price_calls, network_conn, _strict=False)()
+
+    prices = {}
+
+    for each in multi:
+        prices[each] = multi[each]
+    
+    for token in tokens_in:
+        if token['token'] not in prices:
+            prices[token['token']] = 0
+
+    prices[out_token.lower()] = native_price['native_price']
+    
+    return prices
 

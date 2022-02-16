@@ -4162,16 +4162,21 @@ class Farms:
         'featured' : 2,
         'network' : 'avax',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_traderjoe_masterchef],
-            'vaults' : [external_contracts.dummy_vault],
+            'functions' : [farm_templates.get_traderjoe_masterchef, farm_templates.get_traderjoe_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
             'args' : [
                     {
                         'farm_id' : '0xTraderJoe',
                         'network_id' : 'avax',
                         'masterchef' : '0xd6a4F121CA35509aF06A0Be99093d08462f53052'
+                    },
+                    {
+                        'farm_id' : '0xTraderJoe',
+                        'network_id' : 'avax',
+                        'masterchef' : '0x188bED1968b795d5c9022F6a0bb5931Ac4c18F00'
                     }
                     ],
-            'vault_args' : [{}]
+            'vault_args' : [{},{}]
         }
     },
                 '0x0cf605484A512d3F3435fed77AB5ddC0525Daf5f' : {
@@ -6724,6 +6729,36 @@ class Farms:
                     {
                         'farm_id' : '0xOla',
                         'network' : 'fuse',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xf730af26e87D9F55E46A6C447ED2235C385E55e0' : {
+        'name' : 'sovryn.app',
+        'rewardToken' : '0xEFc78fc7d48b64958315949279Ba181c2114ABBd',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'poolLength' : 'getPoolLength',
+        'total_alloc' : 'totalAllocationPoint',
+        'masterChef' : '0xf730af26e87D9F55E46A6C447ED2235C385E55e0',
+        'featured' : 2,
+        'want' : 'poolInfoList',
+        'perBlock' : 'rewardTokensPerBlock',
+        'pool_alloc' : 'poolInfoList(uint256)((address,uint96,uint256,uint256))',
+        'alloc_offset' : 1,
+        'network' : 'rsk',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sovryn_masterchef],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xf730af26e87D9F55E46A6C447ED2235C385E55e0',
+                        'masterchef' : '0xf730af26e87D9F55E46A6C447ED2235C385E55e0',
+                        'reward_token' : '0xEFc78fc7d48b64958315949279Ba181c2114ABBd',
+                        'reward_symbol' : 'SOV',
+                        'network_id' : 'rsk',
                     },
                     ],
             'vault_args' : [{}]

@@ -456,6 +456,64 @@ async def get_beethoven_token(pool_token,farm_id):
 
     return token_data
 
+async def get_bancor_token(pool_token,farm_id):
+
+    network_chain = WEB3_NETWORKS[farm_id]
+
+    owner = await Call(pool_token, ['owner()(address)'], None, network_chain)()
+    pool_length = await Call(owner, ['connectorTokenCount()(uint16)'], None, network_chain)()
+    token_calls = []
+
+    for token in range(0,pool_length):
+        token_calls.append(Call(owner, ['connectorTokens(uint256)(address)', token], [[f'{token}_address', None]]))
+
+    token_address = await Multicall(token_calls, network_chain)()
+
+    calls = []
+    token_addresses = []
+    for token in range(0,pool_length):
+        address = token_address.get(f'{token}_address')
+        token_addresses.append(address)
+        calls.append(Call(address, [f'symbol()(string)'], [[f'{token}_symbol', None]]))
+        calls.append(Call(address, [f'decimals()(uint256)'], [[f'{token}_decimal', None]]))
+        calls.append(Call(owner, [f'getConnectorBalance(address)(uint256)', address], [[f'{token}_reserve', None]]))
+        calls.append(Call(owner, [f'reserveWeight(address)(uint256)', address], [[f'{token}_weight', None]]))
+
+    tokens_info = await Multicall(calls,WEB3_NETWORKS[farm_id])()
+
+    token_symbols = []
+    token_decimals = []
+    token_reserves = []
+    token_weights = []
+
+    for each in tokens_info:
+        if 'symbol' in each:
+            token_symbols.append(tokens_info[each])
+        elif 'decimal' in each:
+            token_decimals.append(tokens_info[each])
+        elif 'reserve' in each:
+            token_reserves.append(str(tokens_info[each]))
+        elif 'weight' in each:
+            token_weights.append(tokens_info[each] / 1000000)
+
+    token_data = {
+    "bancorOwner" : owner, 
+    "bancorBalances" :  token_reserves,
+    "bancorWeights" : token_weights,
+    "bancorSymbols" : token_symbols,
+    "bancorDecimals" : token_decimals,
+    'bancorTokens' : token_addresses,
+    "tkn0d" : await Call(pool_token, ['decimals()(uint8)'], None, network_chain)(),
+    "tkn0s" : '/'.join(token_symbols), 
+    "token0" : pool_token, 
+    "totalSupply" : await Call(pool_token, ['totalSupply()(uint256)'], None, network_chain)()
+    }
+
+    token_data['totalSupply'] = parsers.from_custom(await Call(pool_token, ['totalSupply()(uint256)'], None, network_chain)(), token_data['tkn0d'])
+
+    return token_data
+
+
 async def catch_all(token, farm_id):
 
         network_chain = WEB3_NETWORKS[farm_id]

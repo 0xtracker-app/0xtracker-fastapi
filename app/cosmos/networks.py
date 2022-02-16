@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava']
+        self.supported_networks = ['dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -372,6 +372,21 @@ class CosmosNetwork:
                 'symbol' : 'DIG',
                 'decimals' : 6,
                 'coin_gecko_id' : 'pool:udig'
+            }
+        },
+            'fetchai' : {
+            'wallet' : from_atom(wallet,'fetch'),
+            'rpc' : 'https://rpc-fetchai.cosmostation.io',
+            'rest' : 'https://lcd-fetchai.cosmostation.io',
+            'chain_id' : 'fetchhub-3',
+            'chain_name' : 'fetch.ai',
+            'explorer' : 'https://ping.pub/dig/tx/',
+            'bech_prefix' : 'fetch',
+            'stake_token' : {
+                'denom' : 'afet',
+                'symbol' : 'FET',
+                'decimals' : 18,
+                'coin_gecko_id' : 'fetch-ai'
             }
         },
     }

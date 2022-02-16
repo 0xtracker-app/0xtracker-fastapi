@@ -2,7 +2,7 @@ from .multicall import Call, Multicall, parsers
 import json
 import time
 from web3 import Web3
-from .oracles import coingecko_by_address_network, list_router_prices
+from .oracles import coingecko_by_address_network, list_router_prices, get_bancor_prices
 from .router_override import stable_override, router_override
 from .networks import WEB3_NETWORKS, SCAN_APIS
 from .utils import make_get_json
@@ -117,7 +117,10 @@ async def get_wallet_balance(wallet, network, mongodb, session):
     
     wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
     prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
-    router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network, check_liq=True)
+    if network == 'rsk':
+        router_prices = await get_bancor_prices([wallet_data[0][x] for x in wallet_data[0]], network)
+    else:
+        router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network, check_liq=True)
     payload = []
     stored_tokens = []
     total_balance = 0
