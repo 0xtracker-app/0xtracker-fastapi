@@ -31,7 +31,7 @@ class NativeToken():
     SMARTBCH = '0x3743eC0673453E5009310C727Ba4eaF7b3a1cc04'
     OASIS = '0x21C718C22D52d0F3a789b752D4c2fD5908a8A733'
     TELOS = '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E'
-    # RSK = '0x542fDA317318eBF1d3DEAf76E0b632741A7e677d'
+    RSK = '0x542fDA317318eBF1d3DEAf76E0b632741A7e677d'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -63,7 +63,7 @@ class NativeSymbol():
     SMARTBCH = 'BCH'
     OASIS = 'ROSE'
     TELOS = 'TLOS'
-    # RSK = 'BTC'
+    RSK = 'RBTC'
 
 class NativeDecimal():
     BSC = 18
@@ -95,6 +95,7 @@ class NativeDecimal():
     SMARTBCH = 18
     OASIS = 18
     TELOS = 18
+    RSK = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -126,6 +127,7 @@ class StableToken():
     SMARTBCH = '0x7b2B3C5308ab5b2a1d9a94d20D35CCDf61e05b72'
     OASIS = '0xdC19A122e268128B5eE20366299fc7b5b199C8e3'
     TELOS = '0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b'
+    RSK = '0xb5999795BE0EbB5bAb23144AA5FD6A02D080299F'
 
 class StableDecimal():
     BSC = 18
@@ -157,6 +159,7 @@ class StableDecimal():
     SMARTBCH = 18
     OASIS = 6
     TELOS = 6
+    RSK = 18
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -188,6 +191,7 @@ class DefaultRouter():
     SMARTBCH = routers.SmartbchRouter.MIST
     OASIS = routers.OasisRouter.YUZU
     TELOS = routers.TelosRouter.OMNI
+    RSK = routers.RSKRouter.RSKSWAP
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -219,6 +223,7 @@ class RouteClass():
     SMARTBCH = routers.SmartbchRouter
     OASIS = routers.OasisRouter
     TELOS = routers.TelosRouter
+    RSK = routers.RSKRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -250,6 +255,7 @@ class CoinGecko():
     SMARTBCH = ''
     OASIS = ''
     TELOS = ''
+    RSK = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -281,6 +287,7 @@ class LiqCheck():
     SMARTBCH = '0x6516953017799626f13aAD59dAa1bCCc68A3A247'
     OASIS = '0x12AB889eb2886d76BC609f930D4DCb759E515bfc'
     TELOS = '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c'
+    RSK = '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c'
 
 class MinLiq():
     BSC = 49999
@@ -312,6 +319,7 @@ class MinLiq():
     SMARTBCH = 9999
     OASIS = 9999
     TELOS = 9999
+    RSK = 9999
 
 class YearlyBlocks():
     BSC = 10407920.792079208
@@ -343,6 +351,7 @@ class YearlyBlocks():
     SMARTBCH = 0
     OASIS = 0
     TELOS = 0
+    RSK = 0
 
 class DeadTokens():
     BSC = ['0x000000000000000000000000000000000000dEaD', '0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
@@ -374,6 +383,7 @@ class DeadTokens():
     SMARTBCH = []
     OASIS = []
     TELOS = []
+    RSK = []
 
 class NetworkRoutes():
 

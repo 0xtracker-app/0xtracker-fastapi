@@ -37,12 +37,16 @@ async def token_router(wanted_token, farm_address, farm_network):
                                                 return {**await token_types.get_beethoven_token(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'balancer'}}
                                             except:
                                                 try:
-                                                    return {**await token_types.get_nft(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'nft'}}
+                                                    return {**await token_types.get_bancor_token(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'bancor'}}
                                                 except:
                                                     try:
-                                                        return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                                        return {**await token_types.get_nft(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'nft'}}
                                                     except:
-                                                        return {**await token_types.catch_all(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'unknown'}}
+                                                        try:
+                                                            return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                                        except:
+                                                            return {**await token_types.catch_all(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'unknown'}}
+
 async def get_token_data(data,mongo_client, farm_network):
 
     calls = []
@@ -99,6 +103,10 @@ async def get_token_data(data,mongo_client, farm_network):
                     calls.append(Call(found_token['curve_minter'], 'get_virtual_price()(uint256)', [[f'{each}_virtualPrice', parsers.from_wei]]))
                 if 'getRatio' in found_token:
                     calls.append(Call(found_token['tokenID'], 'getRatio()(uint256)', [[f'{each}_getRatio', parsers.from_wei]]))
+                if 'bancorOwner' in found_token:
+                    calls.append(Call(found_token['tokenID'], [f'totalSupply()(uint256)'], [[f'{each}_totalSupply', parsers.from_wei]]))
+                    for i,address in enumerate(found_token['bancorTokens']):
+                        calls.append(Call(found_token['bancorOwner'], [f'getConnectorBalance(address)(uint256)', address], [[f'{each}_bancor{i}', None]]))
             else:
                 token_data = await token_router(wanted, farm_address, farm_network)
                 data[1][farm_address]['userData'][pool_id].update(token_data) 
@@ -133,6 +141,15 @@ async def get_token_data(data,mongo_client, farm_network):
             balances = (breakdown[0], breakdown[1], breakdown[2], 'balancerBalances')
             balances_key = '_'.join(balances)
             data[1][farm_address]['userData'][pool_id]['balancerBalances'] = [str(x) for x in token_calls[balances_key]]
+        
+        if variable == 'bancor0':
+            bancor_balances = []
+            for i,each in enumerate(data[1][farm_address]['userData'][pool_id]['bancorTokens']):
+                balances = (breakdown[0], breakdown[1], breakdown[2], f'bancor{i}')
+                balances_key = '_'.join(balances)
+                bancor_balances.append(str(token_calls[balances_key]))
+
+            data[1][farm_address]['userData'][pool_id]['bancorBalances'] = bancor_balances
     
     return data[1]
 
@@ -156,5 +173,9 @@ def token_list_from_stakes(data, farm_info):
             if 'balancerTokens' in x:
                 for i,balancer in enumerate(x['balancerTokens']):
                     tokens += [{'token' : balancer.lower(), 'decimal' : x['balancerDecimals'][i], 'network' : farm_info['network']}]
+
+            if 'bancorTokens' in x:
+                for i,balancer in enumerate(x['bancorTokens']):
+                    tokens += [{'token' : balancer.lower(), 'decimal' : x['bancorDecimals'][i], 'network' : farm_info['network']}]
     
     return [i for n, i in enumerate(tokens) if i not in tokens[n + 1:]]

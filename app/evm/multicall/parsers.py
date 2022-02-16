@@ -170,3 +170,6 @@ def parse_wanted_offset(value, offset):
 
 def parse_liq(data, info):
     return from_custom(data[1], info['decimal']) * info['price']
+
+def parse_bancor(data, info):
+    return from_custom(data, info['decimal']) * info['price']
