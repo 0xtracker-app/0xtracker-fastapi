@@ -6764,6 +6764,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xApeLendingBSC' : {
+        'name' : 'apeswap.finance',
+        'rewardToken' : '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xApeLendingBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_apeswap_lending],
+            'args' : [
+                    {
+                        'farm_id' : '0xApeLendingBSC',
+                        'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

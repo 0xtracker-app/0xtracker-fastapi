@@ -749,6 +749,9 @@ async def get_benqi_vaults(session):
 async def get_ola_vaults(session):
     return poolext.ola.vaults
 
+async def get_apeswap_lending(session):
+    return poolext.apeswap.vaults
+
 async def get_tranquil_vaults(session):
     return poolext.tranquil.vaults
 
