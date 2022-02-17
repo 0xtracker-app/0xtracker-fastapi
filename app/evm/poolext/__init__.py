@@ -53,3 +53,4 @@ from . import geist
 from . import annexbsc
 from . import tranquil
 from . import ola
+from . import apeswap
