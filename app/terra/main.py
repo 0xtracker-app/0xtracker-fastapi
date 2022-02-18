@@ -15,6 +15,7 @@ from .token_lookup import TokenMetaData
 from .queries import get_luna_price
 from .oracles import get_price_from_pool, TokenOverride
 from .calculator import calculate_prices
+import os
 
 def return_farms_list():
     terra = Farms()
@@ -64,7 +65,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
                 }
                 )
 
-    if total_balance > 0:
+    if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'terra', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets

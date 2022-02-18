@@ -11,6 +11,7 @@ from .oracles import TokenOverride
 from .helpers import token_list_from_stakes
 import asyncio
 import time
+import os
 
 def return_farms_list():
     cosmos = Farms()
@@ -65,7 +66,7 @@ async def get_wallet_balances(wallet, session, mongo_client):
                     }
                     )
 
-    if total_balance > 0:
+    if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets

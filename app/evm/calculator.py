@@ -1,6 +1,7 @@
 from .multicall import Multicall, Call, parsers
 from . import uniswapv3
 import time
+import os
 
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
@@ -288,7 +289,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
                 finalResponse[f]['availableLimit'] = sum(d['lpPrice'] * d['rate'] for d in finalResponse[f]['userData'].values() if 'rate' in d)
                 finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
 
-        if finalResponse[f]['total'] > 0:
+        if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
             mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : farm_network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : farm_network, 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
     
     return finalResponse

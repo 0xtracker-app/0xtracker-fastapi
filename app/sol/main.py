@@ -11,6 +11,7 @@ from .farms import Farms
 import asyncio
 from .calculator import calculate_prices
 import time
+import os
 
 def return_farms_list():
     solana = Farms()
@@ -57,7 +58,7 @@ async def get_wallet_balances(wallet, mongodb, session, client):
             )
         
 
-    if total_balance > 0:
+    if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'solana', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
