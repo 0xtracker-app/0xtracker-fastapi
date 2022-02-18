@@ -12,6 +12,7 @@ import math
 import numpy as np
 import asyncio
 from .external_contracts import get_venus_vaults
+import os
 
 SCAN_SUPPORTED = [x for x in SCAN_APIS]
 
@@ -155,7 +156,7 @@ async def get_wallet_balance(wallet, network, mongodb, session):
                 stored_tokens.append(address.lower())
                 total_balance += wallet_data[0][token]['token_balance'] * price
 
-    if total_balance > 0:
+    if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
 
     return payload

@@ -1,5 +1,6 @@
 from .helpers import from_custom
 import time
+import os
 
 def get_balancer_ratio(token_data,quote_price):
 
@@ -72,7 +73,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_config
                 finalResponse[f]['availableLimit'] = sum(d['lpPrice'] * d['rate'] for d in finalResponse[f]['userData'].values() if 'rate' in d)
                 finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
 
-        if finalResponse[f]['total'] > 0:
+        if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
             mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'terra', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
         
     return finalResponse

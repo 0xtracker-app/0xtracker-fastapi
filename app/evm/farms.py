@@ -6786,6 +6786,18 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xA6A01f4b494243d84cf8030d982D7EeB2AeCd329' : {
+        'name' : 'avalaunch.app',
+        'rewardToken' : '0xd1c3f94DE7e5B45fa4eDBBA472491a9f4B166FC4',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pending',
+        'masterChef' : '0xA6A01f4b494243d84cf8030d982D7EeB2AeCd329',
+        'featured' : 2,
+        'perBlock' : 'rewardPerSecond',
+        'apy_config' : 'second',
+        'network' : 'avax',
+        },
 }
 
 
