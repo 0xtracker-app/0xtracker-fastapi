@@ -74,8 +74,8 @@ class Farms:
         'featured' : 2,
         'network' : 'terra',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_loop_farming, farm_templates.get_loop_staking],
-            'vaults' : [external_contracts.dummy_vault, external_contracts.loopr_staking_contract],
+            'functions' : [farm_templates.get_loop_farming, farm_templates.get_loop_staking, farm_templates.get_loop_farming],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.loopr_staking_contract, external_contracts.dummy_vault],
             'args' : [
                 {
                     'farm_id' : '0xLoopr',
@@ -86,9 +86,14 @@ class Farms:
                     'farm_id' : '0xLoopr',
                     'network' : 'terra',
                     'staking_token' : 'terra1nef5jf6c7js9x6gkntlehgywvjlpytm7pcgkn4'
-                },        
+                },
+                {
+                    'farm_id' : '0xLoopr',
+                    'network' : 'terra',
+                    'query_contract' : 'terra1swgnlreprmfjxf2trul495uh4yphpkqucls8fv'
+                },           
                 ],
-            'vault_args' : [{},{}]
+            'vault_args' : [{},{},{}]
         }
     },
     '0xMirror' : {
@@ -187,6 +192,25 @@ class Farms:
                     'farm_id' : '0xAnchor',
                     'network' : 'terra',
                 },        
+                ],
+            'vault_args' : [{}]
+        }
+    },
+    '0xKujiBlue' : {
+        'name' : 'blue.kujira.app',
+        'masterChef' : '0xKujiBlue',
+        'rewardToken' : 'terra1xfsdgcemqwxp4hhnyk4rle6wr22sseq7j07dnn',
+        'decimal' : 6,
+        'featured' : 2,
+        'network' : 'terra',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_kujira_staking],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0xKujiBlue',
+                    'network' : 'terra',
+                },   
                 ],
             'vault_args' : [{}]
         }

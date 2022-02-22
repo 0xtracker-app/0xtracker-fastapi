@@ -6798,6 +6798,17 @@ class Farms:
         'apy_config' : 'second',
         'network' : 'avax',
         },
+                '0x7aAa607A456607dd03496065ebBAC52f74c905bE' : {
+        'name' : 'kyrios.finance',
+        'rewardToken' : '0xdbf8a44f447cf6fa300fa84c2aac381724b0c6dd',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingKyrios',
+        'masterChef' : '0x7aAa607A456607dd03496065ebBAC52f74c905bE',
+        'featured' : 2,
+        'perBlock' : 'KyriosPerBlock',
+        'network' : 'ftm',
+        },
 }
 
 
