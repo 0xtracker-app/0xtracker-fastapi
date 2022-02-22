@@ -553,3 +553,49 @@ async def get_anchor_staking(wallet, lcd_client, vaults, farm_id, mongodb, netwo
         return poolIDs, poolNest
     else:
         return None
+
+async def get_kujira_staking(wallet, lcd_client, vaults, farm_id, mongodb, network, session):
+    poolKey = farm_id
+
+    tasks = []
+    tasks.append(lcd_client.wasm.contract_query('terra1w7gtx76rs7x0e27l7x2e88vcr52tp9d8g4umjz', {"staked":{"address": wallet}}))
+    tasks.append(lcd_client.wasm.contract_query('terra1cf9q9lq7tdfju95sdw78y9e34a6qrq3rrc6dre', {"staker_info":{"staker": wallet}}))
+    tasks.append(lcd_client.wasm.contract_query('terra1w7gtx76rs7x0e27l7x2e88vcr52tp9d8g4umjz', {"claims":{"address": wallet}}))
+
+    user_balances = await asyncio.gather(*tasks)
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+    pending_kuji = sum([int(x['amount']) for x in user_balances[2]['claims']])
+
+    if int(user_balances[0]['stake']) > 0 or pending_kuji > 0:
+        want_token = 'terra1xfsdgcemqwxp4hhnyk4rle6wr22sseq7j07dnn'
+        staked = from_custom(user_balances[0]['stake'], 6)
+
+        poolNest[poolKey]['userData']['terra1w7gtx76rs7x0e27l7x2e88vcr52tp9d8g4umjz'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData']['terra1w7gtx76rs7x0e27l7x2e88vcr52tp9d8g4umjz'].update(await TokenMetaData(want_token, mongodb, lcd_client, session).lookup())
+        poolIDs['%s_%s_want' % (poolKey, 'terra1w7gtx76rs7x0e27l7x2e88vcr52tp9d8g4umjz')] = want_token
+        
+        pending_total = from_custom(pending_kuji, 6)
+
+        reward_token_0 = {'pending': pending_total, 'symbol' : 'KUJI', 'token' : want_token, 'decimal' : 6}
+        poolNest[poolKey]['userData']['terra1w7gtx76rs7x0e27l7x2e88vcr52tp9d8g4umjz']['gambitRewards'].append(reward_token_0)
+    
+    if int(user_balances[1]['bond_amount']) > 0:
+        want_token = 'terra1cmqv3sjew8kcm3j907x2026e4n0ejl2jackxlx'
+        staked = from_custom(user_balances[1]['bond_amount'], 6)
+
+        poolNest[poolKey]['userData']['terra1cf9q9lq7tdfju95sdw78y9e34a6qrq3rrc6dre'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData']['terra1cf9q9lq7tdfju95sdw78y9e34a6qrq3rrc6dre'].update(await TokenMetaData(want_token, mongodb, lcd_client, session).lookup())
+        poolIDs['%s_%s_want' % (poolKey, 'terra1cf9q9lq7tdfju95sdw78y9e34a6qrq3rrc6dre')] = want_token
+        
+        reward_token_0 = {'pending': from_custom(user_balances[1]['pending_reward'], 6), 'symbol' : 'KUJI', 'token' : 'terra1xfsdgcemqwxp4hhnyk4rle6wr22sseq7j07dnn', 'decimal' : 6}
+        poolNest[poolKey]['userData']['terra1cf9q9lq7tdfju95sdw78y9e34a6qrq3rrc6dre']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
