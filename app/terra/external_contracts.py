@@ -11,7 +11,15 @@ async def make_get_json(session, url, kwargs={}):
 
 async def spectrum_farm_contract(session):
     r = await make_get_json(session,'https://specapi.azurefd.net/api/data?type=lpVault')
-    return [r['poolInfos'][x]['farmContract'] for x in r['poolInfos']]
+
+    farming_contracts = []
+
+    if 'poolInfos' in r:
+        for x in r['poolInfos']:
+            if r['poolInfos'][x]['farmContract'] not in farming_contracts:
+                farming_contracts.append(r['poolInfos'][x]['farmContract'])
+                
+    return farming_contracts
 
 async def spectrum_staking_contract(session):
     return ['terra1dpe4fmcz2jqk6t50plw0gqa2q3he2tj6wex5cl']
