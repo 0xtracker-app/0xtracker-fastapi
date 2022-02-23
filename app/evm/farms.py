@@ -6809,6 +6809,17 @@ class Farms:
         'perBlock' : 'KyriosPerBlock',
         'network' : 'ftm',
         },
+                '0x25c6d6a65c3ae5d41599ba2211629b24604fea4f' : {
+        'name' : 'mojitoswap.finance',
+        'rewardToken' : '0x2cA48b4eeA5A731c2B54e7C3944DBDB87c0CFB6F',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingMojito',
+        'masterChef' : '0x25c6d6a65c3ae5d41599ba2211629b24604fea4f',
+        'featured' : 2,
+        'perBlock' : 'mojitoPerBlock',
+        'network' : 'kcc',
+        },
 }
 
 
