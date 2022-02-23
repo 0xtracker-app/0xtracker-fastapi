@@ -1,1 +1,1 @@
-web: gunicorn -w 5 -k uvicorn.workers.UvicornWorker --pythonpath app main:app
+web: newrelic-admin run-program gunicorn -w 4 -k uvicorn.workers.UvicornWorker --pythonpath app main:app
