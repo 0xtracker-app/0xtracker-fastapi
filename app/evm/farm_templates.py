@@ -1981,6 +1981,36 @@ async def get_sfeed(wallet,vaults,receipt_token,network,farm_id):
     else:
         return None
 
+async def get_xsnob_lock(wallet,vaults,receipt_token,network,farm_id):
+
+    poolKey = farm_id
+    network = WEB3_NETWORKS[network]
+    calls = []
+    for vault in vaults:
+        calls.append(Call(receipt_token, [f'locked(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_wei]]))
+
+    stakes=await Multicall(calls, network)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                staked = stakes[each]
+                want_token = breakdown[0]       
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : receipt_token}
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+    
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
+
 async def get_vault_style_no_want(wallet, vaults, farm_id, network, _pps=None, _stake=None, _strict=None, want_token=None, pps_decimal=None):
 
     if _pps == None:
