@@ -47,7 +47,7 @@ class CosmosNetwork:
             'akash' : {
             'wallet' : from_atom(wallet,'akash'),
             'rpc' : 'https://rpc-akash.keplr.app',
-            'rest' : 'https://lcd-akash.keplr.app',
+            'rest' : 'https://lcd-akash.cosmostation.io',
             'chain_id' : 'akashnet-2',
             'chain_name' : 'Akash',
             'explorer' : 'https://www.mintscan.io/akash/txs/',
@@ -151,7 +151,7 @@ class CosmosNetwork:
         },
             'juno' : {
             'wallet' : from_atom(wallet,'juno'),
-            'rpc' : 'https://rpc-juno.itastakers.com',
+            'rpc' : 'https://rpc.juno.omniflix.co',
             'rest' : 'https://lcd-juno.cosmostation.io',
             'chain_id' : 'juno-1',
             'chain_name' : 'Juno Mainnet',

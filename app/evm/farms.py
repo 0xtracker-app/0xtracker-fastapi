@@ -1312,7 +1312,7 @@ class Farms:
         'featured' : 2,
         'network' : 'avax',
         'perBlock' : None,
-        'death_index' : [67],
+        'death_index' : [67,77,79],
     },
                 '0xAutoCro' : {
         'name' : 'autofarm.network',
