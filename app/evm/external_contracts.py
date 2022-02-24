@@ -513,8 +513,11 @@ async def get_thunder_pools(session):
 
 async def get_acryptos_vaults(session):
     r = await make_get_json(session, 'https://api.unrekt.net/api/v1/acryptos-asset')
-    return [r['assets'][x]['addressvault'] for x in r['assets'] if r['assets'][x]['addressvault'] != '0xa82f327bbbf0667356d2935c6532d164b06ceced' and r['assets'][x]['addressvault'] != 'none']
-
+    if r:
+        return [r['assets'][x]['addressvault'] for x in r['assets'] if r['assets'][x]['addressvault'] != '0xa82f327bbbf0667356d2935c6532d164b06ceced' and r['assets'][x]['addressvault'] != 'none']
+    else:
+        return []
+        
 async def get_voltage_vaults(session, network):
     r = await make_get(session, 'https://raw.githubusercontent.com/fuseio/fuse-lp-rewards/master/config/default.json')
     r = json.loads(r)
@@ -643,8 +646,11 @@ async def get_wault_pool_contracts(session):
 
 async def get_paprprintr_vaults(network, session):
     r = await make_get_json(session, 'https://paprprintr-api.herokuapp.com/api/vaults')
-    r = [r[x]['config']['vault'] for x in r if r[x]['network'] == network and r[x]['config']['vault'] is not None]
-    return r
+    if r:
+        r = [r[x]['config']['vault'] for x in r if r[x]['network'] == network and r[x]['config']['vault'] is not None]
+        return r
+    else:
+        return []
 
 async def get_superfarm_pools(session):
     r = await make_get_json(session, 'https://superlauncher.io/farms/farms.json')
