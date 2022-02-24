@@ -383,6 +383,15 @@ async def get_price_from_synpool(token_in,swap_address, token_out_index, decimal
 
         return {token_in.lower() : price['price']}
 
+async def get_price_from_platypus(token_in,swap_address, token_out_index, decimal, network):
+
+        one_token = 1 * 10 ** decimal
+        
+        price = await Call(swap_address, ['quotePotentialWithdraw(address,uint256)(uint256)', token_out_index, one_token], None, _w3=WEB3_NETWORKS[network])()
+
+        return {token_in.lower() : parsers.from_custom(price, decimal)}
+
+
 async def get_gnana_price():
 
         banana_price = await Call('0xcF0feBd3f17CEf5b47b0cD257aCf6025c5BFf3b7', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95', '0xe9e7cea3dedca5984780bafc599bd69add087d56']], None, WEB3_NETWORKS['bsc'])()

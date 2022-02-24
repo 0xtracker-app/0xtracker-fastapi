@@ -517,7 +517,7 @@ async def get_acryptos_vaults(session):
         return [r['assets'][x]['addressvault'] for x in r['assets'] if r['assets'][x]['addressvault'] != '0xa82f327bbbf0667356d2935c6532d164b06ceced' and r['assets'][x]['addressvault'] != 'none']
     else:
         return []
-        
+
 async def get_voltage_vaults(session, network):
     r = await make_get(session, 'https://raw.githubusercontent.com/fuseio/fuse-lp-rewards/master/config/default.json')
     r = json.loads(r)
@@ -657,7 +657,7 @@ async def get_superfarm_pools(session):
     return [x['farmAddresses'] for x in r if '56' not in x['farmAddresses']]
 
 async def get_snowball_guage(session):
-    balancer_pools = await call_graph('https://snob-backend-api.herokuapp.com/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
+    balancer_pools = await call_graph('https://api.snowapi.net/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
 
     return [x['gaugeAddress'] for x in balancer_pools['data']['SnowglobeContracts']]
 
@@ -666,7 +666,7 @@ async def get_aave_matic(session):
     return markets['data']['protocolData']['reserves']
 
 async def get_snowball_globe(session):
-    balancer_pools = await call_graph('https://snob-backend-api.herokuapp.com/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
+    balancer_pools = await call_graph('https://api.snowapi.net/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
 
     return [x['snowglobeAddress'] for x in balancer_pools['data']['SnowglobeContracts']]
 
@@ -727,6 +727,9 @@ async def get_polyfund_vault(session):
 
 async def get_dk_jewel(session):
     return ['0x72Cb10C6bfA5624dD07Ef608027E366bd690048F']
+
+async def get_snowball_staking(session):
+    return ['0xc38f41a296a4493ff429f1238e030924a1542e50']
 
 async def get_wanna_staking(session):
     return ['0x7faA64Faf54750a2E3eE621166635fEAF406Ab22']

@@ -4235,8 +4235,8 @@ class Farms:
         'featured' : 2,
         'network' : 'avax',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_vault_style, farm_templates.get_syrup_pools],
-            'vaults' : [external_contracts.get_snowball_globe, external_contracts.get_snowball_guage],
+            'functions' : [farm_templates.get_vault_style, farm_templates.get_syrup_pools, farm_templates.get_xsnob_lock],
+            'vaults' : [external_contracts.get_snowball_globe, external_contracts.get_snowball_guage, external_contracts.get_snowball_staking],
             'args' : [
                     {
                         'farm_id' : '0xSnowball',
@@ -4253,9 +4253,14 @@ class Farms:
                         'pending_reward' : 'earned',
                         'user_info' : 'balanceOf'
                     },
+                    {
+                        'farm_id' : '0xSnowball',
+                        'network' : 'avax',
+                        'receipt_token' : '0x83952E7ab4aca74ca96217D6F8f7591BEaD6D64E'
+                    },
                     ],
-            'vault_args' : [{},{}]
-        }
+            'vault_args' : [{},{},{}]
+        },
     },
                 '0x0Ec74989E6f0014D269132267cd7c5B901303306' : {
         'name' : 'polyshield.finance',

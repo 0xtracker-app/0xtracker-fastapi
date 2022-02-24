@@ -77,7 +77,7 @@ class CosmosNetwork:
             'sentinel' : {
             'wallet' : from_atom(wallet,'sent'),
             'rpc' : 'https://rpc-sentinel.keplr.app',
-            'rest' : 'https://lcd-sentinel.keplr.app',
+            'rest' : 'https://lcd-sentinel.cosmostation.io',
             'chain_id' : 'sentinelhub-2',
             'chain_name' : 'Sentinel',
             'explorer' : 'https://www.mintscan.io/sentinel/txs/',
