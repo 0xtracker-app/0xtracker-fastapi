@@ -633,7 +633,8 @@ async def get_thorus_auto(session):
 
 async def get_pickle_addresses(session,network):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
-    if r:
+
+    if r and 'message' not in r:
         return [x['jarAddress'] for x in r if x['network'] == network and 'univ3' not in x['identifier']]
     else:
         return []
@@ -641,11 +642,11 @@ async def get_pickle_addresses(session,network):
 async def get_pickle_addresses_uni(session,network):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
     
-    if r:
+    if r and 'message' not in r:
         return [x['jarAddress'] for x in r if x['network'] == network and 'univ3' in x['identifier']]
     else:
         return []
-        
+
 async def get_wault_pool_contracts(session):
     round_time = round(time.time())
     url = f'https://api.wault.finance/wpoolsData.js?ts={round_time}'
