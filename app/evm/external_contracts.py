@@ -497,7 +497,12 @@ async def get_hyperjump_vaults_ftm(session):
 async def get_autoshark_vaults(network, session):
     r = await make_get(session,'https://autoshark.finance/.netlify/functions/vaults')
     r = json.loads(r)['data']
-    return [x['address'] for x in r if x['address'] != '0x85ff09374D1f59288b6978EB9254377a51BE0B7c' and x['network'] == network and x['active'] == True] 
+    return [x['address'] for x in r if x['address'] != '0x85ff09374D1f59288b6978EB9254377a51BE0B7c' and x['network'] == network and x['active'] == True]
+
+async def get_solidex_vaults(network, session):
+    r = await make_get(session,f'https://api.solidexfinance.com/api/getLPDetails?v={network}')
+    r = json.loads(r)['data']['poolDetailsAll']
+    return [x['poolAddress'] for x in r if x['isPoolWhitelisted']]  
 
 async def get_aperocket_vaults(session):
     r = poolext.aperocket.ape_rockets

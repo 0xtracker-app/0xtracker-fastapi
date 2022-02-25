@@ -6825,6 +6825,54 @@ class Farms:
         'perBlock' : 'mojitoPerBlock',
         'network' : 'kcc',
         },
+                '0xSolidlyFTM' : {
+        'name' : 'solidly.exchange',
+        'rewardToken' : '0x888EF71766ca594DED1F0FA3AE64eD2941740A20',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xSolidlyFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_solidly_gauges],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xSolidlyFTM',
+                        'voting' : '0xdC819F5d05a6859D2faCbB4A44E5aB105762dbaE',
+                        'network_id' : 'ftm',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xSolidexFTM' : {
+        'name' : 'solidexfinance.com',
+        'rewardToken' : '0x888EF71766ca594DED1F0FA3AE64eD2941740A20',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xSolidexFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_solidex],
+            'vaults' : [external_contracts.get_solidex_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xSolidexFTM',
+                        'depositor' : '0x26E1A0d851CF28E697870e1b7F053B605C8b060F',
+                        'network_id' : 'ftm',
+                        'reward_meta' : [
+                            {'a' : '0x888ef71766ca594ded1f0fa3ae64ed2941740a20', 'd' : 18, 's' : 'SOLID'},
+                            {'a' : '0xd31fcd1f7ba190dbc75354046f6024a9b86014d7', 'd' : 18, 's' : 'SEX'}
+                            ]
+                    },
+                    ],
+            'vault_args' : [{'network' : 'fantom'}]
+        }
+    },
 }
 
 

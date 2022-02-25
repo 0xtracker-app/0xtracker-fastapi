@@ -272,7 +272,7 @@ class CosmosNetwork:
             'lum' : {
             'wallet' : from_atom(wallet,'lum'),
             'rpc' : 'https://node0.mainnet.lum.network/rpc',
-            'rest' : 'https://node0.mainnet.lum.network/rest',
+            'rest' : 'https://lcd-lum.cosmostation.io',
             'chain_id' : 'lum-network-1',
             'chain_name' : 'Lum Network',
             'explorer' : 'https://www.mintscan.io/lum/txs',
