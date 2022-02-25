@@ -33,6 +33,7 @@ class Call:
 
     def decode_output(self, output):
         decoded = self.signature.decode_data(output)
+
         if self.returns:
             if len(self.returns[0]) > 2:
                 return {

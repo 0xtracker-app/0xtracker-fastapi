@@ -3518,3 +3518,143 @@ async def get_sovryn_masterchef(wallet,farm_id,network_id,masterchef,reward_toke
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_solidly_gauges(wallet,voting,farm_id,network_id,vaults):
+        poolKey = farm_id
+        pcalls = []
+        gcalls = []
+        bcalls = []
+        rcalls = []
+        calls = []
+
+        network = WEB3_NETWORKS[network_id]
+        
+        pool_length = await Call(voting, ['length()(uint256)'],None,network)() 
+
+        ##Get Pools
+        for pid in range(0,pool_length):
+            pcalls.append(Call(voting, ['pools(uint256)(address)', pid], None))
+
+        pools=await Multicall(pcalls, network, _list=True)()
+
+        ##Get Gauges
+        for pool in pools:
+            gcalls.append(Call(voting, ['gauges(address)(address)', pool], None))
+
+        gauges=await Multicall(gcalls, network, _list=True)()
+
+        ##Get Bribes
+        for gauge in gauges:
+            bcalls.append(Call(voting, ['bribes(address)(address)', gauge], None))
+
+        bribes=await Multicall(bcalls, network, _list=True)()
+
+        ##Get Rewards Length
+        for gauge,bribe in zip(gauges,bribes):
+            calls.append(Call(gauge, ['balanceOf(address)(uint256)', wallet], [[f'{gauge}_staked', None]]))
+            rcalls.append(Call(gauge, ['rewardsListLength()(uint256)'], [[f'{gauge}_glength', None]]))
+            rcalls.append(Call(bribe, ['rewardsListLength()(uint256)'], [[f'{gauge}_blength', None]]))
+
+        reward_lengths=await Multicall(rcalls, network)()
+
+        ##Get Rewards Tokens
+        rcalls = []
+        for gauge,bribe in zip(gauges,bribes):
+            glength = reward_lengths.get(f'{gauge}_glength')
+            blength = reward_lengths.get(f'{gauge}_blength')
+            
+            for i in range(0,glength):
+                rcalls.append(Call(gauge, ['rewards(uint256)(address)', i], [[f'{gauge}_{i}_gtoken', None]]))
+
+            for i in range(0,blength):
+                rcalls.append(Call(bribe, ['rewards(uint256)(address)', i], [[f'{gauge}_{i}_btoken', None]]))
+
+        reward_tokens=await Multicall(rcalls, network)()
+
+        for gauge,bribe in zip(gauges,bribes):
+            glength = reward_lengths.get(f'{gauge}_glength')
+            blength = reward_lengths.get(f'{gauge}_blength')
+            
+            for i in range(0,glength):
+                calls.append(Call(gauge, ['earned(address,address)(uint256)', reward_tokens.get(f'{gauge}_{i}_gtoken'), wallet], [[f'{gauge}_{i}_greward', None]]))
+
+            for i in range(0,blength):
+                btoken = reward_lengths.get(f'{gauge}_{i}_gtoken')
+                calls.append(Call(bribe, ['earned(address,uint256)(uint256)', wallet, i], [[f'{gauge}_{i}_breward', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        lp_token_meta = await template_helpers.get_token_list_decimals(pools,network_id,parse_wanted=False)  
+        reward_token_meta = await template_helpers.get_token_list_decimals_symbols([x for x in set(reward_tokens.values())],network_id)    
+            
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for p, gauge in enumerate(gauges):
+            want_token = pools[p]
+            staked = parsers.from_custom(stakes.get(f'{gauge}_staked'), lp_token_meta.get(want_token))
+            if staked > 0:
+                poolNest[poolKey]['userData'][gauge] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolIDs['%s_%s_want' % (poolKey, gauge)] = want_token
+
+                glength = reward_lengths.get(f'{gauge}_glength')
+                blength = reward_lengths.get(f'{gauge}_blength')
+
+                for i in range(0,glength):
+                    reward_token = reward_tokens.get(f'{gauge}_{i}_gtoken')
+                    reward_decimal = reward_token_meta.get(f'{reward_token}_decimals')
+                    pending_reward = parsers.from_custom(stakes.get(f'{gauge}_{i}_greward'), reward_decimal)
+                    if pending_reward > 0:
+                        reward_token_0 = {'pending': pending_reward, 'symbol' : reward_token_meta.get(f'{reward_token}_symbol'), 'token' : reward_token}
+                        poolNest[poolKey]['userData'][gauge]['gambitRewards'].append(reward_token_0)
+                
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+async def get_solidex(wallet,depositor,farm_id,network_id,vaults,reward_meta):
+        poolKey = farm_id
+        calls = []
+
+        network = WEB3_NETWORKS[network_id]
+        
+        ##Get Pools
+        for i, pool in enumerate(vaults):
+            calls.append(Call(depositor, ['userBalances(address,address)(uint256)', wallet, pool], [[f'{pool}_{i}_staked', None]]))
+            # calls.append(Call(depositor, ['tokenForPool(address)(address)', pool], [[f'{pool}_want', None]]))
+            calls.append(Call(depositor, ['pendingRewards(address,address[])((uint256,uint256,uint256,uint256))', wallet, [pool]], [[f'{pool}_pending', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        lp_token_meta = await template_helpers.get_token_list_decimals(vaults,network_id,parse_wanted=False)  
+            
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                
+                    breakdown = each.split('_')
+                    want_token = vaults[int(breakdown[1])]
+                    staked = parsers.from_custom(stakes[each], lp_token_meta.get(want_token))
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    for i in range(0,len(reward_meta)):
+                        reward_token = reward_meta[i]['a']
+                        reward_decimal = reward_meta[i]['d']
+                        pending_reward = parsers.from_custom(stakes.get(f'{breakdown[0]}_pending')[2+i], reward_decimal)
+                        if pending_reward > 0:
+                            reward_token_0 = {'pending': pending_reward, 'symbol' : reward_meta[i]['s'], 'token' : reward_token}
+                            poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+                
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
