@@ -252,7 +252,7 @@ async def get_solidly_gauges(voting,farm_id,network_id,vaults,mongo_db):
                     'staking' : [found_token['token0'], found_token['token1']] if 'tkn1s' in found_token else [found_token['token0']],
                     'decimals_staking' : [found_token['tkn0d'], found_token['tkn1d']] if 'tkn1s' in found_token else [found_token['tkn0d']],
                     'decimals_rewards' : [farm_info['decimal']],
-                    'allocation_point' : None,
+                    'allocation_point' : 1,
                     'rewards_multiplier' : 1,
                     'apy' : None,
                     'risk' : None,
