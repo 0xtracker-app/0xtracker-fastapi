@@ -20,6 +20,9 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
     web_3 = WEB3_NETWORKS[farm_info['network']]
     network_info = NetworkRoutes(farm_info['network'])
 
+    if farm_info.get('apyHelpers'):
+        return await get_solidly_gauges('0xdC819F5d05a6859D2faCbB4A44E5aB105762dbaE', farm_id, farm_info['network'], [], mongo_db)
+
     if farm_info['perBlock'] == None:
         return {'error' : { 'type' : 'null_per_block', 'message' : 'Perblock function unavailable.'}}
 
@@ -155,3 +158,121 @@ async def get_dex_info(mongo_db, http_session):
                 })
     
     return dex_info
+
+async def get_solidly_gauges(voting,farm_id,network_id,vaults,mongo_db):
+        farm_info = Farms().farms[farm_id]
+        pcalls = []
+        gcalls = []
+        bcalls = []
+        rcalls = []
+        calls = []
+        collection = mongo_db.xtracker['full_tokens']
+        network_info = NetworkRoutes(farm_info['network'])
+        network = WEB3_NETWORKS[network_id]
+        
+        pool_length = await Call(voting, ['length()(uint256)'],None,network)() 
+
+        ##Get Pools
+        for pid in range(0,pool_length):
+            pcalls.append(Call(voting, ['pools(uint256)(address)', pid], None))
+
+        pools=await Multicall(pcalls, network, _list=True)()
+
+        ##Get Gauges
+        for pool in pools:
+            gcalls.append(Call(voting, ['gauges(address)(address)', pool], None))
+
+        gauges=await Multicall(gcalls, network, _list=True)()
+
+        ##Get Bribes
+        for gauge in gauges:
+            bcalls.append(Call(voting, ['bribes(address)(address)', gauge], None))
+
+        bribes=await Multicall(bcalls, network, _list=True)()
+
+        ##Get Rewards Length
+        for gauge,bribe in zip(gauges,bribes):
+            rcalls.append(Call(gauge, ['rewardsListLength()(uint256)'], [[f'{gauge}_glength', None]]))
+            rcalls.append(Call(bribe, ['rewardsListLength()(uint256)'], [[f'{gauge}_blength', None]]))
+
+        reward_lengths=await Multicall(rcalls, network)()
+
+        ##Get Rewards Tokens
+        rcalls = []
+        for gauge,bribe in zip(gauges,bribes):
+            glength = reward_lengths.get(f'{gauge}_glength')
+            blength = reward_lengths.get(f'{gauge}_blength')
+            
+            for i in range(0,glength):
+                rcalls.append(Call(gauge, ['rewards(uint256)(address)', i], [[f'{gauge}_{i}_gtoken', None]]))
+
+            for i in range(0,blength):
+                rcalls.append(Call(bribe, ['rewards(uint256)(address)', i], [[f'{gauge}_{i}_btoken', None]]))
+
+        reward_tokens=await Multicall(rcalls, network)()
+
+        for gauge,bribe in zip(gauges,bribes):
+            glength = reward_lengths.get(f'{gauge}_glength')
+            blength = reward_lengths.get(f'{gauge}_blength')
+            
+            for i in range(0,glength):
+                calls.append(Call(gauge, ['rewardRate(address)(uint256)', reward_tokens.get(f'{gauge}_{i}_gtoken')], [[f'{gauge}_{i}_greward', None]]))
+
+            # for i in range(0,blength):
+            #     btoken = reward_lengths.get(f'{gauge}_{i}_gtoken')
+            #     calls.append(Call(bribe, ['earned(address,uint256)(uint256)', wallet, i], [[f'{gauge}_{i}_breward', None]]))
+
+        rewards=await Multicall(calls, network)()
+
+        apy_pools = []
+
+        for pool in range(0,pool_length):
+            want_token = pools[pool]
+            gauge = gauges[pool]
+
+            if reward_lengths.get(f'{gauge}_glength') > 0 : # and f'{pool}_balance' in balances:
+
+                found_token = await collection.find_one({'tokenID' : want_token, 'network' : farm_info['network']}, {'_id': False})
+
+                if not found_token:
+                    found_token = await token_router(want_token, None, farm_info['network'])
+                    collection.update_one({'tokenID' : want_token, 'network' : farm_info['network']}, { "$set": found_token }, upsert=True)
+                
+                if found_token.get('type') not in ['lp', 'single']:
+                    continue
+                
+                pool_data = {
+                    'name' : f"{found_token['tkn0s']}-{found_token['tkn1s']}" if 'tkn1s' in found_token else found_token['tkn0s'],
+                    'address' : want_token,
+                    'lp_token_address' : want_token,
+                    'farm' : farm_info['name'],
+                    'master' : gauge,
+                    'pool_id' : pool,
+                    'rewards' : [farm_info['rewardToken']],
+                    'staking' : [found_token['token0'], found_token['token1']] if 'tkn1s' in found_token else [found_token['token0']],
+                    'decimals_staking' : [found_token['tkn0d'], found_token['tkn1d']] if 'tkn1s' in found_token else [found_token['tkn0d']],
+                    'decimals_rewards' : [farm_info['decimal']],
+                    'allocation_point' : None,
+                    'rewards_multiplier' : 1,
+                    'apy' : None,
+                    'risk' : None,
+                    'stable_only' : False,
+                    'tvl' : None, ##parsers.from_custom(balances[f'{pool}_balance'], balances.get(f'{pool}_decimals') if balances.get(f'{pool}_decimals') else 18),
+                    'ad' : False,
+                    'chain' : WEB3_NETWORKS[farm_info['network']]['id'],
+                    'staking_prices': [],
+                    'total_yearly_rewards' : [parsers.from_custom(rewards.get(f'{gauge}_{i}_greward'), farm_info['decimal']) * network_info.bpy for i in range(0, reward_lengths.get(f'{gauge}_glength'))]
+                }
+
+                pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()
+                
+                apy_pools.append(pool_data)
+
+
+
+        return {
+            'farm_id' : farm_info['name'],
+            'total_allocation' : None,
+            'reward_per_block' : None,
+            'pools' : apy_pools
+        }

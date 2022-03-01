@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
+        self.supported_networks = ['cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -387,6 +387,21 @@ class CosmosNetwork:
                 'symbol' : 'FET',
                 'decimals' : 18,
                 'coin_gecko_id' : 'fetch-ai'
+            }
+        },
+            'cheqd' : {
+            'wallet' : from_atom(wallet,'cheqd'),
+            'rpc' : 'https://rpc.cheqd.net',
+            'rest' : 'https://api.cheqd.net',
+            'chain_id' : 'cheqd-mainnet-1',
+            'chain_name' : 'cheqd',
+            'explorer' : 'https://ping.pub/dig/tx/',
+            'bech_prefix' : 'cheqd',
+            'stake_token' : {
+                'denom' : 'ncheq',
+                'symbol' : 'CHEQ',
+                'decimals' : 9,
+                'coin_gecko_id' : ''
             }
         },
     }

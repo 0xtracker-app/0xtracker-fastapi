@@ -6845,6 +6845,12 @@ class Farms:
                     },
                     ],
             'vault_args' : [{}]
+        },
+        'apyHelpers' : {
+            'functions' : [],
+            'vaults' : [],
+            'args' : [],
+            'vault_args' : [],
         }
     },
                 '0xSolidexFTM' : {
@@ -6872,6 +6878,88 @@ class Farms:
                     ],
             'vault_args' : [{'network' : 'fantom'}]
         }
+    },
+                '0x79f5a8bd0d6a00a41ea62cda426cef0115117a61' : {
+        'name' : 'omnidex.finance',
+        'rewardToken' : '0xd2504a02fABd7E546e41aD39597c377cA8B0E1Df',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCharm',
+        'masterChef' : '0x79f5a8bd0d6a00a41ea62cda426cef0115117a61',
+        'featured' : 2,
+        'perBlock' : 'charmPerBlock',
+        'network' : 'telos',
+        },
+                '0x6e2ad6527901c9664f016466b8DA1357a004db0f' : {
+        'name' : 'liquiddriver.finance',
+        'rewardToken' : '0x10b620b2dbac4faa7d7ffd71da486f5d44cd86f9',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingLqdr',
+        'masterChef' : '0x6e2ad6527901c9664f016466b8DA1357a004db0f',
+        'perBlock' : 'lqdrPerBlock',
+        'featured' : 2,
+        'network' : 'ftm',
+        'wantFunction' : 'lpToken',
+        'want' : 'lpToken',
+        'alloc_offset' : 2,
+        'pool_alloc' : 'poolInfo(uint256)((uint256,uint256,uint256))',
+        'rewardSymbol' : 'LQDR',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_xliquid],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0x6e2ad6527901c9664f016466b8DA1357a004db0f',
+                        'fee_dist' : '0x095010A79B28c99B2906A8dc217FC33AEfb7Db93',
+                        'xtoken' : '0x3ae658656d1c526144db371faef2fff7170654ee',
+                        'reward_length' : 7,
+                        'network_id' : 'ftm',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0x38cC060DF3a0498e978eB756e44BD43CC4958aD9' : {
+        'name' : 'tangoswap.cash',
+        'rewardToken' : '0x73BE9c8Edf5e951c9a0762EA2b1DE8c8F38B5e91',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0x38cC060DF3a0498e978eB756e44BD43CC4958aD9',
+        'want' : 'lpToken',
+        'perBlock' : 'sushiPerSecond',
+        'apy_config' : 'second',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
+        'featured' : 2,
+        'network' : 'smartbch'
+    },
+                '0xDEa721EFe7cBC0fCAb7C8d65c598b21B6373A2b6' : {
+        'name' : 'benswap.cash',
+        'rewardToken' : '0x77CB87b57F54667978Eb1B199b28a0db8C8E1c0B',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingGreenBen',
+        'masterChef' : '0xDEa721EFe7cBC0fCAb7C8d65c598b21B6373A2b6',
+        'featured' : 2,
+        'perBlock' : 'rewardPerBlock',
+        'network' : 'smartbch',
+        },
+                '0x3A7B9D0ed49a90712da4E087b17eE4Ac1375a5D4' : {
+        'name' : 'mistswap.fi',
+        'rewardToken' : '0x5fA664f69c2A4A3ec94FaC3cBf7049BD9CA73129',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingSushi',
+        'masterChef' : '0x3A7B9D0ed49a90712da4E087b17eE4Ac1375a5D4',
+        'want' : 'lpToken',
+        'perBlock' : 'sushiPerSecond',
+        'apy_config' : 'second',
+        'pool_alloc' : 'poolInfo(uint256)((uint128,uint64,uint64))',
+        'alloc_offset' : 2,
+        'featured' : 2,
+        'network' : 'smartbch'
     },
 }
 
