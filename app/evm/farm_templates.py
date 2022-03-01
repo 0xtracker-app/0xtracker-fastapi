@@ -2389,6 +2389,7 @@ async def get_pending_want(wallet, stakes, network, farm_info):
             elif address == '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904':
                 calls.append(Call(address, ['poolInfo(uint256)((address,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
             elif address in [
+                '0x6e2ad6527901c9664f016466b8DA1357a004db0f',
                 '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
                 '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
                 '0x7875Af1a6878bdA1C129a4e2356A3fD040418Be5',
@@ -3653,6 +3654,51 @@ async def get_solidex(wallet,depositor,farm_id,network_id,vaults,reward_meta):
                         if pending_reward > 0:
                             reward_token_0 = {'pending': pending_reward, 'symbol' : reward_meta[i]['s'], 'token' : reward_token}
                             poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+                
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+async def get_xliquid(wallet,fee_dist,xtoken,reward_length,farm_id,network_id,vaults):
+        poolKey = farm_id
+        calls = []
+        rcalls = []
+        network = WEB3_NETWORKS[network_id]
+        
+        ##Get Pools
+        for pid in range(0,reward_length):
+            rcalls.append(Call(fee_dist, ['tokens(uint256)(address)', pid], None))
+
+        reward_tokens=await Multicall(rcalls, network, _list=True)()
+
+        calls.append(Call(xtoken, ['locked(address)(int128)', wallet], [[f'staked', None]]))
+        calls.append(Call(xtoken, ['token()(address)'], [[f'want', None]]))
+        calls.append(Call(fee_dist, ['claim(address)((uint256,uint256,uint256,uint256,uint256,uint256,uint256))', wallet], [[f'reward', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        reward_token_meta = await template_helpers.get_token_list_decimals_symbols(reward_tokens,network_id)    
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+
+        want_token = stakes.get('want')
+        staked = parsers.from_custom(stakes.get('staked'), 18)
+        if staked > 0:
+            poolNest[poolKey]['userData'][xtoken] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+            poolIDs['%s_%s_want' % (poolKey, xtoken)] = want_token
+
+            for i in range(0,reward_length):
+                reward_token = reward_tokens[i]
+                reward_decimal = reward_token_meta.get(f'{reward_token}_decimals')
+                pending_reward = parsers.from_custom(stakes.get('reward')[i], reward_decimal)
+                if pending_reward > 0:
+                    reward_token_0 = {'pending': pending_reward, 'symbol' : reward_token_meta.get(f'{reward_token}_symbol'), 'token' : reward_token}
+                    poolNest[poolKey]['userData'][xtoken]['gambitRewards'].append(reward_token_0)
                 
         if len(poolIDs) > 0:
             return poolIDs, poolNest    
