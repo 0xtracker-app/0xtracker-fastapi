@@ -2,6 +2,9 @@ from .multicall import Multicall, Call, parsers
 from . import uniswapv3
 import time
 import os
+from db.schemas import UserRecord
+from db.crud import create_user_history
+from datetime import datetime, timezone
 
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
@@ -71,7 +74,7 @@ def get_bancor_ratio(token_data,quote_price):
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'actualStaked' : token_data['staked'], 'tokenSymbols' : token_data['bancorSymbols'], 'lpBalances' : lp_values, 'tokenPair' : "/".join(token_data['bancorSymbols'])}
     
 
-async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
+async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client, pdb):
 
     finalResponse = lastReturn
     rewardToken = farm_data['rewardToken']
@@ -290,6 +293,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client):
                 finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
 
         if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-            mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : farm_network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : farm_network, 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
-    
+            create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network=farm_network, wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork=farm_network ))
+            #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : farm_network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : farm_network, 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
+            
     return finalResponse

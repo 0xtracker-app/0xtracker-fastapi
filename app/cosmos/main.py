@@ -12,12 +12,15 @@ from .helpers import token_list_from_stakes
 import asyncio
 import time
 import os
+from db.schemas import UserRecord
+from db.crud import create_user_history
+from datetime import datetime, timezone
 
 def return_farms_list():
     cosmos = Farms()
     return cosmos.farms
 
-async def get_wallet_balances(wallet, session, mongo_client):
+async def get_wallet_balances(wallet, session, mongo_client, pdb):
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks
     token_overrides = TokenOverride(session).tokens
@@ -67,11 +70,12 @@ async def get_wallet_balances(wallet, session, mongo_client):
                     )
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)
+        create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='cosmos', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='cosmos' ))
+        #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 
-async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
+async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
     
@@ -103,7 +107,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session):
     for each in price_overrides:
         prices.update(each)
 
-    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, pdb)
 
     return response
 

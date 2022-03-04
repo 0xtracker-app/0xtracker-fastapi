@@ -16,12 +16,15 @@ from .queries import get_luna_price
 from .oracles import get_price_from_pool, TokenOverride
 from .calculator import calculate_prices
 import os
+from db.schemas import UserRecord
+from db.crud import create_user_history
+from datetime import datetime, timezone
 
 def return_farms_list():
     terra = Farms()
     return terra.farms
 
-async def get_wallet_balances(wallet, mongo_client, session, client):
+async def get_wallet_balances(wallet, mongo_client, session, client, pdb):
     user_balance = await client.bank.balance(wallet)
     cw_tokens = await mongo_client.xtracker['terra_tokens'].find({"type" : "single", "$expr": { "$gt": [ { "$strLenCP": "$token0" }, 6 ] }}, {'_id': False}).to_list(length=None)
     cw_token_balances =  await asyncio.gather(*[client.wasm.contract_query(token['tokenID'], {"balance":{"address": wallet}}) for token in cw_tokens])
@@ -66,11 +69,12 @@ async def get_wallet_balances(wallet, mongo_client, session, client):
                 )
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'terra', 'dollarValue' : total_balance} }, upsert=True)
+        #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'terra', 'dollarValue' : total_balance} }, upsert=True)
+        create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='terra', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='terra' ))
 
     return return_wallets
 
-async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_client):
+async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_client, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
     
@@ -98,6 +102,6 @@ async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_clien
     
     prices = dict(zip([x['token'] for x in token_list], await asyncio.gather(*[get_price_from_pool(x['token'], x['decimal'], lcd_client, mongo_db, token_over, luna_price) for x in token_list])))
 
-    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, farm_configuraiton)
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, farm_configuraiton, pdb)
 
     return response

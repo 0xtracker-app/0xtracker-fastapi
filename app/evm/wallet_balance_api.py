@@ -13,6 +13,9 @@ import numpy as np
 import asyncio
 from .external_contracts import get_venus_vaults
 import os
+from db.schemas import UserRecord
+from db.crud import create_user_history
+from datetime import datetime, timezone
 
 SCAN_SUPPORTED = [x for x in SCAN_APIS]
 
@@ -107,7 +110,7 @@ async def get_token_list_from_mongo(network,mongo):
     x = await mongo.xtracker['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
     return x['tokens'] if x is not None else []
 
-async def get_wallet_balance(wallet, network, mongodb, session):
+async def get_wallet_balance(wallet, network, mongodb, session, pdb):
     
     network_data = NetworkRoutes(network)
 
@@ -157,6 +160,8 @@ async def get_wallet_balance(wallet, network, mongodb, session):
                 total_balance += wallet_data[0][token]['token_balance'] * price
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
+        create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network=network, wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork=network ))
+
+        #mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
 
     return payload

@@ -1,6 +1,9 @@
 from .helpers import from_custom
 import time
 import os
+from db.schemas import UserRecord
+from db.crud import create_user_history
+from datetime import datetime, timezone
 
 def get_balancer_ratio(token_data,quote_price):
 
@@ -21,7 +24,7 @@ def get_balancer_ratio(token_data,quote_price):
 
     return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'lpBalances' : lp_values, 'actualStaked' : token_data['staked']}
 
-async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_configuraiton):
+async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_configuraiton, pdb):
 
     finalResponse = lastReturn
     
@@ -74,6 +77,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_config
                 finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
 
         if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-            mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'terra', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
+            create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network='terra', wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork='terra' ))
+            #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'terra', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
         
     return finalResponse
