@@ -11,6 +11,7 @@ from . import routers
 import asyncio
 from eth_account.messages import encode_defunct
 from web3.auto import w3
+from db.crud import delete_user_history
 
 INCH_SUPPORTED = ['bsc','matic','eth']
 
@@ -26,7 +27,7 @@ def return_apy_list(parser=None):
     elif parser == None:
         return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms]
 
-async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
+async def get_evm_positions(wallet, farm_id, mongo_db, http_session, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
     farm_network = farm_configuraiton['network']
@@ -66,34 +67,37 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session):
     for each in price_overrides:
         prices.update(each)
 
-    response = await calculate_prices(build_meta_data, prices, farm_configuraiton, wallet, mongo_db)
+    response = await calculate_prices(build_meta_data, prices, farm_configuraiton, wallet, mongo_db, pdb)
 
     return response
 
-async def delete_user_records(wallet, signature, timestamps, mongo_db):
+async def delete_user_records(wallet, signature, timestamps, mongo_db, pdb):
     message = encode_defunct(text='I authorize deletion of these records.')
     recovered_address = w3.eth.account.recover_message(message, signature=signature)
 
     if recovered_address == wallet:
         for each in timestamps:
-            gte = int(datetime.datetime.strptime(each, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=datetime.timezone.utc).timestamp())
-            deletions = await mongo_db.xtracker['user_data'].delete_many({ 
-        "$and" : [
-            { 
-                "wallet" : wallet.lower()
-            }, 
-            { 
-                "timeStamp" : { 
-                    "$gte" : gte
-                }
-            }, 
-            { 
-                "timeStamp" : { 
-                    "$lte" : gte + (60 * 60) - 1
-                }
-            }
-        ]
-    })
+            start = datetime.datetime.strptime(each, "%Y-%m-%dT%H:%M:%S")
+            end = start + datetime.timedelta(minutes=59, seconds=59)
+            print(type(start))
+            delete_user_history(pdb, wallet.lower(), start, end)
+    #         deletions = await mongo_db.xtracker['user_data'].delete_many({ 
+    #     "$and" : [
+    #         { 
+    #             "wallet" : wallet.lower()
+    #         }, 
+    #         { 
+    #             "timeStamp" : { 
+    #                 "$gte" : gte
+    #             }
+    #         }, 
+    #         { 
+    #             "timeStamp" : { 
+    #                 "$lte" : gte + (60 * 60) - 1
+    #             }
+    #         }
+    #     ]
+    # })
 
         return {'message' : 'Deletion Succesfull'}
     else:

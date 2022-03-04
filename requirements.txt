@@ -2,6 +2,7 @@ aiohttp==3.7.4.post0
 anyio==3.3.0
 asgiref==3.4.1
 async-timeout==3.0.1
+asyncpg==0.25.0
 atomicwrites==1.4.0
 attrs==20.3.0
 autopep8==1.5.7
@@ -79,6 +80,7 @@ parsimonious==0.8.1
 pathspec==0.5.9
 pluggy==0.13.1
 protobuf==3.17.3
+psycopg2==2.9.3
 py==1.10.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8

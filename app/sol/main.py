@@ -12,12 +12,15 @@ import asyncio
 from .calculator import calculate_prices
 import time
 import os
+from db.schemas import UserRecord
+from db.crud import create_user_history
+from datetime import datetime, timezone
 
 def return_farms_list():
     solana = Farms()
     return solana.farms
 
-async def get_wallet_balances(wallet, mongodb, session, client):
+async def get_wallet_balances(wallet, mongodb, session, client, pdb):
     solana = SolanaNetwork(wallet)
 
     balances = await client.get_token_accounts_by_owner(solana.public_key, TokenAccountOpts(program_id='TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'))
@@ -59,11 +62,12 @@ async def get_wallet_balances(wallet, mongodb, session, client):
         
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'solana', 'dollarValue' : total_balance} }, upsert=True)
+        create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='solana', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='solana' ))
+        #mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : time.time(), 'farm' : 'wallet', 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'solana', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 
-async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client):
+async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
     solana = SolanaNetwork(wallet)
     farm_configuraiton = set_farms.farms[farm_id]
@@ -88,6 +92,6 @@ async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client):
 
     prices = await oracles.get_sonar_pricing(http_session)
 
-    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db)
+    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, pdb)
 
     return response

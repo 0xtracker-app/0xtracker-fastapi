@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from fastapi import FastAPI, Depends, Path, Query
 from pydantic import BaseModel
 from typing import List
@@ -12,6 +12,10 @@ from terra import get_wallet_balances as terra_wallet_balances, get_terra_positi
 from api.v1.api import router as api_router
 from db.mongodb_utils import close_mongo_connection, connect_to_mongo
 from db.mongodb import AsyncIOMotorClient, get_database
+from db.postgres_utils import close_postgres_connection, connect_to_postgres
+from db.postgres import Database, get_postgres_database
+from db.database import SessionLocal, engine
+from db import crud, models, schemas
 from httpsession.session import ClientSession, get_session
 from httpsession.session_utils import session_start, session_stop
 from solsession.session import AsyncClient, get_solana
@@ -20,6 +24,7 @@ from terrasession.session import AsyncLCDClient, get_terra
 from terrasession.session_utils import terra_start, terra_stop
 from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
 from db.queries import user_info_by_time, addresses_per_day, farms_over_last_30_days
+from sqlalchemy.orm import Session
 
 app = FastAPI(title='FastAPI')
 #app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
@@ -30,6 +35,7 @@ app = FastAPI(title='FastAPI')
 @app.on_event("startup")
 async def startup_event():
     await connect_to_mongo()
+    #await connect_to_postgres()
     await session_start()
     await solana_start()
     await terra_start()
@@ -37,6 +43,7 @@ async def startup_event():
 @app.on_event("shutdown")
 def shutdown_event():
     close_mongo_connection()
+    #close_postgres_connection()
     session_stop()
     solana_stop()
     terra_stop()
@@ -56,18 +63,26 @@ class DeletionItem(BaseModel):
     signature: str
     timestamps: List
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 @app.get("/",  tags=["Endpoint Test"])
 def main_endpoint_test():
     return {"message": "Test Message"}
 
 @app.get('/solana-wallet/{wallet}')
-async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana)):
-    results = await solana_wallet_balances(wallet, mongo_db, session, client)
+async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana), pdb: Session = Depends(get_db)):
+    results = await solana_wallet_balances(wallet, mongo_db, session, client, pdb)
     return results
 
 @app.get('/terra-wallet/{wallet}')
-async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra)):
-    results = await terra_wallet_balances(wallet, mongo_db, session, client)
+async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra), pdb: Session = Depends(get_db)):
+    results = await terra_wallet_balances(wallet, mongo_db, session, client, pdb)
     return results
 
 @app.get('/farms-list/')
@@ -77,8 +92,8 @@ async def get_farm_list():
     return results
 
 @app.get('/farms/{wallet}/{farm_id}')
-async def get_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
-    results = await get_evm_positions(wallet, farm_id, mongo_db, session)
+async def get_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+    results = await get_evm_positions(wallet, farm_id, mongo_db, session, pdb)
     return results
 
 @app.get('/apy/{farm_id}')
@@ -112,33 +127,33 @@ async def passport_tvl(mongo_db: AsyncIOMotorClient = Depends(get_database), ses
     return results
 
 @app.post("/delete_user_records/")
-async def create_item(item: DeletionItem, mongo_db: AsyncIOMotorClient = Depends(get_database)):
-    result = await delete_user_records(item.wallet, item.signature, item.timestamps, mongo_db)
+async def create_item(item: DeletionItem, mongo_db: AsyncIOMotorClient = Depends(get_database), pdb: Session = Depends(get_db)):
+    result = await delete_user_records(item.wallet, item.signature, item.timestamps, mongo_db, pdb)
     return result
 
 @app.get('/cosmos-farms/{wallet}/{farm_id}')
-async def get_cosmos_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
-    results = await get_cosmos_positions(wallet, farm_id, mongo_db, session)
+async def get_cosmos_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+    results = await get_cosmos_positions(wallet, farm_id, mongo_db, session, pdb)
     return results
 
 @app.get('/solana-farms/{wallet}/{farm_id}')
-async def get_solana_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana)):
-    results = await get_solana_positions(wallet, farm_id, mongo_db, session, client)
+async def get_solana_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana), pdb: Session = Depends(get_db)):
+    results = await get_solana_positions(wallet, farm_id, mongo_db, session, client, pdb)
     return results
 
 @app.get('/terra-farms/{wallet}/{farm_id}')
-async def get_terra_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra)):
-    results = await get_terra_positions(wallet, farm_id, mongo_db, session, client)
+async def get_terra_farms(wallet,farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra), pdb: Session = Depends(get_db)):
+    results = await get_terra_positions(wallet, farm_id, mongo_db, session, client, pdb)
     return results
 
 @app.get('/wallet/{wallet}/{network}')
-async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
-    results = await get_wallet_balance(wallet, network, mongo_db, session)
+async def wallet_balance(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+    results = await get_wallet_balance(wallet, network, mongo_db, session, pdb)
     return results
 
 @app.get('/cosmos-wallet/{wallet}')
-async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session), mongo_db: AsyncIOMotorClient = Depends(get_database)):
-    results = await cosmos_wallet_balances(wallet,session, mongo_db)
+async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session), mongo_db: AsyncIOMotorClient = Depends(get_database), pdb: Session = Depends(get_db)):
+    results = await cosmos_wallet_balances(wallet,session, mongo_db, pdb)
     return results
 
 @app.get('/tokens/{network}/{token_id}')
@@ -147,12 +162,32 @@ async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id:st
     return x
 
 @app.get('/user-balance/')
-async def get_user_balances(db: AsyncIOMotorClient = Depends(get_database), wallet : List[str] = Query([]), farm_id : List[str] = Query([]), days: int = Query(...,ge=1, le=90)):
-    if wallet:
-        x = await db.xtracker['user_data'].aggregate(user_info_by_time(wallet, days, farm_id)).to_list(length=None)
+async def get_user_balances(wallet : List[str] = Query([]), farm_id : List[str] = Query([]), days: int = Query(...,ge=1, le=90), pdb: Session = Depends(get_db)):
+
+    if farm_id:
+        x = pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
+    SELECT
+    time_bucket('1 hour', timestamp) AS bucket,
+    farm_network, farm,
+    avg(dollarValue) AS dollarValue
+    FROM
+    user_data
+    WHERE timestamp > now () - INTERVAL ':days days' and wallet IN :wallets and farm IN :farms
+    GROUP BY farm_network, farm, bucket
+    ) a group by bucket;''', {"days" : days, "wallets" : tuple(wallet), "farms" : tuple(farm_id)} )
     else:
-        x = await db.xtracker['user_data'].find({}, {'_id': False}).to_list(length=None)
-    return x
+        x = pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
+    SELECT
+    time_bucket('1 hour', timestamp) AS bucket,
+    farm_network, farm,
+    avg(dollarValue) AS dollarValue
+    FROM
+    user_data
+    WHERE timestamp > now () - INTERVAL ':days days' and wallet IN :wallets
+    GROUP BY farm_network, farm, bucket
+    ) a group by bucket;''', {"days" : days, "wallets" : tuple(wallet)} )
+
+    return x.fetchall()
 
 @app.get('/token-approval/{wallet}/{network}')
 async def get_token_approvals(wallet,network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
@@ -176,6 +211,11 @@ async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
     x = await stat_types[type].to_list(length=None)
     
     return x
+
+# @app.get("/users/")
+# def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+#     users = crud.get_users(db, skip=skip, limit=limit)
+#     return users
 
 # @app.get('/router-details/{network}/{contract}')
 # async def router_details(network, contract, session: ClientSession = Depends(get_session)):
