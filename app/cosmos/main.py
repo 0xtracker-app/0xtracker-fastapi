@@ -20,6 +20,10 @@ def return_farms_list():
     cosmos = Farms()
     return cosmos.farms
 
+def return_network_list():
+    return CosmosNetwork('cosmos14m46c90sz30m7y6fnl4ftaraaj8h4uu5p0v7uc').supported_networks
+
+
 async def get_wallet_balances(wallet, session, mongo_client, pdb):
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks
