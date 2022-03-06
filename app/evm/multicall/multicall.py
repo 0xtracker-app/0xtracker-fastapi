@@ -1,7 +1,7 @@
 from typing import List
 from web3 import Web3, eth
-from evm.multicall import Call
-from evm.multicall.constants import MULTICALL_ADDRESSES
+from .call import Call
+from .constants import MULTICALL_ADDRESSES
 
 w3 = { 'connection' : Web3(Web3.AsyncHTTPProvider('https://bsc-dataseed.binance.org/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56}
 

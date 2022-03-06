@@ -12,8 +12,8 @@ from .helpers import token_list_from_stakes
 import asyncio
 import time
 import os
-from db.schemas import UserRecord
-from db.crud import create_user_history
+from ..db.schemas import UserRecord
+from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 def return_farms_list():

@@ -5,25 +5,25 @@ from typing import List
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
-from evm import *
-from cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
-from sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
-from terra import get_wallet_balances as terra_wallet_balances, get_terra_positions, return_farms_list as terra_farms_list
-from api.v1.api import router as api_router
-from db.mongodb_utils import close_mongo_connection, connect_to_mongo
-from db.mongodb import AsyncIOMotorClient, get_database
-from db.postgres_utils import close_postgres_connection, connect_to_postgres
-from db.postgres import Database, get_postgres_database
-from db.database import SessionLocal, engine
-from db import crud, models, schemas
-from httpsession.session import ClientSession, get_session
-from httpsession.session_utils import session_start, session_stop
-from solsession.session import AsyncClient, get_solana
-from solsession.session_utils import solana_start, solana_stop
-from terrasession.session import AsyncLCDClient, get_terra
-from terrasession.session_utils import terra_start, terra_stop
+from .cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
+from .evm import *
+from .sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
+from .terra import get_wallet_balances as terra_wallet_balances, get_terra_positions, return_farms_list as terra_farms_list
+from .api.v1.api import router as api_router
+from .db.mongodb_utils import close_mongo_connection, connect_to_mongo
+from .db.mongodb import AsyncIOMotorClient, get_database
+from .db.postgres_utils import close_postgres_connection, connect_to_postgres
+from .db.postgres import Database, get_postgres_database
+from .db.database import SessionLocal, engine
+from .db import crud, models, schemas
+from .httpsession.session import ClientSession, get_session
+from .httpsession.session_utils import session_start, session_stop
+from .solsession.session import AsyncClient, get_solana
+from .solsession.session_utils import solana_start, solana_stop
+from .terrasession.session import AsyncLCDClient, get_terra
+from .terrasession.session_utils import terra_start, terra_stop
 from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
-from db.queries import user_info_by_time, addresses_per_day, farms_over_last_30_days
+from .db.queries import user_info_by_time, addresses_per_day, farms_over_last_30_days
 from sqlalchemy.orm import Session
 
 app = FastAPI(title='FastAPI')
@@ -238,7 +238,7 @@ async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
     return x
 
 
-@app.get('/user-balance/')
+@app.get('/healthcheck')
 async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
     return {"status": "ok"}
 # @app.get("/users/")

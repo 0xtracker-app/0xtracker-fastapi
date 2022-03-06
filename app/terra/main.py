@@ -1,12 +1,4 @@
-# from math import cos
-# from .networks import CosmosNetwork
-# from . import queries
-# from . import oracles
-# from . import helpers
-# from .calculator import calculate_prices
-# from .token_lookup import TokenMetaData
 from .farms import Farms
-# from .networks import CosmosNetwork
 import asyncio
 import time
 from . import utils
@@ -16,8 +8,8 @@ from .queries import get_luna_price
 from .oracles import get_price_from_pool, TokenOverride
 from .calculator import calculate_prices
 import os
-from db.schemas import UserRecord
-from db.crud import create_user_history
+from ..db.schemas import UserRecord
+from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 def return_farms_list():
