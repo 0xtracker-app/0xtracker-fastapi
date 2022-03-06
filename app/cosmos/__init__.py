@@ -1,1 +1,1 @@
-from .main import get_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list
+from .main import get_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list, return_network_list

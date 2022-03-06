@@ -19,6 +19,9 @@ def return_farms_list():
     evm = Farms()
     return evm.farms
 
+def return_network_list():
+    return [x for x in WEB3_NETWORKS]
+
 def return_apy_list(parser=None):
     evm = Farms()
 
