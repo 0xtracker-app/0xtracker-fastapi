@@ -54,10 +54,10 @@ def shutdown_event():
 app.include_router(api_router, prefix="/api/v1")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins='*',
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["x-apigateway-header", "Content-Type", "X-Amz-Date"],
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
 )
 
 
