@@ -1,5 +1,5 @@
 from eth_utils import to_checksum_address
-from evm.multicall import Signature
+from . import Signature
 from web3 import Web3, eth
 from hexbytes import HexBytes
 w3 = Web3(Web3.AsyncHTTPProvider('https://bsc-dataseed.binance.org/'), modules={'eth': (eth.AsyncEth,)}, middlewares=[])

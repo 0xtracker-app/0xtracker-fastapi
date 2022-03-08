@@ -1,8 +1,8 @@
 from .helpers import from_custom
 import time
 import os
-from db.schemas import UserRecord
-from db.crud import create_user_history
+from ..db.schemas import UserRecord
+from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 def get_balancer_ratio(token_data,quote_price):
