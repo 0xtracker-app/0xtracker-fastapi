@@ -12,8 +12,8 @@ import asyncio
 from .calculator import calculate_prices
 import time
 import os
-from db.schemas import UserRecord
-from db.crud import create_user_history
+from ..db.schemas import UserRecord
+from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 def return_farms_list():

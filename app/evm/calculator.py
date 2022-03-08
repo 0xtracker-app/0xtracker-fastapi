@@ -2,8 +2,8 @@ from .multicall import Multicall, Call, parsers
 from . import uniswapv3
 import time
 import os
-from db.schemas import UserRecord
-from db.crud import create_user_history
+from ..db.schemas import UserRecord
+from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):

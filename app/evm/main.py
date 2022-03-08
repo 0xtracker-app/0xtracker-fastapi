@@ -11,7 +11,7 @@ from . import routers
 import asyncio
 from eth_account.messages import encode_defunct
 from web3.auto import w3
-from db.crud import delete_user_history
+from ..db.crud import delete_user_history
 
 INCH_SUPPORTED = ['bsc','matic','eth']
 

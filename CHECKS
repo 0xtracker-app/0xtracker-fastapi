@@ -1,0 +1,5 @@
+WAIT=5 # Wait 1/2 minute
+TIMEOUT=15 # Timeout after a minute
+ATTEMPTS=3 # Attempt checks 10 times
+
+/healthcheck ok
