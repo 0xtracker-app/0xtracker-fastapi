@@ -3,11 +3,8 @@ name: "deployer"
 on:
   workflow_dispatch:
     
-  # push:
-  #   branches:
-  #     - develop
-  #     - heroku
-  #     - i8n
+  push:
+    branches: [develop, heroku, i8n]
 
 jobs:
   deploy:
