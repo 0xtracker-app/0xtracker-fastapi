@@ -1,6 +1,6 @@
 from . import queries
 import bech32
-from db.queries import get_terra_pool
+from ..db.queries import get_terra_pool
 from .helpers import from_custom
 
 async def single_token_finder(token, session, client):

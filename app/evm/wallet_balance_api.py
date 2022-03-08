@@ -13,8 +13,8 @@ import numpy as np
 import asyncio
 from .external_contracts import get_venus_vaults
 import os
-from db.schemas import UserRecord
-from db.crud import create_user_history
+from ..db.schemas import UserRecord
+from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 SCAN_SUPPORTED = [x for x in SCAN_APIS]
