@@ -29,7 +29,12 @@ async def get_price_from_junoswap(token_in, session, swap_address, decimal, nati
 
 async def cosmostation_prices(session, mongo_db, network_data):
     r = await make_get_json(session, 'https://api-utility.cosmostation.io/v1/market/prices')
-    dict_of_prices = {x['denom'] : x['prices'][0]['current_price'] for x in r if x['prices'][0]['currency'] == 'usd'}
+    
+    if 'message' not in r:
+        dict_of_prices = {x['denom'] : x['prices'][0]['current_price'] for x in r if x['prices'][0]['currency'] == 'usd'}
+    else:
+        dict_of_prices = {}
+
     osmos_prices = await check_osmosis_pricing(session, mongo_db, network_data)
     sif_prices = await check_sif_pricing(session, network_data)
 
