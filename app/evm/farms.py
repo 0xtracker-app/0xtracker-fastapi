@@ -6961,6 +6961,53 @@ class Farms:
         'featured' : 2,
         'network' : 'smartbch'
     },
+                '0xArthSwap' : {
+        'name' : 'arthswap.org',
+        'rewardToken' : '0xDe2578Edec4669BA7F41c5d5D2386300bcEA4678',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xArthSwap',
+        'featured' : 2,
+        'network' : 'astar',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_factory_lps],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xArthSwap',
+                        'network_id' : 'astar',
+                        'factory'  : '0xA9473608514457b4bF083f9045fA63ae5810A03E'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xPolkaex' : {
+        'name' : 'polkaex.io',
+        'rewardToken' : '0x1fE622E91e54D6AD00B01917351Ea6081426764A',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xPolkaex',
+        'featured' : 2,
+        'network' : 'astar',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.polkaex_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xPolkaex',
+                    'network_id' : 'astar',
+                    'pending_reward' : 'earned',
+                    'user_info' : 'balanceOf',
+                    'staked' : 'stakingToken',
+                    'reward' : 'rewardsToken'
+                }
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

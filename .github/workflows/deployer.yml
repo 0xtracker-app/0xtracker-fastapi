@@ -1,0 +1,53 @@
+name: "deployer"
+
+on:
+  workflow_dispatch:
+    
+  push:
+    branches: [develop, heroku, i8n]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku staging
+        if: ${{ contains(github.ref, 'develop') }}
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@15.204.140.61:22/beta-api"
+          ssh_private_key: ${{ secrets.DEPLOY_KEY }}
+          git_push_flags: "--force"
+
+      - name: Push to dokku production
+        if: ${{ contains(github.ref, 'heroku') }}
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@15.204.140.61:22/api"
+          ssh_private_key: ${{ secrets.DEPLOY_KEY }}
+          git_push_flags: "--force"
+
+      - name: Push to dokku integration
+        if: ${{ contains(github.ref, 'i8n') }}
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@15.204.140.61:22/i8n"
+          ssh_private_key: ${{ secrets.DEPLOY_KEY }}
+          git_push_flags: "--force"
+
+
+      # - name: Slack Notification
+      #   if: ${{ always() }}
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_CHANNEL: deploy
+      #     SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+      #     SLACK_ICON: https://www.optical.finance/_next/image?url=%2Foptical-logo.svg&w=32&q=75
+      #     SLACK_MESSAGE: "You can look at the deployed site at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      #     SLACK_TITLE: Deployment of ${{ github.repository }}#${{ github.ref }}
+      #     SLACK_USERNAME: github
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

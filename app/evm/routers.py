@@ -189,5 +189,9 @@ class TelosRouter():
 class RSKRouter():
     RSKSWAP = '0xf55c496bb1058690DB1401c4b9C19F3f44374961'
 
+class AstarRouter():
+    ARTH = '0xE915D2393a08a00c5A463053edD31bAe2199b9e7'
+    POLKAEX = '0xe7009A8E41E8d2101AFB6c9e40D123621c4DAfCe'
+
 
 
