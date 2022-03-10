@@ -3704,3 +3704,43 @@ async def get_xliquid(wallet,fee_dist,xtoken,reward_length,farm_id,network_id,va
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_factory_lps(wallet, farm_id, network_id, factory, vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+        
+        pool_length = await Call(factory, [f'allPairsLength()(uint256)'],None,network)() 
+
+        for pid in range(0,pool_length):
+            calls.append(Call(factory, [f'allPairs(uint256)(address)', pid], None))
+        
+        all_lps=await Multicall(calls, network, _list=True)()
+
+        calls = []
+
+        for pool in all_lps:
+            calls.append(Call(pool, [f'balanceOf(address)(uint256)', wallet], [[f'{pool}_staked', parsers.from_wei]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    staked = stakes[each]
+                    want_token = breakdown[0]
+                    pending = 0
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending }
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+                
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None

@@ -339,6 +339,14 @@ async def crodex_vaults(session):
     "0x12EE4bc798Fd985195b0d293c2c61fBf3DcDfe04",
   ]
 
+async def polkaex_vaults(session):
+    return [
+    "0x9F519083A069Cee2585cB4931C77C6EA21c3517E",
+    "0x34f0DB653A0CF8487D942223e5C347f3a2526039",
+    "0x228a56F238F5441B1469B3bc6F64ddd362a3a0AF",
+    "0x367545a43B89A81d1a3816F13505cC7bB840c1f6"
+  ]
+
 async def dummy_vault(session):
     return ['0xDummy']
 

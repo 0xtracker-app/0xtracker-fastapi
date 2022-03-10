@@ -35,6 +35,7 @@ class Network(IntEnum):
     Oasis = 42262
     Telos = 40
     RSK = 30
+    Astar = 592
 
 
 MULTICALL_ADDRESSES = {
@@ -71,4 +72,5 @@ MULTICALL_ADDRESSES = {
     Network.Oasis: '0x6516953017799626f13aAD59dAa1bCCc68A3A247',
     Network.Telos: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33',
     Network.RSK: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33',
+    Network.Astar: '0x6ddB0845aeB285eD7ef712768a0E123c8F2Eab0E',
 }
