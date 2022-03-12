@@ -65,6 +65,8 @@ def my_key_builder(
     cache_key = f"{prefix}:{namespace}:{func.__module__}:{func.__name__}:{args}:{kwargs}"
     return cache_key
 
+CACHE = os.getenv("CACHE", True)
+
 class RedisClient:
     session: aioredis.Redis = aioredis.from_url(url=os.getenv("REDIS_URL", "redis://localhost:6379"))
 
@@ -314,23 +316,27 @@ async def execute_call(*args, method_name=None, mongo_db=None, session=None, cli
     cache_key = f"execute_call:{method_name}:{args}"
     
     try:
-        val = await redis.session.get(cache_key)
-        if val:
-            print(f"Cached Results for {method_name} {args}")
-            channel.publish_message(Message.Message(name=req_id, data=json.loads(val)))
-            return
+        if CACHE:
+            val = await redis.session.get(cache_key)
+            if val:
+                print(f"Cached Results for {method_name} {args}")
+                channel.publish_message(Message.Message(name=req_id, data=json.loads(val)))
+                return
 
         method = multicall_methods_translator[method_name]
         results = await method(*args, mongo_db, session, client, pdb)
         if results:
-            await redis.session.set(cache_key, json.dumps(results))
+            if CACHE:
+                await redis.session.set(cache_key, json.dumps(results))
             channel.publish_message(Message.Message(name=req_id, data=results))
         else:
-            await redis.session.set(cache_key, '{}')
+            if CACHE:
+                await redis.session.set(cache_key, '{}')
             print(f"No results for {method_name} {args}")
         
     except Exception as e:
-        await redis.session.set(cache_key, '{}')
+        if CACHE:
+            await redis.session.set(cache_key, '{}')
         print(e)
 
 @app.post('/multicall')
@@ -350,6 +356,7 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
                 params = [''] 
 
             for param in params:
+                await asyncio.sleep(0.1)
                 asyncio.create_task(execute_call(wallet, param, method_name=method, mongo_db=mongo_db, session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
     
     return {"status": "ok", "channel": req_id}
