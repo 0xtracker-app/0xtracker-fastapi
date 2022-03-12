@@ -257,31 +257,45 @@ async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
 async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
     return {"status": "ok"}
 
-get_farms_methods = { 'solana-farms': get_solana_positions, 'cosmos-farms': get_cosmos_positions, 'terra-farms': get_terra_positions, 'farms': get_evm_positions }
+multicall_methods_translator = { 
+    'solana-farms': get_solana_positions,
+    'cosmos-farms': get_cosmos_positions,
+    'terra-farms': get_terra_positions,
+    'farms': get_evm_positions,
+    'wallet': lambda *args: get_wallet_balance(args[0], args[1], args[2], args[3], args[4]),
+    'cosmos-wallet': lambda *args: cosmos_wallet_balances(args[0], args[2], args[3], args[5]),
+    'terra-wallet': lambda *args: terra_wallet_balances(args[0], args[2], args[3], args[5]),
+    'solana-wallet': lambda *args: solana_wallet_balances(args[0], args[2], args[3], args[5]),
+}
 
-async def background_get_farms(req_id, method_name, wallet, farm, mongo_db, session, client, pdb):
+async def execute_call(*args, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
     channel = ably.channels.get(req_id)
     try:
-        method = get_farms_methods[method_name]
-        results = await method(wallet, farm, mongo_db, session, client, pdb)
+        method = multicall_methods_translator[method_name]
+        results = await method(*args, mongo_db, session, client, pdb)
         if results:
             channel.publish_message(Message.Message(name=req_id, data=results))
         else:
-            print(f"No results for {method_name} {wallet} {farm}")
+            print(f"No results for {method_name} {args}")
     except Exception as e:
         print(e)
 
 @app.post('/multicall')
-async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
-    farms_clients = { 'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None }
+async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
+    farms_clients = { 'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None,
+                      'solana-wallet': client_solana, 'cosmos-wallet': None, 'terra-wallet': client_terra, 'wallet': None }
 
     body_json = await request.json()
-    # req_id = correlation_id.get()
     req_id = request.headers.get('X-CHANNEL-ID') 
     for method in body_json.keys():
         for wallet in body_json[method].keys():
-            for farm in body_json[method][wallet]:
-                asyncio.create_task(background_get_farms(req_id, method, wallet, farm, mongo_db, session, farms_clients[method], pdb))
+            params = body_json[method][wallet]
+            if not params:
+                params = [None] 
+
+            for param in params:
+                asyncio.create_task(execute_call(wallet, param, method_name=method, mongo_db=mongo_db, session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
+
                 # background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
     
     return {"status": "ok", "channel": req_id}
