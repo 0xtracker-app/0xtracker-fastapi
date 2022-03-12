@@ -32,6 +32,8 @@ def return_apy_list(parser=None):
 
 async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
+    if not farm_id in set_farms.farms.keys():
+        return {}
     farm_configuraiton = set_farms.farms[farm_id]
     farm_network = farm_configuraiton['network']
     masterchef_pool_list = [farm_id] + farm_configuraiton['add_chefs'] if 'add_chefs' in farm_configuraiton else [farm_id]
