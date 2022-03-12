@@ -257,19 +257,12 @@ async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
 async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
     return {"status": "ok"}
 
+get_farms_methods = { 'solana-farms': get_solana_positions, 'cosmos-farms': get_cosmos_positions, 'terra-farms': get_terra_positions, 'farms': get_evm_positions }
 
-get_farms_methods = { 'solana-farms': [get_solana_positions, None],
-    'cosmos-farms': [get_cosmos_positions, None],
-    'terra-farms': [get_terra_positions, None],
-    'farms': [get_evm_positions, None] }
-get_farms_lists = { 'solana-farms': 'solana_farms',}
-
-async def background_get_farms(req_id, method_name, wallet, farm, mongo_db, session, pdb):
+async def background_get_farms(req_id, method_name, wallet, farm, mongo_db, session, client, pdb):
     channel = ably.channels.get(req_id)
     try:
-        method = get_farms_methods[method_name][0]
-        client = get_farms_methods[method_name][1]
-        # results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
+        method = get_farms_methods[method_name]
         results = await method(wallet, farm, mongo_db, session, client, pdb)
         if results:
             channel.publish_message(Message.Message(name=req_id, data=results))
@@ -279,13 +272,15 @@ async def background_get_farms(req_id, method_name, wallet, farm, mongo_db, sess
         print(e)
 
 @app.post('/multicall')
-async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
+    farms_clients = { 'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None }
+
     body_json = await request.json()
     req_id = correlation_id.get()
     for method in body_json.keys():
         for wallet in body_json[method].keys():
             for farm in body_json[method][wallet]:
-                asyncio.create_task(background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb))
+                asyncio.create_task(background_get_farms(req_id, method, wallet, farm, mongo_db, session, farms_clients[method], pdb))
                 # background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
     
     return {"status": "ok", "channel": req_id}
