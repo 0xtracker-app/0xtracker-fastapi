@@ -130,3 +130,4 @@ zipp==3.5.0
 zope.interface==5.4.0
 asgi-correlation-id==1.1.2
 ably==1.1.1
+fastapi-cache2[redis]==0.1.8

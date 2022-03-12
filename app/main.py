@@ -1,17 +1,23 @@
-import asyncio
 import json
+import aioredis
+import asyncio
+import hashlib
 import os
 from time import sleep
 from asgi_correlation_id import CorrelationIdMiddleware
 from asgi_correlation_id.context import correlation_id 
 from typing import List, Optional, Tuple
 from fastapi import FastAPI, Depends, Path, Query, BackgroundTasks
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
 from pydantic import BaseModel
 from typing import List
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import Response
 from toolz.itertoolz import get
-import uvicorn
 from .cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from .evm import *
 from .sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
@@ -47,9 +53,27 @@ ably = ably.AblyRest(os.getenv("ABLY_KEY", ""))
 # app.add_event_handler("startup", connect_to_mongo)
 # app.add_event_handler("shutdown", close_mongo_connection)
 
+def my_key_builder(
+    func,
+    namespace: Optional[str] = "",
+    request: Request = None,
+    response: Response = None,
+    *args,
+    **kwargs,
+):
+    prefix = FastAPICache.get_prefix()
+    cache_key = f"{prefix}:{namespace}:{func.__module__}:{func.__name__}:{args}:{kwargs}"
+    return cache_key
+
+class RedisClient:
+    session: aioredis.Redis = aioredis.from_url(url=os.getenv("REDIS_URL", "redis://localhost:6379"))
+
+redis = RedisClient() 
+
 
 @app.on_event("startup")
 async def startup_event():
+    FastAPICache.init(RedisBackend(redis.session), prefix="fastapi-cache")
     await connect_to_mongo()
     # await connect_to_postgres()
     await session_start()
@@ -96,13 +120,15 @@ def main_endpoint_test():
 
 
 @app.get('/solana-wallet/{wallet}')
-async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana), pdb: Session = Depends(get_db)):
+@cache(expire=180,key_builder=my_key_builder)
+async def read_results(wallet, request: Request, response: Response, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana), pdb: Session = Depends(get_db)):
     results = await solana_wallet_balances(wallet, mongo_db, session, client, pdb)
     return results
 
 
 @app.get('/terra-wallet/{wallet}')
-async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra), pdb: Session = Depends(get_db)):
+@cache(expire=180,key_builder=my_key_builder)
+async def read_results(wallet, request: Request, response: Response, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncLCDClient = Depends(get_terra), pdb: Session = Depends(get_db)):
     results = await terra_wallet_balances(wallet, mongo_db, session, client, pdb)
     return results
 
@@ -182,12 +208,14 @@ async def get_terra_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depend
 
 
 @app.get('/wallet/{wallet}/{network}')
+@cache(expire=180,key_builder=my_key_builder)
 async def wallet_balance(wallet, network, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
     results = await get_wallet_balance(wallet, network, mongo_db, session, pdb)
     return results
 
 
 @app.get('/cosmos-wallet/{wallet}')
+@cache(expire=180,key_builder=my_key_builder)
 async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_session), mongo_db: AsyncIOMotorClient = Depends(get_database), pdb: Session = Depends(get_db)):
     results = await cosmos_wallet_balances(wallet, session, mongo_db, pdb)
     return results
@@ -270,14 +298,27 @@ multicall_methods_translator = {
 
 async def execute_call(*args, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
     channel = ably.channels.get(req_id)
+    
+    cache_key = f"execute_call:{method_name}:{args}"
+    
     try:
+        val = await redis.session.get(cache_key)
+        if val:
+            print(f"Cached Results for {method_name} {args}")
+            channel.publish_message(Message.Message(name=req_id, data=json.loads(val)))
+            return
+
         method = multicall_methods_translator[method_name]
         results = await method(*args, mongo_db, session, client, pdb)
         if results:
+            await redis.session.set(cache_key, json.dumps(results))
             channel.publish_message(Message.Message(name=req_id, data=results))
         else:
+            await redis.session.set(cache_key, '{}')
             print(f"No results for {method_name} {args}")
+        
     except Exception as e:
+        await redis.session.set(cache_key, '{}')
         print(e)
 
 @app.post('/multicall')
@@ -286,6 +327,9 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
                       'solana-wallet': client_solana, 'cosmos-wallet': None, 'terra-wallet': client_terra, 'wallet': None }
 
     body_json = await request.json()
+
+
+
     req_id = request.headers.get('X-CHANNEL-ID') 
     for method in body_json.keys():
         for wallet in body_json[method].keys():
