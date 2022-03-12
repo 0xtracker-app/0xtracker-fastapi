@@ -75,7 +75,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
 
     return return_wallets
 
-async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session, pdb):
+async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
     

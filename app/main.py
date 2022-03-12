@@ -1,3 +1,4 @@
+import os
 from time import sleep
 from asgi_correlation_id import CorrelationIdMiddleware
 from asgi_correlation_id.context import correlation_id 
@@ -29,9 +30,15 @@ from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
 from .db.queries import user_info_by_time, addresses_per_day, farms_over_last_30_days
 from sqlalchemy.orm import Session
 from starlette.requests import Request
+import ably.types.message as Message
+import ably
+
 
 app = FastAPI(title='FastAPI')
 app.add_middleware(CorrelationIdMiddleware)
+
+ably = ably.AblyRest(os.getenv("ABLY_KEY", ""))
+
 #app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
 
 # app.add_event_handler("startup", connect_to_mongo)
@@ -108,7 +115,7 @@ async def get_farm_list():
 
 @app.get('/farms/{wallet}/{farm_id}')
 async def get_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
-    results = await get_evm_positions(wallet, farm_id, mongo_db, session, pdb)
+    results = await get_evm_positions(wallet, farm_id, mongo_db, session, None, pdb)
     return results
 
 
@@ -155,7 +162,7 @@ async def create_item(item: DeletionItem, mongo_db: AsyncIOMotorClient = Depends
 
 @app.get('/cosmos-farms/{wallet}/{farm_id}')
 async def get_cosmos_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
-    results = await get_cosmos_positions(wallet, farm_id, mongo_db, session, pdb)
+    results = await get_cosmos_positions(wallet, farm_id, mongo_db, session, None, pdb)
     return results
 
 
@@ -249,24 +256,29 @@ async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
 
 
 get_farms_methods = { 'solana-farms': get_solana_positions,
-    'cosmos-farms': get_cosmos_positions,
+    'cosmos-farms[': get_cosmos_positions,
     'terra-farms': get_terra_positions,
     'farms': get_evm_positions }
+get_farms_lists = { 'solana-farms': 'solana_farms',}
 
 async def background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb):
-    print(f'{req_id} {method} {wallet} {farm}')
+    channel = ably.channels.get(req_id)
+    results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
+    await channel.publish_message(Message.Message(name=req_id, data=results))
+   
+    # print(f"{req_id}: {method}({wallet}, {farm})")
     # get_farms_methods[method](wallet, farm, mongo_db, session, pdb)
 
 
 @app.post('/multicall')
 async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
     body_json = await request.json()
-    req_id = correlation_id.get()
+    req_id = "test" #correlation_id.get()
     for method in body_json.keys():
         for wallet in body_json[method].keys():
             for farm in body_json[method][wallet]:
                 background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
-
+    
     return {"status": "ok", "channel": req_id}
 
 
