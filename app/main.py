@@ -1,3 +1,4 @@
+import json
 import os
 from time import sleep
 from asgi_correlation_id import CorrelationIdMiddleware
@@ -262,11 +263,16 @@ get_farms_methods = { 'solana-farms': get_solana_positions,
 get_farms_lists = { 'solana-farms': 'solana_farms',}
 
 async def background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb):
-    channel = ably.channels.get(req_id)
-    results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
-    await channel.publish_message(Message.Message(name=req_id, data=results))
-   
-    # print(f"{req_id}: {method}({wallet}, {farm})")
+    # channel = ably.channels.get(req_id)
+    try:
+        results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
+        print(results)
+        obj = json.dumps(results)
+        print(obj)
+    except Exception as e:
+        print(e)
+    # await channel.publish_message(Message.Message(name=req_id, data=obj))
+    # print(f"{results[0]}: {method}({wallet}, {farm})")
     # get_farms_methods[method](wallet, farm, mongo_db, session, pdb)
 
 
