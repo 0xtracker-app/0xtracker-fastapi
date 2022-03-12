@@ -27,7 +27,7 @@ def return_apy_list(parser=None):
     elif parser == None:
         return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms]
 
-async def get_evm_positions(wallet, farm_id, mongo_db, http_session, pdb):
+async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
     farm_network = farm_configuraiton['network']
