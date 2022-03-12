@@ -28,7 +28,7 @@ async def get_price_from_junoswap(token_in, session, swap_address, decimal, nati
     return {token_in : from_custom(int(juno_price['token2_amount']), 6) * from_custom(int(token_price['token1_amount']), 6)}
 
 async def cosmostation_prices(session, mongo_db, network_data):
-    r = await make_get_json(session, 'https://api-utility.cosmostation.io/v1/market/prices')
+    r = await make_get_json(session, 'https://serverlessrepo-downloader-bucket-1qsab6s7fy5e1.s3.amazonaws.com/cosmos/prices.json')
     
     if 'message' not in r:
         dict_of_prices = {x['denom'] : x['prices'][0]['current_price'] for x in r if x['prices'][0]['currency'] == 'usd'}
