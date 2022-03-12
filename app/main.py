@@ -10,6 +10,7 @@ from typing import List
 from mangum import Mangum
 from starlette.middleware.cors import CORSMiddleware
 from toolz.itertoolz import get
+import uvicorn
 from .cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list
 from .evm import *
 from .sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
@@ -263,15 +264,12 @@ get_farms_methods = { 'solana-farms': get_solana_positions,
 get_farms_lists = { 'solana-farms': 'solana_farms',}
 
 async def background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb):
-    # channel = ably.channels.get(req_id)
+    channel = ably.channels.get(req_id)
     try:
         results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
-        print(results)
-        obj = json.dumps(results)
-        print(obj)
+        channel.publish_message(Message.Message(name=req_id, data=results))
     except Exception as e:
         print(e)
-    # await channel.publish_message(Message.Message(name=req_id, data=obj))
     # print(f"{results[0]}: {method}({wallet}, {farm})")
     # get_farms_methods[method](wallet, farm, mongo_db, session, pdb)
 
@@ -304,4 +302,4 @@ async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_d
 #     return results
 
 # to make it work with Amazon Lambda, we create a handler object
-handler = Mangum(app=app)
+# handler = Mangum(app=app)
