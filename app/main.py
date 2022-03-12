@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 from time import sleep
@@ -257,31 +258,35 @@ async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
     return {"status": "ok"}
 
 
-get_farms_methods = { 'solana-farms': get_solana_positions,
-    'cosmos-farms[': get_cosmos_positions,
-    'terra-farms': get_terra_positions,
-    'farms': get_evm_positions }
+get_farms_methods = { 'solana-farms': [get_solana_positions, None],
+    'cosmos-farms': [get_cosmos_positions, None],
+    'terra-farms': [get_terra_positions, None],
+    'farms': [get_evm_positions, None] }
 get_farms_lists = { 'solana-farms': 'solana_farms',}
 
-async def background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb):
+async def background_get_farms(req_id, method_name, wallet, farm, mongo_db, session, pdb):
     channel = ably.channels.get(req_id)
     try:
-        results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
-        channel.publish_message(Message.Message(name=req_id, data=results))
+        method = get_farms_methods[method_name][0]
+        client = get_farms_methods[method_name][1]
+        # results = await get_evm_positions(wallet, farm, mongo_db, session, None, pdb)
+        results = await method(wallet, farm, mongo_db, session, client, pdb)
+        if results:
+            channel.publish_message(Message.Message(name=req_id, data=results))
+        else:
+            print(f"No results for {method_name} {wallet} {farm}")
     except Exception as e:
         print(e)
-    # print(f"{results[0]}: {method}({wallet}, {farm})")
-    # get_farms_methods[method](wallet, farm, mongo_db, session, pdb)
-
 
 @app.post('/multicall')
 async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
     body_json = await request.json()
-    req_id = "test" #correlation_id.get()
+    req_id = correlation_id.get()
     for method in body_json.keys():
         for wallet in body_json[method].keys():
             for farm in body_json[method][wallet]:
-                background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
+                asyncio.create_task(background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb))
+                # background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
     
     return {"status": "ok", "channel": req_id}
 
