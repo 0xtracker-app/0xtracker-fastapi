@@ -128,3 +128,4 @@ wrapt==1.13.2
 yarl==1.6.3
 zipp==3.5.0
 zope.interface==5.4.0
+asgi-correlation-id==1.1.2

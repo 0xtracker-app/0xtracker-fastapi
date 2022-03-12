@@ -1,5 +1,8 @@
+from time import sleep
+from asgi_correlation_id import CorrelationIdMiddleware
+from asgi_correlation_id.context import correlation_id 
 from typing import List, Optional, Tuple
-from fastapi import FastAPI, Depends, Path, Query
+from fastapi import FastAPI, Depends, Path, Query, BackgroundTasks
 from pydantic import BaseModel
 from typing import List
 from mangum import Mangum
@@ -25,8 +28,10 @@ from .terrasession.session_utils import terra_start, terra_stop
 from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
 from .db.queries import user_info_by_time, addresses_per_day, farms_over_last_30_days
 from sqlalchemy.orm import Session
+from starlette.requests import Request
 
 app = FastAPI(title='FastAPI')
+app.add_middleware(CorrelationIdMiddleware)
 #app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
 
 # app.add_event_handler("startup", connect_to_mongo)
@@ -241,6 +246,30 @@ async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
 @app.get('/healthcheck')
 async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
     return {"status": "ok"}
+
+
+get_farms_methods = { 'solana-farms': get_solana_positions,
+    'cosmos-farms': get_cosmos_positions,
+    'terra-farms': get_terra_positions,
+    'farms': get_evm_positions }
+
+async def background_get_farms(req_id, method, wallet, farm, mongo_db, session, pdb):
+    print(f'{req_id} {method} {wallet} {farm}')
+    # get_farms_methods[method](wallet, farm, mongo_db, session, pdb)
+
+
+@app.post('/multicall')
+async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+    body_json = await request.json()
+    req_id = correlation_id.get()
+    for method in body_json.keys():
+        for wallet in body_json[method].keys():
+            for farm in body_json[method][wallet]:
+                background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
+
+    return {"status": "ok", "channel": req_id}
+
+
 # @app.get("/users/")
 # def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 #     users = crud.get_users(db, skip=skip, limit=limit)
