@@ -347,12 +347,10 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
         for wallet in body_json[method].keys():
             params = body_json[method][wallet]
             if not params:
-                params = [None] 
+                params = [''] 
 
             for param in params:
                 asyncio.create_task(execute_call(wallet, param, method_name=method, mongo_db=mongo_db, session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
-
-                # background_tasks.add_task(background_get_farms, req_id, method, wallet, farm, mongo_db, session, pdb)
     
     return {"status": "ok", "channel": req_id}
 
