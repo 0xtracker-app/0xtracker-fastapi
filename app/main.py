@@ -276,7 +276,8 @@ async def multicall(request: Request, background_tasks: BackgroundTasks, mongo_d
     farms_clients = { 'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None }
 
     body_json = await request.json()
-    req_id = correlation_id.get()
+    # req_id = correlation_id.get()
+    req_id = request.headers.get('X-CHANNEL-ID') 
     for method in body_json.keys():
         for wallet in body_json[method].keys():
             for farm in body_json[method][wallet]:
