@@ -319,7 +319,7 @@ async def execute_call(*args, method_name=None, mongo_db=None, session=None, cli
         if CACHE:
             val = await redis.session.get(cache_key)
             if val:
-                if val == '{}':
+                if val == b'{}':
                     return 
                 print(f"Cached Results for {method_name} {args}")
                 channel.publish_message(Message.Message(name=req_id, data=json.loads(val)))
@@ -329,16 +329,16 @@ async def execute_call(*args, method_name=None, mongo_db=None, session=None, cli
         results = await method(*args, mongo_db, session, client, pdb)
         if results:
             if CACHE:
-                await redis.session.set(cache_key, json.dumps(results))
+                await redis.session.set(cache_key, json.dumps(results), ex=180)
             channel.publish_message(Message.Message(name=req_id, data=results))
         else:
             if CACHE:
-                await redis.session.set(cache_key, '{}')
+                await redis.session.set(cache_key, '{}', ex=180)
             print(f"No results for {method_name} {args}")
         
     except Exception as e:
         if CACHE:
-            await redis.session.set(cache_key, '{}')
+            await redis.session.set(cache_key, '{}', ex=180)
         print(e)
 
 @app.post('/multicall')
