@@ -1,3 +1,4 @@
+from redis.cache import cache_function
 from .multicall import Call, Multicall, parsers
 import json
 import time
@@ -110,6 +111,7 @@ async def get_token_list_from_mongo(network,mongo):
     x = await mongo.xtracker['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
     return x['tokens'] if x is not None else []
 
+@cache_function(keyparams=2)
 async def get_wallet_balance(wallet, network, mongodb, session, pdb):
     
     network_data = NetworkRoutes(network)

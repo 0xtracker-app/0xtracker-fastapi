@@ -1,3 +1,4 @@
+from redis.cache import cache_function
 from .farms import Farms
 import asyncio
 import time
@@ -16,6 +17,7 @@ def return_farms_list():
     terra = Farms()
     return terra.farms
 
+@cache_function(keyparams=2)
 async def get_wallet_balances(wallet, mongo_client, session, client, pdb):
     user_balance = await client.bank.balance(wallet)
     cw_tokens = await mongo_client.xtracker['terra_tokens'].find({"type" : "single", "$expr": { "$gt": [ { "$strLenCP": "$token0" }, 6 ] }}, {'_id': False}).to_list(length=None)
@@ -66,6 +68,7 @@ async def get_wallet_balances(wallet, mongo_client, session, client, pdb):
 
     return return_wallets
 
+@cache_function(keyparams=2)
 async def get_terra_positions(wallet, farm_id, mongo_db, http_session, lcd_client, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
