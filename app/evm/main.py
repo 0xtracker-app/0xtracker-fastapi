@@ -1,3 +1,4 @@
+from ..redis.cache import cache_function
 from .farms import Farms
 from .networks import WEB3_NETWORKS
 from . import external_contracts
@@ -30,6 +31,7 @@ def return_apy_list(parser=None):
     elif parser == None:
         return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms]
 
+@cache_function(keyparams=2)
 async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
     if not farm_id in set_farms.farms.keys():

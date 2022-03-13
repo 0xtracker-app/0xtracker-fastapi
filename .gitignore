@@ -145,3 +145,4 @@ test.py
 cachegrind.out.threads
 profiler_stats.txt
 profiler.py
+.DS_Store

@@ -1,5 +1,6 @@
 
 
+from redis.cache import cache_function
 from .networks import SolanaNetwork
 from . import oracles
 from solana.rpc.types import TokenAccountOpts, MemcmpOpts
@@ -20,6 +21,7 @@ def return_farms_list():
     solana = Farms()
     return solana.farms
 
+@cache_function(keyparams=2)
 async def get_wallet_balances(wallet, mongodb, session, client, pdb):
     solana = SolanaNetwork(wallet)
 
@@ -67,6 +69,7 @@ async def get_wallet_balances(wallet, mongodb, session, client, pdb):
 
     return return_wallets
 
+@cache_function(keyparams=2)
 async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
     solana = SolanaNetwork(wallet)

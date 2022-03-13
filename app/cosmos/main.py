@@ -1,4 +1,6 @@
 from math import cos
+
+from ..redis.cache import cache_function
 from .networks import CosmosNetwork
 from . import queries
 from . import oracles
@@ -23,7 +25,7 @@ def return_farms_list():
 def return_network_list():
     return CosmosNetwork('cosmos14m46c90sz30m7y6fnl4ftaraaj8h4uu5p0v7uc').supported_networks
 
-
+@cache_function(keyparams=1)
 async def get_wallet_balances(wallet, session, mongo_client, pdb):
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks
@@ -79,6 +81,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
 
     return return_wallets
 
+@cache_function(keyparams=2)
 async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
     set_farms = Farms(wallet, farm_id)
     farm_configuraiton = set_farms.farms[farm_id]
