@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     
   push:
-    branches: [develop, heroku, i8n]
+    branches: [develop, master, i8n]
 
 jobs:
   deploy:
@@ -24,7 +24,7 @@ jobs:
           git_push_flags: "--force"
 
       - name: Push to dokku production
-        if: ${{ contains(github.ref, 'heroku') }}
+        if: ${{ contains(github.ref, 'master') }}
         uses: dokku/github-action@master
         with:
           git_remote_url: "ssh://dokku@15.204.140.61:22/api"
