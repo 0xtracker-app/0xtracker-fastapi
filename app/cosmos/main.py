@@ -23,7 +23,10 @@ def return_farms_list():
     return cosmos.farms
 
 def return_network_list():
-    return CosmosNetwork('cosmos14m46c90sz30m7y6fnl4ftaraaj8h4uu5p0v7uc').supported_networks
+    cosmos_networks = CosmosNetwork('cosmos14m46c90sz30m7y6fnl4ftaraaj8h4uu5p0v7uc')
+    cosmos_list = cosmos_networks.supported_networks
+
+    return [{'name' : x, 'id' : cosmos_networks.all_networks[x]['chain_id']} for x in cosmos_networks.supported_networks]
 
 @cache_function(keyparams=1)
 async def get_wallet_balances(wallet, session, mongo_client, pdb):
@@ -33,7 +36,6 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
     cw20_tokens = ['juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr']
     balances = await asyncio.gather(*[queries.get_bank_balances(network, net_config[network], session) for network in net_config])
     traces =  await asyncio.gather(*[queries.get_ibc_tokens(net_config[network['network']], session) for network in balances])
-    print(traces)
     prices = await oracles.cosmostation_prices(session, mongo_client, net_config)
     transform_trace = helpers.transform_trace_routes(traces)
     cw20_balances = await asyncio.gather(*[queries.query_contract_state(session, net_config['juno']['rpc'], x, { "balance" : { "address": net_config['juno']['wallet']}}) for x in cw20_tokens])
@@ -65,8 +67,6 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
                     token_price = fetch_price[token_denom]
                 else:
                     token_price = 0 if token_denom not in prices else prices[token_denom]
-
-                print(token_denom, token_price)
 
                 total_balance += token_price * helpers.from_custom(token['amount'], token_decimal)
                 return_wallets.append(

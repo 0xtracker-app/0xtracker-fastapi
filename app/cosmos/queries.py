@@ -18,7 +18,8 @@ async def get_bank_balances(network, network_data, session):
 
 async def get_ibc_tokens(network_data, session):
     network = network_data['chain_id']
-    r = await make_get_json(session, f'https://api-utility.cosmostation.io/v1/ibc/tokens/{network}', {'timeout' : 8})
+    
+    r = await make_get_json(session, f'https://serverlessrepo-downloader-bucket-1qsab6s7fy5e1.s3.amazonaws.com/cosmos/ibc/traces/{network}.json', {'timeout' : 8})
 
     return r
 
