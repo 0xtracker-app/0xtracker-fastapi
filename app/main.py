@@ -319,6 +319,8 @@ async def execute_call(*args, method_name=None, mongo_db=None, session=None, cli
         if CACHE:
             val = await redis.session.get(cache_key)
             if val:
+                if val == '{}':
+                    return 
                 print(f"Cached Results for {method_name} {args}")
                 channel.publish_message(Message.Message(name=req_id, data=json.loads(val)))
                 return
@@ -356,7 +358,6 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
                 params = [''] 
 
             for param in params:
-                await asyncio.sleep(0.1)
                 asyncio.create_task(execute_call(wallet, param, method_name=method, mongo_db=mongo_db, session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
     
     return {"status": "ok", "channel": req_id}
