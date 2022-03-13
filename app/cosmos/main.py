@@ -36,7 +36,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
     prices = await oracles.cosmostation_prices(session, mongo_client, net_config)
     transform_trace = helpers.transform_trace_routes(traces)
     cw20_balances = await asyncio.gather(*[queries.query_contract_state(session, net_config['juno']['rpc'], x, { "balance" : { "address": net_config['juno']['wallet']}}) for x in cw20_tokens])
-    print(prices)
+
     return_wallets = []
     total_balance = 0
     for i, balance in enumerate(balances):
@@ -49,6 +49,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
 
             for token in balance['tokens']:
                 token_denom = transform_trace[0][token['denom']] if token['denom'] in transform_trace[0] else token['denom']
+
                 token_metadata = await TokenMetaData(address=token_denom, mongodb=mongo_client, network=net_config[token_network], session=session).lookup()
 
                 if token_metadata:
@@ -57,11 +58,14 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
                 else:
                     token_decimal = transform_trace[1][token_denom]['decimal'] if token_denom in transform_trace[1] else 6
                     token_symbol = transform_trace[1][token_denom]['display_denom'] if token_denom in transform_trace[1] else token_denom.upper()
+                
                 if token_denom in token_overrides:
                     fetch_price = await token_overrides[token_denom][0](**token_overrides[token_denom][1])
                     token_price = fetch_price[token_denom]
                 else:
                     token_price = 0 if token_denom not in prices else prices[token_denom]
+
+                print(token_denom, token_price)
 
                 total_balance += token_price * helpers.from_custom(token['amount'], token_decimal)
                 return_wallets.append(
