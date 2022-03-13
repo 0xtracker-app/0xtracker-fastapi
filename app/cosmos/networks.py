@@ -151,7 +151,7 @@ class CosmosNetwork:
         },
             'juno' : {
             'wallet' : from_atom(wallet,'juno'),
-            'rpc' : 'https://rpc.juno.omniflix.co',
+            'rpc' : 'https://rpc-juno.itastakers.com',
             'rest' : 'https://lcd-juno.cosmostation.io',
             'chain_id' : 'juno-1',
             'chain_name' : 'Juno Mainnet',
