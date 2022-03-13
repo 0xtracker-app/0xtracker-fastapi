@@ -36,7 +36,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
     prices = await oracles.cosmostation_prices(session, mongo_client, net_config)
     transform_trace = helpers.transform_trace_routes(traces)
     cw20_balances = await asyncio.gather(*[queries.query_contract_state(session, net_config['juno']['rpc'], x, { "balance" : { "address": net_config['juno']['wallet']}}) for x in cw20_tokens])
-
+    print(prices)
     return_wallets = []
     total_balance = 0
     for i, balance in enumerate(balances):
