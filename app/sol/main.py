@@ -1,6 +1,6 @@
 
 
-from redis.cache import cache_function
+from ..redis.cache import cache_function
 from .networks import SolanaNetwork
 from . import oracles
 from solana.rpc.types import TokenAccountOpts, MemcmpOpts

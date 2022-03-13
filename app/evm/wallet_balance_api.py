@@ -1,4 +1,4 @@
-from redis.cache import cache_function
+from ..redis.cache import cache_function
 from .multicall import Call, Multicall, parsers
 import json
 import time
