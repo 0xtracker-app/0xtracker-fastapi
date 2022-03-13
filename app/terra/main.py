@@ -1,4 +1,4 @@
-from redis.cache import cache_function
+from ..redis.cache import cache_function
 from .farms import Farms
 import asyncio
 import time
