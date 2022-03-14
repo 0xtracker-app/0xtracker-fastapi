@@ -186,7 +186,7 @@ def harmony_router_prices(tokens_in, router):
     return {**prices, **{'0xcf664087a5bb0237a0bad6742852ec6c8d69a27a' : one_price}}
 
 async def list_router_prices(tokens_in, network, check_liq=False):
-    print(tokens_in)
+
     network_route = NetworkRoutes(network)
     calls= []
     liq_calls = []
@@ -247,7 +247,6 @@ async def list_router_prices(tokens_in, network, check_liq=False):
 
     prices = {}
 
-    print(multi)
 
     for each in multi:
         token = each.split('_')[1]
