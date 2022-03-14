@@ -3048,14 +3048,14 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
 
                     if want_token in geysers:
                         geyser_key = geysers[want_token]
-                        reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token}
+                        reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token, 'decimal' : reward_decimal}
                         poolNest[poolKey]['userData'][geyser_key]['gambitRewards'].append(reward_token_0)
                     else:
                         geysers[want_token] = breakdown[0]
                         poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
                         poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                     
-                        reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token}
+                        reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token, 'decimal' : reward_decimal}
                         poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
         
 
