@@ -24,7 +24,7 @@ async def get_voltswap_llama(mongodb, session, network):
 
     geyser_data = await call_graph(graph_urls[network], {'operationName' : 'getGeysers', 'query' : geysers_tvl}, session)
 
-    collection = mongodb.xtracker['full_tokens']
+    collection = mongodb['full_tokens']
     lp_calls = []
 
 

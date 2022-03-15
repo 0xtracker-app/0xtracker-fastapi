@@ -82,7 +82,6 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='cosmos', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='cosmos' ))
-        #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'cosmos', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 
@@ -133,8 +132,8 @@ async def write_tokens(wallet, mongo_db, session):
     # # prices = await oracles.cosmostation_prices(session)
     # transform_trace = helpers.transform_trace_routes(traces)
 
-    trace_views = mongo_db.xtracker['cosmos_routes_view']
-    denom_database = mongo_db.xtracker['cosmos_tokens']
+    trace_views = mongo_db['cosmos_routes_view']
+    denom_database = mongo_db['cosmos_tokens']
 
     # for i, network in enumerate(traces):
 

@@ -15,7 +15,7 @@ class Pools:
 
 async def get_protocol_apy(farm_id, mongo_db, http_session):
     farm_info = Farms().farms[farm_id]
-    collection = mongo_db.xtracker['full_tokens']
+    collection = mongo_db['full_tokens']
     calls = []
     web_3 = WEB3_NETWORKS[farm_info['network']]
     network_info = NetworkRoutes(farm_info['network'])
@@ -166,7 +166,7 @@ async def get_solidly_gauges(voting,farm_id,network_id,vaults,mongo_db):
         bcalls = []
         rcalls = []
         calls = []
-        collection = mongo_db.xtracker['full_tokens']
+        collection = mongo_db['full_tokens']
         network_info = NetworkRoutes(farm_info['network'])
         network = WEB3_NETWORKS[network_id]
         
