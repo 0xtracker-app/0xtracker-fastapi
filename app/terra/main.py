@@ -20,7 +20,7 @@ def return_farms_list():
 @cache_function(keyparams=2)
 async def get_wallet_balances(wallet, mongo_client, session, client, pdb):
     user_balance = await client.bank.balance(wallet)
-    cw_tokens = await mongo_client.xtracker['terra_tokens'].find({"type" : "single", "$expr": { "$gt": [ { "$strLenCP": "$token0" }, 6 ] }}, {'_id': False}).to_list(length=None)
+    cw_tokens = await mongo_client['terra_tokens'].find({"type" : "single", "$expr": { "$gt": [ { "$strLenCP": "$token0" }, 6 ] }}, {'_id': False}).to_list(length=None)
     cw_token_balances =  await asyncio.gather(*[client.wasm.contract_query(token['tokenID'], {"balance":{"address": wallet}}) for token in cw_tokens])
     luna_price = await get_luna_price(client)
     skip_tokens = ['terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu']
@@ -63,7 +63,6 @@ async def get_wallet_balances(wallet, mongo_client, session, client, pdb):
                 )
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : 'terra'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'terra', 'dollarValue' : total_balance} }, upsert=True)
         create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='terra', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='terra' ))
 
     return return_wallets

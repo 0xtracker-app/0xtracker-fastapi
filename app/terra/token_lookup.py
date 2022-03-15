@@ -93,7 +93,7 @@ class TokenMetaData:
 
     def __init__(self, address=None, mongodb=None, client=None, session=None):
         self.tokenID = address
-        self.terra_tokens = mongodb.xtracker['terra_tokens']
+        self.terra_tokens = mongodb['terra_tokens']
         self.token_metadata = None
         self.session = session
         self.client = client

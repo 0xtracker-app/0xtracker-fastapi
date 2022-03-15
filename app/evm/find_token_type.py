@@ -51,7 +51,7 @@ async def get_token_data(data,mongo_client, farm_network):
 
     calls = []
     network = ''
-    collection = mongo_client.xtracker['full_tokens']
+    collection = mongo_client['full_tokens']
 
     for each in data[0]:
 

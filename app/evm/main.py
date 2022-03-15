@@ -88,7 +88,7 @@ async def delete_user_records(wallet, signature, timestamps, mongo_db, pdb):
             end = start + datetime.timedelta(minutes=59, seconds=59)
             print(type(start))
             delete_user_history(pdb, wallet.lower(), start, end)
-    #         deletions = await mongo_db.xtracker['user_data'].delete_many({ 
+    #         deletions = await mongo_db['user_data'].delete_many({ 
     #     "$and" : [
     #         { 
     #             "wallet" : wallet.lower()

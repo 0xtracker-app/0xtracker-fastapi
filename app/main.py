@@ -197,7 +197,7 @@ async def cosmos_wallet_balance(wallet, session: ClientSession = Depends(get_ses
 
 @app.get('/tokens/{network}/{token_id}')
 async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id: str = Path(..., min_length=1), network: str = Path(..., min_length=1)):
-    x = await db.xtracker['full_tokens'].find_one({'tokenID': token_id, 'network': network}, {'_id': False})
+    x = await db['full_tokens'].find_one({'tokenID': token_id, 'network': network}, {'_id': False})
     return x
 
 
@@ -246,8 +246,8 @@ async def historical_transactions(wallet, network, contract, token, session: Cli
 async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
 
     stat_types = {
-        "users": db.xtracker['user_data'].aggregate(addresses_per_day()),
-        "farms": db.xtracker['user_data'].aggregate(farms_over_last_30_days())
+        "users": db['user_data'].aggregate(addresses_per_day()),
+        "farms": db['user_data'].aggregate(farms_over_last_30_days())
     }
 
     x = await stat_types[type].to_list(length=None)

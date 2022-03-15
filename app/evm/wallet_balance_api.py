@@ -108,7 +108,7 @@ async def get_token_list_from_scan(network,session,wallet):
     return unique_list
 
 async def get_token_list_from_mongo(network,mongo):
-    x = await mongo.xtracker['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
+    x = await mongo['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
     return x['tokens'] if x is not None else []
 
 @cache_function(keyparams=2)
@@ -164,6 +164,6 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network=network, wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork=network ))
 
-        #mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
+        #mongodb['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
 
     return payload
