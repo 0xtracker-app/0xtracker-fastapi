@@ -2,7 +2,7 @@ from . import queries
 
 async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
 
-    is_found = await cosmos_tokens.find_one({'tokenID': token}, {'_id': False})
+    is_found = await cosmos_tokens.find_one({'tokenID': token})
 
     if is_found:
         return is_found
