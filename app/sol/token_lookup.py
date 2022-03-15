@@ -114,8 +114,8 @@ class TokenMetaData:
 
     def __init__(self, address=None, mongodb=None, network=None, session=None, client=None):
         self.tokenID = address
-        self.solana_tokens = mongodb.xtracker['solana_tokens']
-        self.solana_accounts = mongodb.xtracker['solana_accounts']
+        self.solana_tokens = mongodb['solana_tokens']
+        self.solana_accounts = mongodb['solana_accounts']
         self.token_metadata = None
         self.session = session
         self.network = network

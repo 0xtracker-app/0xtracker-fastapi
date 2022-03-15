@@ -69,6 +69,5 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, pdb):
         
         if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
             create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network='cosmos', wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork='cosmos' ))
-            #mongo_client.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farm_network' : 'cosmos'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : f, 'farmNetwork' : 'cosmos', 'dollarValue' : finalResponse[f]['total']} }, upsert=True)
         
     return finalResponse

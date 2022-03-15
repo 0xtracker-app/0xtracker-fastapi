@@ -80,7 +80,7 @@ async def scan_ethlogs_approval(network, address, session, mongodb):
         amount = 0 if each['data'] == '0x' else Web3.toInt(hexstr=each['data'])
 
         if each['address'] not in format_approvals['approvals']:
-            token_data = await mongodb.xtracker['full_tokens'].find_one({'tokenID': token_approved, 'network': network}, {'_id': False})
+            token_data = await mongodb['full_tokens'].find_one({'tokenID': token_approved, 'network': network}, {'_id': False})
 
             if token_data is None:
                 token_data = {}

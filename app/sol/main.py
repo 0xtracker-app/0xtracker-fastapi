@@ -65,7 +65,7 @@ async def get_wallet_balances(wallet, mongodb, session, client, pdb):
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
         create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='solana', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='solana' ))
-        #mongodb.xtracker['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : time.time(), 'farm' : 'wallet', 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'solana', 'dollarValue' : total_balance} }, upsert=True)
+        #mongodb['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : time.time(), 'farm' : 'wallet', 'farm_network' : 'solana'}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : 'solana', 'dollarValue' : total_balance} }, upsert=True)
 
     return return_wallets
 

@@ -2,7 +2,7 @@ from . import queries
 
 async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
 
-    is_found = await cosmos_tokens.find_one({'tokenID': token}, {'_id': False})
+    is_found = await cosmos_tokens.find_one({'tokenID': token})
 
     if is_found:
         return is_found
@@ -66,8 +66,8 @@ class TokenMetaData:
 
     def __init__(self, address=None, mongodb=None, network=None, session=None, cw20=False):
         self.tokenID = address
-        self.cosmos_tokens = mongodb.xtracker['cosmos_tokens']
-        self.cosmos_routes = mongodb.xtracker['cosmos_routes']
+        self.cosmos_tokens = mongodb['cosmos_tokens']
+        self.cosmos_routes = mongodb['cosmos_routes']
         self.ibc = True if 'ibc/' in address else False
         self.denom = None if 'ibc/' in address else address
         self.token_metadata = None
