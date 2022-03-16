@@ -1,5 +1,6 @@
 from .multicall import Call, Multicall, parsers
 from .utils import make_get, make_get_json
+from .networks import WEB3_NETWORKS
 import json
 import os
 from dotenv import load_dotenv
@@ -7,8 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 COVALENT_KEY = os.getenv("COVALENT_API")
-NETWORK_MAP = {'eth' : '1', 'bsc' : '56', 'matic' : '137', 'avax' : '43113', 'ftm' : '250', 'arb' : '42161'}
-
+NETWORK_MAP = {x : str(WEB3_NETWORKS[x]['id']) for x in WEB3_NETWORKS if WEB3_NETWORKS[x]['covalent']}
 async def get_tx_to_contract(network, wallet, token, contract, session):
     query = json.dumps({"$or": [{"from_address": contract},{"to_address": contract}]})
     sorting = json.dumps({'block_height': 1})
