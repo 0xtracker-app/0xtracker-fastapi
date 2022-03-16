@@ -3512,7 +3512,7 @@ async def get_sovryn_masterchef(wallet,farm_id,network_id,masterchef,reward_toke
                     want_token = stakes[f'{breakdown[0]}_want']
                     pending = stakes[f'{breakdown[0]}_pending'] if f'{breakdown[0]}_pending' in stakes else 0
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : masterchef}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
         if len(poolIDs) > 0:
