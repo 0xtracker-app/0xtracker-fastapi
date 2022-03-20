@@ -43,9 +43,12 @@ async def token_router(wanted_token, farm_address, farm_network):
                                                         return {**await token_types.get_nft(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'nft'}}
                                                     except:
                                                         try:
-                                                            return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                                            return {**await token_types.get_stargate(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'stargate'}}
                                                         except:
-                                                            return {**await token_types.catch_all(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'unknown'}}
+                                                            try:
+                                                                return {**await token_types.get_single(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'single'}}
+                                                            except:
+                                                                return {**await token_types.catch_all(wanted_token, farm_network), **{'tokenID' : wanted_token, 'network' : farm_network, 'type' : 'unknown'}}
 
 async def get_token_data(data,mongo_client, farm_network):
 
@@ -107,6 +110,9 @@ async def get_token_data(data,mongo_client, farm_network):
                     calls.append(Call(found_token['tokenID'], [f'totalSupply()(uint256)'], [[f'{each}_totalSupply', parsers.from_wei]]))
                     for i,address in enumerate(found_token['bancorTokens']):
                         calls.append(Call(found_token['bancorOwner'], [f'getConnectorBalance(address)(uint256)', address], [[f'{each}_bancor{i}', None]]))
+                if 'totalLiquidity' in found_token:
+                    calls.append(Call(found_token['tokenID'], 'totalLiquidity()(uint256)', [[f'{each}_totalLiquidity', None]]))
+                    calls.append(Call(found_token['tokenID'], 'totalSupply()(uint256)', [[f'{each}_totalSupply', None]]))                 
             else:
                 token_data = await token_router(wanted, farm_address, farm_network)
                 data[1][farm_address]['userData'][pool_id].update(token_data) 
