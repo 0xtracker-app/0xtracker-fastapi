@@ -1,6 +1,10 @@
 from .multicall import Call, Multicall
 from .networks import WEB3_NETWORKS
 import time
+from functools import reduce
+import math
+import numpy as np
+import asyncio
 
 async def get_token_list_decimals(tokens,network_id,parse_wanted):
     
@@ -75,3 +79,13 @@ def round_to_hour():
     rounded = current_time - offset
 
     return rounded
+
+async def multicall_chunk(calls, network_conn, chunk_limit=None, chunk_size=None, strict=False):
+
+    if len(calls) > chunk_limit:
+        chunks = len(calls) / chunk_size
+        x = np.array_split(calls, math.ceil(chunks))
+        all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=strict)() for call in x])
+        return reduce(lambda a, b: dict(a, **b), all_calls)
+    else:
+        return await Multicall(calls, network_conn, _strict=strict)()
