@@ -250,6 +250,11 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client, 
                         finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
                         finalResponse[f]['userData'][x]['actualStaked'] = fullStake
                         finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
+                    elif 'totalLiquidity' in finalResponse[f]['userData'][x]:
+                        fullStake = singleStake * (finalResponse[f]['userData'][x]['totalLiquidity'] / finalResponse[f]['userData'][x]['totalSupply'])
+                        finalResponse[f]['userData'][x]['lpTotal'] = round(fullStake, 4)
+                        finalResponse[f]['userData'][x]['actualStaked'] = fullStake
+                        finalResponse[f]['userData'][x]['lpPrice'] = round(fullStake * quotePrice, 2)
                     elif 'balancerBalances' in finalResponse[f]['userData'][x]:
                         finalResponse[f]['userData'][x].update(get_balancer_ratio(finalResponse[f]['userData'][x], prices))
                     elif 'bancorBalances' in finalResponse[f]['userData'][x]:

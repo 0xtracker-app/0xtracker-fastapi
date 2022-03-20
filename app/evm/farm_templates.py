@@ -1254,7 +1254,7 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
             want_function = farm_data['wantFunction']
 
         for pid in range(0,pool_length):
-            calls.append(Call(farm_data['masterChef'], [f'{staked_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', parsers.from_wei]]))
+            calls.append(Call(farm_data['masterChef'], [f'{staked_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_staked', None]]))
             if pending_function:
                 calls.append(Call(farm_data['masterChef'], [f'{pending_function}(uint256,address)(uint256)', pid, wallet], [[f'{pid}{farm_data["masterChef"]}ext_pending', parsers.from_wei]]))
             calls.append(Call(farm_data['masterChef'], [f'{want_function}(uint256)(address)', pid], [[f'{pid}{farm_data["masterChef"]}ext_want', None]]))
@@ -1264,14 +1264,17 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
         poolNest = {poolKey: 
         { 'userData': { } } }
 
+        token_decimals = await template_helpers.get_token_list_decimals(stakes,network_id,True)
+
         poolIDs = {}
 
         for each in stakes:
             if 'staked' in each:
                 if stakes[each] > 0:
                     breakdown = each.split('_')
-                    staked = stakes[each]
                     want_token = stakes[f'{breakdown[0]}_want']
+                    token_decimals = token_decimals.get(want_token) if token_decimals.get(want_token) else 18
+                    staked = parsers.from_custom(stakes[each], token_decimals)
                     pending = stakes[f'{breakdown[0]}_pending'] if f'{breakdown[0]}_pending' in stakes else 0
 
                     poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
@@ -2413,7 +2416,9 @@ async def get_pending_want(wallet, stakes, network, farm_info):
             elif address in ['0xEF6d860B22cEFe19Ae124b74eb80F0c0eb8201F4', '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1']:
                 calls.append(Call(address, ['getPoolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0xf730af26e87D9F55E46A6C447ED2235C385E55e0']:
-                calls.append(Call(address, ['poolInfoList(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))         
+                calls.append(Call(address, ['poolInfoList(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
+            elif address in ['0xaE0aF27df228ACd8BA91AF0c917a31A9a681A097']:
+                calls.append(Call(address, ['poolInfo(uint256)((uint256,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 1]]))    
             else:
                 calls.append(Call(address, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
 
@@ -3026,7 +3031,7 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
                 calls.append(Call(geyser['id'], [f'getVaultData(address)((uint256,uint256))', vault['id']], [[f"{geyser['id']}_{vault['id']}_user", None]]))
                 calls.append(Call(geyser['id'], [f'getCurrentVaultReward(address)(uint256)', vault['id']], [[f"{geyser['id']}_{vault['id']}_reward", None]]))
 
-        stakes=await Multicall(calls, network)()
+        stakes=await template_helpers.multicall_chunk(calls, network, 15, 10)
 
         poolNest = {poolKey: 
         { 'userData': { } } }

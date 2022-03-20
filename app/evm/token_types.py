@@ -33,6 +33,22 @@ async def get_lp(token, farm_id):
 
             return {**lp_pool, **await lp_tokens(),  **{'lpToken' : token}}
 
+async def get_stargate(token, farm_id):
+
+    network_chain = WEB3_NETWORKS[farm_id]
+
+    token_data = await Multicall([
+        Call(token, 'symbol()(string)', [['symbol', None]]),
+        Call(token, 'token()(address)', [['token0', None]]),
+        Call(token, 'totalLiquidity()(uint256)', [['totalLiquidity', None]]),
+        Call(token, 'totalSupply()(uint256)', [['totalSupply', None]]),
+        Call(token, 'symbol()(string)', [['tkn0s', None]]),
+    ], network_chain)()
+
+    token_decimal = await Call(token_data['token0'], 'decimals()(uint8)', [['tkn0d', None]], network_chain)()
+
+    return {**token_data, **token_decimal}
+
 async def get_uniswap_pool(token, farm_id):
 
     network_chain = WEB3_NETWORKS[farm_id]
