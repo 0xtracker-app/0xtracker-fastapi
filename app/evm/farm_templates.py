@@ -54,7 +54,7 @@ async def get_multireward_masterchef(wallet,farm_id,network_id,vaults):
                     want_token = stakes[f'{breakdown[0]}_want']
                     wanted_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'contractAddress' : farm_data['masterChef'], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i, reward_token in enumerate(farm_data['rewards']):
@@ -114,7 +114,7 @@ async def get_convex(wallet,farm_id,network_id,booster, vaults):
                     pending_rewards = stakes[f'{breakdown[0]}_rewards']
                     pending_cvx = template_helpers.get_cvx_minted(pending_earned,parsers.from_wei(cvx_total_supply))
 
-                    poolNest[poolKey]['userData'][key] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][key] = {'want': want_token, 'staked' : staked, 'contractAddress' : booster, 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     reward_token_0 = {'pending': pending_earned, 'symbol' : 'CRV', 'token' : '0xD533a949740bb3306d119CC777fa900bA034cd52'}
@@ -176,7 +176,7 @@ async def get_moonpot_contracts(wallet,farm_id,network_id,vaults):
                     pot_contract = breakdown[0]
                     reward_length = reward_lengths[pot_contract] if pot_contract in reward_lengths else 1
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : pot_contract,'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i in range(0,reward_length):
@@ -227,7 +227,7 @@ async def get_traderjoe_masterchef(wallet,farm_id,network_id,masterchef, vaults)
                     want_token = stakes[f'{breakdown[0]}_want']
                     wanted_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'contractAddress' : masterchef, 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     pending_joe = stakes[f'{breakdown[0]}_pending'][0]
@@ -287,7 +287,7 @@ async def get_vault_style_custom_pps(wallet, vaults, farm_id, network_id):
                 real_staked = parsers.from_custom(compounded_price, token_decimal)
 
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : real_staked,'vault_receipt' : breakdown[0]}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : real_staked, 'contractAddress' : breakdown[0], 'vault_receipt' : breakdown[0]}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
     if len(poolIDs) > 0:
@@ -295,6 +295,7 @@ async def get_vault_style_custom_pps(wallet, vaults, farm_id, network_id):
     else:
         return None
 
+##No Contract Address
 async def get_bingo_board(wallet, vaults, network):
 
     bingoKey = '0x97bdB4071396B7f60b65E0EB62CE212a699F4B08'
@@ -328,6 +329,7 @@ async def get_bingo_board(wallet, vaults, network):
     else:
         return None
 
+##No Contract Address
 async def get_iron_finance(wallet, vaults, farm_id, network):
     
     poolKey = farm_id
@@ -370,6 +372,7 @@ async def get_iron_finance(wallet, vaults, farm_id, network):
     else:
         return None
 
+##No Contract Address
 async def get_diamond_hands(wallet, vaults):
 
     poolKey = '0xDiamondHands'
@@ -403,6 +406,7 @@ async def get_diamond_hands(wallet, vaults):
     else:
         return None
 
+##No Contract Address
 async def get_wault_locked(wallet, network, vaults, farm_id):
 
     poolKey = farm_id
@@ -467,7 +471,7 @@ async def get_gambits(wallet, vaults, network, farm_id):
     for stake in stakes:
         addPool = stake.split('_')       
         if addPool[0] not in poolNest[poolKey]['userData']:
-            poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': poolCheck[addPool[0]]['stakeToken'], 'gambitRewards' : [] }
+            poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': poolCheck[addPool[0]]['stakeToken'], 'contractAddress' : addPool[0], 'gambitRewards' : [] }
             poolIDs['%s_%s_want' % (poolKey, addPool[0])] = poolCheck[addPool[0]]['stakeToken']
         else:
             if 'pending' in addPool[1]:     
@@ -499,7 +503,7 @@ async def get_taodao(wallet, vaults, network):
         if stakes[stake] > 0:
             addPool = stake.split('_')       
             if addPool[0] not in poolNest[poolKey]['userData']:
-                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': addPool[0] }
+                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': addPool[0], 'contractAddress' : addPool[0] }
                 poolIDs['%s_%s_want' % (poolKey, addPool[0])] = addPool[0]
             else:    
                 poolNest[poolKey]['userData'][addPool[0]].update({addPool[1]: stakes[stake]})
@@ -529,7 +533,7 @@ async def get_pop(wallet, vaults, network):
         if stakes[stake] > 0:
             addPool = stake.split('_')       
             if addPool[0] not in poolNest[poolKey]['userData']:
-                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': wantToken }
+                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': wantToken, 'contractAddress' : epsChef }
                 poolIDs['%s_%s_want' % (poolKey, epsChef)] = wantToken
             else:    
                 poolNest[poolKey]['userData'][addPool[0]].update({addPool[1]: stakes[stake]})
@@ -575,7 +579,7 @@ async def get_fortress(wallet, vaults):
                         want = stakes['%s_want' % addPool[0]]
                         pending = 0      
                     if addPool[0] not in poolNest[poolKey]['userData']:
-                        poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': want, 'pending' : pending }
+                        poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': want, 'pending' : pending, 'contractAddress' : addPool[0] }
                         poolIDs['%s_%s_want' % (poolKey, addPool[0])] = want
 
 
@@ -613,7 +617,7 @@ async def get_dyp(wallet, vaults, network_id):
                     pending = stakes['%s_pending' % addPool[0]]    
                     
                     if addPool[0] not in poolNest[poolKey]['userData']:
-                        poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': want, 'pending' : pending, 'rewardToken' : rewarded, 'rewardSymbol' : rewardSym }
+                        poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': want, 'pending' : pending, 'rewardToken' : rewarded, 'rewardSymbol' : rewardSym, 'contractAddress' : addPool[0] }
                         poolIDs['%s_%s_want' % (poolKey, addPool[0])] = want
 
 
@@ -694,7 +698,7 @@ async def get_nuts(wallet, network, farm_id, vaults):
         if stakes[stake] > 0:
             addPool = stake.split('_')       
             if addPool[0] not in poolNest[poolKey]['userData']:
-                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': poolCheck[addPool[0]]['stakeToken'], 'gambitRewards' : [] }
+                poolNest[poolKey]['userData'][addPool[0]] = {addPool[1]: stakes[stake], 'want': poolCheck[addPool[0]]['stakeToken'], 'contractAddress' : addPool[0], 'gambitRewards' : [] }
                 poolIDs['%s_%s_want' % (poolKey, addPool[0])] = poolCheck[addPool[0]]['stakeToken']
             else:
                 if 'pending' in addPool[1]:     
@@ -853,7 +857,7 @@ async def get_addy_eth(wallet, minting_rate=None):
                 actual_pending = parsers.from_wei(pending * minting_rate)
                  
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending': actual_pending }
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending': actual_pending, 'contractAddress' : breakdown[0] }
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
     if len(poolIDs) > 0:
@@ -893,7 +897,7 @@ async def get_quickswap_style(wallet, vaults, farm_id, network, want_function=No
                 pending = stakes[f'{breakdown[0]}_pending']
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending': pending }
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending': pending, 'contractAddress' : breakdown[0] }
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
     if len(poolIDs) > 0:
@@ -939,7 +943,7 @@ async def get_quickswap_style_multi(wallet, vaults, farm_id, network):
                 reward_tokens = stakes[f'{breakdown[0]}_rewardtokens']
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 for i, rtoken in enumerate(reward_tokens):
@@ -1083,9 +1087,9 @@ async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contrac
                     staked_single_price = await Call(calculator, ['valueOfAsset(address,uint256)((uint256,uint256))', reward_token, one_token], [[f'prices', parsers.parse_profit_of_pool]], network)()
 
                     if breakdown[0] in ['0x4Ad69DC9eA7Cc01CE13A37F20817baC4bF0De1ba','0x7a526d4679cDe16641411cA813eAf7B33422501D']:
-                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : [{'pending': pendings[0], 'symbol' : native_symbol, 'token' : native_token}]}
+                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : [{'pending': pendings[0], 'symbol' : native_symbol, 'token' : native_token}]}
                     else:
-                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : [{'pending': pendings[1], 'symbol' : native_symbol, 'token' : native_token}, {'pending': pendings[0], 'symbol' : staked_symbol, 'token' : reward_token, 'valueOfAsset' : staked_single_price['prices'][1]}]}
+                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : [{'pending': pendings[1], 'symbol' : native_symbol, 'token' : native_token}, {'pending': pendings[0], 'symbol' : staked_symbol, 'token' : reward_token, 'valueOfAsset' : staked_single_price['prices'][1]}]}
                         
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
@@ -1141,7 +1145,7 @@ async def get_syrup_pools(wallet, vaults, network_id, farm_id, staked=None, rewa
                     reward_symbol = reward_data['symbol']
                     reward_decimal = reward_data['decimal']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'contractAddress' : breakdown[0],'want': want_token, 'staked' : parsers.from_custom(staked, token_decimal), 'pending' : parsers.from_custom(pendings, reward_decimal), 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'rewardDecimal' : reward_decimal}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'contractAddress' : breakdown[0],'want': want_token, 'staked' : parsers.from_custom(staked, token_decimal), 'pending' : parsers.from_custom(pendings, reward_decimal), 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'rewardDecimal' : reward_decimal, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
         if len(poolIDs) > 0:
@@ -1171,7 +1175,7 @@ async def get_adamant_stakes(wallet, farm_id, vaults):
         reward_tokens = addy_rewards.claimableRewards(wallet).call()
         want_token = '0xc3FdbadC7c795EF1D6Ba111e06fF8F16A20Ea539'
 
-        poolNest[poolKey]['userData'][staking_contract] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][staking_contract] = {'want': want_token, 'contractAddress' : staking_contract, 'staked' : staked, 'gambitRewards' : []}
         poolIDs['%s_%s_want' % (poolKey, staking_contract)] = want_token
 
         for i, rtoken in enumerate(reward_tokens):
@@ -1223,7 +1227,7 @@ async def get_apeswap(wallet, farm_id, network_id, vaults):
                     staked_symbol = 'WMATIC'
 
 
-                    poolNest[poolKey]['userData'][int(breakdown[0])] = {'want': want_token, 'staked' : staked, 'gambitRewards' : [{'pending': pending, 'symbol' : native_symbol, 'token' : reward_token}, {'pending': complex, 'symbol' : staked_symbol, 'token' : complex_token}]}
+                    poolNest[poolKey]['userData'][int(breakdown[0])] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : [{'pending': pending, 'symbol' : native_symbol, 'token' : reward_token}, {'pending': complex, 'symbol' : staked_symbol, 'token' : complex_token}]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
 
@@ -1277,7 +1281,7 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
                     staked = parsers.from_custom(stakes[each], token_decimals)
                     pending = stakes[f'{breakdown[0]}_pending'] if f'{breakdown[0]}_pending' in stakes else 0
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
 
@@ -1310,7 +1314,7 @@ async def get_acryptos_style_boosts(wallet, vaults, farm_id, network, caller, pf
                 staked = stakes[each]
                 want_token = breakdown[0]
                 pending = stakes[f'{breakdown[0]}_pending']
-                poolNest[poolKey]['userData'][f'{breakdown[0]}-BOOST'] = {'want': want_token, 'staked' : staked, 'pending'  : pending}
+                poolNest[poolKey]['userData'][f'{breakdown[0]}-BOOST'] = {'want': want_token, 'staked' : staked, 'pending'  : pending, 'contractAddress' : breakdown[0]}
                 poolIDs['%s_%s_want' % (poolKey, f'{breakdown[0]}-BOOST')] = want_token
     
     if len(poolIDs) > 0:
@@ -1350,7 +1354,7 @@ async def get_pyq_triple_staking(wallet, vaults, farm_id, network_id):
 
                     want_token = stakes[f'{breakdown[0]}_want']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1393,7 +1397,7 @@ async def get_pyq_double_staking(wallet, vaults, farm_id, network_id):
 
                     want_token = stakes[f'{breakdown[0]}_want']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1430,7 +1434,7 @@ async def get_pyq_trove(wallet, vaults, farm_id, network_id):
                     reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : 'PUSD', 'token' : '0x9af3b7dc29d3c4b1a5731408b6a9656fa7ac3b72'}
                     want_token = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1440,6 +1444,7 @@ async def get_pyq_trove(wallet, vaults, farm_id, network_id):
             else:
                 return None
 
+#No Contract Address
 async def get_mai_cvault(wallet, farm_id, vaults):
         poolKey = farm_id
 
@@ -1494,7 +1499,7 @@ async def get_wault_pools(wallet, vaults, network_id, farm_id):
                     reward_token = stakes[f'{breakdown[0]}_rewardtoken']
                     reward_symbol = await Call(reward_token, 'symbol()(string)', _w3=network)()
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pendings, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pendings, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
 
@@ -1528,7 +1533,7 @@ async def get_farmhero_staking(wallet,vaults,network,farm_id):
                 w3_instance = set_pool(abi.farmhero.multi_fee_v2,vaults,network)
                 reward_tokens = w3_instance.claimableRewards(wallet).call()
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 for i, rtoken in enumerate(reward_tokens):
@@ -1592,7 +1597,7 @@ async def get_fh_pools(wallet,vaults,network,farm_id,stake_func=None,reward_func
                 reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'] * parsers.from_wei(reward_token_pps), 'symbol' : reward_token_symbol, 'token' : reward_token}
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1602,6 +1607,7 @@ async def get_fh_pools(wallet,vaults,network,farm_id,stake_func=None,reward_func
     else:
         return None
 
+#No Contract Address
 async def get_quickswap_lps(farm_id,vaults,wallet):
 
     poolKey = farm_id
@@ -1652,7 +1658,7 @@ async def get_aperocket_space_pool(wallet,vaults,rewardtoken,network_id,farm_id,
                 reward_token_0 = {'pending': parsers.from_custom(stakes[f'{breakdown[0]}_pending'],reward_token_decimal), 'symbol' : reward_token_symbol, 'token' : reward_token}
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1684,7 +1690,7 @@ async def get_balancer_user_pools(wallet,vaults,network_id,farm_id):
                     staked = stakes[each]
                     want_token = breakdown[0]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : 0}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'pending' : 0}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
         if len(poolIDs) > 0:
@@ -1722,7 +1728,7 @@ async def get_pickle_chef(wallet,farm_id,network_id,chef,rewarder,vaults):
 
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][pid] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][pid] = {'want': want_token, 'staked' : staked, 'contractAddress' : chef, 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][pid]['gambitRewards'].append(reward_token_0)
@@ -1763,7 +1769,7 @@ async def get_curve_gauage(wallet,farm_id,network_id,vaults,rewards=None):
                 staked = stakes[each]
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 for i,each in enumerate(rewards):
@@ -1806,7 +1812,7 @@ async def get_telx_single(wallet,farm_id,network_id,vaults):
 
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1851,7 +1857,7 @@ async def get_telx_double(wallet,farm_id,network_id,vaults):
 
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -1901,7 +1907,7 @@ async def get_blackswan_stakes(wallet,vaults):
 
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -2061,7 +2067,7 @@ async def get_vault_style_no_want(wallet, vaults, farm_id, network, _pps=None, _
                 staked = stakes[each]
                 want_token = want_token
                 price_per = stakes[f'{breakdown[0]}_getPricePerFullShare']
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'getPricePerFullShare' : price_per, 'vault_receipt' : breakdown[0]}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'getPricePerFullShare' : price_per, 'vault_receipt' : breakdown[0], 'contractAddress' : breakdown[0]}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
     if len(poolIDs) > 0:
@@ -2101,7 +2107,7 @@ async def get_lending_protocol(wallet,vaults,farm_id,network):
                 collat_rate = hash_map[addPool[0]]['collat_rate']
                 borrow = parsers.from_custom(snapshot[2], underlying_decimal)
                 rate = parsers.from_wei(snapshot[3])
-                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate}
+                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate, 'contractAddress' : breakdown[0]}
                 poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
 
 
@@ -2110,6 +2116,7 @@ async def get_lending_protocol(wallet,vaults,farm_id,network):
     else:
         return None
 
+#No Contract Address
 async def get_aave_protocol(wallet,vaults,farm_id,network):
 
     lending_vaults = vaults
@@ -2152,6 +2159,7 @@ async def get_aave_protocol(wallet,vaults,farm_id,network):
     else:
         return None
 
+#No Contract Address
 async def get_just_pending(wallet,vaults,network,farm_id,reward_method,reward_token):
     contracts = vaults
     poolKey = farm_id
@@ -2201,7 +2209,7 @@ async def get_moneypot(wallet, rewards, farm_id, network_id, contract, vaults, t
 
         want_token = token_pair
 
-        poolNest[poolKey]['userData'][contract] = {'want': token_pair, 'staked' : stakes[token_pair], 'gambitRewards' : []}
+        poolNest[poolKey]['userData'][contract] = {'want': token_pair, 'staked' : stakes[token_pair], 'contractAddress' : contract, 'gambitRewards' : []}
         poolIDs['%s_%s_want' % (poolKey, contract)] = want_token
 
         for i in range(0,len(rewards)):
@@ -2510,7 +2518,7 @@ async def get_multireward(wallet,farm_id,network_id,farm_data,vaults):
                     want_token = stakes[f'{breakdown[0]}_want']
                     wanted_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i, reward_token in enumerate(farm_data['rewards']):
@@ -2526,6 +2534,7 @@ async def get_multireward(wallet,farm_id,network_id,farm_data,vaults):
         else:
             return None
 
+#No Contract Address
 async def get_lending_staked_rewards(wallet,farm_id,network_id,accrued_function,locked_function,accrue_contract,locked_contract,wanted_token,vaults=None):
         poolKey = farm_id
 
@@ -2593,7 +2602,7 @@ async def get_qubit_lending_protocol(wallet,vaults,farm_id,network,snapshot='get
                 collat_rate = hash_map[addPool[0]]['collat_rate']
                 borrow = parsers.from_custom(snapshot[1], underlying_decimal)
                 rate = parsers.from_wei(snapshot[2])
-                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate}
+                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate, 'contractAddress' : addPool[0]}
                 poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
 
 
@@ -2651,7 +2660,7 @@ async def get_pancake_hunny_clones(wallet,farm_id,network_id,vaults,hive,hive_re
                     want_token = stakes[f'{key}_want']
                     vault_info = vaults[key]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i,each in enumerate(vault_info['rewards']):
@@ -2715,7 +2724,7 @@ async def get_vault_style_with_rewards(wallet, vaults, network_id, farm_id, stak
                     reward_symbol = reward_data['symbol']
                     reward_decimal = reward_data['decimal']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked, token_decimal), f'{pps}' : pps_value, 'pending' : parsers.from_custom(pendings, reward_decimal), 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'rewardDecimal' : reward_decimal}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked, token_decimal), f'{pps}' : pps_value, 'pending' : parsers.from_custom(pendings, reward_decimal), 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'rewardDecimal' : reward_decimal, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
         
         if len(poolIDs) > 0:
@@ -2765,7 +2774,7 @@ async def get_wonderland(wallet, vaults, farm_id, network_id):
                     want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
                     token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     if f'{breakdown[0]}_pending' in stakes:
@@ -2806,7 +2815,7 @@ async def get_gmx(wallet, vaults, farm_id, network_id):
                     want_token = breakdown[0]
                     farm_info = farm_infos[breakdown[0]]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : farm_info['contract'], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i,reward in enumerate(farm_info['rewards']):
@@ -2856,7 +2865,7 @@ async def get_tranchess(wallet, vaults, farm_id, network_id):
                     staked = stakes[each]
                     want_token = stakes[f'{breakdown[0]}_want']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
         total_pending_chess = sum([chess_position[f'{n}_pending'] for n in helper])
@@ -2921,7 +2930,7 @@ async def get_spooky_stakes(wallet,farm_id,network_id,farm_data,vaults):
                     pending = stakes[f'{breakdown[0]}_pending']
                     reward_token = stakes[f'{breakdown[0]}_reward']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : parsers.from_custom(pending, reward_metadata[f'{reward_token}_decimals']), 'rewardToken' : reward_token, 'rewardSymbol' : reward_metadata[f'{reward_token}_symbol']}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : parsers.from_custom(pending, reward_metadata[f'{reward_token}_decimals']), 'rewardToken' : reward_token, 'rewardSymbol' : reward_metadata[f'{reward_token}_symbol'], 'contractAddress' : farm_data['masterChef']}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
         
         if len(poolIDs) > 0:
@@ -2961,7 +2970,7 @@ async def get_geist_lending_protocol(wallet,vaults,farm_id,network,snapshot='get
                 collat = parsers.from_custom(snapshot[0], underlying_decimal)
                 collat_rate = hash_map[addPool[0]]['collat_rate']
                 borrow = parsers.from_custom(snapshot[1], underlying_decimal)
-                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate}
+                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate, 'contractAddress' : addPool[0]}
                 poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
 
     if len(poolIDs) > 0:
@@ -3002,7 +3011,7 @@ async def get_singular_masterchef(wallet,farm_id,network_id,farm_data,vaults):
                     staked = stakes[each]
                     want_token = stakes[f'{breakdown[0]}_want']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked,'contractAddress' : farm_data['masterChef'], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
                     if stakes[f'{breakdown[0]}_pending'] > 0:
@@ -3057,7 +3066,7 @@ async def get_voltswap(wallet, farm_id, network_id, vaults):
                         poolNest[poolKey]['userData'][geyser_key]['gambitRewards'].append(reward_token_0)
                     else:
                         geysers[want_token] = breakdown[0]
-                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                        poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                         poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                     
                         reward_token_0 = {'pending': parsers.from_custom(pending, reward_decimal), 'symbol' : reward_symbol, 'token' : reward_token, 'decimal' : reward_decimal}
@@ -3101,7 +3110,7 @@ async def get_sushi_masterchef(wallet,farm_id,network_id,farm_data,vaults,pendin
                     staked = stakes[each]
                     want_token = stakes[f'{breakdown[0]}_want']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : farm_data['masterChef'], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     if stakes[f'{breakdown[0]}_pending'] > 0:
@@ -3141,7 +3150,7 @@ async def get_euler_staking(wallet,farm_id,network_id,vaults):
                     staked = parsers.from_wei(stakes[each][0])
                     want_token = stakes[f'{breakdown[0]}_want']
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     reward_token_0 = {'pending': parsers.from_wei(stakes[each][1]), 'symbol' : 'EULER', 'token' : want_token}
@@ -3184,7 +3193,7 @@ async def get_balance_earn(wallet, vaults, farm_id, network, reward_info, want_f
                 pending = stakes[f'{breakdown[0]}_pending']
                 want_token = stakes[f'{breakdown[0]}_want']
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append({'pending': parsers.from_custom(pending, reward_info['decimal']), 'symbol' : reward_info['symbol'], 'token' : reward_info['token']})
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
@@ -3231,7 +3240,7 @@ async def get_ohm(wallet, vaults, farm_id, network_id, reward_symbol):
                     want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
                     token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     if f'{breakdown[0]}_pending' in stakes:
@@ -3285,7 +3294,7 @@ async def get_native_ohm(wallet, vaults, farm_id, network_id, reward_symbol):
                     want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
                     token_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     if f'{breakdown[0]}_pending' in stakes:
@@ -3324,7 +3333,7 @@ async def get_wagmi_bonds(wallet, vaults, farm_id, network_id, reward_symbol):
                     actual_staked = staked - pending
                     want_token = stakes[f'{breakdown[0]}_want'] if f'{breakdown[0]}_want' in stakes else breakdown[0]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : actual_staked if actual_staked > 0 else 0, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     if f'{breakdown[0]}_pending' in stakes:
@@ -3359,7 +3368,7 @@ async def get_strong_block(wallet,farm_id,network_id, vaults, contract, reward_f
         if total_pending > 0:
             want_token = '0x990f341946a3fdb507ae7e52d17851b87168017c'
 
-            poolNest[poolKey]['userData'][contract] = {'want': want_token, 'staked' : 0, 'gambitRewards' : []}
+            poolNest[poolKey]['userData'][contract] = {'want': want_token, 'staked' : 0, 'contractAddress' : contract, 'gambitRewards' : []}
             poolIDs['%s_%s_want' % (poolKey, contract)] = want_token
 
             reward_token_0 = {'pending': total_pending, 'symbol' : 'STRONG', 'token' : want_token}
@@ -3370,6 +3379,7 @@ async def get_strong_block(wallet,farm_id,network_id, vaults, contract, reward_f
         else:
             return None
 
+#No Contract Address
 async def get_node_layout(wallet,farm_id,network_id,vaults):
 
         poolKey = farm_id
@@ -3438,7 +3448,7 @@ async def get_planets(wallet,farm_id,network_id,contract,reward_symbol,reward_to
             want_token = reward_token
             pending = total_pending
 
-            poolNest[poolKey]['userData']['planetrewards'] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol}
+            poolNest[poolKey]['userData']['planetrewards'] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : contract}
             poolIDs['%s_%s_want' % (poolKey, 'planetrewards')] = want_token
                 
         if len(poolIDs) > 0:
@@ -3475,7 +3485,7 @@ async def get_voltage_single(wallet,farm_id,network_id,vaults,reward_token):
 
                 reward_token_0 = {'pending': stakes[f'{breakdown[0]}_pending'], 'symbol' : reward_symbol, 'token' : reward_token}
 
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                 poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
@@ -3602,7 +3612,7 @@ async def get_solidly_gauges(wallet,voting,farm_id,network_id,vaults):
             want_token = pools[p]
             staked = parsers.from_custom(stakes.get(f'{gauge}_staked'), lp_token_meta.get(want_token))
             if staked > 0:
-                poolNest[poolKey]['userData'][gauge] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][gauge] = {'want': want_token, 'staked' : staked, 'contractAddress' : gauge, 'gambitRewards' : []}
                 poolIDs['%s_%s_want' % (poolKey, gauge)] = want_token
 
                 glength = reward_lengths.get(f'{gauge}_glength')
@@ -3649,7 +3659,7 @@ async def get_solidex(wallet,depositor,farm_id,network_id,vaults,reward_meta):
                     breakdown = each.split('_')
                     want_token = vaults[int(breakdown[1])]
                     staked = parsers.from_custom(stakes[each], lp_token_meta.get(want_token))
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : depositor, 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i in range(0,len(reward_meta)):
@@ -3694,7 +3704,7 @@ async def get_xliquid(wallet,fee_dist,xtoken,reward_length,farm_id,network_id,va
         want_token = stakes.get('want')
         staked = parsers.from_custom(stakes.get('staked'), 18)
         if staked > 0:
-            poolNest[poolKey]['userData'][xtoken] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+            poolNest[poolKey]['userData'][xtoken] = {'want': want_token, 'staked' : staked, 'contractAddress' : xtoken, 'gambitRewards' : []}
             poolIDs['%s_%s_want' % (poolKey, xtoken)] = want_token
 
             for i in range(0,reward_length):
@@ -3742,7 +3752,7 @@ async def get_factory_lps(wallet, farm_id, network_id, factory, vaults):
                     want_token = breakdown[0]
                     pending = 0
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending }
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'contractAddress' : breakdown[0]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
         if len(poolIDs) > 0:
