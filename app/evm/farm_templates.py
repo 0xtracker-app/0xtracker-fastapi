@@ -1281,7 +1281,7 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
                     staked = parsers.from_custom(stakes[each], token_decimals)
                     pending = stakes[f'{breakdown[0]}_pending'] if f'{breakdown[0]}_pending' in stakes else 0
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : breakdown[0]}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : farm_data["masterChef"]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
 
@@ -2518,7 +2518,7 @@ async def get_multireward(wallet,farm_id,network_id,farm_data,vaults):
                     want_token = stakes[f'{breakdown[0]}_want']
                     wanted_decimal = 18 if want_token not in token_decimals else token_decimals[want_token]
 
-                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'contractAddress' : breakdown[0], 'gambitRewards' : []}
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : parsers.from_custom(staked,wanted_decimal), 'contractAddress' : breakdown[0][:-3], 'gambitRewards' : []}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
 
                     for i, reward_token in enumerate(farm_data['rewards']):
