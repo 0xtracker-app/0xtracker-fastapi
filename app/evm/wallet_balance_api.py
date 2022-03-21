@@ -51,13 +51,13 @@ async def get_balance_of(token_list, wallet, network, network_info):
             ] + [x['address'].lower() for x in await get_venus_vaults('session')]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
 
-    if len(calls) > 2100:
-        chunks = len(calls) / 2000
-        x = np.array_split(calls, math.ceil(chunks))
-        all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network], _strict=False)() for call in x])
-        multi_return = reduce(lambda a, b: dict(a, **b), all_calls)
-    else:
-        multi_return = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
+    # if len(calls) > 2100:
+    #     chunks = len(calls) / 2000
+    #     x = np.array_split(calls, math.ceil(chunks))
+    #     all_calls=await asyncio.gather(*[Multicall(call,WEB3_NETWORKS[network], _strict=False)() for call in x])
+    #     multi_return = reduce(lambda a, b: dict(a, **b), all_calls)
+    # else:
+    multi_return = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
     
     
     native_balance = await get_native_balance(wallet, network)

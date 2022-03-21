@@ -237,22 +237,22 @@ async def list_router_prices(tokens_in, network, check_liq=False):
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
                     out_token = network_route.native
 
-    if len(calls) > 2100:
-        chunks = len(calls) / 2000
-        x = np.array_split(calls, math.ceil(chunks))
-        all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
-        multi = reduce(lambda a, b: dict(a, **b), all_calls)
-    else:
-        multi=await Multicall(calls,network_conn, _strict=False)()
+    # if len(calls) > 1000:
+    #     chunks = len(calls) / 1000
+    #     x = np.array_split(calls, math.ceil(chunks))
+    #     all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
+    #     multi = reduce(lambda a, b: dict(a, **b), all_calls)
+    # else:
+    multi=await Multicall(calls,network_conn, _strict=False)()
                                                          
-    if check_liq:
-        if len(liq_calls) > 2100:
-            chunks = len(liq_calls) / 2000
-            x = np.array_split(liq_calls, math.ceil(chunks))
-            all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
-            liq_check = reduce(lambda a, b: dict(a, **b), all_calls)
-        else:
-            liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
+    # if check_liq:
+    #     if len(liq_calls) > 2100:
+    #         chunks = len(liq_calls) / 2000
+    #         x = np.array_split(liq_calls, math.ceil(chunks))
+    #         all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
+    #         liq_check = reduce(lambda a, b: dict(a, **b), all_calls)
+    #     else:
+    liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
 
     prices = {}
 
