@@ -39,6 +39,7 @@ async def get_wallet_balances(wallet, mongodb, session, client, pdb):
         "tokenBalance": native['result']['value'] / 1e9,
         "tokenPrice": prices['11111111111111111111111111111111'],
         "wallet": solana.wallet,
+        'network' : 'solana'
     })
 
     total_balance = (native['result']['value'] / 1e9) * prices['11111111111111111111111111111111']
@@ -59,6 +60,7 @@ async def get_wallet_balances(wallet, mongodb, session, client, pdb):
                 "tokenBalance": from_custom(account_data.amount, meta_data['token_decimal']),
                 "tokenPrice": token_price,
                 "wallet" : solana.wallet,
+                'network' : 'solana'
             }
             )
         
