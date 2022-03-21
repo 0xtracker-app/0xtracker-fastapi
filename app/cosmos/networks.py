@@ -17,7 +17,8 @@ class CosmosNetwork:
         'osmosis' : {
             'wallet' : from_atom(wallet,'osmo'),
             'rpc' : 'https://rpc-osmosis.keplr.app',
-            'rest' : 'https://lcd-osmosis.cosmostation.io',
+            'rest' : 'https://lcd-osmosis.blockapsis.com',
+#            'rest' : 'https://lcd-osmosis.cosmostation.io',
             'chain_id' : 'osmosis-1',
             'chain_name' : 'Osmosis',
             'explorer' : 'https://www.mintscan.io/osmosis/txs/',

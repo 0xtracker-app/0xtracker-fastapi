@@ -2107,7 +2107,7 @@ async def get_lending_protocol(wallet,vaults,farm_id,network):
                 collat_rate = hash_map[addPool[0]]['collat_rate']
                 borrow = parsers.from_custom(snapshot[2], underlying_decimal)
                 rate = parsers.from_wei(snapshot[3])
-                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate, 'contractAddress' : breakdown[0]}
+                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate, 'contractAddress' : addPool[0]}
                 poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
 
 
