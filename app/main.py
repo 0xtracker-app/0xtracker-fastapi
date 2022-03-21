@@ -105,19 +105,20 @@ async def get_farm_list():
     results = [{'sendValue': farm_list[x]['masterChef'], 'name': farm_list[x]['name'], 'network': farm_list[x]
                 ['network'], 'featured': farm_list[x]['featured']} for x in farm_list if 'show' not in farm_list[x]]
     return results
-    
+
+
 @app.get('/supported_networks/')
 async def get_supported_networks():
 
     networks = {
-        'evm' : return_network_list(),
-        'cosmos' : cosmos_network_list(),
-        'solana' : [], 
-        'terra' : []
-        }
-
+        'evm': return_network_list(),
+        'cosmos': cosmos_network_list(),
+        'solana': [],
+        'terra': []
+    }
 
     return networks
+
 
 @app.get('/farms/{wallet}/{farm_id}')
 async def get_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
@@ -170,6 +171,7 @@ async def create_item(item: DeletionItem, mongo_db: AsyncIOMotorClient = Depends
 async def get_cosmos_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
     results = await get_cosmos_positions(wallet, farm_id, mongo_db, session, None, pdb)
     return results
+
 
 @app.get('/solana-farms/{wallet}/{farm_id}')
 async def get_solana_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana), pdb: Session = Depends(get_db)):
@@ -259,7 +261,7 @@ async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
 async def health_check(db: AsyncIOMotorClient = Depends(get_database)):
     return {"status": "ok"}
 
-multicall_methods_translator = { 
+multicall_methods_translator = {
     'solana-farms': get_solana_positions,
     'cosmos-farms': get_cosmos_positions,
     'terra-farms': get_terra_positions,
@@ -270,37 +272,67 @@ multicall_methods_translator = {
     'solana-wallet': lambda *args: solana_wallet_balances(args[0], args[2], args[3], args[5]),
 }
 
+
 async def execute_call(*args, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
-    channel = ably.channels.get(req_id)
-        
+    # channel = ably.channels.get(req_id)
+
     try:
         method = multicall_methods_translator[method_name]
         results = await method(*args, mongo_db, session, client, pdb)
         if results:
-            channel.publish_message(Message.Message(name=req_id, data=results))
+            # print(f"results for {method_name} {results}")
+            # channel.publish_message(Message.Message(name=req_id, data=results))
+            return results
         else:
-            print(f"No results for {method_name} {args}")
-        
+            # print(f"No results for {method_name} {args}")
+            return {"wallet": args[0], "params": args[1:]}
+
     except Exception as e:
-        print(e)
+        # print(e)
+        return {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
+
+
+async def execute_multi_call(wallet, all_params, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
+    channel = ably.channels.get(req_id)
+
+    results = await asyncio.gather(*[execute_call(wallet, params, method_name=method_name, mongo_db=mongo_db,
+                                                  session=session, client=client, pdb=pdb, req_id=req_id) for params in all_params])
+
+    for result in results:
+        print(result)
+
+    # results = [Message.Message(name=req_id, data=result)
+    #            for result in raw_results]
+
+    channel.publish_message(Message.Message(name=req_id, data=results))
+    print("\n\n")
+
+
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
 
 @app.post('/multicall')
 async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
-    farms_clients = { 'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None,
-                      'solana-wallet': client_solana, 'cosmos-wallet': None, 'terra-wallet': client_terra, 'wallet': None }
+    farms_clients = {'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None,
+                     'solana-wallet': client_solana, 'cosmos-wallet': None, 'terra-wallet': client_terra, 'wallet': None}
 
     body_json = await request.json()
 
-    req_id = request.headers.get('X-CHANNEL-ID') 
+    req_id = request.headers.get('X-CHANNEL-ID')
     for method in body_json.keys():
         for wallet in body_json[method].keys():
             params = body_json[method][wallet]
-            if not params:
-                params = [''] 
 
-            for param in params:
-                asyncio.create_task(execute_call(wallet, param, method_name=method, mongo_db=mongo_db, session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
-    
+            if not params:
+                params = ['']
+
+            for chunked_params in list(chunks(params, 10)):
+                asyncio.create_task(execute_multi_call(wallet, chunked_params, method_name=method, mongo_db=mongo_db,
+                                    session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
+
     return {"status": "ok", "channel": req_id}
 
 
