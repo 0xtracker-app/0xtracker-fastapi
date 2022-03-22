@@ -1227,7 +1227,7 @@ async def get_apeswap(wallet, farm_id, network_id, vaults):
                     staked_symbol = 'WMATIC'
 
 
-                    poolNest[poolKey]['userData'][int(breakdown[0])] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : [{'pending': pending, 'symbol' : native_symbol, 'token' : reward_token}, {'pending': complex, 'symbol' : staked_symbol, 'token' : complex_token}]}
+                    poolNest[poolKey]['userData'][int(breakdown[0])] = {'want': want_token, 'staked' : staked, 'contractAddress' : mini_ape, 'gambitRewards' : [{'pending': pending, 'symbol' : native_symbol, 'token' : reward_token}, {'pending': complex, 'symbol' : staked_symbol, 'token' : complex_token}]}
                     poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
                 
 
