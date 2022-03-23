@@ -590,7 +590,7 @@ async def pull_koge_vaults_moon(session):
     r = ast.literal_eval(r)
     return [x['vault'] for x in r]
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
