@@ -130,7 +130,7 @@ async def get_user_sif_pool(pool,wallet,session):
         return None
 
 async def get_sif_assets(session):
-    endpoint = f'https://raw.githubusercontent.com/Sifchain/sifchain-ui/develop/ui/core/src/config/networks/sifchain/assets.sifchain.mainnet.ts'
+    endpoint = f'https://raw.githubusercontent.com/Sifchain/sifchain-ui/develop/core/src/config/networks/sifchain/assets.sifchain.mainnet.ts'
     r = await make_get(session, endpoint)
 
     x = r.split('assets: [')[1].split(']')[0]
