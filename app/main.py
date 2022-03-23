@@ -28,12 +28,15 @@ import ably
 # from .db.postgres_utils import close_postgres_connection, connect_to_postgres
 # from .db.postgres import Database, get_postgres_database
 # from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
+# from fastapi_profiler.profiler_middleware import PyInstrumentProfilerMiddleware
 
 app = FastAPI(title='FastAPI')
+# app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
 
 ably = ably.AblyRest(os.getenv("ABLY_KEY", ""))
 
-#app.add_middleware(PyInstrumentProfilerMiddleware, profiler_output_type='html')
+MULTICALL_SPLIT_AMOUNT = os.getenv("MULTICALL_SPLIT_AMOUNT", 4)
+ABLY_SEND = os.getenv("ABLY_SEND", "True") == "True"
 
 # app.add_event_handler("startup", connect_to_mongo)
 # app.add_event_handler("shutdown", close_mongo_connection)
@@ -288,24 +291,24 @@ async def execute_call(*args, method_name=None, mongo_db=None, session=None, cli
             return {"wallet": args[0], "params": args[1:]}
 
     except Exception as e:
-        # print(e)
+        print(e)
         return {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
 
 
 async def execute_multi_call(wallet, all_params, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
-    channel = ably.channels.get(req_id)
+    if ABLY_SEND:
+        channel = ably.channels.get(req_id)
 
     results = await asyncio.gather(*[execute_call(wallet, params, method_name=method_name, mongo_db=mongo_db,
                                                   session=session, client=client, pdb=pdb, req_id=req_id) for params in all_params])
+    if not ABLY_SEND:
+        for result in results:
+            print(result)
 
-    for result in results:
-        print(result)
+        print("\n\n")
 
-    # results = [Message.Message(name=req_id, data=result)
-    #            for result in raw_results]
-
-    channel.publish_message(Message.Message(name=req_id, data=results))
-    print("\n\n")
+    if ABLY_SEND:
+        channel.publish_message(Message.Message(name=req_id, data=results))
 
 
 def chunks(lst, n):
@@ -321,6 +324,8 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
 
     body_json = await request.json()
 
+    loop = asyncio.get_event_loop()
+
     req_id = request.headers.get('X-CHANNEL-ID')
     for method in body_json.keys():
         for wallet in body_json[method].keys():
@@ -329,9 +334,11 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
             if not params:
                 params = ['']
 
-            for chunked_params in list(chunks(params, 10)):
-                asyncio.create_task(execute_multi_call(wallet, chunked_params, method_name=method, mongo_db=mongo_db,
-                                    session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
+            for chunked_params in list(chunks(params, MULTICALL_SPLIT_AMOUNT)):
+                loop.create_task(execute_multi_call(wallet, chunked_params, method_name=method, mongo_db=mongo_db,
+                                                    session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
+
+                await asyncio.sleep(0.05)
 
     return {"status": "ok", "channel": req_id}
 
