@@ -16,8 +16,6 @@ class RedisClient:
 if CACHE:
     redis = RedisClient()
 
-
-@cache_function(ttl=3600 * 12)
 def cache_function(keyparams=None, ttl=None):
     def wrap(func):
         @wraps(func)
