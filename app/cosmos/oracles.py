@@ -55,7 +55,7 @@ async def get_juno_price(session):
     return current_price
 
 async def check_osmosis_pricing(session, mongo_db, network_data):
-    r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v1/all')
+    r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
     osmo_prices = {}
 
     for each in r:
