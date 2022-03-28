@@ -7140,6 +7140,60 @@ class Farms:
         'featured' : 2,
         'network' : 'oasis'
     },
+                '0xOxdao' : {
+        'name' : 'oxdao.fi',
+        'rewardToken' : '0xc5a9848b9d145965d821aaec8fa32aaee026492d',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xOxdao',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lens],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xOxdao',
+                        'network_id' : 'ftm',
+                        'lens'  : '0xDA00137c79B30bfE06d04733349d98Cf06320e69'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                        '0x99fA1AdFb8DC81cb227badF1859569Dbb5aadA7a' : {
+        'name' : 'olimpus.finance',
+        'rewardToken' : '0x7a502c5990d2953572038e301f84a770275dd525',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingOlimpus',
+        'masterChef' : '0x99fA1AdFb8DC81cb227badF1859569Dbb5aadA7a',
+        'perBlock' : 'olimpusPerSecond',
+        'apy_config' : 'second',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_olimpus_syrup, external_contracts.get_olimpus_auto],
+            'args' : [
+                {
+                    'farm_id' : '0x99fA1AdFb8DC81cb227badF1859569Dbb5aadA7a',
+                    'network_id' : 'ftm',
+                    'staked' : 'STAKE_TOKEN',
+                    'reward' : 'REWARD_TOKEN',
+                },
+                {
+                    'farm_id' : '0x99fA1AdFb8DC81cb227badF1859569Dbb5aadA7a',
+                    'network' : 'ftm',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo',
+                    'want_token' : 'token'
+                },                
+                ],
+            'vault_args' : [{}, {}]
+        }
+    },
 }
 
 
