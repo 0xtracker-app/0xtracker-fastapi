@@ -3759,3 +3759,53 @@ async def get_factory_lps(wallet, farm_id, network_id, factory, vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_lens(wallet, lens, farm_id, network_id, vaults):
+        poolKey = farm_id
+        calls = []
+        rcalls = []
+        network = WEB3_NETWORKS[network_id]
+        
+        stakes=await Call(
+            lens,
+            ['stakingPoolsPositions(address)((address,address,address,uint256,(address,uint256,uint256,uint256,uint256)[])[])',
+            wallet],
+            None,
+            network)()
+
+        tokens = []
+
+        for t in stakes:
+            if t[2] not in tokens:
+                tokens.append(t[2])
+            for r in t[4]:
+                if r[0] not in tokens:
+                    tokens.append(r[0])
+
+        token_meta = await template_helpers.get_token_list_decimals_symbols(tokens,network_id)    
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for position in stakes:
+            want_token = position[2]
+            staked = parsers.from_custom(position[3], token_meta.get(f'{want_token}_decimals'))
+            otoken = position[0]
+
+            poolNest[poolKey]['userData'][otoken] = {'want': want_token, 'staked' : staked, 'contractAddress' : otoken, 'gambitRewards' : []}
+            poolIDs['%s_%s_want' % (poolKey, otoken)] = want_token
+
+            for r in position[4]:
+                reward_token = r[0]
+                reward_decimal = token_meta.get(f'{reward_token}_decimals')
+                pending_reward = parsers.from_custom(r[4], reward_decimal)
+
+                reward_token_0 = {'pending': pending_reward, 'symbol' : token_meta.get(f'{reward_token}_symbol'), 'token' : reward_token}
+                poolNest[poolKey]['userData'][otoken]['gambitRewards'].append(reward_token_0)
+                
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None

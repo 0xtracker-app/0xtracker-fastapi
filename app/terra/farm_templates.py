@@ -380,10 +380,11 @@ async def get_astroport_locks(wallet, lcd_client, vaults, farm_id, mongodb, netw
     poolIDs = {}
     if 'lockup_infos' in stakes:
         for i, each in enumerate(stakes['lockup_infos']):
-            if int(each['lp_units_locked']) > 0:
+            t = int(each['astroport_lp_transferred']) if each['astroport_lp_transferred'] else 0
+            if (int(each['astroport_lp_units']) - t) > 0:
                 want_token = each['terraswap_lp_token']
                 want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
-                staked = from_custom(int(each['lp_units_locked']), want_token_meta['token_decimal'])
+                staked = from_custom((int(each['astroport_lp_units']) - t), want_token_meta['token_decimal'])
 
                 poolNest[poolKey]['userData'][f'{want_token}{i}'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
                 poolNest[poolKey]['userData'][f'{want_token}{i}'].update(want_token_meta)
