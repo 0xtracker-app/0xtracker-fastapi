@@ -74,7 +74,7 @@ async def get_mai_graph(wallet, session):
 
     return {'VAULTS_staked' : staked, 'VAULTS_pending' : pending}
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_reaper_ftm(session):
     r = await make_get_json(session, 'https://yzo0r3ahok.execute-api.us-east-1.amazonaws.com/dev/api/crypts')
 
@@ -82,7 +82,7 @@ async def get_reaper_ftm(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_bsc(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/bsc_pools.js')
     s2 = "export const bscPools = "
@@ -95,7 +95,7 @@ async def get_beefy_bsc(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_vaporware_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/VaporwaveFinance/vwave-app-pub/c87be24cfaa2ba13914b18f11ac8d8c17bc19585/src/features/configure/vault/aurora_pools.js')
     s2 = "export const auroraPools = "
@@ -107,7 +107,7 @@ async def get_vaporware_vaults(session):
 
     return vault_data
  
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)        
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)        
 async def get_beefy_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
     s2 = "export const bscStakePools = ["
@@ -120,7 +120,7 @@ async def get_beefy_boosts(session):
 
     return [x['earnContractAddress'] for x in t]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_boosts_fuse(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/fuse_stake.js')
     s2 = "export const fuseStakePools = ["
@@ -133,7 +133,7 @@ async def get_beefy_boosts_fuse(session):
 
     return [x['earnContractAddress'] for x in t]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_metis_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/metis_stake.js')
     s2 = "export const metisStakePools = ["
@@ -146,7 +146,7 @@ async def get_beefy_metis_boosts(session):
 
     return [x['earnContractAddress'] for x in t]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_vsafes(session):
     try:
         r = await make_get_json(session,'https://api-vfarm.vswap.fi/api/farming-scan/get-farming-scans?group=vsafe')
@@ -154,17 +154,17 @@ async def get_vsafes(session):
         return []
     return [x['id'] for x in r['data']]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_grim_vaults(session):
     r = await make_get_json(session,'https://api.grim.finance/vaults')
     return [x['earnedTokenAddress'] for x in r]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_firebird_vaults(network, session):
     r = await make_get_json(session,f'https://api-be.firebird.finance/api/apy?group=vault&chain_id={network}')
     return [x['farmingContractAddress'] for x in r['data']]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_ele_tokens(network=None, session=None):
     skip_tokens = ['0x3Ed531BfB3FAD41111f6dab567b33C4db897f991', '0x5C0E7b820fCC7cC66b787A204B2B31cbc027843f', '0x0D5BaE8f5232820eF56D98c04B8F531d2742555F', '0xDF098493bB4eeE18BB56BE45DC43BD655a27E1A9', '0x27DD6E51BF715cFc0e2fe96Af26fC9DED89e4BE8', '0x025E2e9113dC1f6549C83E761d70E647c8CDE187', '0x0FFb84A4c29147Bd745AAe0330f4F6f4Cb716c92']
     token = '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'
@@ -193,7 +193,7 @@ async def get_ele_staking_matic(session):
 async def get_space_pool_bsc(session):
     return ['0xd79dc49Ed716832658ec28FE93dd733e0DFB8d58']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_wault_pools_matic(session):
     round_time = round(time.time())
     url = f'https://polyapi.wault.finance/wpoolsData.js?ts={round_time}'
@@ -204,7 +204,7 @@ async def get_wault_pools_matic(session):
     r = [x['contractAddress'] for x in r if x['tvl'] > 1]
     return r
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_thorus_bonds(session):
     round_time = round(time.time())
     url = f'https://api.thorus.fi/bonds.json?t={round_time}'
@@ -213,7 +213,7 @@ async def get_thorus_bonds(session):
     r = [x['address'] for x in r]
     return r
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_thorus_bonds_moonbeam(session):
     round_time = round(time.time())
     url = f'https://api.thorus.fi/moonbeam_bonds.json?t={round_time}'
@@ -369,7 +369,7 @@ async def polkaex_vaults(session):
 async def dummy_vault(session):
     return ['0xDummy']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_matic_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/polygon_pools.js')
     s2 = "export const polygonPools = "
@@ -384,7 +384,7 @@ async def get_beefy_matic_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_fantom_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fantom_pools.js')
     s2 = "export const fantomPools = "
@@ -397,7 +397,7 @@ async def get_beefy_fantom_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_moon_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/moonriver_pools.js')
     s2 = "export const moonriverPools = "
@@ -409,7 +409,7 @@ async def get_beefy_moon_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_metis_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/metis_pools.js')
     s2 = "export const metisPools = "
@@ -421,7 +421,7 @@ async def get_beefy_metis_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_arb_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/arbitrum_pools.js')
     s2 = "export const arbitrumPools = "
@@ -433,7 +433,7 @@ async def get_beefy_arb_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_fuse_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fuse_pools.js')
     s2 = "export const fusePools = "
@@ -445,7 +445,7 @@ async def get_beefy_fuse_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_harmony_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/harmony_pools.js')
     s2 = "export const harmonyPools = "
@@ -457,7 +457,7 @@ async def get_beefy_harmony_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_cronos_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/cronos_pools.js')
     s2 = "export const cronosPools = "
@@ -469,7 +469,7 @@ async def get_beefy_cronos_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_avax_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/avalanche_pools.js')
     s2 = "export const avalanchePools = "
@@ -481,7 +481,7 @@ async def get_beefy_avax_pools(session):
 
     return vault_data
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_qs_vaults(session):
         scraper = cloudscraper.create_scraper(delay=2)
         r = scraper.get('https://quickswap.exchange/staking.json')
@@ -489,7 +489,7 @@ async def get_qs_vaults(session):
         cleaned = json.loads(cleaner)
         return [each['stakingRewardAddress'] for each in cleaned if each['ended'] == False and each['stakingRewardAddress'] != '0x0000000000000000000000000000000000000000']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)    
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)    
 async def get_dfyn_vaults(session):
     tasks = []
     urls = ['https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/ecosystem-farms.js', 'https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/popular-farms.js']
@@ -508,7 +508,7 @@ async def get_dfyn_vaults(session):
     
     return return_list
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_dfyn_dual(session):
     url = 'https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/dual-stake.js'
     maping = await make_get_hson(session, url)
@@ -519,7 +519,7 @@ async def get_dfyn_dual(session):
     
     return return_list
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_hyperjump_vaults(session):
     r = await make_get(session,'https://hyperjump.fi/configs/vaults/bsc_pools.js')
     s2 = "export const bscPools = "
@@ -527,7 +527,7 @@ async def get_hyperjump_vaults(session):
     f = hjson.loads(data)
     return [x['earnedTokenAddress'] for x in json.loads(json.dumps(f))]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_hyperjump_vaults_ftm(session):
     r = await make_get(session,'https://hyperjump.fi/configs/vaults/ftm_pools.js')
     s2 = "export const ftmPools = "
@@ -535,13 +535,13 @@ async def get_hyperjump_vaults_ftm(session):
     f = hjson.loads(data)
     return [x['earnedTokenAddress'] for x in json.loads(json.dumps(f))]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_autoshark_vaults(network, session):
     r = await make_get(session,'https://autoshark.finance/.netlify/functions/vaults')
     r = json.loads(r)['data']
     return [x['address'] for x in r if x['address'] != '0x85ff09374D1f59288b6978EB9254377a51BE0B7c' and x['network'] == network and x['active'] == True]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_solidex_vaults(network, session):
     r = await make_get(session,f'https://api.solidexfinance.com/api/getLPDetails?v={network}')
     r = json.loads(r)['data']['poolDetailsAll']
@@ -559,7 +559,7 @@ async def get_thunder_pools(session):
     r = poolext.thoreum.thunder_pools
     return r
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_acryptos_vaults(session):
     r = await make_get_json(session, 'https://api.unrekt.net/api/v1/acryptos-asset')
     if r:
@@ -567,36 +567,36 @@ async def get_acryptos_vaults(session):
     else:
         return []
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_voltage_vaults(session, network):
     r = await make_get(session, 'https://raw.githubusercontent.com/fuseio/fuse-lp-rewards/master/config/default.json')
     r = json.loads(r)
     return [r['contracts'][network][x]['contractAddress'] for x in r['contracts'][network]]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def pull_koge_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/vaultaddresses')
     return ast.literal_eval(r)
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def pull_koge_vaults_ftm(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/ftm_vault_addresses.json')
     r = ast.literal_eval(r)
     return [x['vault'] for x in r]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def pull_koge_vaults_moon(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/kogecoin/vault-contracts/main/movr_vault_addresses.json')
     r = ast.literal_eval(r)
     return [x['vault'] for x in r]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
     return [x for x in r['apy'] if x not in ['0xfb8358f34133c275B0393E3883BDd8764Cb610DE','0xe0fB5Cd342BCA2229F413DA7a2684506b0397fF3','0xb04D1A8266Ff97Ee9f48d48Ad2F2868b77F1C668','0xD75f3E4e8ed51ec98ED57386Cb47DF457308Ad08','0x8626Af388F0B69BB15C36422cE67f9638BA2B800','0x12B7b4BEc740A7F438367ff3117253507eF605A7','0x4aA9B812BB65eB31f22068eE6a7C92442Af37eA9', '0x48e198477A4cB41A66B7F4F4aCA2561eBB216d33', '0x4eB4eC9625896fc6d6bB710e6Df61C20f4BAa6d7', '0xE0a20F904f88715431b926c42258480f28886920', '0x4fd0143a3DA1E4BA762D42fF53BE5Fab633e014D', '0x4beB900C3a642c054CA57EfCA7090464082e904F', '0xf301A9A9A75996631d55708764aF0294c1A39b02']]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_balancer_pools(session):
     balancer_pools = await call_graph('https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2', {'query': bitquery.balancer_pools.query, 'variable' : None}, session)
     if 'errors' not in balancer_pools:
@@ -604,17 +604,17 @@ async def get_balancer_pools(session):
     else:
         return []
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_apeswap_pools_old(session):
     r = await make_get_json(session, 'https://api.apeswap.finance/stats')
     return [x['address'] for x in r['incentivizedPools'] if x['active'] is True and x['id'] < 52]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_apeswap_pools_new(session):
     r = await make_get_json(session,'https://api.apeswap.finance/stats')
     return [x['address'] or x['id'] == 76 for x in r['incentivizedPools'] if x['active'] is True and x['id'] > 52 and x['id'] != 76]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_boosts_poly(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/polygon_stake.js')
     s2 = "export const polygonStakePools = ["
@@ -625,7 +625,7 @@ async def get_beefy_boosts_poly(session):
 
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_boosts_cronos(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/cronos_stake.js')
     s2 = "export const cronosStakePools = ["
@@ -636,7 +636,7 @@ async def get_beefy_boosts_cronos(session):
 
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_boosts_moon(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/moonriver_stake.js')
     s2 = "export const moonriverStakePools = ["
@@ -647,7 +647,7 @@ async def get_beefy_boosts_moon(session):
 
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_pcs_pools(offset, session):
     r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.tsx')
     s2 = "const pools: SerializedPoolConfig[] = "
@@ -686,7 +686,7 @@ async def get_thorus_mb(session):
 async def get_thorus_auto(session):
     return ['0x63468133ed352E602bEB61DD254D6060Ad2fe419']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_pickle_addresses(network,session):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
 
@@ -695,7 +695,7 @@ async def get_pickle_addresses(network,session):
     else:
         return []
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_pickle_addresses_uni(network,session):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
     
@@ -704,7 +704,7 @@ async def get_pickle_addresses_uni(network,session):
     else:
         return []
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_wault_pool_contracts(session):
     round_time = round(time.time())
     url = f'https://api.wault.finance/wpoolsData.js?ts={round_time}'
@@ -715,7 +715,7 @@ async def get_wault_pool_contracts(session):
     r = [x['contractAddress'] for x in r]
     return r
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_paprprintr_vaults(network, session):
     r = await make_get_json(session, 'https://paprprintr-api.herokuapp.com/api/vaults')
     if r:
@@ -724,23 +724,23 @@ async def get_paprprintr_vaults(network, session):
     else:
         return []
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_superfarm_pools(session):
     r = await make_get_json(session, 'https://superlauncher.io/farms/farms.json')
     return [x['farmAddresses'] for x in r if '56' not in x['farmAddresses']]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_snowball_guage(session):
     balancer_pools = await call_graph('https://api.snowapi.net/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
 
     return [x['gaugeAddress'] for x in balancer_pools['data']['SnowglobeContracts']]
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_aave_matic(session):
     markets = await call_graph('https://cache-api-polygon.aave.com/graphql', {'operationName' : 'Main', 'query' : bitquery.aave_markets.aave_markets, 'variables' : {'lendingPool': '0xd05e3e715d945b59290df0ae8ef85c1bdb684744'}}, session)
     return markets['data']['protocolData']['reserves']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_snowball_globe(session):
     balancer_pools = await call_graph('https://api.snowapi.net/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
 
@@ -897,7 +897,7 @@ async def get_olimpus_auto(session):
 async def get_morpheus_syrup(session):
     return ['0x2854980e1f6526CB5AeC8d53c5028AF486368ea1', '0x415742c217eA4941B706ff358bF6178985590cFA', '0x8b0c89A08045A38A710fd141443d463B960C9aAe', '0x9055064B490604E41593d9271a53603CF48204F4', '0x4bDA0C69f7F15a43Ef35881c2aB3B7f995630A14', '0x5db1AD1E0ECC9EfBF69d3566C54eE650Cd712Fa5', '0x791A8d97FeeF371D1AEc6f25B7C3E4545c847476']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_jetswap_vaults(network, session):
     if network == 'polygon':
         r = await make_get_json(session, 'https://polygon.jetswap.finance/api/vaults.json')
@@ -908,7 +908,7 @@ async def get_jetswap_vaults(network, session):
         r = [x['vaultAddresses']['56'] for x in r]
         return r
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_elk_vaults(network, session):
         ROUNDS = 10
         STAKING = {"fuse":{"ELK":"0xA83FF3b61c7b5812d6f0B39d5C7dDD920B2bDa61"},"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
@@ -962,7 +962,7 @@ async def get_merlin_vaults(session):
 async def get_jetfuel_vaults(session):
     return poolext.jetfuel.vaults
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=1)
 async def get_wault_locked(network, session):
     if network == 'bsc':
         return poolext.wault_locked.bsc
@@ -1007,12 +1007,12 @@ async def power_nodes(session):
 async def squirrel_vaults(session):
     return poolext.squirrel.nuts
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_adamant_vaults(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/current_vaults.json')
     return [each for each in json.loads(r) if each['vaultAddress'] != '0xe938A5D0fEbDbfEbf2bD11B8d012C9e055D4AB92']
 
-#@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_adamant_vaults_arb(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/eepdev/vaults/main/arbitrum_vaults.json')
     return json.loads(r)
