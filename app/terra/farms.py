@@ -146,15 +146,22 @@ class Farms:
         'featured' : 2,
         'network' : 'terra',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_astroport_locks],
-            'vaults' : [external_contracts.dummy_vault],
+            'functions' : [farm_templates.get_astroport_locks, farm_templates.get_xastro_staking],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
             'args' : [
                 {
                     'farm_id' : '0xAstroport',
                     'network' : 'terra',
-                },        
+                },
+                {
+                    'farm_id' : '0xAstroport',
+                    'network' : 'terra',
+                    'contract' : 'terra14lpnyzc9z4g3ugr4lhm8s4nle0tq8vcltkhzh7',
+                    'native' : 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3',
+                    'staking' : 'terra1f68wt2ch3cx2g62dxtc8v68mkdh5wchdgdjwz7'
+                },          
                 ],
-            'vault_args' : [{}]
+            'vault_args' : [{}, {}]
         }
     },
     '0xAnchorLending' : {
