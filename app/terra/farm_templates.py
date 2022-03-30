@@ -402,6 +402,42 @@ async def get_astroport_locks(wallet, lcd_client, vaults, farm_id, mongodb, netw
     else:
         return None
 
+async def get_xastro_staking(wallet, lcd_client, vaults, farm_id, mongodb, network, contract, native, staking, session):
+    poolKey = farm_id
+
+    stakes = await lcd_client.wasm.contract_query(contract, {"balance":{"address": wallet}})
+    total_supply = await lcd_client.wasm.contract_query(contract, { "token_info": {}})
+    total_staked = await lcd_client.wasm.contract_query(native, {"balance":{"address": staking}})
+
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+    if stakes.get('balance'):
+        staked = int(stakes.get('balance'))
+        if staked:
+                want_token = native
+                want_token_meta = await TokenMetaData(want_token, mongodb, lcd_client, session).lookup()
+                multiplier = int(total_staked['balance']) / int(total_supply['total_supply'])
+                staked = from_custom(staked * multiplier, want_token_meta['token_decimal'])
+                
+                poolNest[poolKey]['userData'][f'{contract}'] = {'want': want_token, 'staked' : staked, 'gambitRewards' : []}
+                poolNest[poolKey]['userData'][f'{contract}'].update(want_token_meta)
+                poolIDs['%s_%s_want' % (poolKey, f'{contract}')] = want_token
+
+
+                # pending_token = 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3'
+                # reward_token_meta = await TokenMetaData(pending_token, mongodb, lcd_client, session).lookup()
+                # reward_token_0 = {'pending': from_custom(each['claimable_generator_astro_debt'], reward_token_meta['tkn0d']), 'symbol' : reward_token_meta['tkn0s'], 'token' : pending_token}
+                # poolNest[poolKey]['userData'][f'{want_token}{i}']['gambitRewards'].append(reward_token_0)
+            
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None
+
 async def get_anchor_lending(wallet, lcd_client, vaults, farm_id, mongodb, network, session):
 
     poolKey = farm_id
