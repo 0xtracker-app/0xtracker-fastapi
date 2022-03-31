@@ -313,7 +313,7 @@ class MinLiq():
     XDAI = 9999
     HECO = 9999
     METER = 9999
-    CRO = 9999
+    CRO = 999
     POLIS = 9999
     BOBA = 9999
     THETA = 9999

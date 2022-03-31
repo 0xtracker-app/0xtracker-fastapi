@@ -72,7 +72,7 @@ async def fantom_router_prices(tokens_in, router):
 
     return {**prices, **{'0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83' : fantom_price['fantom_price']}}
 
-async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None, return_token=None):
+async def get_price_from_router(token_in, network, router, native=False, decimal=18, bypass_token=None, token_out=None, return_token=None, bypass_router=None):
     chain_w3 = WEB3_NETWORKS[network]
     chain = network.upper()
 
@@ -90,8 +90,12 @@ async def get_price_from_router(token_in, network, router, native=False, decimal
         native_token = getattr(native_tokens.NativeToken, chain)
     else:
         native_token = bypass_token
-    default_router = getattr(native_tokens.DefaultRouter, chain)
-        
+
+    if bypass_router:
+        default_router = bypass_router
+    else:
+        default_router = getattr(native_tokens.DefaultRouter, chain)
+
     if native is True:
         stable_decimal = getattr(native_tokens.StableDecimal, chain)
         native_price = await Call(default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, [native_token, token_out]], [[f'token_in', parsers.parse_router_native, stable_decimal]], chain_w3)()
