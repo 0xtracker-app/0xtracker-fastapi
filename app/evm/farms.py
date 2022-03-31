@@ -5974,6 +5974,20 @@ class Farms:
         'masterChef' : '0x6bE34986Fdd1A91e4634eb6b9F8017439b7b5EDc',
         'featured' : 2,
         'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_pancake_bunny_clones],
+            'vaults' : [external_contracts.get_mm_pools],
+            'args' : [
+                {
+                    'farm_id' : '0x6bE34986Fdd1A91e4634eb6b9F8017439b7b5EDc',
+                    'network_id' : 'cro',
+                    'dashboard_contract' : '0x55f040E3A6e0ff69f5095B3cbF458919C5e02A0B',
+                    'calculator' : '0xa2B417088D63400d211A4D5EB3C4C5363f834764',
+                    'native_symbol' : 'MMO',
+                    'native_token' : '0x50c0c5bda591bc7e89a342a3ed672fb59b3c46a7'
+                    }],
+            'vault_args' : [{}]
+        }
     },
                 '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02' : {
         'name' : 'libredefi.io',
@@ -7192,6 +7206,33 @@ class Farms:
                 },                
                 ],
             'vault_args' : [{}, {}]
+        }
+    },
+                '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED' : {
+        'name' : 'svn.finance',
+        'rewardToken' : '0xf8b9facb7b4410f5703eb29093302f2933d6e1aa',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingShare',
+        'perBlock' : 'mSharePerSecond',
+        'apy_config' : 'second',
+        'masterChef' : '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED',
+        'featured' : 2,
+        'network' : 'cro',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_svn_oasis],
+            'args' : [
+                    {
+                        'farm_id' : '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED',
+                        'network_id' : 'cro',
+                        'staked' : 'share',
+                        'reward' : 'svn',
+                        'pending_reward' : 'earned',
+                        'user_info' : 'balanceOf'
+                    },       
+                ],
+            'vault_args' : [{}]
         }
     },
 }

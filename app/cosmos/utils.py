@@ -3,10 +3,14 @@ import hjson
 import asyncio
 
 async def make_get(session, url, kwargs={}):
-    async with session.get(url, **kwargs) as response:
-            result = await response.text()
-            response.raise_for_status()
-    return result
+    try:
+        async with session.get(url, **kwargs) as response:
+                result = await response.text()
+                response.raise_for_status()
+        return result
+    except:
+        return '{"message": "json error", "details" : "Error In Response"}'
+
 
 async def make_get_hson(session, url, kwargs={}):
     async with session.get(url, **kwargs) as response:

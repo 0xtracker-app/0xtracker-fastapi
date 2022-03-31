@@ -1076,7 +1076,13 @@ async def get_pancake_bunny_clones(wallet, vaults, network_id, dashboard_contrac
                     staked = stakes[each]['principal']
                     want_token = ainfo[f'{breakdown[0]}_want']
                     pendings = ainfo[f'{breakdown[0]}_pendings']
-                    reward_token = '0xD016cAAe879c42cB0D74BB1A265021bf980A7E96' if ainfo[f'{breakdown[0]}_rewardtoken'] == '0x6b70f0136a7e2bd1fa945566b82b208760632b2e' else ainfo[f'{breakdown[0]}_rewardtoken']
+                    if ainfo[f'{breakdown[0]}_rewardtoken'] == '0x6b70f0136a7e2bd1fa945566b82b208760632b2e':
+                        reward_token = '0xD016cAAe879c42cB0D74BB1A265021bf980A7E96'
+                    elif ainfo[f'{breakdown[0]}_rewardtoken'] == '0xf0b5074dbf73c96d766c9a48726cee7a6074d436':
+                        reward_token = '0x5C7F8A570d578ED84E63fdFA7b1eE72dEae1AE23'
+                    else:
+                        reward_token = ainfo[f'{breakdown[0]}_rewardtoken']
+                        
 
                     try:
                         staked_symbol = await Call(reward_token, 'symbol()(string)', None, network)()
@@ -2290,7 +2296,8 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
             '0xcc0a87F7e7c693042a9Cc703661F5060c80ACb43'.lower(),
             '0x31D3966DA1cAB3dE7E9221ed016484E4Bb03Ba02'.lower(),
             '0xE6DCE53f17FBF673f4FA60A38746F110517457B2'.lower(),
-            '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285'.lower()
+            '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285'.lower(),
+            '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED'.lower(),
             ]:
             calls.append(Call(pool, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
@@ -2320,6 +2327,11 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
         poolLengths = {
         **await Multicall(calls, network_conn)(),
         **{'0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285' : 4}
+        }
+    elif '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED' : 2}
         }
     else:
         poolLengths = await Multicall(calls, network_conn)()
