@@ -1,4 +1,5 @@
 from . import queries
+import re
 
 async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
 
@@ -17,7 +18,7 @@ async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
             else:
                 denom = base_denom['base_denom']
 
-            found_token = await cosmos_tokens.find_one({'tokenID' : denom}, {'_id': False})        
+            found_token = await cosmos_tokens.find_one({'tokenID' : re.compile('^' + re.escape(denom) + '$', re.IGNORECASE)}, {'_id': False})        
             
             if found_token:
                 single_token = {
