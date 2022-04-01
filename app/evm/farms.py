@@ -7245,6 +7245,18 @@ class Farms:
         'featured' : 2,
         'network' : 'dfk',
         'perBlock' : 'REWARD_PER_BLOCK',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_dk_crystal],
+            'args' : [
+                    {
+                        'farm_id' : '0x57Dec9cC7f492d6583c773e2E7ad66dcDc6940Fb',
+                        'network' : 'dfk',
+                        'receipt_token' : '0x6E7185872BCDf3F7a6cBbE81356e50DAFFB002d2'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
 }
 
