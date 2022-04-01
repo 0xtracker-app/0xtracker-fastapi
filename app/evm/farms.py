@@ -7235,6 +7235,17 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x57Dec9cC7f492d6583c773e2E7ad66dcDc6940Fb' : {
+        'name' : 'defikingdoms.com',
+        'rewardToken' : '0x04b9dA42306B023f3572e106B11D82aAd9D32EBb',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x57Dec9cC7f492d6583c773e2E7ad66dcDc6940Fb',
+        'featured' : 2,
+        'network' : 'dfk',
+        'perBlock' : 'REWARD_PER_BLOCK',
+    },
 }
 
 

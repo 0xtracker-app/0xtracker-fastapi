@@ -33,6 +33,7 @@ class NativeToken():
     TELOS = '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E'
     RSK = '0x542fDA317318eBF1d3DEAf76E0b632741A7e677d'
     ASTAR = '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720'
+    DFK = '0xCCb93dABD71c8Dad03Fc4CE5559dC3D89F67a260'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -66,6 +67,7 @@ class NativeSymbol():
     TELOS = 'TLOS'
     RSK = 'RBTC'
     ASTAR = 'ASTR'
+    DFK = 'JEWEL'
 
 class NativeDecimal():
     BSC = 18
@@ -99,6 +101,7 @@ class NativeDecimal():
     TELOS = 18
     RSK = 18
     ASTAR = 18
+    DFK = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -132,6 +135,7 @@ class StableToken():
     TELOS = '0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b'
     RSK = '0xb5999795BE0EbB5bAb23144AA5FD6A02D080299F'
     ASTAR = '0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98'
+    DFK = '0x3AD9DFE640E1A9Cc1D9B0948620820D975c3803a'
 
 class StableDecimal():
     BSC = 18
@@ -165,6 +169,7 @@ class StableDecimal():
     TELOS = 6
     RSK = 18
     ASTAR = 6
+    DFK = 18
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -198,6 +203,7 @@ class DefaultRouter():
     TELOS = routers.TelosRouter.OMNI
     RSK = routers.RSKRouter.RSKSWAP
     ASTAR = routers.AstarRouter.ARTH
+    DFK = routers.DFKRouter.DFK
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -231,6 +237,7 @@ class RouteClass():
     TELOS = routers.TelosRouter
     RSK = routers.RSKRouter
     ASTAR = routers.AstarRouter
+    DFK = routers.DFKRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -264,6 +271,7 @@ class CoinGecko():
     TELOS = ''
     RSK = ''
     ASTAR = ''
+    DFK = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -297,6 +305,7 @@ class LiqCheck():
     TELOS = '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c'
     RSK = '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c'
     ASTAR = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
+    DFK = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
 
 class MinLiq():
     BSC = 49999
@@ -330,6 +339,7 @@ class MinLiq():
     TELOS = 9999
     RSK = 9999
     ASTAR = 9999
+    DFK = 9999
 
 class YearlyBlocks():
     BSC = 10407920.792079208
@@ -363,6 +373,7 @@ class YearlyBlocks():
     TELOS = 0
     RSK = 0
     ASTAR = 0
+    DFK = 0
 
 class DeadTokens():
     BSC = ['0x000000000000000000000000000000000000dEaD', '0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
@@ -396,6 +407,7 @@ class DeadTokens():
     TELOS = []
     RSK = []
     ASTAR = []
+    DFK = []
 
 class NetworkRoutes():
 
