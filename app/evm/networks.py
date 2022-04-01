@@ -35,6 +35,7 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider(os.get
                 'telos' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("TELOS_RPC"))), 'id' : 40},
                 'rsk' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("RSK_RPC"))), 'id' : 30},
                 'astar' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("ASTAR_RPC"))), 'id' : 592},
+                'dfk' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("DFK_RPC"))), 'id' : 53935},
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BSC_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56, 'covalent' : True},
@@ -68,6 +69,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'telos': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("TELOS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 40, 'covalent' : False},
                 'rsk': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("RSK_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 30, 'covalent' : True},
                 'astar': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("ASTAR_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 592, 'covalent' : False},
+                'dfk': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("DFK_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 53935, 'covalent' : False},
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN"), 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

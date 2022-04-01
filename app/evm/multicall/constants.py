@@ -36,6 +36,7 @@ class Network(IntEnum):
     Telos = 40
     RSK = 30
     Astar = 592
+    DFK = 53935
 
 
 MULTICALL_ADDRESSES = {
@@ -73,4 +74,5 @@ MULTICALL_ADDRESSES = {
     Network.Telos: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33',
     Network.RSK: '0x1AA8807dA05C959bdD93025118dB57d8796e3e33',
     Network.Astar: '0x6ddB0845aeB285eD7ef712768a0E123c8F2Eab0E',
+    Network.DFK: '0x5b24224dC16508DAD755756639E420817DD4c99E'
 }

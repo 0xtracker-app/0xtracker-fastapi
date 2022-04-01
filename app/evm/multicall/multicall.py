@@ -75,15 +75,26 @@ class Multicall:
         #     return result
 
 async def execute_multicall(self, calls):
+
+        if self.network_id == 53935:
+            call_string = 'tryAggregate(bool,(address,bytes)[])((bool,bytes)[])'
+            args = [self.strict, [[call.target, call.data] for call in calls]]
+        else:
+            call_string = 'aggregate((address,bytes)[],bool)(uint256,(bool,bytes)[])'
+            args = [[[call.target, call.data] for call in calls], self.strict]
+
         aggregate = Call(
             MULTICALL_ADDRESSES[self.network_id],
-            'aggregate((address,bytes)[],bool)(uint256,(bool,bytes)[])',
+            call_string,
             None,
             self.w3,
             self.block
         )
-        args = [[[call.target, call.data] for call in calls], self.strict]
-        block, outputs = await aggregate(args)
+        
+        if self.network_id == 53935:
+            block, outputs = self.block, await aggregate(args)
+        else:
+            block, outputs = await aggregate(args)
         result = {}
         result_list = []
 
