@@ -200,6 +200,9 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     if network == 'rsk':
         return await get_bancor_prices(tokens_in, network)
 
+    if network == 'dfk':
+        check_liq = False
+
     if network_route.default_router == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
         native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable], 0], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
     else:
@@ -256,7 +259,10 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     #         all_calls=await asyncio.gather(*[Multicall(call,network_conn, _strict=False)() for call in x])
     #         liq_check = reduce(lambda a, b: dict(a, **b), all_calls)
     #     else:
-    liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
+    if check_liq:
+        liq_check = await Multicall(liq_calls, network_conn, _strict=False)()
+    else:
+        liq_check = {}
 
     prices = {}
 
