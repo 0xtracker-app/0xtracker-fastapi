@@ -826,6 +826,9 @@ async def get_polyfund_vault(session):
 async def get_dk_jewel(session):
     return ['0x72Cb10C6bfA5624dD07Ef608027E366bd690048F']
 
+async def get_dk_crystal(session):
+    return ['0x04b9dA42306B023f3572e106B11D82aAd9D32EBb']
+
 async def get_snowball_staking(session):
     return ['0xc38f41a296a4493ff429f1238e030924a1542e50']
 
