@@ -170,5 +170,9 @@ async def query_contract_state(client, rpc, contract_address, message):
             })
 
     r = await make_post_json(client, rpc, {'data' : payload})
-    offset = base64.b64decode(r['result']["response"]["value"]).find('{'.encode())
-    return json.loads(base64.b64decode(r['result']["response"]["value"])[offset:].decode('utf8'))
+
+    if r:
+        offset = base64.b64decode(r['result']["response"]["value"]).find('{'.encode())
+        return json.loads(base64.b64decode(r['result']["response"]["value"])[offset:].decode('utf8'))
+    else:
+        return {}
