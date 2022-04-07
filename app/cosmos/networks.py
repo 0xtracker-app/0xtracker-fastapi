@@ -153,7 +153,7 @@ class CosmosNetwork:
             'juno' : {
             'wallet' : from_atom(wallet,'juno'),
             'rpc' : 'https://rpc-juno.itastakers.com',
-            'rest' : 'https://lcd-juno.cosmostation.io',
+            'rest' : 'https://rest-juno.ecostake.com',
             'chain_id' : 'juno-1',
             'chain_name' : 'Juno Mainnet',
             'explorer' : 'https://www.mintscan.io/juno',

@@ -23,7 +23,7 @@ async def make_get_json(session, url, kwargs={}):
 
         try:
             async with session.get(url, **kwargs) as response:
-                result = await response.json()
+                result = await response.json(content_type=None)
                 return result
         except (Exception, asyncio.TimeoutError):
             return {'message': 'json error', 'details' : 'Error In Response'}
@@ -31,7 +31,7 @@ async def make_get_json(session, url, kwargs={}):
 async def make_post_json(session, url, kwargs={}):
     async with session.post(url, **kwargs) as response:
         try:
-            result = await response.json()
+            result = await response.json(content_type=None)
             return result
         except:
             None

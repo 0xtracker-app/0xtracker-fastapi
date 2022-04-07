@@ -46,9 +46,10 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
         token_network = list(net_config.keys())[i]
         if balance['tokens']:
 
-            if token_network == 'juno':
+            if token_network == 'juno' and cw20_balances:
                 for i, cw in enumerate(cw20_balances):
-                    balance['tokens'].append({'denom' : cw20_tokens[i], 'amount' : cw['balance']})
+                    if cw.get('balance'):
+                        balance['tokens'].append({'denom' : cw20_tokens[i], 'amount' : cw['balance']})
 
             for token in balance['tokens']:
                 token_denom = transform_trace[0][token['denom']] if token['denom'] in transform_trace[0] else token['denom']
