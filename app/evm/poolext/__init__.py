@@ -10,7 +10,6 @@ from . import curve
 from . import diamondhand
 from . import dinoswap
 from . import dyp
-from . import elevennerve
 from . import elevenpools
 from . import ext_masterchef
 from . import farmhero
