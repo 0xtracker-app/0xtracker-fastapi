@@ -2283,7 +2283,7 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
     network_conn = WEB3_NETWORKS[network]
 
     for pool in pools:
-        
+        masterchef = farm_info[pool]['masterChef']
         if 'poolLength' in farm_info[pool]:
             pool_length = farm_info[pool]['poolLength']
         else:
@@ -2299,9 +2299,9 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
             '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285'.lower(),
             '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED'.lower(),
             ]:
-            calls.append(Call(pool, f'{pool_length}()(uint256)', [[pool, None]]))
+            calls.append(Call(masterchef, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
-            calls.append(Call(pool, 'getRewardsLength()(uint256)', [[pool, None]]))
+            calls.append(Call(masterchef, 'getRewardsLength()(uint256)', [[pool, None]]))
 
     if '0x97bdB4071396B7f60b65E0EB62CE212a699F4B08' in pools:
         poolLengths = {
@@ -2344,7 +2344,9 @@ async def get_only_staked(wallet, pools, network, farm_info):
     network_conn = WEB3_NETWORKS[network]
     final = pools[1]
     
-    for pool in pools[0]:    
+    
+    for pool in pools[0]:
+        masterchef = farm_info[pool]['masterChef']    
         stakedFunction = farm_info[pool]['stakedFunction']
         death_index = [] if 'death_index' not in farm_info[pool] else farm_info[pool]['death_index']
         rng = 1 if pool in ['0x0895196562C7868C5Be92459FaE7f877ED450452'] else 0
@@ -2356,9 +2358,9 @@ async def get_only_staked(wallet, pools, network, farm_info):
             #     continue
             else:
                 if pool == '0x0B29065f0C5B9Db719f180149F0251598Df2F1e4': 
-                    calls.append(Call(pool, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
+                    calls.append(Call(masterchef, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
                 else:
-                    calls.append(Call(pool, ['%s(uint256,address)(uint256)' % (stakedFunction), i, wallet], [['%s_%s' % (pool, i), None]]))
+                    calls.append(Call(masterchef, ['%s(uint256,address)(uint256)' % (stakedFunction), i, wallet], [['%s_%s' % (pool, i), None]]))
 
     if len(calls) > 200:
         chunks = len(calls) / 100
@@ -2391,26 +2393,27 @@ async def get_pending_want(wallet, stakes, network, farm_info):
         address = key.split('_')[0]
         poolID = int(key.split('_')[1])
         network_id = farm_info[address]['network']
+        masterchef = farm_info[address]['masterChef']
 
         if farm_info[address]['pendingFunction'] is not None:
             pendingFunction = farm_info[address]['pendingFunction']
             if address not in ['0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904', '0x0B29065f0C5B9Db719f180149F0251598Df2F1e4', '0xf730af26e87D9F55E46A6C447ED2235C385E55e0']:
-                calls.append(Call(address, ['%s(uint256,address)(uint256)' % (pendingFunction), poolID, wallet], [['%s_%s_pending' % (address, poolID), None]]))
+                calls.append(Call(masterchef, ['%s(uint256,address)(uint256)' % (pendingFunction), poolID, wallet], [['%s_%s_pending' % (address, poolID), None]]))
             
             if address in ['0x0B29065f0C5B9Db719f180149F0251598Df2F1e4']:
-                calls.append(Call(address, [f'{pendingFunction}(address,uint256)(uint256)', wallet, poolID], [['%s_%s_pending' % (address, poolID), None]]))
+                calls.append(Call(masterchef, [f'{pendingFunction}(address,uint256)(uint256)', wallet, poolID], [['%s_%s_pending' % (address, poolID), None]]))
 
             if address in ['0xf730af26e87D9F55E46A6C447ED2235C385E55e0']:
-                calls.append(Call(address, [f'userInfoMap(uint256,address)((uint256,uint256,uint256))', poolID, wallet], [['%s_%s_pending' % (address, poolID), parsers.parse_wanted_offset, 2]]))
+                calls.append(Call(masterchef, [f'userInfoMap(uint256,address)((uint256,uint256,uint256))', poolID, wallet], [['%s_%s_pending' % (address, poolID), parsers.parse_wanted_offset, 2]]))
 
 
         if farm_info[address]['stakedFunction'] is not None:
             if address in ['0xF1F8E3ff67E386165e05b2B795097E95aaC899F0', '0xdd44c3aefe458B5Cb6EF2cb674Cd5CC788AF11D3', '0xbb093349b248c8EDb20b6d846a25bF4c21d46a3d', '0x6685C8618298C04b6E42dDAC06400cc5924e917e']:
-                calls.append(Call(address, ['poolInfo(uint256)((uint256,address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 1]]))
+                calls.append(Call(masterchef, ['poolInfo(uint256)((uint256,address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 1]]))
             elif address == '0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7':
-                calls.append(Call(address, ['rewardsInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
+                calls.append(Call(masterchef, ['rewardsInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
             elif address == '0xBdA1f897E851c7EF22CD490D2Cf2DAce4645A904':
-                calls.append(Call(address, ['poolInfo(uint256)((address,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
+                calls.append(Call(masterchef, ['poolInfo(uint256)((address,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
             elif address in [
                 '0x6e2ad6527901c9664f016466b8DA1357a004db0f',
                 '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
@@ -2428,22 +2431,23 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 '0x23423292396a37c0c2e4d384dce7ab67738bec28',
                 '0x3A3Ef6912d8D5b4E770f80F69635dcc9Ca1d7311',
                 '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21',
-                '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063'
+                '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063',
+                '0xSynHarmony'
                 ]:
-                calls.append(Call(address, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
+                calls.append(Call(masterchef, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533', '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75']:
-                calls.append(Call(address, ['poolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
+                calls.append(Call(masterchef, ['poolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0xEF6d860B22cEFe19Ae124b74eb80F0c0eb8201F4', '0x9c821500eaBa9f9737fDAadF7984Dff03edc74d1']:
-                calls.append(Call(address, ['getPoolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
+                calls.append(Call(masterchef, ['getPoolInfo(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0xf730af26e87D9F55E46A6C447ED2235C385E55e0']:
-                calls.append(Call(address, ['poolInfoList(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
+                calls.append(Call(masterchef, ['poolInfoList(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0xaE0aF27df228ACd8BA91AF0c917a31A9a681A097']:
-                calls.append(Call(address, ['poolInfo(uint256)((uint256,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 1]]))    
+                calls.append(Call(masterchef, ['poolInfo(uint256)((uint256,address))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 1]]))    
             else:
-                calls.append(Call(address, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
+                calls.append(Call(masterchef, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
 
         if address == '0x89d065572136814230A55DdEeDDEC9DF34EB0B76':
-            calls.append(Call(address, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
+            calls.append(Call(masterchef, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
 
 
     stakes = await Multicall(calls, network_conn)()
@@ -3821,3 +3825,40 @@ async def get_lens(wallet, lens, farm_id, network_id, vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_spintop_vault(wallet, vaults, farm_id, network_id):
+
+    poolKey = farm_id
+    calls = []
+
+    network=WEB3_NETWORKS[network_id]
+
+    for vault in vaults:
+        calls.append(Call(vault, [f'getUserStaked(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
+        calls.append(Call(vault, [f'vaultInfo()((address,address,address))'], [[f'{vault}_want', None]]))    
+
+    stakes=await Multicall(calls, network)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    token_decimals = await template_helpers.get_token_list_decimals(vaults,network_id,False)
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                token_decimal = 18 if breakdown[0] not in token_decimals else token_decimals[breakdown[0]]
+                staked = stakes[each]
+                want_token = stakes[f'{breakdown[0]}_want'][2]
+                real_staked = parsers.from_custom(staked, token_decimal)
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : real_staked, 'contractAddress' : breakdown[0], 'vault_receipt' : breakdown[0]}
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+    
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None

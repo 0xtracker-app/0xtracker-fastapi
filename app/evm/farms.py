@@ -4162,8 +4162,8 @@ class Farms:
         'featured' : 2,
         'network' : 'avax',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_traderjoe_masterchef, farm_templates.get_traderjoe_masterchef],
-            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
+            'functions' : [farm_templates.get_traderjoe_masterchef, farm_templates.get_traderjoe_masterchef, farm_templates.get_traderjoe_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault, external_contracts.dummy_vault],
             'args' : [
                     {
                         'farm_id' : '0xTraderJoe',
@@ -4174,9 +4174,14 @@ class Farms:
                         'farm_id' : '0xTraderJoe',
                         'network_id' : 'avax',
                         'masterchef' : '0x188bED1968b795d5c9022F6a0bb5931Ac4c18F00'
+                    },
+                    {
+                        'farm_id' : '0xTraderJoe',
+                        'network_id' : 'avax',
+                        'masterchef' : '0x4483f0b6e2F5486D06958C20f8C39A7aBe87bf8F'
                     }
                     ],
-            'vault_args' : [{},{}]
+            'vault_args' : [{},{},{}]
         }
     },
                 '0x0cf605484A512d3F3435fed77AB5ddC0525Daf5f' : {
@@ -4402,7 +4407,7 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm'
     },
-                '0xaeD5b25BE1c3163c907a471082640450F928DDFE' : {
+                '0xSynHarmony' : {
         'name' : 'synapseprotocol.com',
         'rewardToken' : '0xE55e19Fb4F2D85af758950957714292DAC1e25B2',
         'decimal' : 18,
@@ -5588,7 +5593,6 @@ class Farms:
         'perBlock' : 'vvsPerBlock',
         'featured' : 2,
         'network' : 'cro',
-        'perBlock' : '',
         'extraFunctions' : {
             'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
             'vaults' : [external_contracts.vvs_vaults, external_contracts.vvs_staking],
@@ -6696,8 +6700,8 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_syrup_pools],
-            'vaults' : [external_contracts.get_spintop_pools],
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_spintop_vault],
+            'vaults' : [external_contracts.get_spintop_pools, external_contracts.get_spintop_vaults],
             'args' : [
                 {
                     'farm_id' : '0xSpinTop',
@@ -6706,8 +6710,12 @@ class Farms:
                     'user_info' : 'balanceOf',
                     'staked' : 'stakingToken',
                     'reward' : 'rewardsToken'
+                },
+                {
+                    'farm_id' : '0xSpinTop',
+                    'network_id' : 'bsc',
                 }],
-            'vault_args' : [{}]
+            'vault_args' : [{},{}]
         }
     },
                 '0xVoltageFuse' : {
@@ -7254,6 +7262,38 @@ class Farms:
                         'network' : 'dfk',
                         'receipt_token' : '0x6E7185872BCDf3F7a6cBbE81356e50DAFFB002d2'
                     },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xe20d839e71af41492bbb3e52fb2c2a87a66d076a' : {
+        'name' : 'defira.com',
+        'rewardToken' : '0x2a719af848bf365489e548be5edbec1d65858e59',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'getClaimableRewards',
+        'masterChef' : '0xe20d839e71af41492bbb3e52fb2c2a87a66d076a',
+        'featured' : 2,
+        'network' : 'harmony',
+        'perBlock' : 'REWARD_PER_BLOCK',
+    },
+                '0xBlindex' : {
+        'name' : 'blindex.io',
+        'rewardToken' : '0x6542a10E68cEAc1Fa0641ec0D799a7492795AAC1',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xBlindex',
+        'featured' : 2,
+        'network' : 'rsk',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_quickswap_style],
+            'vaults' : [external_contracts.blindex_vaults],
+            'args' : [
+                {
+                    'farm_id' : '0xBlindex',
+                    'network' : 'rsk'
+                },
                     ],
             'vault_args' : [{}]
         }
