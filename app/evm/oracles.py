@@ -601,11 +601,12 @@ async def get_bancor_prices(tokens_in, network):
         if token_routes.get(token['token']):
             swap_route = token_routes.get(token['token'])
             price_calls.append(Call('0x98ace08d2b759a265ae326f010496bcd63c15afc', ['rateByPath(address[],uint256)(uint256)',swap_route, 1 * 10 ** token['decimal']], [[ token['token'], parsers.parse_bancor, {'decimal' : network_route.dnative, 'price' : native_price['native_price']} ]]))
+        
+        price_calls.append(Call('0x102692AbBAB9a1AA75AA78Fff6E23f6ea7b84f61', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token['decimal'], [token['token'], out_token]], [[token['token'], parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
 
     multi = await Multicall(price_calls, network_conn, _strict=False)()
 
     prices = {}
-
     for each in multi:
         prices[each] = multi[each]
     
