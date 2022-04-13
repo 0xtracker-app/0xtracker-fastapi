@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
+        self.supported_networks = ['konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -402,6 +402,21 @@ class CosmosNetwork:
                 'denom' : 'ncheq',
                 'symbol' : 'CHEQ',
                 'decimals' : 9,
+                'coin_gecko_id' : ''
+            }
+        },
+            'konstellation' : {
+            'wallet' : from_atom(wallet,'darc'),
+            'rpc' : 'https://node1.konstellation.tech:26657',
+            'rest' : 'https://lcd-konstellation.cosmostation.io',
+            'chain_id' : 'darchub',
+            'chain_name' : 'konstellation',
+            'explorer' : 'https://www.mintscan.io/konstellation/',
+            'bech_prefix' : 'darc',
+            'stake_token' : {
+                'denom' : 'udarc',
+                'symbol' : 'DARC',
+                'decimals' : 6,
                 'coin_gecko_id' : ''
             }
         },
