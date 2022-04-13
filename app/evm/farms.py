@@ -7298,6 +7298,17 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x2A89E66d60eD78366dbdDB4d3C9bD1650DdbeA64' : {
+        'name' : 'bountiehunter.io',
+        'rewardToken' : '0x00f80a8f39bb4d04a3038c497e3642bf1b0a304e',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBountie',
+        'masterChef' : '0x2A89E66d60eD78366dbdDB4d3C9bD1650DdbeA64',
+        'featured' : 2,
+        'network' : 'bsc',
+        'perBlock' : 'bountiePerBlock',
+    },
 }
 
 

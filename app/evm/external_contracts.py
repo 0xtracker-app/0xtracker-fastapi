@@ -575,7 +575,7 @@ async def get_thunder_pools(session):
 
 #@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_acryptos_vaults(session):
-    r = await make_get_json(session, 'https://api.unrekt.net/api/v1/acryptos-asset')
+    r = await make_get_json(session, 'https://api.unrekt.info/api/v1/acryptos-asset')
     if r:
         return [r['assets'][x]['addressvault'] for x in r['assets'] if r['assets'][x]['addressvault'] not in ['0xa82f327bbbf0667356d2935c6532d164b06ceced',''] and r['assets'][x]['addressvault'] != 'none']
     else:
