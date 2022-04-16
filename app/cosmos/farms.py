@@ -54,4 +54,16 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+    'Crescent' : {
+        'name' : 'crescent.network',
+        'masterChef' : 'Crescent',
+        'featured' : 2,
+        'network' : 'cosmos',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_crescent_farming],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [{'farm_id' : 'Crescent', 'network' : 'crescent'}],
+            'vault_args' : [{}]
+        }
+    },
 }

@@ -20,6 +20,8 @@ class TokenOverride:
             'juno1p32te9zfhd99ehpxfd06hka6hc9p7tv5kyl5909mzedg5klze09qrg08ry' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno1p32te9zfhd99ehpxfd06hka6hc9p7tv5kyl5909mzedg5klze09qrg08ry', 'swap_address' : 'juno14p3wvpeezqueenfu9jy29s96xuk0hp38k5d5k4ysyzk789v032sqp8uvh3', 'session' : session}],
             'juno1gzys54drag6753qq75mkt3yhjwyv4rp698kfvesh0wcy5737z4tsn0chtm' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno1gzys54drag6753qq75mkt3yhjwyv4rp698kfvesh0wcy5737z4tsn0chtm', 'swap_address' : 'juno1fzl79pekf8wtd0y37q92dmz5h9dxtfpl97w3kguyc59m7ufnlzvsf46vf8', 'session' : session}],
             'juno1vaeuky9hqacenay9nmuualugvv54tdhyt2wsvhnjasx9s946hhmqaq3kh7' : [get_price_from_junoswap, { 'decimal' : 10, 'token_in' : 'juno1vaeuky9hqacenay9nmuualugvv54tdhyt2wsvhnjasx9s946hhmqaq3kh7', 'swap_address' : 'juno19859m5x8kgepwafc3h0n36kz545ngc2vlqnqxx7gx3t2kguv6fws93cu25', 'session' : session}],
+            'ubcre' : [get_price_from_crescent, {'session' : session, 'token_in' : 'ubcre', 'token_out' : 'ibc/6F4968A73F90CF7DE6394BF937D6DF7C7D162D74D839C13F53B41157D315E05F', 'native' : False}],
+            'ucre' : [get_price_from_crescent, {'session' : session, 'token_in' : 'ucre', 'token_out' : 'ubcre', 'native' : True}],
 }
 
 async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
@@ -31,6 +33,16 @@ async def get_price_from_junoswap(token_in, session, swap_address, decimal, nati
     token_price = await queries.query_contract_state(session, 'https://rpc-juno.itastakers.com', swap_address, {"token2_for_token1_price":{"token2_amount":str(1 * 10 ** decimal)}})
 
     return {token_in : from_custom(int(juno_price['token2_amount']), 6) * from_custom(int(token_price['token1_amount']), 6)}
+
+async def get_price_from_crescent(token_in, session, token_out, native=True):
+    if native:
+        native_price = await make_get_json(session, f'https://crescent-api.polkachu.com/crescent/liquidity/v1beta1/pairs?denoms=ubcre&denoms=ibc%2F6F4968A73F90CF7DE6394BF937D6DF7C7D162D74D839C13F53B41157D315E05F')
+    else:
+        native_price = {'pairs' : [{'last_price': '1.0'}]}
+
+    token_price = await make_get_json(session, f'https://crescent-api.polkachu.com/crescent/liquidity/v1beta1/pairs?denoms={token_in}&denoms={token_out}')
+
+    return {token_in : float(native_price['pairs'][0]['last_price']) * float(token_price['pairs'][0]['last_price'])}
 
 async def cosmostation_prices(session, mongo_db, network_data):
     r = await make_get_json(session, 'https://serverlessrepo-downloader-bucket-1qsab6s7fy5e1.s3.amazonaws.com/cosmos/prices.json')

@@ -86,14 +86,16 @@ async def get_osmosis_staking(wallet, session, vaults, farm_id, mongodb, network
                 staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, network=net_config, session=session).lookup())
                 staked_position['want'] = want_token
                 staked_position['staked'] = helpers.from_custom(each['amount'], 18)
-            
-                poolNest[poolKey]['userData'][want_token] = staked_position
-                poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+                pool_key = want_token.replace('/','-')
+
+                poolNest[poolKey]['userData'][pool_key] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, pool_key)] = want_token
 
     if 'coins' in staking[1]:
         for i,each in enumerate(staking[1]['coins']):
                 want_token = each['denom']
-
+                pool_key = want_token.replace('/','-')
+                
                 if want_token in poolNest[poolKey]['userData']:
                     poolNest[poolKey]['userData']['want'] += helpers.from_custom(each['amount'], 18)
                 else:
@@ -102,8 +104,8 @@ async def get_osmosis_staking(wallet, session, vaults, farm_id, mongodb, network
                     staked_position['want'] = want_token
                     staked_position['staked'] = helpers.from_custom(each['amount'], 18)
             
-                    poolNest[poolKey]['userData'][want_token] = staked_position
-                    poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+                    poolNest[poolKey]['userData'][pool_key] = staked_position
+                    poolIDs['%s_%s_want' % (poolKey, pool_key)] = want_token
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest    
@@ -194,6 +196,93 @@ async def get_junoswap(wallet, session, vaults, farm_id, mongodb, network):
                 })
                 poolNest[poolKey]['userData'][want_token] = staked_position
                 poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
+
+async def get_crescent_farming(wallet, session, vaults, farm_id, mongodb, network):
+    poolKey = farm_id
+    cosmos = CosmosNetwork(wallet)
+    net_config = cosmos.all_networks[network]
+
+    
+    lp_info = await queries.get_cresent_farming(network, net_config, session)
+    #reward = await make_get_json(session, f'')
+    pool_tokens = []
+
+    for x in lp_info['staked_coins']:
+        if x['denom'] not in pool_tokens:
+            pool_tokens.append(x['denom'])
+
+    for x in lp_info['queued_coins']:
+        if x['denom'] not in pool_tokens:
+            pool_tokens.append(x['denom'])
+
+
+    poolNest = {
+        poolKey: {
+            'userData': {},
+            }
+        }
+
+    poolIDs = {}
+
+    pool_data = dict(zip(pool_tokens, await asyncio.gather(*[queries.get_cresent_pool_info(x, net_config, session) for x in pool_tokens])))
+    supply_data = dict(zip(pool_tokens, await asyncio.gather(*[queries.get_denom_total_supply(network, x, net_config, session) for x in pool_tokens])))
+
+    for position in lp_info['staked_coins']:
+            staked_balanced = int(position['amount'])
+            if staked_balanced > 0:
+                want_token = position['denom']
+                lp_data = pool_data[want_token], supply_data[want_token]
+                staked_position = {'staked' : helpers.from_custom(staked_balanced, 12), 'gambitRewards' : [], 'network' : 'cosmos'}
+
+                token_0 = await TokenMetaData(address=lp_data[0]['pool']['balances'][0]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_1 = await TokenMetaData(address=lp_data[0]['pool']['balances'][1]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+
+                staked_position.update({
+                    'tokenID': want_token,
+                    'tkn0s': token_0['tkn0s'],
+                    'tkn0d': token_0['tkn0d'],
+                    'tkn1s': token_1['tkn0s'],
+                    'tkn1d': token_1['tkn0d'],
+                    'token0' : token_0['token0'],
+                    'token1' : token_1['token0'],
+                    'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
+                    'all_tokens': [token_0['token0'], token_1['token0']],
+                    'total_shares' : helpers.from_custom(int(lp_data[1]['amount']['amount']), 12),
+                    'reserves' : [int(lp_data[0]['pool']['balances'][0]['amount']),int(lp_data[0]['pool']['balances'][1]['amount'])]
+                })
+                poolNest[poolKey]['userData'][want_token] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+
+    for position in lp_info['queued_coins']:
+            staked_balanced = int(position['amount'])
+            if staked_balanced > 0:
+                want_token = position['denom']
+                lp_data = pool_data[want_token], supply_data[want_token]
+                staked_position = {'staked' : helpers.from_custom(staked_balanced, 12), 'gambitRewards' : [], 'network' : 'cosmos'}
+
+                token_0 = await TokenMetaData(address=lp_data[0]['pool']['balances'][0]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_1 = await TokenMetaData(address=lp_data[0]['pool']['balances'][1]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+
+                staked_position.update({
+                    'tokenID': want_token,
+                    'tkn0s': token_0['tkn0s'],
+                    'tkn0d': token_0['tkn0d'],
+                    'tkn1s': token_1['tkn0s'],
+                    'tkn1d': token_1['tkn0d'],
+                    'token0' : token_0['token0'],
+                    'token1' : token_1['token0'],
+                    'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
+                    'all_tokens': [token_0['token0'], token_1['token0']],
+                    'total_shares' : helpers.from_custom(int(lp_data[1]['amount']['amount']), 12),
+                    'reserves' : [int(lp_data[0]['pool']['balances'][0]['amount']),int(lp_data[0]['pool']['balances'][1]['amount'])]
+                })
+                poolNest[poolKey]['userData'][f'queued-{want_token}'] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, f'queued-{want_token}')] = want_token
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest    
