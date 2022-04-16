@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
+        self.supported_networks = ['crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -416,6 +416,21 @@ class CosmosNetwork:
             'stake_token' : {
                 'denom' : 'udarc',
                 'symbol' : 'DARC',
+                'decimals' : 6,
+                'coin_gecko_id' : ''
+            }
+        },
+            'crescent' : {
+            'wallet' : from_atom(wallet,'cre'),
+            'rpc' : '',
+            'rest' : 'https://crescent-api.polkachu.com',
+            'chain_id' : 'crescent-1',
+            'chain_name' : 'crescent',
+            'explorer' : 'https://www.mintscan.io/crescent/',
+            'bech_prefix' : 'cre',
+            'stake_token' : {
+                'denom' : 'ucre',
+                'symbol' : 'CRE',
                 'decimals' : 6,
                 'coin_gecko_id' : ''
             }

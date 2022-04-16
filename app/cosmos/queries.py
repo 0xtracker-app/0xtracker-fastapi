@@ -38,6 +38,28 @@ async def get_network_staking_unbonded(network, network_data, session):
 
     return r
 
+async def get_cresent_farming(network, network_data, session):
+    endpoint = network_data['rest']
+    wallet = network_data['wallet']
+#    r = await make_get_json(session, f'{endpoint}/cosmos/staking/v1beta1/delegators/{wallet}/unbonding_delegations', {'timeout' : 5})
+    r = await make_get_json(session, f'{endpoint}/crescent/farming/v1beta1/stakings/{wallet}')
+
+    return r
+
+async def get_cresent_pool_info(pool, network_data, session):
+    endpoint = network_data['rest']
+
+    r = await make_get_json(session, f'{endpoint}/crescent/liquidity/v1beta1/pools/{pool.split("pool")[1]}')
+
+    return r
+
+async def get_denom_total_supply(network, denom, network_data, session):
+    endpoint = network_data['rest']
+
+    r = await make_get_json(session, f'{endpoint}/cosmos/bank/v1beta1/supply/{denom}')
+
+    return r
+
 async def get_network_staking_rewards(network, network_data, session):
     endpoint = network_data['rest']
     wallet = network_data['wallet']
