@@ -1,5 +1,6 @@
 from . import queries
 import re
+from . import helpers
 
 async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
 
@@ -93,6 +94,17 @@ class TokenMetaData:
                     found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
                     if found_token:
                         self.token_metadata = found_token
+                else:
+                    full_traces = await queries.get_ibc_tokens(self.network, self.session)
+                    found_trace = list(filter(lambda trace: trace['hash'] == self.tokenID.replace('ibc/', ''), full_traces['ibc_tokens']))
+                    if found_trace:
+                        base_denom = {'base_denom' : found_trace[0]['base_denom'], 'chain_id' : self.network['chain_id'], 'hash' : self.tokenID}
+                        await self.cosmos_routes.update_one({'hash' : self.tokenID},{ "$set": base_denom}, upsert=True)
+                        self.denom = base_denom['base_denom']
+                        found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
+                        if found_token:
+                            self.token_metadata = found_token
+
         elif 'gamm/pool' in self.tokenID:
             found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
 
