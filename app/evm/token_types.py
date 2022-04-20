@@ -24,14 +24,14 @@ async def get_lp(token, farm_id):
             lp_pool = await multi_lp()
 
 
-            lp_tokens = Multicall([
+            lp_tokens = await Multicall([
                 Call(lp_pool['token0'], 'decimals()(uint8)', [['tkn0d', None]]),
                 Call(lp_pool['token1'], 'decimals()(uint8)', [['tkn1d', None]]),
                 Call(lp_pool['token0'], 'symbol()(string)', [['tkn0s', None]]),
                 Call(lp_pool['token1'], 'symbol()(string)', [['tkn1s', None]])
-            ], network_chain)
+            ], network_chain)()
 
-            return {**lp_pool, **await lp_tokens(),  **{'lpToken' : token}}
+            return {**lp_pool, **lp_tokens,  **{'lpToken' : token, 'tokenAddresses' : [lp_pool['token0'], lp_pool['token1']], 'tokenSymbols' : [lp_tokens['tkn0s'], lp_tokens['tkn1s']], 'decimals' : [lp_tokens['tkn0d'], lp_tokens['tkn1d']],'weights' : [.5, .5]}}
 
 async def get_stargate(token, farm_id):
 
@@ -47,7 +47,7 @@ async def get_stargate(token, farm_id):
 
     token_decimal = await Call(token_data['token0'], 'decimals()(uint8)', [['tkn0d', None]], network_chain)()
 
-    return {**token_data, **token_decimal}
+    return {**token_data, **token_decimal, **{'tokenAddresses' : [token_data['token0']], 'tokenSymbols' : [token_data['tkn0s']], 'decimals' : [token_decimal['tkn0d']],'weights' : [1]}}
 
 async def get_uniswap_pool(token, farm_id):
 
@@ -62,14 +62,14 @@ async def get_uniswap_pool(token, farm_id):
     lp_pool = await multi_lp()
 
 
-    lp_tokens = Multicall([
+    lp_tokens = await Multicall([
         Call(lp_pool['token0'], 'decimals()(uint8)', [['tkn0d', None]]),
         Call(lp_pool['token1'], 'decimals()(uint8)', [['tkn1d', None]]),
         Call(lp_pool['token0'], 'symbol()(string)', [['tkn0s', None]]),
         Call(lp_pool['token1'], 'symbol()(string)', [['tkn1s', None]])
-    ], network_chain)
+    ], network_chain)()
 
-    return {**lp_pool, **await lp_tokens(),  **{'uniswapPool' : token}}
+    return {**lp_pool, **lp_tokens,  **{'uniswapPool' : token, 'tokenAddresses' : [lp_pool['token0'], lp_pool['token1']], 'tokenSymbols' : [lp_tokens['tkn0s'], lp_tokens['tkn1s']], 'decimals' : [lp_tokens['tkn0d'], lp_tokens['tkn1d']],'weights' : [.5, .5]}}
 
 async def get_single(token, farm_id):
 
@@ -81,14 +81,14 @@ async def get_single(token, farm_id):
         except:
             token = token
         
-        single = Multicall([
+        single = await Multicall([
                         Call(token, 'symbol()(string)', [['tkn0s', None]]),
                         Call(token, 'decimals()(uint8)', [['tkn0d', None]]),
-                    ], network_chain)
+                    ], network_chain)()
 
         add = {'token0' : token}
 
-        return {**add, **await single()}
+        return {**add, **single, **{'tokenAddresses' : [add['token0']], 'tokenSymbols' : [single['tkn0s']], 'decimals' : [single['tkn0d']],'weights' : [1]}}
 
 async def get_curve_token(token, farm_id):
     
@@ -125,7 +125,7 @@ async def get_curve_token(token, farm_id):
 
     singleSwap = await get_single(swap_token['swapToken'], farm_id)
 
-    final = {**swapCalls, **singleSwap, **swap_token, **{'curve_pool_token': token}}
+    final = {**swapCalls, **singleSwap, **swap_token, **{'curve_pool_token': token, 'tokenAddresses' : [singleSwap['token0']], 'tokenSymbols' : [swap['tkn0s']], 'decimals' : [singleSwap['tkn0d']],'weights' : [1]}}
 
     final.update(swap)
     final['tkn0s'] = swap['tkn0s']
@@ -166,7 +166,7 @@ async def get_curve_token_two(token, farm_id):
 
     singleSwap = await get_single(swap_token['swapToken'], farm_id)
 
-    final = {**swapCalls, **singleSwap, **swap_token, **{'curve_pool_token': token}}
+    final = {**swapCalls, **singleSwap, **swap_token, **{'curve_pool_token': token, 'tokenAddresses' : [singleSwap['token0']], 'tokenSymbols' : [swap['tkn0s']], 'decimals' : [singleSwap['tkn0d']],'weights' : [1]}}
 
     final.update(swap)
     final['tkn0s'] = swap['tkn0s']
@@ -198,7 +198,7 @@ async def get_swap(token, farm_id):
 
     singleSwap = await get_single(swapCalls['swapToken'], farm_id)
 
-    final = {**swapCalls, **singleSwap}
+    final = {**swapCalls, **singleSwap, **{'tokenAddresses' : [singleSwap['token0']], 'tokenSymbols' : [swap['tkn0s']], 'decimals' : [singleSwap['tkn0d']],'weights' : [1]}}
 
     final.update(swap)
 
@@ -244,7 +244,7 @@ async def get_belt_token(token, farm_id):
         
         wrappedCalls = await wrappedToken()
 
-        return {**wrappedCalls, **belt}
+        return {**wrappedCalls, **belt, **{'tokenAddresses' : [belt['token0']], 'tokenSymbols' : [belt['tkn0s']], 'decimals' : [wrappedCalls['tkn0d']],'weights' : [1]}}
 
 async def get_grow_tokens(token, farm_id):
 
@@ -307,7 +307,7 @@ async def get_picklejars(token, farm_id):
         
         wrappedCalls = await wrappedToken()
 
-        return {**wrappedCalls, **calls}
+        return {**wrappedCalls, **calls, **{'tokenAddresses' : [calls['token0']], 'tokenSymbols' : [calls['tkn0s']], 'decimals' : [wrappedCalls['tkn0d']],'weights' : [1]}}
 
 async def get_balancer_token(pool_token,farm_id):
 
@@ -366,6 +366,12 @@ async def get_balancer_token(pool_token,farm_id):
     "balancerSymbols" : token_symbols,
     "balancerDecimals" : token_decimals,
     'balancerTokens' : vault_info[0],
+    
+    'tokenAddresses' : vault_info[0],
+    'decimals' : token_decimals,
+    'weights' : pool_weights,
+    'tokenSymbols' : token_symbols,
+
     "tkn0d" : token_decimals[0], 
     "tkn0s" : '/'.join(token_symbols), 
     "token0" : vault_info[0][0], 
@@ -464,6 +470,12 @@ async def get_beethoven_token(pool_token,farm_id):
     "balancerSymbols" : token_symbols,
     "balancerDecimals" : token_decimals,
     'balancerTokens' : vault_info[0],
+
+    'tokenAddresses' : vault_info[0],
+    'decimals' : token_decimals,
+    'weights' : pool_weights,
+    'tokenSymbols' : token_symbols,
+
     "tkn0d" : token_decimals[0], 
     "tkn0s" : '/'.join(token_symbols), 
     "token0" : vault_info[0][0], 
@@ -519,6 +531,13 @@ async def get_bancor_token(pool_token,farm_id):
     "bancorSymbols" : token_symbols,
     "bancorDecimals" : token_decimals,
     'bancorTokens' : token_addresses,
+
+    'tokenAddresses' : token_addresses,
+    'decimals' : token_decimals,
+    'weights' : token_weights,
+    'tokenSymbols' : token_symbols,
+
+
     "tkn0d" : await Call(pool_token, ['decimals()(uint8)'], None, network_chain)(),
     "tkn0s" : '/'.join(token_symbols), 
     "token0" : pool_token, 
@@ -528,7 +547,6 @@ async def get_bancor_token(pool_token,farm_id):
     token_data['totalSupply'] = parsers.from_custom(await Call(pool_token, ['totalSupply()(uint256)'], None, network_chain)(), token_data['tkn0d'])
 
     return token_data
-
 
 async def catch_all(token, farm_id):
 
