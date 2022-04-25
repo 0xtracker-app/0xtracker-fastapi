@@ -1,3 +1,4 @@
+from xmlrpc.client import MultiCall
 from .multicall import Call, Multicall, parsers
 from .networks import WEB3_NETWORKS
 from web3 import Web3
@@ -1283,8 +1284,11 @@ async def get_single_masterchef(wallet,farm_id,network_id,farm_data,vaults):
                 if stakes[each] > 0:
                     breakdown = each.split('_')
                     want_token = stakes[f'{breakdown[0]}_want']
-                    token_decimals = token_decimals.get(want_token) if token_decimals.get(want_token) else 18
-                    staked = parsers.from_custom(stakes[each], token_decimals)
+                    try:
+                        token_decimal = token_decimals.get(want_token) if token_decimals.get(want_token) else 18
+                    except:
+                        token_decimal = 18
+                    staked = parsers.from_custom(stakes[each], token_decimal)
                     pending = stakes[f'{breakdown[0]}_pending'] if f'{breakdown[0]}_pending' in stakes else 0
 
                     poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending' : pending, 'rewardToken' : reward_token, 'rewardSymbol' : reward_symbol, 'contractAddress' : farm_data["masterChef"]}
