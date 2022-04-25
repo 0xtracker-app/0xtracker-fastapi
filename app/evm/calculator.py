@@ -5,7 +5,7 @@ import os
 from ..db.schemas import UserRecord
 from ..db.crud import create_user_history
 from datetime import datetime, timezone
-
+from .networks import WEB3_NETWORKS
 def getLPBalances(staked, totalSupply, reserves, token0, tkn0d, tkn1d, prices):
 
     quotePrice = prices[token0.lower()]
@@ -80,6 +80,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client, 
     rewardToken = farm_data['rewardToken']
     farm_network = farm_data['network']
     
+    
     for f in lastReturn:
         farmAdd = f
 
@@ -96,6 +97,7 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client, 
 
             if 'rewardToken' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[lastReturn[f]['userData'][x]['rewardToken'].lower()], 2)
+                finalResponse[f]['userData'][x]['rewardsEmitted'] = [{'pending': finalResponse[f]['userData'][x]['pending'], 'symbol' : finalResponse[f]['userData'][x]['rewardSymbol'], 'token' : rewardToken, 'pendingAmount' : finalResponse[f]['userData'][x]['pendingAmount']}]
 
             elif 'gambitRewards' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
@@ -106,6 +108,9 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client, 
                         finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount'] = gr['pending'] * prices[gr['token'].lower()]
                     if x not in ['0xA2A065DBCBAE680DF2E6bfB7E5E41F1f1710e63b', 'VAULTS']:
                         finalResponse[f]['userData'][x]['pendingAmount'] += finalResponse[f]['userData'][x]['gambitRewards'][i]['pendingAmount']
+                    
+                    finalResponse[f]['userData'][x]['rewardsEmitted'] = finalResponse[f]['userData'][x]['gambitRewards']
+
 
             elif 'pendingNerve' in lastReturn[f]['userData'][x]:
                 finalResponse[f]['userData'][x]['pendingNRVAmount'] = round((finalResponse[f]['userData'][x]['pendingNerve'] * finalResponse[f]['userData'][x]['nerveMultipler']) * prices['0x42f6f551ae042cbe50c739158b4f0cac0edb9096'.lower()], 2)
@@ -121,7 +126,9 @@ async def calculate_prices(lastReturn, prices, farm_data, wallet, mongo_client, 
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pendingMerlinAmount'] + finalResponse[f]['userData'][x]['pendingRewardAmount'], 2)
             
             elif 'pending' in lastReturn[f]['userData'][x]:
+                reward_symbol_call = await Call(rewardToken, 'symbol()(string)', _w3=WEB3_NETWORKS[farm_network])()
                 finalResponse[f]['userData'][x]['pendingAmount'] = round(finalResponse[f]['userData'][x]['pending'] * prices[rewardToken.lower()], 2)
+                finalResponse[f]['userData'][x]['rewardsEmitted'] = [{'pending': finalResponse[f]['userData'][x]['pending'], 'symbol' : reward_symbol_call, 'token' : rewardToken, 'pendingAmount' : finalResponse[f]['userData'][x]['pendingAmount']}]
             else:
                 finalResponse[f]['userData'][x]['pendingAmount'] = 0
                 finalResponse[f]['userData'][x]['pending'] = 0

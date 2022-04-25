@@ -695,7 +695,7 @@ async def get_pcs_pools(offset, session):
     pcs_older = []
     for each in t:
         contract_address = each['contractAddress']['56']
-        if contract_address not in ['0x73feaa1eE314F8c655E354234017bE2193C9E24E']:
+        if contract_address not in ['0x73feaa1eE314F8c655E354234017bE2193C9E24E', '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652']:
             if 'isFinished' in each:
                 if each['isFinished'] is False and each['sousId'] > 116:
                     pcs_pools.append(contract_address)
@@ -711,7 +711,7 @@ async def get_pcs_pools(offset, session):
     return all_pools[offset]
 
 async def get_pcs_auto(session):
-    return ['0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC']
+    return ['0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC', '0x45c54210128a065de780C4B0Df3d16664f7f859e']
 
 async def get_baby_auto(session):
     return ['0x3e1eaD5cBe817689F4bDB96bceeb112FdBE94dBc']
@@ -908,6 +908,54 @@ async def get_venus_vaults(session):
     {'address' : '0x26DA28954763B92139ED49283625ceCAf52C6f94', 'decimal' : 18, 'want' : '0xfb6115445bff7b52feb98650c87f44907e58f802', 'collat_rate' : .55},
     {'address' : '0x08CEB3F4a7ed3500cA0982bcd0FC7816688084c3', 'decimal' : 18, 'want' : '0x14016e85a25aeb13065688cafb43044c2ef86784', 'collat_rate' : .8},
     {'address' : '0x61eDcFe8Dd6bA3c891CB9bEc2dc7657B3B422E93', 'decimal' : 18, 'want' : '0x85eac5ac2f758618dfa09bdbe0cf174e7d574d5b', 'collat_rate' : .6},]
+
+async def get_market_vaults(session):
+    return [{'address': '0xe1d87ae311c06ee6684b5294d0290cf79e660dd2', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.8},
+{'address': '0x051b82448a521bc32ac7007a7a76f9dec80f6ba2', 'decimal': 18, 'want': '0x6c021ae822bea943b2e66552bde1d2696a53fbb7', 'collat_rate': 0.65},
+{'address': '0xd60fbafc954bfbd594c7723c980003c196bdf02f', 'decimal': 18, 'want': '0x4cdf39285d7ca8eb3f090fda0c069ba5f4145b37', 'collat_rate': 0.6},
+{'address': '0xf18f4847a5db889b966788dcbdbcbfa72f22e5a6', 'decimal': 18, 'want': '0xa48d959ae2e88f1daa7d5f611e01908106de7598', 'collat_rate': 0.6},
+{'address': '0xb595c02147bcede84e0e85d9e95727cf38c02b07', 'decimal': 18, 'want': '0xee3a7c885fd3cc5358ff583f2dab3b8bc473316f', 'collat_rate': 0.65},
+{'address': '0x588125bfa39a137c7ae05a744e589673b4bbd4a5', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.7},
+{'address': '0x522af22237c40e000925f4baf714482cd417a8dd', 'decimal': 18, 'want': '0x15dd4398721733d8273fd4ed9ac5eadc6c018866', 'collat_rate': 0.5},
+{'address': '0x3f4f523acf811e713e7c34852b24e927d773a9e5', 'decimal': 18, 'want': '0x27c77411074ba90ca35e6f92a79dad577c05a746', 'collat_rate': 0.55},
+{'address': '0x872c847056e11cf75d1d9636b522d077e8c9f653', 'decimal': 18, 'want': '0xae94e96bf81b3a43027918b138b71a771d381150', 'collat_rate': 0.5},
+{'address': '0x3e92100dc678ad1f249c06f75c8393f50294ed71', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.8},
+{'address': '0x413f1815d32e5aca0d8984fa89e50e83ddac0bbe', 'decimal': 18, 'want': '0x5d2ef803d6e255ef4d1c66762cbc8845051b54db', 'collat_rate': 0.65},
+{'address': '0x10a814e68ccac71611e98243fb94697df15e099a', 'decimal': 18, 'want': '0x11d4d27364952b972ac74fb6676dbbfa67fda72f', 'collat_rate': 0.6},
+{'address': '0xd3af91f21f791f29fc664cd5cd61180edc263191', 'decimal': 18, 'want': '0xd8dd2ea228968f7f043474db610a20af887866c7', 'collat_rate': 0.65},
+{'address': '0x03c20569c2c78cd48f491415a4cdeac02608db7e', 'decimal': 18, 'want': '0xa4e2ee5a7ff51224c27c98098d8db5c770baadbe', 'collat_rate': 0.65},
+{'address': '0xcb99178c671761482097f32595cb79fb28a49fd8', 'decimal': 18, 'want': '0x5cc61a78f164885776aa610fb0fe1257df78e59b', 'collat_rate': 0.5},
+{'address': '0xe95c747a5c053b13e9056f45abaa0f1cb64d1711', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.7},
+{'address': '0xedf25e618e4946b05df1e33845993ffebb427a0f', 'decimal': 18, 'want': '0x7345a537a975d9ca588ee631befddfef34fd5e8f', 'collat_rate': 0.4},
+{'address': '0x0168656379cd66aab3f42a4fb17ed3624da54720', 'decimal': 18, 'want': '0x794cead3c864b5390254ffca7ecd6a9ae868661a', 'collat_rate': 0.45},
+{'address': '0x2a081abff657fa727e2f1740974f83253c228279', 'decimal': 18, 'want': '0x30a9eb3ec69ed8e68c147b47b9c2e826380024a3', 'collat_rate': 0.6},
+{'address': '0xb670fb8203baae8eb81235d388de56f832e0e866', 'decimal': 18, 'want': '0xad48320c7e3d3e9ff0c7e51608869cbbffe7422c', 'collat_rate': 0.55},
+{'address': '0x5a25dc3b15259dc1e15cfa2ec398dd6129c6aef1', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.7},
+{'address': '0xa99777140769f72dc33c9a3bfe68e21cfc6cef0c', 'decimal': 6, 'want': '0x1b6ecda7fd559793c0def1f1d90a2df4887b9718', 'collat_rate': 0.65},
+{'address': '0xd85d7760edd67b64fcd3ca2d1be064bbcc0217b3', 'decimal': 18, 'want': '0x92d2ddf8eed6f2bdb9a7890a00b07a48c9c7a658', 'collat_rate': 0.6},
+{'address': '0xa887302a5eb00de03edde8af29a82d86fcc5e0b5', 'decimal': 18, 'want': '0x38da23ef41333be0d309cd63166035ff3b7e2000', 'collat_rate': 0.6},
+{'address': '0xc1f080c5001127f3a6cc3d365103422fc526b996', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.7},
+{'address': '0x73d39850b5ac33b52113dc2add2f6643be43e36e', 'decimal': 18, 'want': '0xdc301622e621166bd8e82f2ca0a26c13ad0be355', 'collat_rate': 0.7},
+{'address': '0xe11fe2584ec0a315da6dd4d2f73548e528cd48eb', 'decimal': 6, 'want': '0x04068da6c83afcfa0e13ba15a6696662335d5b75', 'collat_rate': 0.7},
+{'address': '0xead7c77fb39f067f9be238b8473928fa8bbabf97', 'decimal': 18, 'want': '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83', 'collat_rate': 0.6},
+{'address': '0x0afdea6b939067e3e5ff704e2dc93a834ecc2ad9', 'decimal': 6, 'want': '0x049d68029688eabf473097a2fc38ef61633a3c7a', 'collat_rate': 0.65},
+{'address': '0x8957c84f5db0e5730ffc6e85a79a2ea7d7eee04d', 'decimal': 18, 'want': '0x82f0b8b456c1a451378467398982d4834b6829c1', 'collat_rate': 0.65},
+{'address': '0x52a4691e510d03d3c21f33fad7faba39857444df', 'decimal': 18, 'want': '0x74b23882a30290451a17c44f4f05243b6b58c76d', 'collat_rate': 0.6},
+{'address': '0x788e826484650d69c2a5cbbc627dc244989bd910', 'decimal': 18, 'want': '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e', 'collat_rate': 0.7},
+{'address': '0xed8ff01143213a44a31c33c7dff62ba76098682e', 'decimal': 18, 'want': '0xdc301622e621166bd8e82f2ca0a26c13ad0be355', 'collat_rate': 0.65},
+{'address': '0xa8ebdb42f968756b24af884ff95962a605785020', 'decimal': 18, 'want': '0x8316b990de26eb530b7b1bb0d87f5b0a304637cd', 'collat_rate': 0.6},
+{'address': '0x4b56c89e3bbd915822b3e034eab43d4a287af78a', 'decimal': 18, 'want': '0xa3e3af161943cfb3941b631676134bb048739727', 'collat_rate': 0.5},
+{'address': '0xe564b2564616433688a14169aa91474677add7eb', 'decimal': 18, 'want': '0x2a30c5e0d577108f694d2a96179cd73611ee069b', 'collat_rate': 0.5},
+{'address': '0x6af13383a08e8ac56913f9c84bdde9303837c0ef', 'decimal': 18, 'want': '0x5d89017d2465115007aba00da1e6446df2c19f34', 'collat_rate': 0.6},
+{'address': '0x1290578d565e98ba99d47dd767407bef194854d0', 'decimal': 18, 'want': '0x41d44b276904561ac51855159516fd4cb2c90968', 'collat_rate': 0.6},
+{'address': '0x414148187910f7dc6d0766e84669d7ee89833f2a', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.7},
+{'address': '0x4a913f10bfdfd12e0be3225b7485bcc260442da4', 'decimal': 18, 'want': '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e', 'collat_rate': 0.7},
+{'address': '0x021a22df029f1b4c336b3f5691320b57b4c0664c', 'decimal': 18, 'want': '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83', 'collat_rate': 0.5},
+{'address': '0x2511cf5807551dda6add97a2cbfcdab6cd042c49', 'decimal': 18, 'want': '0xfb98b335551a418cd0737375a2ea0ded62ea213b', 'collat_rate': 0.75},
+{'address': '0x1a44bedfa5735ee94a4ebfb41edc6ba87172dc31', 'decimal': 18, 'want': '0x10b620b2dbac4faa7d7ffd71da486f5d44cd86f9', 'collat_rate': 0.6},
+{'address': '0x8aa0d26a9915229d03e3c43b25a48e86b0d88464', 'decimal': 18, 'want': '0xc5713b6a0f26bf0fdc1c52b90cd184d950be515c', 'collat_rate': 0.46},
+{'address': '0x7426ac4d2ffeedcdab8708320fa7a78b1de8efc0', 'decimal': 18, 'want': '0x3f569724cce63f7f24c5f921d5ddcfe125add96b', 'collat_rate': 0.4},
+{'address': '0x8c722f18cd119f9f7b709a78fdf74908159ce38c', 'decimal': 18, 'want': '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83', 'collat_rate': 0.65}]
 
 async def get_zombie_pools(session):
     return poolext.rugzombie.pools
