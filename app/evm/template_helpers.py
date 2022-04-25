@@ -18,7 +18,9 @@ async def get_token_list_decimals(tokens,network_id,parse_wanted):
     for each in tokens:
         calls.append(Call(each, 'decimals()(uint8)', [[f'{each}', None]]))
 
-    return await Multicall(calls, network, _strict=False)()
+    token_decimals = await Multicall(calls, network, _strict=False)()
+    
+    return token_decimals
 
 
 def parse_out_want_contracts(data):

@@ -1014,9 +1014,10 @@ class Farms:
         'perBlock' : 'cakePerBlock',
         'featured' : 2,
         'network' : 'bsc',
+        'death_index' : [105, 444],
         'extraFunctions' : {
-            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_syrup_pools, farm_templates.get_vault_style],
-            'vaults' : [external_contracts.get_pcs_pools, external_contracts.get_pcs_pools, external_contracts.get_pcs_auto],
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_syrup_pools, farm_templates.get_vault_style, farm_templates.get_single_masterchef],
+            'vaults' : [external_contracts.get_pcs_pools, external_contracts.get_pcs_pools, external_contracts.get_pcs_auto, external_contracts.dummy_vault],
             'args' : [
                 {
                     'farm_id' : '0x73feaa1ee314f8c655e354234017be2193c9e24e',
@@ -1032,9 +1033,22 @@ class Farms:
                     'network' : 'bsc',
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo'
-                },                
+                },
+                {
+                    'farm_id' : '0x73feaa1ee314f8c655e354234017be2193c9e24e',
+                    'network_id' : 'bsc',
+                    'farm_data' :{
+                        'rewardToken' : '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+                        'decimal' : 18,
+                        'wantFunction' : 'lpToken',
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingCake',
+                        'masterChef' : '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
+                        'rewardSymbol' : 'CAKE',
+                    }
+                }                
                 ],
-            'vault_args' : [{'offset' : 0}, {'offset' : 1}, {}]
+            'vault_args' : [{'offset' : 0}, {'offset' : 1}, {}, {}]
         }
     },
                 '0xFortress' : {
@@ -2696,15 +2710,29 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_spooky_stakes],
-            'vaults' : [external_contracts.dummy_vault],
+            'functions' : [farm_templates.get_spooky_stakes, farm_templates.get_sushi_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
             'args' : [
                 {
                     'farm_id' : '0x2b2929E785374c651a81A63878Ab22742656DcDd',
                     'network_id' : 'ftm',
                     'farm_data' : {'masterChef' : '0x2352b745561e7e6FCD03c093cE7220e3e126ace0', 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingReward'}
-                },],
-            'vault_args' : [{}]
+                },
+                {
+                    'farm_id' : '0x2b2929E785374c651a81A63878Ab22742656DcDd',
+                    'network_id' : 'ftm',
+                    'pending_function' : 'pendingBOO',
+                    'farm_data' :{
+                        'masterChef' : '0x18b4f774fdC7BF685daeeF66c2990b1dDd9ea6aD',
+                        'rewarder' : '0xe8380b9DE63806F77AeCe8CA014Ff4b65aD08Cba',
+                        'r0sym' : 'BOO',
+                        'r1sym' : 'DEUS',
+                        'r0t' : '0x841fad6eae12c286d1fd18d1d525dffa75c7effe',
+                        'r1t' : '0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44'
+                    }
+                }
+],
+            'vault_args' : [{},{}]
         }
     },
                 '0xf43261d712cCa4aE55b34B77d9157e773254D1dF' : {
@@ -6808,6 +6836,28 @@ class Farms:
                     {
                         'farm_id' : '0xApeLendingBSC',
                         'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xMarketFTM' : {
+        'name' : 'market.xyz',
+        'rewardToken' : '0xfb98b335551a418cd0737375a2ea0ded62ea213b',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xMarketFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_market_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0xMarketFTM',
+                        'network' : 'ftm',
                     },
                     ],
             'vault_args' : [{}]
