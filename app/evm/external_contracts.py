@@ -776,6 +776,10 @@ async def get_aave_matic(session):
     markets = await call_graph('https://cache-api-polygon.aave.com/graphql', {'operationName' : 'Main', 'query' : bitquery.aave_markets.aave_markets, 'variables' : {'lendingPool': '0xd05e3e715d945b59290df0ae8ef85c1bdb684744'}}, session)
     return markets['data']['protocolData']['reserves']
 
+async def get_aave_harmony(session):
+    markets = await call_graph('https://cache-api-1.aave.com/graphql', {'operationName' : 'Main', 'query' : bitquery.aave_markets.aave_markets, 'variables' : {'lendingPool': '0xb53c1a33016b2dc2ff3653530bff1848a515c8c5'}}, session)
+    return markets['data']['protocolData']['reserves']
+
 #@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_snowball_globe(session):
     balancer_pools = await call_graph('https://api.snowapi.net/graphql', {'query': bitquery.snowball.query, 'variable' : None}, session)
