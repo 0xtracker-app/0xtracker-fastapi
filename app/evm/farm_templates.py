@@ -2130,15 +2130,27 @@ async def get_lending_protocol(wallet,vaults,farm_id,network):
         return None
 
 #No Contract Address
-async def get_aave_protocol(wallet,vaults,farm_id,network):
+async def get_aave_protocol(wallet,vaults,farm_id,pool_address,pool_provider,network):
 
     lending_vaults = vaults
     poolKey = farm_id
     calls = []
 
-    for vault in lending_vaults:
-        calls.append(Call(vault["aTokenAddress"], [f'balanceOf(address)(uint256)', wallet], [[f'{vault["underlyingAsset"]}_staked', parsers.from_custom, vault["decimals"] ]]))
-        calls.append(Call(vault["variableDebtTokenAddress"], [f'balanceOf(address)(uint256)', wallet], [[f'{vault["underlyingAsset"]}_borrowed', parsers.from_custom, vault["decimals"]]]))
+    get_reserves = await Call(pool_address, [f'getReservesList()(address[])'], None, WEB3_NETWORKS[network])()
+
+    for r in get_reserves:
+        calls.append(Call(pool_provider, [f'getReserveTokensAddresses(address)((address,address,address))', r], [[f'{r}_tokens', None ]]))
+        calls.append(Call(pool_provider, [f'getReserveConfigurationData(address)((uint256,uint256))', r], [[f'{r}_ltv', None ]]))
+
+    vault_data = await Multicall(calls, WEB3_NETWORKS[network])()
+
+    calls = []
+
+    for vault in get_reserves:
+        a_token = vault_data.get(f'{vault}_tokens')
+        ltv = vault_data.get(f'{vault}_ltv')
+        calls.append(Call(a_token[0], [f'balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', parsers.from_custom, ltv[0] ]]))
+        calls.append(Call(a_token[2], [f'balanceOf(address)(uint256)', wallet], [[f'{vault}_borrowed', parsers.from_custom, ltv[0] ]]))
         
     stakes=await Multicall(calls, WEB3_NETWORKS[network])()
 
@@ -2147,8 +2159,6 @@ async def get_aave_protocol(wallet,vaults,farm_id,network):
      } }
 
     poolIDs = {}
-
-    hash_map = {x['underlyingAsset'] : x for x in lending_vaults}
 
     for stake in stakes:
         if 'stake' in stake:
@@ -2160,7 +2170,7 @@ async def get_aave_protocol(wallet,vaults,farm_id,network):
 
                     underlying = addPool[0]       
                     collat = loaned
-                    collat_rate = int(hash_map[addPool[0]]['baseLTVasCollateral']) / 10000
+                    collat_rate = ltv = vault_data.get(f'{underlying}_ltv')[1] / 10000
                     borrow = borrowed
                     #rate = parsers.from_wei(snapshot[3])
                     poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate}

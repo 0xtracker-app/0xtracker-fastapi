@@ -5754,11 +5754,88 @@ class Farms:
         'type' : 'lending',
         'extraFunctions' : {
             'functions' : [farm_templates.get_aave_protocol],
-            'vaults' : [external_contracts.get_aave_matic],
+            'vaults' : [external_contracts.dummy_vault],
             'args' : [
                     {
                         'farm_id' : '0xAaveMatic',
                         'network' : 'matic',
+                        'pool_address' : '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+                        'pool_provider' : '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xAaveHarmony' : {
+        'name' : 'aave.com',
+        'rewardToken' : '0xcf323aad9e522b93f11c352caa519ad0e14eb40f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAaveHarmony',
+        'featured' : 2,
+        'network' : 'harmony',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_aave_protocol],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xAaveHarmony',
+                        'network' : 'harmony',
+                        'pool_address' : '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+                        'pool_provider' : '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654'
+
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xAaveAvax' : {
+        'name' : 'aave.com',
+        'rewardToken' : '0xcf323aad9e522b93f11c352caa519ad0e14eb40f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAaveAvax',
+        'featured' : 2,
+        'network' : 'avax',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_aave_protocol],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xAaveAvax',
+                        'network' : 'avax',
+                        'pool_address' : '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+                        'pool_provider' : '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654'
+
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0xAaveFTM' : {
+        'name' : 'aave.com',
+        'rewardToken' : '0xcf323aad9e522b93f11c352caa519ad0e14eb40f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAaveFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_aave_protocol],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xAaveFTM',
+                        'network' : 'ftm',
+                        'pool_address' : '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+                        'pool_provider' : '0x69FA688f1Dc47d4B5d8029D5a35FB7a548310654'
+
                     },
                     ],
             'vault_args' : [{}]
