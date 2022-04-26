@@ -35,7 +35,7 @@ app = FastAPI(title='FastAPI')
 
 ably = ably.AblyRest(os.getenv("ABLY_KEY", ""))
 
-MULTICALL_SPLIT_AMOUNT = os.getenv("MULTICALL_SPLIT_AMOUNT", 4)
+MULTICALL_SPLIT_AMOUNT = int(os.getenv("MULTICALL_SPLIT_AMOUNT", 4))
 ABLY_SEND = os.getenv("ABLY_SEND", "True") == "True"
 
 # app.add_event_handler("startup", connect_to_mongo)
