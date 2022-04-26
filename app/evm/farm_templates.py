@@ -991,7 +991,10 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
     calls = []
     for vault in vaults:
 
-        calls.append(Call(vault, [f'{stake}(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
+        if vault in ['0x45c54210128a065de780C4B0Df3d16664f7f859e']:
+            calls.append(Call(vault, [f'{stake}(address)((uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,uint256))', wallet], [[f'{vault}_staked', parsers.parse_wanted_offset, 8]]))
+        else:
+            calls.append(Call(vault, [f'{stake}(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
         
         if vault in ['0xa6Fc07819eE785C120aB765981b313D71b4FF406']:
             calls.append(Call(vault, [f'wmatic()(address)'], [[f'{vault}_want', None]]))
