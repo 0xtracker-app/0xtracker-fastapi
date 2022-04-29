@@ -88,6 +88,10 @@ def get_db():
 def main_endpoint_test():
     return {"message": "Test Message"}
 
+@app.get('/native-balances/{wallet}')
+async def native_balances(wallet):
+    results = await return_native_balances(wallet)
+    return results
 
 @app.get('/solana-wallet/{wallet}')
 async def read_results(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), client: AsyncClient = Depends(get_solana), pdb: Session = Depends(get_db)):
