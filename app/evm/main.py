@@ -13,6 +13,7 @@ import asyncio
 from eth_account.messages import encode_defunct
 from web3.auto import w3
 from ..db.crud import delete_user_history
+from .wallet_balance_api import get_native_balance
 
 INCH_SUPPORTED = ['bsc','matic','eth']
 
@@ -111,4 +112,7 @@ async def delete_user_records(wallet, signature, timestamps, mongo_db, pdb):
         return {'message' : 'Signature does not match wallet.'}
 
 
-
+async def return_native_balances(wallet):
+    network_list = [x for x in WEB3_NETWORKS]
+    
+    return dict(zip(network_list, await asyncio.gather(*[get_native_balance(wallet, network) for network in network_list])))

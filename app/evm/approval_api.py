@@ -79,25 +79,53 @@ async def scan_ethlogs_approval(network, address, session, mongodb):
         block_number = Web3.toInt(hexstr=each['blockNumber'])
         amount = 0 if each['data'] == '0x' else Web3.toInt(hexstr=each['data'])
 
-        if each['address'] not in format_approvals['approvals']:
-            token_data = await mongodb['full_tokens'].find_one({'tokenID': token_approved, 'network': network}, {'_id': False})
+        if amount > 0:
+            if each['address'] not in format_approvals['approvals']:
+                token_data = await mongodb['full_tokens'].find_one({'tokenID': token_approved, 'network': network}, {'_id': False})
 
-            if token_data is None:
-                token_data = {}
-                missing_tokens.append(token_approved)
+                if token_data is None:
+                    token_data = {}
+                    missing_tokens.append(token_approved)
+                else:
+                    token_data = token_data
+
+                format_approvals['approvals'][token_approved] = {
+                    'tokenID': token_approved,
+                    'tokenData': token_data,
+                    'network': network,
+                    'contracts': {
+                        contract_approved: {
+                            'tx': [
+                                {'contractApproved': contract_approved, 'amount': amount,
+                                'blockNumber': block_number, 'tx': each['transactionHash']}
+                            ]
+                        }
+                    }
+                }
+
             else:
-                token_data = token_data
+                if contract_approved not in format_approvals['approvals'][token_approved]['contracts']:
+                    format_approvals['approvals'][token_approved]['contracts'][contract_approved] = {
+                        'tx': [
+                            {
+                                'contractApproved': contract_approved,
+                                'amount': amount,
+                                'block_number': block_number,
+                                'tx': each['transactionHash']
+                            }
+                        ]
+                    }
+                else:
+                    format_approvals['approvals'][token_approved]['contracts'][contract_approved] = {
 
-            format_approvals['approvals'][token_approved] = {'tokenID': token_approved, 'tokenData': token_data, 'network': network, 'contracts': {
-                contract_approved: {'tx': [{'contractApproved': contract_approved, 'amount': amount, 'blockNumber': block_number, 'tx': each['transactionHash']}]}}}
-
-        else:
-            if contract_approved not in format_approvals['approvals'][token_approved]['contracts']:
-                format_approvals['approvals'][token_approved]['contracts'][contract_approved] = {'tx': [
-                    {'contractApproved': contract_approved, 'amount': amount, 'block_number': block_number, 'tx': each['transactionHash']}]}
-            else:
-                format_approvals['approvals'][token_approved]['contracts'][contract_approved]['tx'].append(
-                    [{'contractApproved': contract_approved, 'amount': amount, 'block_number': block_number, 'tx': each['transactionHash']}])
+                    'tx' : [
+                            {
+                                'contractApproved': contract_approved,
+                                'amount': amount,
+                                'block_number': block_number,
+                                'tx': each['transactionHash']
+                            }
+                        ]}
 
     unknown_tokens = await lookup_token_info(missing_tokens, network)
     balance_calls = []
