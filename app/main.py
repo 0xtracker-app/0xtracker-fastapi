@@ -26,6 +26,7 @@ import ably.types.message as Message
 import ably
 import nats
 from nats.errors import ConnectionClosedError, TimeoutError, NoServersError
+from typing import Iterable, Any, Tuple
 
 # from .db.postgres_utils import close_postgres_connection, connect_to_postgres
 # from .db.postgres import Database, get_postgres_database
@@ -373,7 +374,7 @@ async def execute_call2(*args, method_name=None, mongo_db=None, session=None, cl
         return None  # {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
 
 
-async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
+async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None, last = False):
     results = await asyncio.gather(*[execute_call2(wallet, params, method_name=method_name, mongo_db=mongo_db,
                                                   session=session, client=client, pdb=pdb, req_id=req_id) for params in all_params])
     if not ABLY_SEND:
@@ -388,6 +389,9 @@ async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=Non
 
     if nats_server and len(data) > 0:
         await nats_server.publish(req_id, bytes(json.dumps(data[0]), 'ascii'))
+
+    if last:
+        await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
 
 @app.post('/multicall2')
 async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
@@ -416,6 +420,15 @@ async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(ge
 
     return {"status": "ok", "channel": req_id}
 
+
+
+def signal_last(it:Iterable[Any]) -> Iterable[Tuple[bool, Any]]:
+    iterable = iter(it)
+    ret_var = next(iterable)
+    for val in iterable:
+        yield False, ret_var
+        ret_var = val
+    yield True, ret_var
 
 
 @app.post('/user-active-pools')
@@ -460,8 +473,9 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x]]
     
     
-    for farm in farms:
-        loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, client=farms_clients[methodName], pdb=pdb, req_id=req_id)) 
+    for is_last_element, farm in signal_last(farms):
+        loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, 
+            client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
 
     
     return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
