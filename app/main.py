@@ -418,6 +418,45 @@ async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(ge
 
 
 
+@app.post('/user-active-pools')
+async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
+    body_json = await request.json()
+    wallet = body_json['address']
+    walletType = body_json['type']
+    
+    if 'nats' not in natspool.keys():
+        natspool['nats'] = await nats.connect("nats://54.36.175.103:4222")
+
+    loop = asyncio.get_event_loop()
+
+    req_id = request.headers.get('X-CHANNEL-ID')
+
+    if walletType == 'evm':
+        # get chains
+        results = await return_native_balances(wallet)
+        chains = []
+        for k,v in results.items():
+            if v > 0:
+                chains.append(k) #
+
+        farm_list = return_farms_list()
+        farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x] and farm_list[x]['network'] in chains ]
+
+        for farm in farms:
+            loop.create_task(execute_multi_call2(wallet, [farm], method_name='farms', mongo_db=mongo_db, session=session, client=None, pdb=pdb, req_id=req_id)) 
+
+    
+    return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
+
+
+    # get pools
+
+
+
+    return results
+
+
+
         # server.close()
         # channel.publish_message(Message.Message(name=req_id, data=list(filter(None, results))))
 # @app.get("/users/")
