@@ -423,6 +423,10 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
     body_json = await request.json()
     wallet = body_json['address']
     walletType = body_json['type']
+
+
+    farms_clients = {'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None,
+                    'solana-wallet': client_solana, 'cosmos-wallet': None, 'terra-wallet': client_terra, 'wallet': None}
     
     if 'nats' not in natspool.keys():
         natspool['nats'] = await nats.connect("nats://54.36.175.103:4222")
@@ -433,6 +437,7 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
 
     if walletType == 'evm':
         # get chains
+        methodName = 'farms'
         results = await return_native_balances(wallet)
         chains = []
         for k,v in results.items():
@@ -441,9 +446,22 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
 
         farm_list = return_farms_list()
         farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x] and farm_list[x]['network'] in chains ]
-
-        for farm in farms:
-            loop.create_task(execute_multi_call2(wallet, [farm], method_name='farms', mongo_db=mongo_db, session=session, client=None, pdb=pdb, req_id=req_id)) 
+    elif walletType == 'cosmos':
+        methodName = 'cosmos-farms'
+        farm_list = cosmos_farms_list()
+        farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x]]
+    elif walletType == 'terra':
+        methodName = 'terra-farms'
+        farm_list = terra_farms_list()
+        farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x]]
+    elif walletType == 'solana':
+        methodName = 'solana-farms'
+        farm_list = solana_farms_list()
+        farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x]]
+    
+    
+    for farm in farms:
+        loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, client=farms_clients[methodName], pdb=pdb, req_id=req_id)) 
 
     
     return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
