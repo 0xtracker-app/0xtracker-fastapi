@@ -24,6 +24,8 @@ from .db.queries import addresses_per_day, farms_over_last_30_days
 from sqlalchemy.orm import Session
 import ably.types.message as Message
 import ably
+import nats
+from nats.errors import ConnectionClosedError, TimeoutError, NoServersError
 
 # from .db.postgres_utils import close_postgres_connection, connect_to_postgres
 # from .db.postgres import Database, get_postgres_database
@@ -347,6 +349,77 @@ async def multicall(request: Request, mongo_db: AsyncIOMotorClient = Depends(get
     return {"status": "ok", "channel": req_id}
 
 
+
+natspool = {}
+
+
+async def execute_call2(*args, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
+    # channel = ably.channels.get(req_id)
+
+    try:
+        method = multicall_methods_translator[method_name]
+        results = await method(*args, mongo_db, session, client, pdb)
+        if results:
+            # print(f"results for {method_name} {results}")
+            # channel.publish_message(Message.Message(name=req_id, data=results))
+            return results
+        else:
+            print(f"No results for {method_name} {args}")
+            # return {"wallet": args[0], "params": args[1:]}
+
+    except Exception as e:
+        print(e)
+
+        return None  # {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
+
+
+async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None):
+    results = await asyncio.gather(*[execute_call2(wallet, params, method_name=method_name, mongo_db=mongo_db,
+                                                  session=session, client=client, pdb=pdb, req_id=req_id) for params in all_params])
+    if not ABLY_SEND:
+        for result in results:
+            print(result)
+
+        print("\n\n")
+
+    data=list(filter(None, results))
+
+    nats_server = natspool['nats']
+
+    if nats_server and len(data) > 0:
+        await nats_server.publish(req_id, bytes(json.dumps(data[0]), 'ascii'))
+
+@app.post('/multicall2')
+async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
+    # server = await nats.connect("nats://54.36.175.103:4222")
+    if 'nats' not in natspool.keys():
+        natspool['nats'] = await nats.connect("nats://54.36.175.103:4222")
+   
+    farms_clients = {'solana-farms': client_solana, 'cosmos-farms': None, 'terra-farms': client_terra, 'farms': None,
+                     'solana-wallet': client_solana, 'cosmos-wallet': None, 'terra-wallet': client_terra, 'wallet': None}
+
+    body_json = await request.json()
+
+    loop = asyncio.get_event_loop()
+
+    req_id = request.headers.get('X-CHANNEL-ID')
+    for method in body_json.keys():
+        for wallet in body_json[method].keys():
+            params = body_json[method][wallet]
+
+            if not params:
+                params = ['']
+
+            for chunked_params in list(chunks(params, 1)):
+                loop.create_task(execute_multi_call2(wallet, chunked_params, method_name=method, mongo_db=mongo_db,
+                                                    session=session, client=farms_clients[method], pdb=pdb, req_id=req_id))
+
+    return {"status": "ok", "channel": req_id}
+
+
+
+        # server.close()
+        # channel.publish_message(Message.Message(name=req_id, data=list(filter(None, results))))
 # @app.get("/users/")
 # def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 #     users = crud.get_users(db, skip=skip, limit=limit)
