@@ -16,11 +16,27 @@ class RedisClient:
 if CACHE:
     redis = RedisClient()
 
+async def getvalue(key):
+    try: 
+        if CACHE:
+            val = await redis.session.get(key)
+        else:
+            val = '[]'
+
+        return json.loads(val)
+    except:
+        return []
+        
 def cache_function(keyparams=None, ttl=None):
     def wrap(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
-            key = f"{func.__module__}.{func.__name__}{args[:keyparams]}"
+            if type(keyparams) == int:
+                key = f"{func.__module__}.{func.__name__}{args[:keyparams]}"
+            elif type(keyparams) == list:
+                params = [args[i] for i in keyparams]
+                key = f"{func.__module__}.{func.__name__}{params}"
+                       
             if CACHE:
                 val = await redis.session.get(key)
             else:

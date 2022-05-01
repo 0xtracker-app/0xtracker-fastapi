@@ -14,6 +14,7 @@ from eth_account.messages import encode_defunct
 from web3.auto import w3
 from ..db.crud import delete_user_history
 from .wallet_balance_api import get_native_balance
+from ..redis.cache import getvalue
 
 INCH_SUPPORTED = ['bsc','matic','eth']
 
@@ -113,6 +114,8 @@ async def delete_user_records(wallet, signature, timestamps, mongo_db, pdb):
 
 
 async def return_native_balances(wallet):
-    network_list = [x for x in WEB3_NETWORKS]
+    disabled = await getvalue('disable_evm')
+
+    network_list = [x for x in WEB3_NETWORKS if x not in disabled]
     
     return dict(zip(network_list, await asyncio.gather(*[get_native_balance(wallet, network) for network in network_list])))
