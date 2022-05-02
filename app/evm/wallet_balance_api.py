@@ -128,8 +128,8 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
         else:
             router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network, check_liq=True)
     except Exception as e:
-        print(e)
-        wallet_data = []
+        print(f"Error getting wallet balance for {wallet} on {network} : {e}")
+        wallet_data = [[]]
 
     payload = []
     stored_tokens = []
