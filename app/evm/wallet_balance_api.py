@@ -120,13 +120,17 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
         unique_list = await get_token_list_from_scan(network, session, wallet)
     else:
         unique_list = await get_token_list_from_mongo(network, mongodb)
-    
-    wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
-    prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
-    if network == 'rsk':
-        router_prices = await get_bancor_prices([wallet_data[0][x] for x in wallet_data[0]], network)
-    else:
-        router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network, check_liq=True)
+    try:
+        wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
+        prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
+        if network == 'rsk':
+            router_prices = await get_bancor_prices([wallet_data[0][x] for x in wallet_data[0]], network)
+        else:
+            router_prices = await list_router_prices([wallet_data[0][x] for x in wallet_data[0]], network, check_liq=True)
+    except Exception as e:
+        print(e)
+        wallet_data = []
+
     payload = []
     stored_tokens = []
     total_balance = 0
