@@ -26,7 +26,16 @@ def convert_timestamp(epoch):
 async def get_native_balance(wallet,network):
     w3 = WEB3_NETWORKS[network]['connection']
     wallet = Web3.toChecksumAddress(wallet)
-    return await w3.eth.get_balance(wallet)
+    
+    try:
+        balance = await w3.eth.get_balance(wallet)
+    except Exception as e:
+        print(f'Error getting wallet balance for {wallet} on {network} : {e}')
+        balance = 0
+
+    return balance       
+
+
 
 async def get_balance_of(token_list, wallet, network, network_info):
 
