@@ -34,7 +34,9 @@ def cache_function(keyparams=None, ttl=None):
             if type(keyparams) == int:
                 key = f"{func.__module__}.{func.__name__}{args[:keyparams]}"
             elif type(keyparams) == list:
-                params = [args[i] for i in keyparams]
+                params = ""
+                if len(keyparams) > 0 and len(args) > 0:
+                    params = [args[i] for i in keyparams]
                 key = f"{func.__module__}.{func.__name__}{params}"
                        
             if CACHE:
