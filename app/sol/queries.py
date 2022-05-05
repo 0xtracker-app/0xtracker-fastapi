@@ -3,7 +3,7 @@ from . helpers import from_custom
 from . import stake_layout
 
 async def get_raydium_tokens(session):
-    r = await make_get_json(session, f'https://api.raydium.io/cache/solana-token-list')
+    r = await make_get_json(session, f'https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json')
 
     return { x['address'] : x for x in r['tokens'] }
 
