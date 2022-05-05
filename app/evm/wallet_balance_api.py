@@ -111,10 +111,12 @@ async def get_token_list_from_scan(network,session,wallet):
 
     data = r['result']
     filtered_to =[x['contractAddress'] for x in data if x['to'].lower() == wallet.lower() and int(x['value']) > 0]
-
-    unique_list =[i for n, i in enumerate(filtered_to) if i not in filtered_to[n + 1:]]
-
-    return unique_list
+    
+    if filtered_to is not None:
+        unique_list =[i for n, i in enumerate(filtered_to) if i not in filtered_to[n + 1:]]
+        return unique_list
+    else:
+        return []
 
 async def get_token_list_from_mongo(network,mongo):
     x = await mongo['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
