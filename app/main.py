@@ -421,15 +421,18 @@ async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(ge
 
     return {"status": "ok", "channel": req_id}
 
-
-
 def signal_last(it:Iterable[Any]) -> Iterable[Tuple[bool, Any]]:
     iterable = iter(it)
-    ret_var = next(iterable)
-    for val in iterable:
-        yield False, ret_var
-        ret_var = val
-    yield True, ret_var
+    try:
+        ret_var = next(iterable)
+        for val in iterable:
+            yield False, ret_var
+            ret_var = val
+        yield True, ret_var
+    except StopIteration:
+        yield True, None
+        
+
 
 
 @app.post('/user-active-pools')
@@ -477,6 +480,9 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         print(f"Unknown wallet type <<<<<<<<<<<<<<<<<<<<<< {walletType}")
     
     try: 
+        if len(farms) > 0:
+        
+        
         for is_last_element, farm in signal_last(farms):
             try: 
                 loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, 
@@ -486,7 +492,7 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
     
         return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
     except Exception as e:
-        print(f"Error in user_active_pools {e}")
+        print(f"Error in user_active_pools {e} {farms}")
         return {"status": "ko", "channel": req_id, 'error': str(e)}
 
 
