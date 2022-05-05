@@ -22,9 +22,10 @@ async def get_tx_to_contract(network, wallet, token, contract, session):
         'withdrawls' : []
     }
     
-    if network not in NETWORK_MAP:
-        network = NETWORK_MAP[network]
+    if network not in NETWORK_MAP.keys():
         return response
+    
+    network = NETWORK_MAP[network]
         
     url = f'https://api.covalenthq.com/v1/{network}/address/{wallet}/transfers_v2/?contract-address={token}&match={query}&sort={sorting}&page-size=2100000000&key={COVALENT_KEY}'
 
