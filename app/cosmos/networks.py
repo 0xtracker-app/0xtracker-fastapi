@@ -33,7 +33,7 @@ class CosmosNetwork:
             'cosmos' : {
             'wallet' : from_atom(wallet,'cosmos'),
             'rpc' : 'https://rpc-cosmoshub.keplr.app',
-            'rest' : 'https://lcd-cosmos.cosmostation.io',
+            'rest' : 'https://rest-cosmoshub.ecostake.com',
             'chain_id' : 'cosmoshub-4',
             'chain_name' : 'Cosmos Hub',
             'explorer' : 'https://www.mintscan.io/cosmos/txs/',
