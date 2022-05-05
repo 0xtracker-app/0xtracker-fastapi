@@ -448,6 +448,8 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
     if 'nats' not in natspool.keys():
         natspool['nats'] = await nats.connect("nats://54.36.175.103:4222")
 
+    nats_server = natspool['nats']
+
     loop = asyncio.get_event_loop()
 
     req_id = request.headers.get('X-CHANNEL-ID')
@@ -486,10 +488,14 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
                     client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
             except Exception as e:
                 print(f"Error in farm {farm} {wallet} {methodName} {e}")
+
+                if is_last_element:
+                    await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
     
         return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
     except Exception as e:
         print(f"Error in user_active_pools {e} {farms}")
+        await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
         return {"status": "ko", "channel": req_id, 'error': str(e)}
 
 
