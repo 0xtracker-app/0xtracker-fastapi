@@ -471,6 +471,9 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         methodName = 'solana-farms'
         farm_list = solana_farms_list()
         farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x]]
+    else:
+        farms= []
+        print(f"Unknown wallet type <<<<<<<<<<<<<<<<<<<<<< {walletType}")
     
     
     for is_last_element, farm in signal_last(farms):
