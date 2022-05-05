@@ -12,11 +12,7 @@ NETWORK_MAP = {x : str(WEB3_NETWORKS[x]['id']) for x in WEB3_NETWORKS if WEB3_NE
 async def get_tx_to_contract(network, wallet, token, contract, session):
     query = json.dumps({"$or": [{"from_address": contract},{"to_address": contract}]})
     sorting = json.dumps({'block_height': 1})
-    network = NETWORK_MAP[network]
-    url = f'https://api.covalenthq.com/v1/{network}/address/{wallet}/transfers_v2/?contract-address={token}&match={query}&sort={sorting}&page-size=2100000000&key={COVALENT_KEY}'
-
-    x = await make_get_json(session, url)
-
+    
     response = {
         'totalDeposits' : 0,
         'totalWithdrawls' : 0,
@@ -25,6 +21,14 @@ async def get_tx_to_contract(network, wallet, token, contract, session):
         'deposits' : [],
         'withdrawls' : []
     }
+    
+    if network not in NETWORK_MAP:
+        network = NETWORK_MAP[network]
+        return response
+        
+    url = f'https://api.covalenthq.com/v1/{network}/address/{wallet}/transfers_v2/?contract-address={token}&match={query}&sort={sorting}&page-size=2100000000&key={COVALENT_KEY}'
+
+    x = await make_get_json(session, url)
 
     for block in x['data']['items']:
         response['gasUsed'] += block['gas_quote'] if 'gas_quote' in block else 0
