@@ -480,9 +480,6 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         print(f"Unknown wallet type <<<<<<<<<<<<<<<<<<<<<< {walletType}")
     
     try: 
-        if len(farms) > 0:
-        
-        
         for is_last_element, farm in signal_last(farms):
             try: 
                 loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, 
