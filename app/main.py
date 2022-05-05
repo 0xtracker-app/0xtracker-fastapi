@@ -365,7 +365,8 @@ async def execute_call2(*args, method_name=None, mongo_db=None, session=None, cl
             # channel.publish_message(Message.Message(name=req_id, data=results))
             return results
         else:
-            print(f"No results for {method_name} {args}")
+            pass
+            # print(f"No results for {method_name} {args}")
             # return {"wallet": args[0], "params": args[1:]}
 
     except Exception as e:
@@ -485,6 +486,7 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
     
         return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
     except Exception as e:
+        print(f"Error in user_active_pools {e}")
         return {"status": "ko", "channel": req_id, 'error': str(e)}
 
 
