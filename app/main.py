@@ -475,20 +475,17 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         farms= []
         print(f"Unknown wallet type <<<<<<<<<<<<<<<<<<<<<< {walletType}")
     
+    try: 
+        for is_last_element, farm in signal_last(farms):
+            try: 
+                loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, 
+                    client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
+            except Exception as e:
+                print(f"Error in farm {farm} {wallet} {methodName} {e}")
     
-    for is_last_element, farm in signal_last(farms):
-        loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, 
-            client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
-
-    
-    return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
-
-
-    # get pools
-
-
-
-    return results
+        return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
+    except Exception as e:
+        return {"status": "ko", "channel": req_id, 'error': str(e)}
 
 
 
