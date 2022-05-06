@@ -34,6 +34,7 @@ class NativeToken():
     RSK = '0x542fDA317318eBF1d3DEAf76E0b632741A7e677d'
     ASTAR = '0xAeaaf0e2c81Af264101B9129C00F4440cCF0F720'
     DFK = '0xCCb93dABD71c8Dad03Fc4CE5559dC3D89F67a260'
+    EVMOS = '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -68,6 +69,7 @@ class NativeSymbol():
     RSK = 'RBTC'
     ASTAR = 'ASTR'
     DFK = 'JEWEL'
+    EVMOS = 'EVMOS'
 
 class NativeDecimal():
     BSC = 18
@@ -102,6 +104,7 @@ class NativeDecimal():
     RSK = 18
     ASTAR = 18
     DFK = 18
+    EVMOS = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -136,6 +139,7 @@ class StableToken():
     RSK = '0xb5999795BE0EbB5bAb23144AA5FD6A02D080299F'
     ASTAR = '0x6a2d262D56735DbA19Dd70682B39F6bE9a931D98'
     DFK = '0x3AD9DFE640E1A9Cc1D9B0948620820D975c3803a'
+    EVMOS = '0x51e44FfaD5C2B122C8b635671FCC8139dc636E82'
 
 class StableDecimal():
     BSC = 18
@@ -170,6 +174,7 @@ class StableDecimal():
     RSK = 18
     ASTAR = 6
     DFK = 18
+    EVMOS = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -204,6 +209,7 @@ class DefaultRouter():
     RSK = routers.RSKRouter.RSKSWAP
     ASTAR = routers.AstarRouter.ARTH
     DFK = routers.DFKRouter.DFK
+    EVMOS = routers.EVMOSRouter.DIFF
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -238,6 +244,7 @@ class RouteClass():
     RSK = routers.RSKRouter
     ASTAR = routers.AstarRouter
     DFK = routers.DFKRouter
+    EVMOS = routers.EVMOSRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -272,6 +279,7 @@ class CoinGecko():
     RSK = ''
     ASTAR = ''
     DFK = ''
+    EVMOS = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -306,6 +314,7 @@ class LiqCheck():
     RSK = '0xebb3Fb87362A3331a28301A5e282Ad9f649c5f0c'
     ASTAR = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
     DFK = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
+    EVMOS = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
 
 class MinLiq():
     BSC = 49999
@@ -340,6 +349,7 @@ class MinLiq():
     RSK = 9999
     ASTAR = 9999
     DFK = 9999
+    EVMOS = 9999
 
 class YearlyBlocks():
     BSC = 10407920.792079208
@@ -374,6 +384,7 @@ class YearlyBlocks():
     RSK = 0
     ASTAR = 0
     DFK = 0
+    EVMOS = 0
 
 class DeadTokens():
     BSC = ['0x000000000000000000000000000000000000dEaD', '0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
@@ -408,6 +419,7 @@ class DeadTokens():
     RSK = []
     ASTAR = []
     DFK = []
+    EVMOS = []
 
 class NetworkRoutes():
 
