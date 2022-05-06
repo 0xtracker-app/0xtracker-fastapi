@@ -223,7 +223,7 @@ async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = 
     user_data
     WHERE timestamp > now () - INTERVAL ':days days' and wallet IN :wallets and farm IN :farms
     GROUP BY farm_network, farm, bucket
-    ) a group by bucket;''', {"days": days, "wallets": tuple(wallet), "farms": tuple(farm_id)})
+    ) a group by bucket ORDER BY _id ASC;''', {"days": days, "wallets": tuple(wallet), "farms": tuple(farm_id)})
     else:
         x = pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
     SELECT
@@ -234,7 +234,7 @@ async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = 
     user_data
     WHERE timestamp > now () - INTERVAL ':days days' and wallet IN :wallets
     GROUP BY farm_network, farm, bucket
-    ) a group by bucket;''', {"days": days, "wallets": tuple(wallet)})
+    ) a group by bucket ORDER BY _id ASC;''', {"days": days, "wallets": tuple(wallet)})
 
     return x.fetchall()
 
