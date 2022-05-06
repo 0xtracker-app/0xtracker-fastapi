@@ -200,7 +200,7 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     if network == 'rsk':
         return await get_bancor_prices(tokens_in, network)
 
-    if network == 'dfk':
+    if network in ['dfk','evmos']:
         check_liq = False
 
     if network_route.default_router == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':

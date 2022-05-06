@@ -7436,6 +7436,20 @@ class Farms:
         'network' : 'bsc',
         'perBlock' : 'bountiePerBlock',
     },
+                '0x067eC87844fBD73eDa4a1059F30039584586e09d' : {
+        'name' : 'diffusion.fi',
+        'rewardToken' : '0x3f75ceabCDfed1aCa03257Dc6Bdc0408E2b4b026',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingDiffusion',
+        'masterChef' : '0x067eC87844fBD73eDa4a1059F30039584586e09d',
+        'wantFunction' : 'lpToken',
+        'featured' : 2,
+        'network' : 'evmos',
+        'perBlock' : 'diffusionPerSecond',
+        'apy_config' : 'second',
+    },
+
 }
 
 
