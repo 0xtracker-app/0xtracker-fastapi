@@ -199,5 +199,6 @@ class AstarRouter():
 class DFKRouter():
     DFK = '0x3C351E1afdd1b1BC44e931E12D4E05D6125eaeCa'
 
-
+class EVMOSRouter():
+    DIFF = '0xFCd2Ce20ef8ed3D43Ab4f8C2dA13bbF1C6d9512F'
 
