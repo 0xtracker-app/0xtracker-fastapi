@@ -365,8 +365,9 @@ async def execute_call2(*args, method_name=None, mongo_db=None, session=None, cl
             # channel.publish_message(Message.Message(name=req_id, data=results))
             return results
         else:
+            pass
             # print(f"No results for {method_name} {args}")
-            return {"wallet": args[0], "params": args[1:]}
+            # return {"wallet": args[0], "params": args[1:]}
 
     except Exception as e:
         print(e)
