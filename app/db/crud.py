@@ -36,7 +36,6 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     return db_item
 
 async def create_user_history(db: Session, user: schemas.UserRecord):
-    print(user)
     db_user = models.UserRecords(
         timestamp=user.timestamp.replace(tzinfo=None),
         farm=user.farm,
@@ -45,12 +44,8 @@ async def create_user_history(db: Session, user: schemas.UserRecord):
         dollarvalue=user.dollarvalue,
         farmnetwork=user.farmnetwork
         )
-    
-    await db.close()
-    await db.begin()
+
     db.add(db_user)
-    await db.commit()
-    await db.refresh(db_user)
     
     return db_user
 
