@@ -1,11 +1,13 @@
 import json
 import asyncio
 import os
+import re
 from typing import List
 from fastapi import FastAPI, Depends, Path, Query
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
+from web3 import Web3
 from .cosmos import get_wallet_balances as cosmos_wallet_balances, get_cosmos_positions, write_tokens, return_farms_list as cosmos_farms_list, return_network_list as cosmos_network_list
 from .evm import *
 from .sol import get_wallet_balances as solana_wallet_balances, get_solana_positions, return_farms_list as solana_farms_list
@@ -22,6 +24,7 @@ from .terrasession.session import AsyncLCDClient, get_terra
 from .terrasession.session_utils import terra_start, terra_stop
 from .db.queries import addresses_per_day, farms_over_last_30_days
 from sqlalchemy.orm import Session
+from sqlalchemy import tuple_, text
 import ably.types.message as Message
 import ably
 import nats
@@ -215,35 +218,39 @@ async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id: s
 
 @app.get('/user-balance/')
 async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = Query([]), days: int = Query(..., ge=1, le=90), pdb: Session = Depends(get_db)):
-    
-    wallets = ','.join([f"'{wall}'" for wall in wallet])
+    wallets = [f"'{wall}'" for wall in wallet if re.match(r"\w+$", wall)]
+
+    if len(wallets) == 0:
+        return []
 
     if farm_id:
-        farms = ','.join([f"'{farm}'" for farm in farm_id])
-            
-        x = await pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
-    SELECT
-    bucket,
-    farm_network, farm,
-    avg(dollarValue) AS dollarValue
-    FROM
-    user_data_per_hour
-    WHERE bucket > now () - INTERVAL '$1 days' and wallet IN ($2) and farm IN ($3)
-    GROUP BY farm_network, farm, bucket
-    ) a group by bucket ORDER BY _id ASC;''', {days, wallets, farms})
-    else:
-        x = await pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
-    SELECT
-    bucket,
-    farm_network, farm,
-    avg(dollarValue) AS dollarValue
-    FROM
-    user_data_per_hour
-    WHERE bucket > now () - INTERVAL '$1 days' and wallet IN ($2)
-    GROUP BY farm_network, farm, bucket
-    ) a group by bucket ORDER BY _id ASC;''', {days, wallets})
+        farms = [f"'{farm}'" for farm in farm_id if re.match(r"\w+$", farm)]
+        if len(farms) == 0:
+            return []
 
-    return await x.fetchall()
+        x = await pdb.execute(text(f'''select bucket as _id, sum(dollarValue) as average from (
+    SELECT
+    bucket,
+    farm_network, farm,
+    avg(dollarValue) AS dollarValue
+    FROM
+    user_data_per_hour
+    WHERE bucket > now () - INTERVAL '{days} days' and wallet IN ({','.join(wallets)}) and farm IN ({','.join(farms)})
+    GROUP BY farm_network, farm, bucket
+    ) a group by bucket ORDER BY _id ASC;'''))
+    else:
+        x = await pdb.execute(text(f'''select bucket as _id, sum(dollarValue) as average from (
+    SELECT
+    bucket,
+    farm_network, farm,
+    avg(dollarValue) AS dollarValue
+    FROM
+    user_data_per_hour
+    WHERE bucket > now () - INTERVAL '{days} days' and wallet IN ({','.join(wallets)})
+    GROUP BY farm_network, farm, bucket
+    ) a group by bucket ORDER BY _id ASC;'''))
+
+    return x.fetchall()
 
 
 @app.get('/token-approval/{wallet}/{network}')
