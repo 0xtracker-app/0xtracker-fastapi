@@ -79,12 +79,12 @@ class DeletionItem(BaseModel):
     timestamps: List
 
 
-def get_db():
+async def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
-        db.close()
+        await db.close()
 
 
 @app.get("/",  tags=["Endpoint Test"])

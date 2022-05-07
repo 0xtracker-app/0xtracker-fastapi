@@ -77,6 +77,6 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, farm_config
                 finalResponse[f]['totalBorrowed'] = sum(d['borrowedUSD'] for d in finalResponse[f]['userData'].values() if 'borrowedUSD' in d)
 
         if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-            create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network='terra', wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork='terra' ))
+           await create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network='terra', wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork='terra' ))
         
     return finalResponse
