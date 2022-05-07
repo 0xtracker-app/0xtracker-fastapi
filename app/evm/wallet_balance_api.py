@@ -101,6 +101,9 @@ async def get_balance_of(token_list, wallet, network, network_info):
 
 async def get_token_list_from_scan(network,session,wallet):
 
+    if network not in SCAN_APIS.keys():
+        return []
+
     network_data = SCAN_APIS[network]
     apikey = network_data['api_key']
     latest_block = await WEB3_NETWORKS[network]['connection'].eth.block_number
@@ -110,7 +113,7 @@ async def get_token_list_from_scan(network,session,wallet):
     r = await make_get_json(session, url)
 
     data = r['result']
-    filtered_to =[x['contractAddress'] for x in data if x['to'].lower() == wallet.lower() and int(x['value']) > 0]
+    filtered_to = [x['contractAddress'] for x in data if x['to'].lower() == wallet.lower() and int(x['value']) > 0]
     
     if filtered_to is not None:
         unique_list =[i for n, i in enumerate(filtered_to) if i not in filtered_to[n + 1:]]
@@ -131,6 +134,7 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
         unique_list = await get_token_list_from_scan(network, session, wallet)
     else:
         unique_list = await get_token_list_from_mongo(network, mongodb)
+    
     try:
         wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
         prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
