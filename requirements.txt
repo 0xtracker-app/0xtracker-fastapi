@@ -26,7 +26,6 @@ colorama==0.4.3
 construct==2.10.67
 cosmpy==0.1.4
 cytoolz==0.11.0
-databases==0.4.3
 DateTime==4.3
 dnspython==1.16.0
 docutils==0.15.2
@@ -108,7 +107,7 @@ semantic-version==2.8.5
 six==1.14.0
 sniffio==1.2.0
 solana==0.15.1
-SQLAlchemy==1.3.24
+SQLAlchemy==1.4.0
 starlette==0.13.6
 termcolor==1.1.0
 terra-sdk==1.0.0
