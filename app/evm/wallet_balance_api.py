@@ -177,7 +177,7 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
                 total_balance += wallet_data[0][token]['token_balance'] * price
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network=network, wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork=network ))
+        await create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network=network, wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork=network ))
 
         #mongodb['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
 

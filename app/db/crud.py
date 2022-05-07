@@ -35,20 +35,25 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.refresh(db_item)
     return db_item
 
-def create_user_history(db: Session, user: schemas.UserRecord):
+async def create_user_history(db: Session, user: schemas.UserRecord):
     print(user)
     db_user = models.UserRecords(
-        timestamp=user.timestamp,
+        timestamp=user.timestamp.replace(tzinfo=None),
         farm=user.farm,
         farm_network=user.farm_network,
         wallet=user.wallet,
         dollarvalue=user.dollarvalue,
         farmnetwork=user.farmnetwork
         )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    
+    await db.close()
+    with db.begin() as session:
+        session.add(db_user)
+        await session.commit()
+        await session.refresh(db_user)
+    
     return db_user
+
 
 def delete_user_history(db: Session, wallet, start, end):
     db.query(models.UserRecords).filter(and_(models.UserRecords.wallet == wallet, models.UserRecords.timestamp >= start, models.UserRecords.timestamp <= end)).delete(synchronize_session="fetch")

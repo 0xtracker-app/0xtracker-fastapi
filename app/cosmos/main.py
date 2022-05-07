@@ -82,7 +82,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
                     )
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='cosmos', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='cosmos' ))
+        await create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network='cosmos', wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork='cosmos' ))
 
     return return_wallets
 
