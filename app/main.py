@@ -365,14 +365,13 @@ async def execute_call2(*args, method_name=None, mongo_db=None, session=None, cl
             # channel.publish_message(Message.Message(name=req_id, data=results))
             return results
         else:
-            pass
             # print(f"No results for {method_name} {args}")
-            # return {"wallet": args[0], "params": args[1:]}
+            return {"wallet": args[0], "params": args[1:]}
 
     except Exception as e:
         print(e)
 
-        return None  # {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
+        return {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
 
 
 async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=None, session=None, client=None, pdb=None, req_id=None, last = False):
