@@ -217,7 +217,7 @@ async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id: s
 async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = Query([]), days: int = Query(..., ge=1, le=90), pdb: Session = Depends(get_db)):
 
     if farm_id:
-        x = pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
+        x = await pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
     SELECT
     bucket,
     farm_network, farm,
@@ -228,7 +228,7 @@ async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = 
     GROUP BY farm_network, farm, bucket
     ) a group by bucket ORDER BY _id ASC;''', {"days": days, "wallets": tuple(wallet), "farms": tuple(farm_id)})
     else:
-        x = pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
+        x = await pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
     SELECT
     bucket,
     farm_network, farm,
@@ -239,7 +239,7 @@ async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = 
     GROUP BY farm_network, farm, bucket
     ) a group by bucket ORDER BY _id ASC;''', {"days": days, "wallets": tuple(wallet)})
 
-    return x.fetchall()
+    return await x.fetchall()
 
 
 @app.get('/token-approval/{wallet}/{network}')
