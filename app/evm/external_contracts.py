@@ -159,12 +159,12 @@ async def get_grim_vaults(session):
     r = await make_get_json(session,'https://api.grim.finance/vaults')
     return [x['earnedTokenAddress'] for x in r]
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_firebird_vaults(network, session):
     r = await make_get_json(session,f'https://api-be.firebird.finance/api/apy?group=vault&chain_id={network}')
     return [x['farmingContractAddress'] for x in r['data']]
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_ele_tokens(network=None, session=None):
     skip_tokens = ['0x3Ed531BfB3FAD41111f6dab567b33C4db897f991', '0x5C0E7b820fCC7cC66b787A204B2B31cbc027843f', '0x0D5BaE8f5232820eF56D98c04B8F531d2742555F', '0xDF098493bB4eeE18BB56BE45DC43BD655a27E1A9', '0x27DD6E51BF715cFc0e2fe96Af26fC9DED89e4BE8', '0x025E2e9113dC1f6549C83E761d70E647c8CDE187', '0x0FFb84A4c29147Bd745AAe0330f4F6f4Cb716c92']
     token = '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'
@@ -549,13 +549,13 @@ async def get_hyperjump_vaults_ftm(session):
     f = hjson.loads(data)
     return [x['earnedTokenAddress'] for x in json.loads(json.dumps(f))]
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_autoshark_vaults(network, session):
     r = await make_get(session,'https://autoshark.finance/.netlify/functions/vaults')
     r = json.loads(r)['data']
     return [x['address'] for x in r if x['address'] != '0x85ff09374D1f59288b6978EB9254377a51BE0B7c' and x['network'] == network and x['active'] == True]
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_solidex_vaults(network, session):
     r = await make_get(session,f'https://api.solidexfinance.com/api/getLPDetails?v={network}')
     r = json.loads(r)['data']['poolDetailsAll']
@@ -581,7 +581,7 @@ async def get_acryptos_vaults(session):
     else:
         return []
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0, kwargsForKey=['network'])
 async def get_voltage_vaults(session, network):
     r = await make_get(session, 'https://raw.githubusercontent.com/fuseio/fuse-lp-rewards/master/config/default.json')
     r = json.loads(r)
@@ -604,7 +604,7 @@ async def pull_koge_vaults_moon(session):
     r = ast.literal_eval(r)
     return [x['vault'] for x in r]
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_pancakebunny_pools(network, session):
     urls = {'bsc' : 'https://us-central1-pancakebunny-finance.cloudfunctions.net/api-bunnyData', 'matic' : 'https://us-central1-bunny-polygon.cloudfunctions.net/api-bunnyData'}
     r = await make_get_json(session, urls[network])
@@ -683,7 +683,7 @@ async def get_beefy_boosts_moon(session):
 
     return [x['earnContractAddress'] for x in t if x['status'] == 'active']
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['offset'])
 async def get_pcs_pools(offset, session):
     r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.tsx')
     s2 = "const pools: SerializedPoolConfig[] = "
@@ -722,7 +722,7 @@ async def get_thorus_mb(session):
 async def get_thorus_auto(session):
     return ['0x63468133ed352E602bEB61DD254D6060Ad2fe419']
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_pickle_addresses(network,session):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
 
@@ -731,7 +731,7 @@ async def get_pickle_addresses(network,session):
     else:
         return []
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_pickle_addresses_uni(network,session):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
     
@@ -751,7 +751,7 @@ async def get_wault_pool_contracts(session):
     r = [x['contractAddress'] for x in r]
     return r
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_paprprintr_vaults(network, session):
     r = await make_get_json(session, 'https://paprprintr-api.herokuapp.com/api/vaults')
     if r:
@@ -993,7 +993,7 @@ async def get_olimpus_auto(session):
 async def get_morpheus_syrup(session):
     return ['0x2854980e1f6526CB5AeC8d53c5028AF486368ea1', '0x415742c217eA4941B706ff358bF6178985590cFA', '0x8b0c89A08045A38A710fd141443d463B960C9aAe', '0x9055064B490604E41593d9271a53603CF48204F4', '0x4bDA0C69f7F15a43Ef35881c2aB3B7f995630A14', '0x5db1AD1E0ECC9EfBF69d3566C54eE650Cd712Fa5', '0x791A8d97FeeF371D1AEc6f25B7C3E4545c847476']
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_jetswap_vaults(network, session):
     if network == 'polygon':
         r = await make_get_json(session, 'https://polygon.jetswap.finance/api/vaults.json')
@@ -1004,7 +1004,7 @@ async def get_jetswap_vaults(network, session):
         r = [x['vaultAddresses']['56'] for x in r]
         return r
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_elk_vaults(network, session):
         ROUNDS = 10
         STAKING = {"fuse":{"ELK":"0xA83FF3b61c7b5812d6f0B39d5C7dDD920B2bDa61"},"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
@@ -1058,7 +1058,7 @@ async def get_merlin_vaults(session):
 async def get_jetfuel_vaults(session):
     return poolext.jetfuel.vaults
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[0])
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_wault_locked(network, session):
     if network == 'bsc':
         return poolext.wault_locked.bsc
