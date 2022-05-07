@@ -47,10 +47,10 @@ async def create_user_history(db: Session, user: schemas.UserRecord):
         )
     
     await db.close()
-    with db.begin() as session:
-        session.add(db_user)
-        await session.commit()
-        await session.refresh(db_user)
+    await db.begin()
+    db.add(db_user)
+    await db.commit()
+    await db.refresh(db_user)
     
     return db_user
 
