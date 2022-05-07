@@ -130,10 +130,10 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
     
     network_data = NetworkRoutes(network)
 
-    if network in SCAN_SUPPORTED:
-        unique_list = await get_token_list_from_scan(network, session, wallet)
-    else:
-        unique_list = await get_token_list_from_mongo(network, mongodb)
+    # if network in SCAN_SUPPORTED:
+    #     unique_list = await get_token_list_from_scan(network, session, wallet)
+    # else:
+    unique_list = await get_token_list_from_mongo(network, mongodb)
     
     try:
         wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
