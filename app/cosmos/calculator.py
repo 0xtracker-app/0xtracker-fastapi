@@ -68,6 +68,6 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, pdb):
             finalResponse[f]['total'] = 0
         
         if finalResponse[f]['total'] > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-            create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network='cosmos', wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork='cosmos' ))
+            await create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm=f, farm_network='cosmos', wallet=wallet.lower(), dollarvalue=finalResponse[f]['total'], farmnetwork='cosmos' ))
         
     return finalResponse
