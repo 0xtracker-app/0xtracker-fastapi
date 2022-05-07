@@ -489,20 +489,20 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         farm_list = solana_farms_list()
         farms = [farm_list[x]['masterChef'] for x in farm_list if 'show' not in farm_list[x]]
     else:
-        farms= []
+        farms = []
         print(f"Unknown wallet type <<<<<<<<<<<<<<<<<<<<<< {walletType}")
-    
+
     try: 
         for is_last_element, farm in signal_last(farms):
-            try: 
-                loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session, 
-                    client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
+            try:
+                loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session,
+                                                     client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
             except Exception as e:
                 print(f"Error in farm {farm} {wallet} {methodName} {e}")
 
                 if is_last_element:
                     await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
-    
+
         return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
     except Exception as e:
         print(f"Error in user_active_pools {e} {farms}")
