@@ -131,3 +131,9 @@ asgi-correlation-id==1.1.2
 ably==1.1.1
 fastapi-cache2[redis]==0.1.8
 nats-py==2.1.0
+cchardet==2.1.7
+aiodns==3.0.0
+brotlipy==0.7.0
+pycares==4.1.2
+greenlet==1.1.2
+databases==0.5.5
