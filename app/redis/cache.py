@@ -27,17 +27,21 @@ async def getvalue(key):
     except:
         return []
         
-def cache_function(keyparams=None, ttl=None):
+def cache_function(keyparams=None, ttl=None, kwargsForKey=None):
     def wrap(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
+            kwargsKey = ""
+            if kwargsForKey:
+                kwargsKey = ','.join([str(kwargs[i]) for i in kwargsForKey if i in kwargs.keys()])
+
             if type(keyparams) == int:
-                key = f"i8n_{func.__module__}.{func.__name__}{args[:keyparams]}"
+                key = f"i8n_{func.__module__}.{func.__name__}({args[:keyparams]}, {kwargsKey})"
             elif type(keyparams) == list:
                 params = ""
                 if len(keyparams) > 0 and len(args) > 0:
-                    params = [args[i] for i in keyparams]
-                key = f"i8n_{func.__module__}.{func.__name__}{params}"
+                    params = ','.join([args[i] for i in keyparams])
+                key = f"i8n_{func.__module__}.{func.__name__}({params}, {kwargsKey})"
                        
             if CACHE:
                 val = await redis.session.get(key)
