@@ -215,8 +215,12 @@ async def get_tokens(db: AsyncIOMotorClient = Depends(get_database), token_id: s
 
 @app.get('/user-balance/')
 async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = Query([]), days: int = Query(..., ge=1, le=90), pdb: Session = Depends(get_db)):
+    
+    wallets = ','.join([f"'{wall}'" for wall in wallet])
 
     if farm_id:
+        farms = ','.join([f"'{farm}'" for farm in farm_id])
+            
         x = await pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
     SELECT
     bucket,
@@ -224,9 +228,9 @@ async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = 
     avg(dollarValue) AS dollarValue
     FROM
     user_data_per_hour
-    WHERE bucket > now () - INTERVAL ':days days' and wallet IN :wallets and farm IN :farms
+    WHERE bucket > now () - INTERVAL '$1 days' and wallet IN ($2) and farm IN ($3)
     GROUP BY farm_network, farm, bucket
-    ) a group by bucket ORDER BY _id ASC;''', {"days": days, "wallets": tuple(wallet), "farms": tuple(farm_id)})
+    ) a group by bucket ORDER BY _id ASC;''', {days, wallets, farms})
     else:
         x = await pdb.execute(f'''select bucket as _id, sum(dollarValue) as average from (
     SELECT
@@ -235,9 +239,9 @@ async def get_user_balances(wallet: List[str] = Query([]), farm_id: List[str] = 
     avg(dollarValue) AS dollarValue
     FROM
     user_data_per_hour
-    WHERE bucket > now () - INTERVAL ':days days' and wallet IN :wallets
+    WHERE bucket > now () - INTERVAL '$1 days' and wallet IN ($2)
     GROUP BY farm_network, farm, bucket
-    ) a group by bucket ORDER BY _id ASC;''', {"days": days, "wallets": tuple(wallet)})
+    ) a group by bucket ORDER BY _id ASC;''', {days, wallets})
 
     return await x.fetchall()
 
