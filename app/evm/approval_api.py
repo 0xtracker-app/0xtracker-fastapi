@@ -32,6 +32,9 @@ async def lookup_token_info(token_list, network):
 
 async def scan_ethlogs_approval(network, address, session, mongodb):
 
+    if network not in SCAN_APIS.keys():
+        return {'userInfo': {'wallet': address}, 'approvals': {}}
+
     network_data = SCAN_APIS[network]
     apikey = network_data['api_key']
     # WEB3_NETWORKS[network]['connection'].eth.block_number
