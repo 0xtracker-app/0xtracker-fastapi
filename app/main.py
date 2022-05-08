@@ -309,7 +309,7 @@ async def execute_call(*args, method_name=None, mongo_db=None, session=None, cli
             return {"wallet": args[0], "params": args[1:]}
 
     except Exception as e:
-        print(e)
+        print(f'{e} wallet: {args[0]}, params: {args[1:]}')
         return {"wallet": args[0], "params": args[1:], "error": f"{type(e)}: {e}"}
 
 
