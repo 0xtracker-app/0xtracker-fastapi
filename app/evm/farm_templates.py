@@ -3880,3 +3880,41 @@ async def get_spintop_vault(wallet, vaults, farm_id, network_id):
         return poolIDs, poolNest    
     else:
         return None
+
+
+async def get_no_pending_lock(wallet, vaults, farm_id, network_id, staked_function, staked_return, want_function):
+
+    poolKey = farm_id
+    calls = []
+
+    network=WEB3_NETWORKS[network_id]
+
+    for vault in vaults:
+        calls.append(Call(vault, [f'{staked_function}(address)({staked_return})', wallet], [[f'{vault}_staked', None]]))
+        calls.append(Call(vault, [f'{want_function}()(address)'], [[f'{vault}_want', None]]))
+
+    stakes=await Multicall(calls, network)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    token_decimals = await template_helpers.get_token_list_decimals(stakes,network_id,True)
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                token_decimal = 18 if breakdown[0] not in token_decimals else token_decimals[breakdown[0]]
+                staked = stakes[each]
+                want_token = stakes[f'{breakdown[0]}_want']
+                real_staked = parsers.from_custom(staked, token_decimal)
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : real_staked, 'contractAddress' : breakdown[0], 'vault_receipt' : breakdown[0]}
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+    
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
