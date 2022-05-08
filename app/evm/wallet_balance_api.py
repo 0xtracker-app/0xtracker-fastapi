@@ -1,40 +1,37 @@
-from ..redis.cache import cache_function
-from .multicall import Call, Multicall, parsers
 import json
+import os
 import time
 from web3 import Web3
+from ..redis.cache import cache_function
+from .multicall import Call, Multicall, parsers
 from .oracles import coingecko_by_address_network, list_router_prices, get_bancor_prices
 from .router_override import stable_override, router_override
 from .networks import WEB3_NETWORKS, SCAN_APIS
 from .utils import make_get_json
 from .native_tokens import NetworkRoutes
-from functools import reduce
-import math
-import numpy as np
-import asyncio
 from .external_contracts import get_venus_vaults
-import os
 from ..db.schemas import UserRecord
 from ..db.crud import create_user_history
 from datetime import datetime, timezone
 
 SCAN_SUPPORTED = [x for x in SCAN_APIS]
 
+
 def convert_timestamp(epoch):
     return time.strftime("%a, %d %b %Y %H:%M:%S %Z", time.gmtime(epoch))
 
-async def get_native_balance(wallet,network):
+
+async def get_native_balance(wallet, network):
     w3 = WEB3_NETWORKS[network]['connection']
     wallet = Web3.toChecksumAddress(wallet)
-    
+
     try:
         balance = await w3.eth.get_balance(wallet)
     except Exception as e:
         print(f'Error getting wallet balance for {wallet} on {network} : {e}')
         balance = 0
 
-    return balance       
-
+    return balance
 
 
 async def get_balance_of(token_list, wallet, network, network_info):
@@ -57,7 +54,7 @@ async def get_balance_of(token_list, wallet, network, network_info):
             '0x28424507fefb6f7f8E9D3860F56504E4e5f5f390'.lower(),
             '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4'.lower(),
             '0x1d2a0E5EC8E5bBDCA5CB219e649B565d8e5c3360'.lower(),
-            ] + [x['address'].lower() for x in await get_venus_vaults('session')]:
+        ] + [x['address'].lower() for x in await get_venus_vaults('session')]:
             calls.append(Call(token, ['balanceOf(address)(uint256)', wallet], [[f'{token}_balance', None]]))
 
     # if len(calls) > 2100:
@@ -67,8 +64,7 @@ async def get_balance_of(token_list, wallet, network, network_info):
     #     multi_return = reduce(lambda a, b: dict(a, **b), all_calls)
     # else:
     multi_return = await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
-    
-    
+
     native_balance = await get_native_balance(wallet, network)
     if network == "aurora":
         user_holdings = {f'native+{network}' : {'token' : '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'.lower(), 'decimal' : 18, 'token_symbol' : network_info.snative, 'token_balance' : parsers.from_custom(native_balance, 18), 'network' : network}}
@@ -99,7 +95,8 @@ async def get_balance_of(token_list, wallet, network, network_info):
                 user_tokens.append(key.lower())
     return user_holdings, ','.join(user_tokens)
 
-async def get_token_list_from_scan(network,session,wallet):
+
+async def get_token_list_from_scan(network, session, wallet):
 
     if network not in SCAN_APIS.keys():
         return []
@@ -113,21 +110,26 @@ async def get_token_list_from_scan(network,session,wallet):
     r = await make_get_json(session, url)
 
     data = r['result']
+    if not data or type(data) != list:
+        print(f'Error: data returned from {url} {data}: request {json.dumps(r)}')
+        return []
+
     filtered_to = [x['contractAddress'] for x in data if x['to'].lower() == wallet.lower() and int(x['value']) > 0]
-    
+
     if filtered_to is not None:
-        unique_list =[i for n, i in enumerate(filtered_to) if i not in filtered_to[n + 1:]]
+        unique_list = [i for n, i in enumerate(filtered_to) if i not in filtered_to[n + 1:]]
         return unique_list
     else:
         return []
 
-async def get_token_list_from_mongo(network,mongo):
+
+async def get_token_list_from_mongo(network, mongo):
     x = await mongo['tokenListByNetwork'].find_one({'name' : network}, {'_id': False})
     return x['tokens'] if x is not None else []
 
+
 @cache_function(keyparams=2)
 async def get_wallet_balance(wallet, network, mongodb, session, pdb):
-    
     network_data = NetworkRoutes(network)
 
     ##Have to revist this, too many dirty tokens in mongo on BSC
@@ -184,8 +186,8 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
                 total_balance += wallet_data[0][token]['token_balance'] * price
 
     if total_balance > 0 and os.getenv('USER_WRITE', 'True') == 'True':
-        await create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network=network, wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork=network ))
+        await create_user_history(pdb, UserRecord(timestamp=datetime.fromtimestamp(int(time.time()), tz=timezone.utc), farm='wallet', farm_network=network, wallet=wallet.lower(), dollarvalue=total_balance, farmnetwork=network))
 
-        #mongodb['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
+        # mongodb['user_data'].update_one({'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farm_network' : network}, { "$set": {'wallet' : wallet.lower(), 'timeStamp' : int(time.time()), 'farm' : 'wallet', 'farmNetwork' : network, 'dollarValue' : total_balance} }, upsert=True)
 
     return payload
