@@ -787,7 +787,7 @@ async def get_adamant_funds(wallet, vaults):
         adamant_user_info.append(Call(vault, ['getRewardMultiplier()(uint256)'], [[f'{vault}_multiplier', None]]))
         adamant_user_info.append(Call(strategy, ['want()(address)'], [[f'{vault}_want', None]]))
 
-    user_data = await Multicall(adamant_user_info, WEB3_NETWORKS['matic'])()
+    user_data = await Multicall(adamant_user_info, WEB3_NETWORKS['matic'], _strict=False)()
 
     poolNest = {poolKey: 
     { 'userData': { } } }
