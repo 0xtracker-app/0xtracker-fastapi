@@ -402,8 +402,6 @@ async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=Non
     if nats_server and len(data) > 0:
         await nats_server.publish(req_id, bytes(json.dumps(data[0]), 'ascii'))
 
-    if last:
-        await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
 
 @app.post('/multicall2')
 async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
@@ -432,20 +430,6 @@ async def multicall2(request: Request, mongo_db: AsyncIOMotorClient = Depends(ge
 
     return {"status": "ok", "channel": req_id}
 
-def signal_last(it:Iterable[Any]) -> Iterable[Tuple[bool, Any]]:
-    iterable = iter(it)
-    try:
-        ret_var = next(iterable)
-        for val in iterable:
-            yield False, ret_var
-            ret_var = val
-        yield True, ret_var
-    except StopIteration:
-        yield True, None
-        
-
-
-
 @app.post('/user-active-pools')
 async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db), client_terra: AsyncLCDClient = Depends(get_terra), client_solana: AsyncClient = Depends(get_solana)):
     body_json = await request.json()
@@ -458,8 +442,6 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
     
     if 'nats' not in natspool.keys():
         natspool['nats'] = await nats.connect("nats://54.36.175.103:4222")
-
-    nats_server = natspool['nats']
 
     loop = asyncio.get_event_loop()
 
@@ -493,40 +475,17 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         print(f"Unknown wallet type <<<<<<<<<<<<<<<<<<<<<< {walletType}")
 
     try: 
-        for is_last_element, farm in signal_last(farms):
+        for farm in farms:
             try:
                 loop.create_task(execute_multi_call2(wallet, [farm], method_name=methodName, mongo_db=mongo_db, session=session,
-                                                     client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=is_last_element))
+                                                     client=farms_clients[methodName], pdb=pdb, req_id=req_id, last=False))
             except Exception as e:
                 print(f"Error in farm {farm} {wallet} {methodName} {e}")
 
-                if is_last_element:
-                    await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
 
         return {"status": "ok", "channel": req_id, 'farmsCount': len(farms)}
     except Exception as e:
         print(f"Error in user_active_pools {e} {farms}")
-        await nats_server.publish(req_id, bytes(json.dumps({"status": 'done'}), 'ascii'))
         return {"status": "ko", "channel": req_id, 'error': str(e)}
 
 
-
-        # server.close()
-        # channel.publish_message(Message.Message(name=req_id, data=list(filter(None, results))))
-# @app.get("/users/")
-# def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-#     users = crud.get_users(db, skip=skip, limit=limit)
-#     return users
-
-# @app.get('/router-details/{network}/{contract}')
-# async def router_details(network, contract, session: ClientSession = Depends(get_session)):
-#     results = await get_router_details(network, contract, session)
-#     return results
-
-# @app.get('/write-tokens/{wallet}')
-# async def get_cosmos_farms(wallet, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
-#     results = await write_tokens(wallet, mongo_db, session)
-#     return results
-
-# to make it work with Amazon Lambda, we create a handler object
-# handler = Mangum(app=app)
