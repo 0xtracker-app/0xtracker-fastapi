@@ -1,5 +1,5 @@
 import os
-from redis.cache import cache_function
+from ..redis.cache import cache_function
 from .utils import make_get_json
 from .token_lookup import TokenMetaData
 import time
