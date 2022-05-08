@@ -9,6 +9,8 @@ class Farms:
         self.farms = {
     '0x1ac6C0B955B6D7ACb61c9Bdf3EE98E0689e07B8A' : {
         'name' : 'eleven.finance',
+        'displayName' : 'Eleven Finance',
+        'url' : 'https://eleven.finance/',
         'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -38,6 +40,8 @@ class Farms:
     },
     '0x52B8bb74Cde6602AB9e6540e25E0A97f5B3226D7' : {
         'name' : 'eleven.finance',
+        'displayName' : 'Eleven Finance',
+        'url' : 'https://eleven.finance/',
         'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -68,6 +72,8 @@ class Farms:
     },
     '0xElevenOKE' : {
         'name' : 'eleven.finance',
+        'displayName' : 'Eleven Finance',
+        'url' : 'https://eleven.finance/',
         'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -89,6 +95,8 @@ class Farms:
     },
     '0x8eDCe6D0E0687DA9C07B36591781fB6641A53a12' : {
         'name' : 'eleven.finance',
+        'displayName' : 'Eleven Finance',
+        'url' : 'https://eleven.finance/',
         'rewardToken' : '0xacd7b3d9c10e97d0efa418903c0c7669e702e4c0',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -112,6 +120,8 @@ class Farms:
     },
     '0x7f7Bf15B9c68D23339C31652C8e860492991760d' : {
         'name' : 'farm.br34p.finance',
+        'displayName' : 'BR34P Finance',
+        'url' : 'https://farm.br34p.finance/',
         'rewardToken' : '0xbda8d53fe0f164915b46cd2ecffd94254b6086a2',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -123,6 +133,8 @@ class Farms:
     },
     '0x2EBe8CDbCB5fB8564bC45999DAb8DA264E31f24E' : {
         'name' : 'Nerve.fi',
+        'displayName' : 'Nerve',
+        'url' : 'https://nerve.fi/',
         'rewardToken' : '0x42f6f551ae042cbe50c739158b4f0cac0edb9096',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -134,6 +146,8 @@ class Farms:
     },
     '0x0895196562C7868C5Be92459FaE7f877ED450452' : {
         'name' : 'autofarm.network',
+        'displayName' : 'AutoFarm',
+        'url' : 'https://autofarm.network/',
         'rewardToken' : '0xa184088a740c695E156F91f5cC086a06bb78b827',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -146,6 +160,8 @@ class Farms:
     },
     '0xDaC4d0EE7B55497E96b73a53b31A2B47ABb7b5a8' : {
         'name' : 'cdo.finance',
+        'displayName' : 'CDO Finance',
+        'url' : 'https://cdo.finance/',
         'rewardToken' : '0x9E95cB3D0560f9Cba88991f828322526851BFb56',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -157,6 +173,8 @@ class Farms:
     },
     '0x33AdBf5f1ec364a4ea3a5CA8f310B597B8aFDee3' : {
         'name' : 'swamp.finance',
+        'displayName' : 'Swamp Finance',
+        'url' : 'https://swamp.finance/',
         'rewardToken' : '0xc5A49b4CBe004b6FD55B30Ba1dE6AC360FF9765d',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -168,6 +186,8 @@ class Farms:
     },
     '0x4F04e540A51013aFb6761ee73D71d2fB1F29af80' : {
         'name' : 'swamp.finance',
+        'displayName' : 'Swamp Finance',
+        'url' : 'https://swamp.finance/',
         'rewardToken' : '0x5f1657896b38c4761dbc5484473c7a7c845910b6',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -179,6 +199,8 @@ class Farms:
     },
     '0x073D613b435b5574e988Dc989f467DDf94FB47D4' : {
         'name' : 'swamp.finance',
+        'displayName' : 'Swamp Finance',
+        'url' : 'https://swamp.finance/',
         'rewardToken' : '0x23cBC7C95a13071562af2C4Fb1Efa7a284d0543a',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -190,6 +212,8 @@ class Farms:
     },
     '0x86d77d1CA67358f28BFc57cC85AD59c86c4f092a' : {
         'name' : 'swamp.finance',
+        'displayName' : 'Swamp Finance',
+        'url' : 'https://swamp.finance/',
         'rewardToken' : '0x3d6386FDE111eC2919cc8871377821b12c7EAE7C',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -201,6 +225,8 @@ class Farms:
     },
         '0x1C515985c6318550Afb5bC590f4f0843b977250A' : {
         'name' : 'manyswap.io',
+        'displayName' : 'ManySwap',
+        'url' : 'https://www.manyswap.io/',
         'rewardToken' : '0x2dD6c9c5BCD16816226542688788932c6e79A600',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -213,6 +239,8 @@ class Farms:
 
         '0x1FDCA2422668B961E162A8849dc0C2feaDb58915' : {
         'name' : 'fulcrum.trade',
+        'displayName' : 'Fulcrum',
+        'url' : 'https://fulcrum.trade/',
         'rewardToken' : '0xf8E026dC4C0860771f691EcFFBbdfe2fa51c77CF',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -224,6 +252,8 @@ class Farms:
     },
         '0xd39Ff512C3e55373a30E94BB1398651420Ae1D43' : {
         'name' : 'fulcrum.trade',
+        'displayName' : 'Fulcrum',
+        'url' : 'https://fulcrum.trade/',
         'rewardToken' : '0xd5d84e75f48e75f01fb2eb6dfd8ea148ee3d0feb',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -235,6 +265,8 @@ class Farms:
     },
             '0x69C77Aca910851E61a64b855116888F1c5eD3B75' : {
         'name' : 'polarisdefi.io',
+        'displayName' : 'Polaris',
+        'url' : 'https://www.polarisdefi.io/',
         'rewardToken' : '0x3a5325F0E5Ee4da06a285E988f052D4e45Aa64b4',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -246,6 +278,8 @@ class Farms:
     },
                 '0x367CdDA266ADa588d380C7B970244434e4Dde790' : {
         'name' : 'blizzard.money',
+        'displayName' : 'Blizzard',
+        'url' : 'https://www.blizzard.money/',
         'rewardToken' : '0x9a946c3cb16c08334b69ae249690c236ebd5583e',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -257,6 +291,8 @@ class Farms:
     },
                 '0x86f4bC1EBf2C209D12d3587B7085aEA5707d4B56' : {
         'name' : 'jetfuel.finance',
+        'displayName' : 'Jetfuel Finance',
+        'url' : 'https://jetfuel.finance/',
         'rewardToken' : '0x2090c8295769791ab7A3CF1CC6e0AA19F35e441A',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -280,6 +316,8 @@ class Farms:
     },
                 '0xb04381026F5D4AAf0487aC4336F16E133FA5FB0a' : {
         'name' : 'blueswap.finance',
+        'displayName' : 'Blue Swap',
+        'url' : 'https://blueswap.finance/',
         'rewardToken' : '0x36c0556c2b15aed79f842675ff030782738ef9e8',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -292,6 +330,8 @@ class Farms:
     },
                 '0xA9C9D9Aed47320835c84090c62dC324FcF24f683' : {
         'name' : 'mochiswap.io',
+        'displayName' : 'Mochi Swap',
+        'url' : 'https://mochiswap.io/',
         'rewardToken' : '0x055daB90880613a556a5ae2903B2682f8A5b8d27',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -303,6 +343,8 @@ class Farms:
     },
                 '0x58DdaA668d1aDf32b7bdFcc4963105090Ca59540' : {
         'name' : 'rune.farm',
+        'displayName' : 'Rune Farm',
+        'url' : 'https://rune.game/',
         'rewardToken' : '0x5de72a6fca2144aa134650bbea92cc919244f05d',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -314,6 +356,8 @@ class Farms:
     },
                 '0xBeefy' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xca3f508b8e4dd382ee878a314789373d80a5190a',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -330,6 +374,8 @@ class Farms:
     },
                 '0xReaperFTM' : {
         'name' : 'reaper.farm',
+        'displayName' : 'Reaper Farm',
+        'url' : 'https://reaper.farm/',
         'rewardToken' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -346,6 +392,8 @@ class Farms:
     },
                 '0x8cf7044DDedbE502892B120aAf8692FeCFb71420' : {
         'name' : 'dragonballfinance.org',
+        'displayName' : 'Dragonball Finance',
+        'url' : 'https://dragonballfinance.org/',
         'rewardToken' : '0xceb2f5e9c7f2d3bcd12a7560d73c56f3396af3f9',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -357,6 +405,8 @@ class Farms:
     },
                 '0x3F648151f5D591718327aA27d2EE25edF1b435D8' : {
         'name' : 'goosedefi.com (Vaults)',
+        'displayName' : 'Goose Defi',
+        'url' : 'https://goosedefi.com/',        
         'rewardToken' : '0x5bfE81fCB3708C8fC733BEf60d313CAFCe1FeBEB',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -368,6 +418,8 @@ class Farms:
     },
                 '0x045502ee488806bdf22928b6228bdd162b5056f6' : {
         'name' : 'neonic.finance',
+        'displayName' : 'Neonic Finance',
+        'url' : 'https://neonic.finance/',   
         'rewardToken' : '0x94026f0227ce0c9611e8a228f114f9f19cc3fa87',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -379,6 +431,8 @@ class Farms:
     },
                 '0x76bd7145b99FDF84064A082BF86A33198C6e9D09' : {
         'name' : 'hyruleswap.com',
+        'displayName' : 'Hyrule Swap',
+        'url' : 'https://hyruleswap.com/',
         'rewardToken' : '0x7b0409a3a3f79baa284035d48e1dfd581d7d7654',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -391,6 +445,8 @@ class Farms:
     },
                 '0xd1b3d8ef5ac30a14690fbd05cf08905e1bf7d878' : {
         'name' : 'hyruleswap.com (Goron Vaults)',
+        'displayName' : 'Hyrule Swap',
+        'url' : 'https://hyruleswap.com/',
         'rewardToken' : '0x8efa59bf5f47c6fe0e97c15cad12f2be6bb899a1',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -404,6 +460,8 @@ class Farms:
     },
                 '0x9b1dfEF15251AAF3540C1d008d4c4Aa6f636339d' : {
         'name' : 'satis.finance',
+        'displayName' : 'Satis Finance',
+        'url' : 'https://satis.finance/',
         'rewardToken' : '0xa1928c0d8f83c0bfb7ebe51b412b1fd29a277893',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -415,6 +473,8 @@ class Farms:
     },
                 '0xHorizon' : {
         'name' : 'horizonprotocol.com',
+        'displayName' : 'Horizon Protocol',
+        'url' : 'https://horizonprotocol.com/',
         'rewardToken' : '0xC0eFf7749b125444953ef89682201Fb8c6A917CD',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1622,6 +1682,8 @@ class Farms:
     },
                 '0xBeefyMatic' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xFbdd194376de19a88118e84E279b977f165d01b8',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1638,6 +1700,8 @@ class Farms:
     },
                 '0xBeefyFantom' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xbF07093ccd6adFC3dEB259C557b61E94c1F66945',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1654,6 +1718,8 @@ class Farms:
     },
                 '0xBeefyHarmony' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xbF07093ccd6adFC3dEB259C557b61E94c1F66945',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1670,6 +1736,8 @@ class Farms:
     },
                 '0xBeefyCronos' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xe6801928061CDbE32AC5AD0634427E140EFd05F9',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1686,6 +1754,8 @@ class Farms:
     },
                 '0xBeefyArb' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1702,6 +1772,8 @@ class Farms:
     },
                 '0xBeefyFuse' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0x99C409E5f62E4bd2AC142f17caFb6810B8F0BAAE',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1718,6 +1790,8 @@ class Farms:
     },
                 '0xBeefyAVAX' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xd6070ae98b8069de6B494332d1A1a81B6179D960',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -1734,6 +1808,8 @@ class Farms:
     },
                 '0xBeefyMoon' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0x173fd7434B8B50dF08e3298f173487ebDB35FD14',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -6644,6 +6720,8 @@ class Farms:
         },
                 '0xBeefyMetis' : {
         'name' : 'beefy.finance',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
         'rewardToken' : '0xca3f508b8e4dd382ee878a314789373d80a5190a',
         'decimal' : 18,
         'stakedFunction' : None,
@@ -7449,7 +7527,31 @@ class Farms:
         'perBlock' : 'diffusionPerSecond',
         'apy_config' : 'second',
     },
-
+                '0x5593473e318F0314Eb2518239c474e183c4cBED5' : {
+        'name' : 'plutusdao.io',
+        'rewardToken' : '0x51318b7d00db7acc4026c88c3952b66278b6a67f',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingPls',
+        'masterChef' : '0x5593473e318F0314Eb2518239c474e183c4cBED5',
+        'featured' : 2,
+        'network' : 'arb',
+        'perBlock' : 'plsPerSecond',
+        'apy_config' : 'second',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_no_pending_lock],
+            'vaults' : [external_contracts.get_plutus_locks],
+            'args' : [
+                {
+                    'farm_id' : '0x5593473e318F0314Eb2518239c474e183c4cBED5',
+                    'staked_function' : 'stakedDetails',
+                    'staked_return' : 'uint112',
+                    'want_function' : 'pls',
+                    'network_id' : 'arb',
+                }],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
