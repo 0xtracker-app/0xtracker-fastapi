@@ -1,5 +1,4 @@
 from .utils import make_get_json, make_get
-import json
 from .networks import WEB3_NETWORKS, SCAN_APIS
 from web3 import Web3
 from .multicall import Call, Multicall, parsers
