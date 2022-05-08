@@ -1150,6 +1150,13 @@ async def get_spintop_vaults(session):
         '0x03447d28FC19cD3f3cB449AfFE6B3725b3BCdA77',
         ]
 
+async def get_plutus_locks(session):
+    return [
+        '0x27Aaa9D562237BF8E024F9b21DE177e20ae50c05',
+        '0xE59DADf5F7a9decB8337402Ccdf06abE5c0B2B3E',
+        '0xBEB981021ed9c85AA51d96C0c2edA10ee4404A2e'
+        ]
+
 async def get_fortress_vaults(session):
     return poolext.fortress.forts
 
