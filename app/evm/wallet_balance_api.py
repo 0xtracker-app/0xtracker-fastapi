@@ -130,13 +130,16 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
     
     network_data = NetworkRoutes(network)
 
-    # if network in SCAN_SUPPORTED:
-    #     unique_list = await get_token_list_from_scan(network, session, wallet)
-    # else:
-    unique_list = await get_token_list_from_mongo(network, mongodb)
+    ##Have to revist this, too many dirty tokens in mongo on BSC
+    #unique_list = await get_token_list_from_mongo(network, mongodb)
+
+    if network in SCAN_SUPPORTED:
+        unique_list = await get_token_list_from_scan(network, session, wallet)
+    else:
+        unique_list = await get_token_list_from_mongo(network, mongodb)
     
     try:
-        wallet_data = await get_balance_of(unique_list, wallet, network, network_data)
+        wallet_data = await get_balance_of([x for x in unique_list if x not in ["1"]], wallet, network, network_data)
         prices = await coingecko_by_address_network(wallet_data[1], network_data.coingecko, session)
         if network == 'rsk':
             router_prices = await get_bancor_prices([wallet_data[0][x] for x in wallet_data[0]], network)
