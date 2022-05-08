@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
+        self.supported_networks = ['meme','crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -431,6 +431,21 @@ class CosmosNetwork:
             'stake_token' : {
                 'denom' : 'ucre',
                 'symbol' : 'CRE',
+                'decimals' : 6,
+                'coin_gecko_id' : ''
+            }
+        },
+            'meme' : {
+            'wallet' : from_atom(wallet,'meme'),
+            'rpc' : 'https://rpc-meme-1.meme.sx',
+            'rest' : 'https://api-meme-1.meme.sx',
+            'chain_id' : 'meme-1',
+            'chain_name' : 'meme',
+            'explorer' : 'https://explorer.meme.sx/meme',
+            'bech_prefix' : 'meme',
+            'stake_token' : {
+                'denom' : 'umeme',
+                'symbol' : 'MEME',
                 'decimals' : 6,
                 'coin_gecko_id' : ''
             }
