@@ -1,8 +1,12 @@
+import os
+from redis.cache import cache_function
 from .utils import make_get_json
 from .token_lookup import TokenMetaData
 import time
 from . import queries
 from .helpers import from_custom
+
+CONTRACTS_TTL = os.getenv("CACHE_TTL_CONTRACTS", 86400)
 
 class TokenOverride:
 
@@ -71,6 +75,7 @@ async def get_juno_price(session):
     current_price = float(r['data']['result'][0]['values'][0][1])
     return current_price
 
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[])
 async def check_osmosis_pricing(session, mongo_db, network_data):
     r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
     osmo_prices = {}
@@ -95,6 +100,7 @@ async def check_osmosis_pricing(session, mongo_db, network_data):
 
     return osmo_prices
 
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[])
 async def check_sif_pricing(session, network_data):
     r = await make_get_json(session, 'https://data.sifchain.finance/beta/asset/tokenStats')
     sif_prices = {}
