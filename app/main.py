@@ -400,7 +400,6 @@ async def execute_multi_call2(wallet, all_params, method_name=None, mongo_db=Non
     nats_server = natspool['nats']
 
     if nats_server and len(data) > 0:
-        asyncio.sleep(3)
         await nats_server.publish(req_id, bytes(json.dumps(data[0]), 'ascii'))
 
 
