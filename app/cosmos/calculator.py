@@ -22,7 +22,7 @@ def get_balancer_ratio(token_data,quote_price):
         token_price = quote_price[token_address] if token_address in quote_price else 0
         lp_price += lp_balance * token_price
 
-    return {'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'lpBalances' : lp_values, 'actualStaked' : token_data['staked']}
+    return {'type' : 'lp', 'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'lpBalances' : lp_values, 'actualStaked' : token_data['staked']}
 
 
 
