@@ -8331,6 +8331,20 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xb94d1959084081c5a11C460012Ab522F5a0FD756' : {
+        'name' : 'jonesdao.io',
+        'displayName' : 'Jones Dao',
+        'url' : 'https://jonesdao.io/',
+        'rewardToken' : '0x10393c20975cf177a3513071bc110f7962cd67da',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingJones',
+        'masterChef' : '0xb94d1959084081c5a11C460012Ab522F5a0FD756',
+        'featured' : 2,
+        'network' : 'arb',
+        'perBlock' : 'jonesPerSecond',
+        'apy_config' : 'second',
+    },
 }
 
 
