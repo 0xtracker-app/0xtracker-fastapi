@@ -3918,3 +3918,51 @@ async def get_no_pending_lock(wallet, vaults, farm_id, network_id, staked_functi
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_double_syrup(wallet,farm_id,network_id,vaults,staking_token,earned,token_a,token_b):
+    poolKey = farm_id
+    calls = []
+    network = WEB3_NETWORKS[network_id]
+
+    for vault in vaults:
+        calls.append(Call(vault, [f'balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
+        calls.append(Call(vault, [f'{earned}(address)((uint256,uint256))', wallet], [[f'{vault}_pending', None]]))
+        calls.append(Call(vault, [f'{token_a}()(address)'], [[f'{vault}_rewardTokenA', None]]))
+        calls.append(Call(vault, [f'{token_b}()(address)'], [[f'{vault}_rewardTokenB', None]]))
+        calls.append(Call(vault, [f'{staking_token}()(address)'], [[f'{vault}_want', None]]))
+
+    stakes=await Multicall(calls, network,_strict=False)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    token_symbols = await template_helpers.get_token_list_decimals_symbols([stakes[x] for x in stakes if 'rewardTokenA' in x or 'rewardTokenB' in x or 'want' in x],network_id)
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                
+                want_token = stakes[f'{breakdown[0]}_want']
+                reward_tokenA = stakes[f'{breakdown[0]}_rewardTokenA']
+                reward_tokenB = stakes[f'{breakdown[0]}_rewardTokenB']
+                staked = parsers.from_custom(stakes[each], token_symbols.get(f'{want_token}_decimals'))
+
+
+                reward_token_0 = {'pending': parsers.from_custom(stakes[f'{breakdown[0]}_pending'][0], token_symbols.get(f'{reward_tokenA}_decimals')), 'symbol' : token_symbols.get(f'{reward_tokenA}_symbol'), 'token' : reward_tokenA}
+                reward_token_1 = {'pending': parsers.from_custom(stakes[f'{breakdown[0]}_pending'][1], token_symbols.get(f'{reward_tokenB}_decimals')), 'symbol' : token_symbols.get(f'{reward_tokenB}_symbol'), 'token' : reward_tokenB}
+
+                want_token = stakes[f'{breakdown[0]}_want']
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+                poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_1)
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
