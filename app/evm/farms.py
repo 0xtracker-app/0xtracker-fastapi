@@ -8358,6 +8358,19 @@ class Farms:
         'network' : 'ftm',
         'perBlock' : 'protonPerBlock',
     },
+                '0xFB03e11D93632D97a8981158A632Dd5986F5E909' : {
+        'name' : 'mdex.com',
+        'displayName' : 'MDEX',
+        'url' : 'https://mdex.com/',
+        'rewardToken' : '0x25d2e80cb6b86881fd7e07dd263fb79f4abe033c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pending',
+        'masterChef' : '0xFB03e11D93632D97a8981158A632Dd5986F5E909',
+        'featured' : 2,
+        'network' : 'heco',
+        'perBlock' : 'mdxPerBlock',
+    },
 }
 
 
