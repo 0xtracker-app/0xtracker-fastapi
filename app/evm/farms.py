@@ -8345,6 +8345,19 @@ class Farms:
         'perBlock' : 'jonesPerSecond',
         'apy_config' : 'second',
     },
+                '0xa71f52aee8311c22b6329EF7715A5B8aBF1c6588' : {
+        'name' : 'protofi.app',
+        'displayName' : 'ProtoFi',
+        'url' : 'https://protofi.app/',
+        'rewardToken' : '0xa23c4e69e5eaf4500f2f9301717f12b578b948fb',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingProton',
+        'masterChef' : '0xa71f52aee8311c22b6329EF7715A5B8aBF1c6588',
+        'featured' : 2,
+        'network' : 'ftm',
+        'perBlock' : 'protonPerBlock',
+    },
 }
 
 
