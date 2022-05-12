@@ -8371,6 +8371,98 @@ class Farms:
         'network' : 'heco',
         'perBlock' : 'mdxPerBlock',
     },
+                '0xKyberSwapETH' : {
+        'name' : 'kyberswap.com',
+        'displayName' : 'Kyber Swap',
+        'url' : 'https://kyberswap.com/',
+        'rewardToken' : '0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xKyberSwapETH',
+        'featured' : 2,
+        'network' : 'eth',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_kyber_chef],
+            'vaults' : [external_contracts.kyberswap_contracts],
+            'args' : [
+                    {
+                        'farm_id' : '0xKyberSwapETH',
+                        'network_id' : 'eth',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'eth'}]
+        }
+    },
+                '0xKyberSwapMATIC' : {
+        'name' : 'kyberswap.com',
+        'displayName' : 'Kyber Swap',
+        'url' : 'https://kyberswap.com/',
+        'rewardToken' : '0x1C954E8fe737F99f68Fa1CCda3e51ebDB291948C',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xKyberSwapMATIC',
+        'featured' : 2,
+        'network' : 'matic',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_kyber_chef],
+            'vaults' : [external_contracts.kyberswap_contracts],
+            'args' : [
+                    {
+                        'farm_id' : '0xKyberSwapMATIC',
+                        'network_id' : 'matic',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'matic'}]
+        }
+    },
+                '0xKyberSwapBSC' : {
+        'name' : 'kyberswap.com',
+        'displayName' : 'Kyber Swap',
+        'url' : 'https://kyberswap.com/',
+        'rewardToken' : '0xfe56d5892BDffC7BF58f2E84BE1b2C32D21C308b',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xKyberSwapBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_kyber_chef],
+            'vaults' : [external_contracts.kyberswap_contracts],
+            'args' : [
+                    {
+                        'farm_id' : '0xKyberSwapBSC',
+                        'network_id' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'bsc'}]
+        }
+    },
+                '0xKyberSwapAVAX' : {
+        'name' : 'kyberswap.com',
+        'displayName' : 'Kyber Swap',
+        'url' : 'https://kyberswap.com/',
+        'rewardToken' : '0x39fC9e94Caeacb435842FADeDeCB783589F50f5f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xKyberSwapAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_kyber_chef],
+            'vaults' : [external_contracts.kyberswap_contracts],
+            'args' : [
+                    {
+                        'farm_id' : '0xKyberSwapAVAX',
+                        'network_id' : 'avax',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'avax'}]
+        }
+    }
 }
 
 
