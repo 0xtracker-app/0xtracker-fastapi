@@ -3966,3 +3966,64 @@ async def get_double_syrup(wallet,farm_id,network_id,vaults,staking_token,earned
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_kyber_chef(wallet,farm_id,network_id,vaults):
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        pool_length_calls = []
+        for contract in vaults:        
+            pool_length_calls.append(Call(contract, [f'poolLength()(uint256)'], [[f'{contract}_length', None]]))
+            pool_length_calls.append(Call(contract, [f'getRewardTokens()(address[])'], [[f'{contract}_rewards', None]]))
+
+        pool_lengths=await Multicall(pool_length_calls, network)()
+
+        for contract in vaults:
+            pool_length = pool_lengths.get(f'{contract}_length')
+            for pid in range(0,pool_length):
+                calls.append(Call(contract, [f'getUserInfo(uint256,address)(uint256)', pid, wallet], [[f'{pid}_{contract}_staked', None]]))
+                calls.append(Call(contract, [f'pendingRewards(uint256,address)(uint256[])', pid, wallet], [[f'{pid}_{contract}_pending', None]]))
+                calls.append(Call(contract, [f'getPoolInfo(uint256)((uint256,address))', pid], [[f'{pid}_{contract}_want', parsers.parse_wanted_offset, 1]]))
+
+        stakes=await Multicall(calls, network)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+        reward_token_list = [list(pool_lengths[x]) for x in pool_lengths if 'rewards' in x]
+        token_decimals = await template_helpers.get_token_list_decimals_symbols([stakes[x] for x in stakes if 'want' in x] + [a for tup in reward_token_list for a in tup],network_id)
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    position_id = breakdown[0]+breakdown[1]
+                    master_contract = breakdown[1]
+                    want_token = stakes[f'{breakdown[0]}_{breakdown[1]}_want']
+                    reward_tokens = pool_lengths[f'{master_contract}_rewards']
+                    try:
+                        token_decimal = token_decimals.get(want_token) if token_decimals.get(want_token) else 18
+                    except:
+                        token_decimal = 18
+                    staked = parsers.from_custom(stakes[each], token_decimal)
+
+
+                    poolNest[poolKey]['userData'][position_id] = {'want': want_token, 'staked' : staked, 'contractAddress' : master_contract, 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, position_id)] = want_token
+
+                    for i,token in enumerate(reward_tokens):
+                        reward_token_0 = {
+                            'pending': parsers.from_custom(stakes[f'{breakdown[0]}_{breakdown[1]}_pending'][i], 18),
+                            'symbol' : token_decimals.get(f'{token}_symbol'),
+                            'token' : token
+                            }
+                        poolNest[poolKey]['userData'][position_id]['gambitRewards'].append(reward_token_0)
+                
+
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
