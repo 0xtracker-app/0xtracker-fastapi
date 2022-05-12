@@ -395,6 +395,8 @@ async def kyberswap_contracts(session, network):
     }
     return contracts[network]
 
+async def lido_contracts_eth(session):
+    return ['0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84']
 
 
 
