@@ -4027,3 +4027,44 @@ async def get_kyber_chef(wallet,farm_id,network_id,vaults):
             return poolIDs, poolNest    
         else:
             return None
+
+async def get_simple_balanceof(wallet, vaults, farm_id, network, want_function=None, single_bypass=None):
+    network_conn = WEB3_NETWORKS[network]
+
+    poolKey = farm_id
+    calls = []
+
+    
+    for vault in vaults:
+
+        calls.append(Call(vault, ['balanceOf(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
+        if want_function:
+            calls.append(Call(vault, [f'{want_function}()(address)'], [[f'{vault}_want', None]]))
+
+    stakes=await Multicall(calls, network_conn, _strict=False)()
+
+    if single_bypass:
+        stakes = {**stakes, **{f'{x}_want' : single_bypass for x in vaults}}
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    token_decimals = await template_helpers.get_token_list_decimals(stakes,network,True)
+
+    for each in stakes:
+        if 'staked' in each:
+            if stakes[each] > 0:
+                breakdown = each.split('_')
+                
+                want_token = stakes[f'{breakdown[0]}_want']
+                staked = parsers.from_custom(stakes[each], token_decimals.get(want_token))
+
+                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'pending': 0, 'contractAddress' : breakdown[0] }
+                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+    
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None

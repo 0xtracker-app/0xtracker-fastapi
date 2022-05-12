@@ -6509,6 +6509,33 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xAaveETH' : {
+        'name' : 'aave.com',
+        'displayName' : 'Beefy Finance',
+        'url' : 'https://beefy.finance/',
+        'rewardToken' : '0xcf323aad9e522b93f11c352caa519ad0e14eb40f',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAaveETH',
+        'featured' : 2,
+        'network' : 'eth',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_aave_protocol],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xAaveETH',
+                        'network' : 'eth',
+                        'pool_address' : '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9',
+                        'pool_provider' : '0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d'
+
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
                 '0xVenusBSC' : {
         'name' : 'venus.io (Lending)',
         'displayName' : 'Beefy Finance',
@@ -8461,6 +8488,30 @@ class Farms:
                     },
                     ],
             'vault_args' : [{'network' : 'avax'}]
+        }
+    },
+                '0xLIDOETH' : {
+        'name' : 'lido.fi',
+        'displayName' : 'LIDO',
+        'url' : 'https://lido.fi/',
+        'rewardToken' : '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xLIDOETH',
+        'featured' : 2,
+        'network' : 'eth',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.lido_contracts_eth],
+            'args' : [
+                    {
+                        'farm_id' : '0xLIDOETH',
+                        'network' : 'eth',
+                        'single_bypass' : '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+                    },
+                    ],
+            'vault_args' : [{}]
         }
     }
 }
