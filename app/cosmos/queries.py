@@ -152,18 +152,18 @@ async def get_user_sif_pool(pool,wallet,session):
         return None
 
 async def get_sif_assets(session):
-    endpoint = f'https://raw.githubusercontent.com/Sifchain/sifchain-ui/develop/core/src/config/networks/sifchain/assets.sifchain.mainnet.ts'
-    r = await make_get(session, endpoint)
+    endpoint = f'https://github.com/Sifchain/sifchain-ui/blob/develop/core/src/config/networks/sifchain/assets.sifchain.mainnet.json'
+    r = await make_get_json(session, endpoint)
 
-    x = r.split('assets: [')[1].split(']')[0]
-    response = list(js2py.eval_js(f'[{x}]'))
+    # x = r.split('assets: [')[1].split(']')[0]
+    # response = list(js2py.eval_js(f'[{x}]'))
 
     return {x['symbol'] : {
-        'denom' : x['symbol'],
-        'symbol' : x['displaySymbol'].upper(),
-        'decimal' : x['decimals']
-        
-        } for x in response}
+            'denom' : x['symbol'],
+            'symbol' : x['displaySymbol'].upper(),
+            'decimal' : x['decimals']
+        } for x in r}
+
 
 async def get_osmosis_assets(session):
     endpoint = f'https://raw.githubusercontent.com/osmosis-labs/assetlists/main/osmosis-1/osmosis-1.assetlist.json'
