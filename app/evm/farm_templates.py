@@ -3665,6 +3665,59 @@ async def get_solidly_gauges(wallet,voting,farm_id,network_id,vaults):
         else:
             return None
 
+async def get_protofi_gauges(wallet,voting,farm_id,network_id,want,reward,vaults):
+        poolKey = farm_id
+        gcalls = []
+        calls = []
+
+        network = WEB3_NETWORKS[network_id]
+        
+        pools=await Call(voting, ['tokens()(address[])'], None, network)()
+
+        ##Get Gauges
+        for pool in pools:
+            gcalls.append(Call(voting, ['gauges(address)(address)', pool], None))
+
+        gauges=await Multicall(gcalls, network, _list=True)()
+
+        ##Get Rewards Length
+        for gauge in gauges:
+            calls.append(Call(gauge, ['balanceOf(address)(uint256)', wallet], [[f'{gauge}_staked', None]]))
+            calls.append(Call(gauge, [f'{want}()(address)'], [[f'{gauge}_want', None]]))
+            calls.append(Call(gauge, ['earned(address)(uint256)', wallet], [[f'{gauge}_pending', None]]))
+            calls.append(Call(gauge, [f'{reward}()(address)'], [[f'{gauge}_reward', None]]))
+
+        stakes=await Multicall(calls, network)()
+
+        token_decimals= await template_helpers.get_token_list_decimals_symbols([stakes[x] for x in stakes if 'want' in x or 'reward' in x],network_id)  
+            
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for each in stakes:
+            if 'staked' in each:
+                if stakes[each] > 0:
+                    breakdown = each.split('_')
+                    want_token = stakes[f'{breakdown[0]}_want']
+                    reward_token = stakes[f'{breakdown[0]}_reward']
+                    staked = parsers.from_custom(stakes[each], token_decimals.get(f'{want_token}_decimals'))
+                    pending = parsers.from_custom(stakes[f'{breakdown[0]}_pending'], token_decimals.get(f'{reward_token}_decimals'))
+                    reward_symbol = token_decimals.get(f'{reward_token}_symbol')
+
+                    reward_token_0 = {'pending': pending, 'symbol' : reward_symbol, 'token' : reward_token}
+
+                    poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'contractAddress' : breakdown[0], 'gambitRewards' : []}
+                    poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+
+                    poolNest[poolKey]['userData'][breakdown[0]]['gambitRewards'].append(reward_token_0)
+                
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
 async def get_solidex(wallet,depositor,farm_id,network_id,vaults,reward_meta):
         poolKey = farm_id
         calls = []
