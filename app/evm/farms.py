@@ -8384,6 +8384,26 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm',
         'perBlock' : 'protonPerBlock',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_protofi_gauges],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xa71f52aee8311c22b6329EF7715A5B8aBF1c6588',
+                        'voting' : '0x1484Fa11a49f7683aDc1114B69FA188Ff64BAA65',
+                        'network_id' : 'ftm',
+                        'want' : 'TOKEN',
+                        'reward' : 'PROTO',
+                    },
+                    ],
+            'vault_args' : [{}]
+        },
+        'apyHelpers' : {
+            'functions' : [],
+            'vaults' : [],
+            'args' : [],
+            'vault_args' : [],
+        }
     },
                 '0xFB03e11D93632D97a8981158A632Dd5986F5E909' : {
         'name' : 'mdex.com',
