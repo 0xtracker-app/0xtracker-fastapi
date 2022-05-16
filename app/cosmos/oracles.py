@@ -30,13 +30,13 @@ class TokenOverride:
 
 async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
     if native:
-        juno_price = await queries.query_contract_state(session, 'https://rpc-juno.itastakers.com', 'juno1hue3dnrtgf9ly2frnnvf8z5u7e224ctc4hk7wks2xumeu3arj6rs9vgzec', {"token1_for_token2_price":{"token1_amount":"1000000"}})
+        juno_price = await make_get_json(session, 'https://api.coingecko.com/api/v3/simple/price?ids=juno-network&vs_currencies=usd')
     else:
-        juno_price = {'token2_amount': '1000000'}
+        juno_price =  {"juno-network":{"usd": 1}}
 
     token_price = await queries.query_contract_state(session, 'https://rpc-juno.itastakers.com', swap_address, {"token2_for_token1_price":{"token2_amount":str(1 * 10 ** decimal)}})
 
-    return {token_in : from_custom(int(juno_price['token2_amount']), 6) * from_custom(int(token_price['token1_amount']), 6)}
+    return {token_in : juno_price['juno-network']['usd'] * from_custom(int(token_price['token1_amount']), 6)}
 
 async def get_price_from_crescent(token_in, session, token_out, native=True):
     if native:
