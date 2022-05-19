@@ -158,7 +158,7 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
     for token in wallet_data[0]:
         address = wallet_data[0][token]['token']
 
-        if address not in ['0x9e2d266d6c90f6c0d80a88159b15958f7135b8af', '0x0000000000000000000000000000000000001010', '0x0b91b07beb67333225a5ba0259d55aee10e3a578']:
+        if address not in ['0x9e2d266d6c90f6c0d80a88159b15958f7135b8af', '0x0000000000000000000000000000000000001010', '0x0b91b07beb67333225a5ba0259d55aee10e3a578', '0xae7ab96520de3a18e5e111b5eaab095312d7fe84']:
             symbol = wallet_data[0][token]['token_symbol']
 
             price = router_prices[address] if address in router_prices else 0

@@ -48,10 +48,10 @@ class Farms:
         'featured' : 2,
         'network' : 'cosmos',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_junoswap],
-            'vaults' : [external_contracts.junoswap_vaults],
-            'args' : [{'farm_id' : 'JunoSwap', 'network' : 'juno'}],
-            'vault_args' : [{}]
+            'functions' : [farm_templates.get_junoswap, farm_templates.get_junoswap_locks],
+            'vaults' : [external_contracts.junoswap_vaults, external_contracts.junoswap_locks],
+            'args' : [{'farm_id' : 'JunoSwap', 'network' : 'juno'}, {'farm_id' : 'JunoSwap', 'network' : 'juno'}],
+            'vault_args' : [{},{}]
         }
     },
     'Crescent' : {
