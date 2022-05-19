@@ -24,6 +24,7 @@ class TokenOverride:
             'juno1p32te9zfhd99ehpxfd06hka6hc9p7tv5kyl5909mzedg5klze09qrg08ry' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno1p32te9zfhd99ehpxfd06hka6hc9p7tv5kyl5909mzedg5klze09qrg08ry', 'swap_address' : 'juno14p3wvpeezqueenfu9jy29s96xuk0hp38k5d5k4ysyzk789v032sqp8uvh3', 'session' : session}],
             'juno1gzys54drag6753qq75mkt3yhjwyv4rp698kfvesh0wcy5737z4tsn0chtm' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno1gzys54drag6753qq75mkt3yhjwyv4rp698kfvesh0wcy5737z4tsn0chtm', 'swap_address' : 'juno1fzl79pekf8wtd0y37q92dmz5h9dxtfpl97w3kguyc59m7ufnlzvsf46vf8', 'session' : session}],
             'juno1vaeuky9hqacenay9nmuualugvv54tdhyt2wsvhnjasx9s946hhmqaq3kh7' : [get_price_from_junoswap, { 'decimal' : 10, 'token_in' : 'juno1vaeuky9hqacenay9nmuualugvv54tdhyt2wsvhnjasx9s946hhmqaq3kh7', 'swap_address' : 'juno19859m5x8kgepwafc3h0n36kz545ngc2vlqnqxx7gx3t2kguv6fws93cu25', 'session' : session}],
+            'juno15u3dt79t6sxxa3x3kpkhzsy56edaa5a66wvt3kxmukqjz2sx0hes5sn38g' : [get_price_from_junoswap, { 'decimal' : 6, 'token_in' : 'juno15u3dt79t6sxxa3x3kpkhzsy56edaa5a66wvt3kxmukqjz2sx0hes5sn38g', 'swap_address' : 'juno124d0zymrkdxv72ccyuqrquur8dkesmxmx2unfn7dej95yqx5yn8s70x3yj', 'session' : session}],
             'ubcre' : [get_crescent_pricing, {'session' : session, 'denom' : 'ubcre'}],
             'ucre' : [get_crescent_pricing, {'session' : session, 'denom' : 'ucre'}],
 }
