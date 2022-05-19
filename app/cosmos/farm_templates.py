@@ -158,11 +158,10 @@ async def get_junoswap(wallet, session, vaults, farm_id, mongodb, network):
     poolKey = farm_id
     cosmos = CosmosNetwork(wallet)
     net_config = cosmos.all_networks[network]
-
     
     lp_info = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x, {"info":{}}) for x in vaults])
     staking = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x['lp_token_address'], {"balance":{"address": net_config['wallet']}}) for x in lp_info])
-    
+
     poolNest = {
         poolKey: {
             'userData': {},
@@ -196,6 +195,69 @@ async def get_junoswap(wallet, session, vaults, farm_id, mongodb, network):
                 })
                 poolNest[poolKey]['userData'][want_token] = staked_position
                 poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
+
+async def get_junoswap_locks(wallet, session, vaults, farm_id, mongodb, network):
+    poolKey = farm_id
+    cosmos = CosmosNetwork(wallet)
+    net_config = cosmos.all_networks[network]
+    
+    lp_info = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], x, {"info":{}}) for x in vaults])
+    locked_staking = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], vaults[x]['staking_address'], {"staked_value":{"address": net_config['wallet']}}) for x in vaults])
+    pending_rewards = await asyncio.gather(*[queries.query_contract_state(session, net_config['rpc'], i, {"get_pending_rewards":{"address": net_config['wallet']}}) for x in vaults for i in vaults[x]['rewards'] ])
+    
+    poolNest = {
+        poolKey: {
+            'userData': {},
+            }
+        }
+
+    poolIDs = {}
+
+    convert_vaults = list(vaults.keys())
+
+    for i,each in enumerate(locked_staking):
+            staked_balanced = int(each['value'])
+            if staked_balanced > 0:
+                lp_data = lp_info[i]
+                staked_position = {'staked' : helpers.from_custom(staked_balanced, 6), 'gambitRewards' : [], 'network' : 'cosmos'}
+                want_token = lp_data['lp_token_address']
+                farm_key = f'{want_token}locked'
+                swap_address = convert_vaults[i]
+                reward_length = len(vaults[swap_address]['rewards'])
+
+                token_0 = await TokenMetaData(address=lp_info[i]['token1_denom']['cw20'] if 'cw20' in lp_info[i]['token1_denom'] else lp_info[i]['token1_denom']['native'], mongodb=mongodb, network=net_config, session=session, cw20=True if 'cw20' in lp_info[i]['token1_denom'] else False).lookup()
+                token_1 = await TokenMetaData(address=lp_info[i]['token2_denom']['cw20'] if 'cw20' in lp_info[i]['token2_denom'] else lp_info[i]['token2_denom']['native'], mongodb=mongodb, network=net_config, session=session, cw20=True if 'cw20' in lp_info[i]['token2_denom'] else False).lookup()
+
+                staked_position.update({
+                    'tokenID': want_token,
+                    'tkn0s': token_0['tkn0s'],
+                    'tkn0d': token_0['tkn0d'],
+                    'tkn1s': token_1['tkn0s'],
+                    'tkn1d': token_1['tkn0d'],
+                    'token0' : token_0['token0'],
+                    'token1' : token_1['token0'],
+                    'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
+                    'all_tokens': [token_0['token0'], token_1['token0']],
+                    'total_shares' : helpers.from_custom(int(lp_data['lp_token_supply']), 6),
+                    'reserves' : [int(lp_data['token1_reserve']),int(lp_data['token2_reserve'])]
+                })
+
+                for r in range(0, reward_length):
+                    reward_offset = i + r
+                    reward_data = pending_rewards[reward_offset]
+                    reward_metadata = await TokenMetaData(address=reward_data['denom']['cw20'] if 'cw20' in reward_data['denom'] else reward_data['denom']['native'], mongodb=mongodb, network=net_config, session=session, cw20=True if 'cw20' in reward_data['denom'] else False).lookup()
+                    staked_position['gambitRewards'].append({
+                        'pending': helpers.from_custom(reward_data['pending_rewards'], reward_metadata['tkn0d']),
+                        'symbol' : reward_metadata['tkn0s'],
+                        'token' : reward_metadata['token0']}
+                        )
+                poolNest[poolKey]['userData'][farm_key] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, farm_key)] = want_token
 
     if len(poolIDs) > 0:
         return poolIDs, poolNest    
