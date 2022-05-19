@@ -207,3 +207,6 @@ class DFKRouter():
 class EVMOSRouter():
     DIFF = '0xFCd2Ce20ef8ed3D43Ab4f8C2dA13bbF1C6d9512F'
 
+class SongbirdRouter():
+    FLRX = '0x40fe25Fc866794d468685Bb8AD2E61757400338f'
+
