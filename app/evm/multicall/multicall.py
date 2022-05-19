@@ -76,7 +76,7 @@ class Multicall:
 
 async def execute_multicall(self, calls):
 
-        if self.network_id in [53935]:
+        if self.network_id in [53935, 19]:
             call_string = 'tryAggregate(bool,(address,bytes)[])((bool,bytes)[])'
             args = [self.strict, [[call.target, call.data] for call in calls]]
         else:
@@ -91,7 +91,7 @@ async def execute_multicall(self, calls):
             self.block
         )
         
-        if self.network_id in [53935]:
+        if self.network_id in [53935, 19]:
             block, outputs = self.block, await aggregate(args)
         else:
             block, outputs = await aggregate(args)
