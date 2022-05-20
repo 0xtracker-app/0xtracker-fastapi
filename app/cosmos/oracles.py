@@ -35,7 +35,7 @@ async def juno_usd_cg(session):
 
 async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
     if native:
-        juno_price = await juno_usd_cg
+        juno_price = await juno_usd_cg(session)
     else:
         juno_price =  {"juno-network":{"usd": 1}}
 
