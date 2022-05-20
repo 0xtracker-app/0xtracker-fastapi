@@ -29,9 +29,13 @@ class TokenOverride:
             'ucre' : [get_crescent_pricing, {'session' : session, 'denom' : 'ucre'}],
 }
 
+@cache_function(ttl=10800, keyparams=[])
+async def juno_usd_cg(session):
+    return await make_get_json(session, 'https://api.coingecko.com/api/v3/simple/price?ids=juno-network&vs_currencies=usd')
+
 async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
     if native:
-        juno_price = await make_get_json(session, 'https://api.coingecko.com/api/v3/simple/price?ids=juno-network&vs_currencies=usd')
+        juno_price = await juno_usd_cg
     else:
         juno_price =  {"juno-network":{"usd": 1}}
 
