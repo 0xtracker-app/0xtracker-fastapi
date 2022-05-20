@@ -662,6 +662,7 @@ async def get_songbird_prices(tokens_in, network):
             prices[token['token']] = 0
 
     prices[out_token.lower()] = songbird_price
+    prices['0x70Ad7172EF0b131A1428D0c1F66457EB041f2176'.lower()] = cand_price
     
     return prices
 
