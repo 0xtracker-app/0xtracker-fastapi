@@ -8533,7 +8533,34 @@ class Farms:
                     ],
             'vault_args' : [{}]
         }
-    }
+    },
+                '0xFLR' : {
+        'name' : 'flr.finance',
+        'displayName' : 'FLR Finance',
+        'url' : 'https://xfl.flr.finance/',
+        'rewardToken' : '0x0D94e59332732D18CF3a3D457A8886A2AE29eA1B',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xFLR',
+        'featured' : 2,
+        'network' : 'songbird',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_flr_pools],
+            'args' : [
+                    {
+                        'farm_id' : '0xFLR',
+                        'network_id' : 'songbird',
+                        'staked' : 'stakingToken',
+                        'reward' : 'rewardToken',
+                        'pending_reward' : 'earned',
+                        'user_info' : 'balanceOf'
+                    },       
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
