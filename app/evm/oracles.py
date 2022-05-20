@@ -200,6 +200,9 @@ async def list_router_prices(tokens_in, network, check_liq=False):
     if network == 'rsk':
         return await get_bancor_prices(tokens_in, network)
 
+    if network == 'songbird':
+        return await get_songbird_prices(tokens_in, network)
+
     if network in ['dfk','evmos']:
         check_liq = False
 
@@ -616,6 +619,49 @@ async def get_bancor_prices(tokens_in, network):
             prices[token['token']] = 0
 
     prices[out_token.lower()] = native_price['native_price']
+    
+    return prices
+
+async def get_songbird_prices(tokens_in, network):
+
+    network_route = NetworkRoutes(network)
+    calls= []
+    out_token = network_route.native
+    network_conn = network_route.network_conn
+
+    songbird_price = parsers.from_custom(await Call('0x69F068C83e07634bCa3aa56F0FB8345552F40A16', ['fetchPrice()(uint256)'], None, network_conn)(), 18)
+    cand_price = await Call('0x40fe25Fc866794d468685Bb8AD2E61757400338f', ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** 18, ['0x70Ad7172EF0b131A1428D0c1F66457EB041f2176', '0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED']], None, network_conn)()
+    native_price = songbird_price * parsers.from_custom(cand_price[1], 18)
+
+    for token in tokens_in:
+        for contract in network_route.lrouters:
+
+            token_address = token['token']
+            token_in_address = router_override[token_address]['token'] if token_address in router_override else token_address
+            token_dec = router_override[token_address]['decimal'] if token_address in router_override else token['decimal']
+
+            calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** token_dec, [token_in_address, '0x70Ad7172EF0b131A1428D0c1F66457EB041f2176']], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price}]]))
+
+    multi = await Multicall(calls, network_conn, _strict=False)()
+
+    prices = {}
+    for each in multi:
+        token = each.split('_')[1]
+
+        looped_value = multi[each]
+
+        if token in prices:
+            current_value = prices[token]
+            if looped_value > current_value:
+                prices[token] = looped_value
+        else:
+            prices[token] = looped_value
+    
+    for token in tokens_in:
+        if token['token'] not in prices:
+            prices[token['token']] = 0
+
+    prices[out_token.lower()] = songbird_price
     
     return prices
 

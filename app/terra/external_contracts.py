@@ -10,7 +10,7 @@ async def make_get_json(session, url, kwargs={}):
             None
 
 async def spectrum_farm_contract(session):
-    r = await make_get_json(session,'https://specapi.azurefd.net/api/data?type=lpVault')
+    r = await make_get_json(session,'https://api.spec.finance/api/data?type=lpVault')
 
     farming_contracts = []
 
