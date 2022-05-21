@@ -33,7 +33,7 @@ class CosmosNetwork:
             'cosmos' : {
             'wallet' : from_atom(wallet,'cosmos'),
             'rpc' : 'https://rpc-cosmoshub.keplr.app',
-            'rest' : 'https://rest-cosmoshub.ecostake.com',
+            'rest' : 'https://cosmos-lcd.quickapi.com',
             'chain_id' : 'cosmoshub-4',
             'chain_name' : 'Cosmos Hub',
             'explorer' : 'https://www.mintscan.io/cosmos/txs/',
@@ -108,7 +108,7 @@ class CosmosNetwork:
             'iris' : {
             'wallet' : from_atom(wallet,'iaa'),
             'rpc' : 'https://rpc-iris.keplr.app',
-            'rest' : 'https://lcd-iris.keplr.app',
+            'rest' : 'https://api-irisnet-ia.notional.ventures',
             'chain_id' : 'irishub-1',
             'chain_name' : 'IRISnet',
             'explorer' : 'https://www.mintscan.io/iris/txs/',
