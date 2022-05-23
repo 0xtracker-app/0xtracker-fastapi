@@ -266,16 +266,28 @@ async def historical_transactions(wallet, network, contract, token, session: Cli
 
 
 @app.get('/stats/{type}', include_in_schema=False)
-async def get_stats(type, db: AsyncIOMotorClient = Depends(get_database)):
+async def get_stats(type, pdb: Session = Depends(get_db)):
 
-    stat_types = {
-        "users": db['user_data'].aggregate(addresses_per_day()),
-        "farms": db['user_data'].aggregate(farms_over_last_30_days())
-    }
+    if type == 'users':
+        x = await pdb.execute(text(f'''SELECT
+    time_bucket('1 days', timestamp) AS bucket,
+    COUNT(DISTINCT(wallet))
+    FROM
+    user_data
 
-    x = await stat_types[type].to_list(length=None)
+    GROUP BY bucket ORDER BY bucket DESC'''))
+    else:
+        x = await pdb.execute(text(f'''
+    SELECT
+    time_bucket('1 days', timestamp) AS bucket,
+    farm,
+    COUNT(DISTINCT(wallet))
+    FROM
+    user_data
 
-    return x
+    GROUP BY bucket,farm ORDER BY bucket DESC, count DESC'''))
+
+    return x.fetchall()
 
 
 @app.get('/healthcheck')
