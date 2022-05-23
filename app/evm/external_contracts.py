@@ -1001,6 +1001,11 @@ async def get_svn_oasis(session):
         '0x2CcbFD9598116cdF9B94fF734ece9dCaF4c9d471',
         ]
 
+async def get_walrus_board(session):
+    return [
+        '0x38B0b6Ef43c4262659523986D731f9465F871439',
+        ]
+
 async def get_flr_pools(session):
     return [
         '0x554742076743b366504972F86609d64fd18BDC34',

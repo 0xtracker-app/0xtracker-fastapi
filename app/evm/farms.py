@@ -8561,6 +8561,35 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x752feacfda5c3b440fd6d40ecf338a86b568c2d2' : {
+        'name' : 'frozenwalrus.finance',
+        'displayName' : 'Frozen Walrus Finance',
+        'url' : 'https://frozenwalrus.finance/',
+        'rewardToken' : '0xe6d1afea0b76c8f51024683dd27fa446ddaf34b6',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingShare',
+        'masterChef' : '0x752feacfda5c3b440fd6d40ecf338a86b568c2d2',
+        'featured' : 2,
+        'network' : 'avax',
+        'perBlock' : 'wSharePerSecond',
+        'apy_config' : 'second',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools],
+            'vaults' : [external_contracts.get_walrus_board],
+            'args' : [
+                    {
+                        'farm_id' : '0x752feacfda5c3b440fd6d40ecf338a86b568c2d2',
+                        'network_id' : 'avax',
+                        'staked' : 'share',
+                        'reward' : 'wlrs',
+                        'pending_reward' : 'earned',
+                        'user_info' : 'balanceOf'
+                    },       
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
