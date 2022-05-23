@@ -8590,6 +8590,57 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5' : {
+        'name' : 'darkcrypto.finance',
+        'displayName' : 'DarkCrypto',
+        'url' : 'https://darkcrypto.finance/',
+        'rewardToken' : '0xE727240728C1a5f95437b8b50AFDd0EA4AE5F0c8',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5',
+        'featured' : 2,
+        'network' : 'cro',
+        'perBlock' : 'rewardPerSecond',
+        'apy_config' : 'second',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_single_masterchef, farm_templates.get_syrup_pools, farm_templates.get_multi_masterchef],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_dark_boardroom, external_contracts.dummy_vault],
+            'args' : [
+                {
+                    'farm_id' : '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5',
+                    'network_id' : 'cro',
+                    'length_override' : 5,
+                    'farm_data' :{
+                        'rewardToken' : '0x9D3BBb0e988D9Fb2d55d07Fe471Be2266AD9c81c',
+                        'decimal' : 18,
+                        'stakedFunction' : 'userInfo',
+                        'pendingFunction' : 'pendingReward',
+                        'masterChef' : '0x42B652A523367e7407Fb4BF2fA1F430781e7db8C',
+                        'rewardSymbol' : 'SKY',
+                    }
+                },
+                {
+                    'farm_id' : '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5',
+                    'network_id' : 'cro',
+                    'staked' : 'sky',
+                    'reward' : 'dark',
+                    'pending_reward' : 'earned',
+                    'user_info' : 'balanceOf'
+                },
+                {
+                    'farm_id' : '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5',
+                    'network_id' : 'cro',
+                    'farm_data' :{
+                        'stakedFunction' : 'stakedWantTokens',
+                        'pendingFunction' : 'pendingReward',
+                        'masterChef' : '0x66D586eae9B30CD730155Cb7fb361e79D372eA2a',
+                    }
+                },
+                    ],
+            'vault_args' : [{},{},{}]
+        }
+    },
 }
 
 
