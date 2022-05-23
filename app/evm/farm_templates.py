@@ -2315,6 +2315,7 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
             '0xE6DCE53f17FBF673f4FA60A38746F110517457B2'.lower(),
             '0x6Bb9EAb44Dc7f7e0a0454107F9e46Eedf0aA0285'.lower(),
             '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED'.lower(),
+            '0x752feacfda5c3b440fd6d40ecf338a86b568c2d2'.lower(),
             ]:
             calls.append(Call(masterchef, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
@@ -2349,6 +2350,11 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
         poolLengths = {
         **await Multicall(calls, network_conn)(),
         **{'0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED' : 2}
+        }
+    elif '0x752feacfda5c3b440fd6d40ecf338a86b568c2d2' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0x752feacfda5c3b440fd6d40ecf338a86b568c2d2' : 2}
         }
     else:
         poolLengths = await Multicall(calls, network_conn)()
