@@ -383,6 +383,9 @@ async def blindex_vaults(session):
 async def dummy_vault(session):
     return ['0xDummy']
 
+async def get_dark_boardroom(session):
+    return ['0x2e7d17ABCb9a2a40ec482B2ac9a9F811c12Bf630']
+
 async def dopex_contracts(session):
     return ['0xc6d714170fe766691670f12c2b45c1f34405aab6', '0x125Cc7CCE81A809c825C945E5aA874E60ccCB6Bb', '0x96B0d9c85415C69F4b2FAC6ee9e9CE37717335B4', '0x03ac1Aa1ff470cf376e6b7cD3A3389Ad6D922A74']
 
