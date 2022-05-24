@@ -3473,6 +3473,44 @@ async def get_node_layout(wallet,farm_id,network_id,vaults):
         else:
             return None
 
+async def get_node_layout_2(wallet,farm_id,network_id,node_manager,reward_token,reward_symbol,vaults):
+
+        poolKey = farm_id
+        calls = []
+        network = WEB3_NETWORKS[network_id]
+
+        node_info = await Call(node_manager, ['getAllNodes(address)((string,uint256,uint256,uint256,uint256,bool)[])', wallet], None, network)()
+
+        pending_calls = []
+
+        for i, node in enumerate(node_info):
+            creation_time = node[1]
+            node_id = node[0]
+            pending_calls.append(Call(node_manager, [f'getNodeRewards(address,uint256)((uint256,uint256,uint256))', wallet, i], [[f"{node_id}", None]]))
+
+        stakes=await Multicall(pending_calls, network, _strict=False)()
+
+        poolNest = {poolKey: 
+        { 'userData': { } } }
+
+        poolIDs = {}
+
+        for i, pending in enumerate(stakes):
+            node_id = node_info[i][0]
+            want_token = reward_token
+            
+            poolNest[poolKey]['userData'][node_id] = {'want': want_token, 'staked' : 0, 'gambitRewards' : []}
+            poolIDs['%s_%s_want' % (poolKey, node_id)] = want_token
+
+            reward_token_0 = {'pending': parsers.from_custom(stakes[pending][2], 18), 'symbol' : reward_symbol, 'token' : want_token}
+            poolNest[poolKey]['userData'][node_id]['gambitRewards'].append(reward_token_0)
+
+        if len(poolIDs) > 0:
+            return poolIDs, poolNest    
+        else:
+            return None
+
+
 async def get_planets(wallet,farm_id,network_id,contract,reward_symbol,reward_token,vaults):
         poolKey = farm_id
         calls = []
