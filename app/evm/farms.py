@@ -8641,6 +8641,32 @@ class Farms:
             'vault_args' : [{},{},{}]
         }
     },
+                '0xVaporNodes' : {
+        'name' : 'vapornodes.finance',
+        'displayName' : 'VaporNodes',
+        'url' : 'https://vapornodes.finance/',
+        'rewardToken' : '0x83a283641C6B4DF383BCDDf807193284C84c5342',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xVaporNodes',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_node_layout_2],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xVaporNodes',
+                        'network_id' : 'avax',
+                        'node_manager' : '0xCd5E168dA3456cD2d5A8ab400f9cebdDC453720d',
+                        'reward_token' : '0x83a283641C6B4DF383BCDDf807193284C84c5342',
+                        'reward_symbol'  : 'VPND',
+                    },       
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
