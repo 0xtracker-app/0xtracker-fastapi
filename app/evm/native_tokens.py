@@ -36,6 +36,7 @@ class NativeToken():
     DFK = '0xCCb93dABD71c8Dad03Fc4CE5559dC3D89F67a260'
     EVMOS = '0xD4949664cD82660AaE99bEdc034a0deA8A0bd517'
     SONGBIRD = '0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED'
+    KLAYTN = '0xe4f05a66ec68b54a58b17c22107b02e0232cc817'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -72,6 +73,7 @@ class NativeSymbol():
     DFK = 'JEWEL'
     EVMOS = 'EVMOS'
     SONGBIRD = 'SGB'
+    KLAYTN = 'KLAY'
 
 class NativeDecimal():
     BSC = 18
@@ -108,6 +110,7 @@ class NativeDecimal():
     DFK = 18
     EVMOS = 18
     SONGBIRD = 18
+    KLAYTN = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -144,6 +147,7 @@ class StableToken():
     DFK = '0x3AD9DFE640E1A9Cc1D9B0948620820D975c3803a'
     EVMOS = '0x51e44FfaD5C2B122C8b635671FCC8139dc636E82'
     SONGBIRD = '0x70Ad7172EF0b131A1428D0c1F66457EB041f2176'
+    KLAYTN = '0x5c74070fdea071359b86082bd9f9b3deaafbe32b'
 
 class StableDecimal():
     BSC = 18
@@ -180,6 +184,7 @@ class StableDecimal():
     DFK = 18
     EVMOS = 6
     SONGBIRD = 18
+    KLAYTN = 18
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -216,6 +221,7 @@ class DefaultRouter():
     DFK = routers.DFKRouter.DFK
     EVMOS = routers.EVMOSRouter.DIFF
     SONGBIRD = routers.SongbirdRouter.FLRX
+    KLAYTN = routers.KlaytnRouter.KLAYSWAP
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -252,6 +258,7 @@ class RouteClass():
     DFK = routers.DFKRouter
     EVMOS = routers.EVMOSRouter
     SONGBIRD = routers.SongbirdRouter
+    KLAYTN = routers.KlaytnRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -288,6 +295,7 @@ class CoinGecko():
     DFK = ''
     EVMOS = ''
     SONGBIRD = ''
+    KLAYTN = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -324,6 +332,7 @@ class LiqCheck():
     DFK = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
     EVMOS = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
     SONGBIRD = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
+    KLAYTN = '0x0C8be7B6864538b7086bF5611aB6940b510749a4'
 
 class MinLiq():
     BSC = 49999
@@ -360,6 +369,7 @@ class MinLiq():
     DFK = 9999
     EVMOS = 9999
     SONGBIRD = 9999
+    KLAYTN = 999
 
 class YearlyBlocks():
     BSC = 10407920.792079208
@@ -396,6 +406,7 @@ class YearlyBlocks():
     DFK = 0
     EVMOS = 0
     SONGBIRD = 0
+    KLAYTN = 0
 
 class DeadTokens():
     BSC = ['0x000000000000000000000000000000000000dEaD', '0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
@@ -432,6 +443,7 @@ class DeadTokens():
     DFK = []
     EVMOS = []
     SONGBIRD = []
+    KLAYTN = []
 
 class NetworkRoutes():
 

@@ -210,3 +210,7 @@ class EVMOSRouter():
 class SongbirdRouter():
     FLRX = '0x40fe25Fc866794d468685Bb8AD2E61757400338f'
 
+class KlaytnRouter():
+    KLAYSWAP = '0xc6a2ad8cc6e4a7e08fc37cc5954be07d499e7654'
+    CLAIM = '0xEf71750C100f7918d6Ded239Ff1CF09E81dEA92D'
+

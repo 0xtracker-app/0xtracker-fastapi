@@ -208,6 +208,9 @@ async def list_router_prices(tokens_in, network, check_liq=False):
 
     if network_route.default_router == '0xAA30eF758139ae4a7f798112902Bf6d65612045f':
         native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[],uint256)(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable], 0], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
+    elif network == 'klaytn':
+        native_price = await Call('0xa3987cf6c14f1992e8b4a9e23192eb79dc2969b8', ['estimatePos(address,uint256)(uint256)', '0x0000000000000000000000000000000000000000', 1 * 10 ** 18], [[f'native_price', parsers.from_custom, network_route.dstable]], network_conn)()
+        klayswap_lps = await Multicall([Call(network_route.default_router, ['tokenToPool(address,address)(address)', '0x0000000000000000000000000000000000000000', x['token']], [[f"{x['token']}", None]]) for x in tokens_in], network_conn, _strict=False)()
     else:
         native_price = await Call(network_route.default_router, ['getAmountsOut(uint256,address[])(uint[])', 1 * 10 ** network_route.dnative, [out_token, network_route.stable]], [[f'native_price', parsers.parse_router_native, network_route.dstable]], network_conn)()
 
@@ -230,11 +233,16 @@ async def list_router_prices(tokens_in, network, check_liq=False):
                 if token_address.lower() in stable_override:
                     override_out = stable_override[token_address]['token']
                     override_decimal = stable_override[token_address]['decimal']
+                    
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, override_out], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : override_decimal, 'price' : 1}]]))
                     calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(address,uint256,address[])(uint256[])', '0xa25464822b505968eec9a45c43765228c701d35f', 1 * 10 ** token_dec, [token_in_address, override_out]], [[f'{contract}_{token_address}', parsers.parse_router_native, override_decimal]]))
                 else:
                     liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
-                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(address,uint256,address[])(uint256[])', '0xa25464822b505968eec9a45c43765228c701d35f', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))    
+                    calls.append(Call(getattr(network_route.router, contract), ['getAmountsOut(address,uint256,address[])(uint256[])', '0xa25464822b505968eec9a45c43765228c701d35f', 1 * 10 ** token_dec, [token_in_address, out_token]], [[f'{contract}_{token_address}', parsers.parse_router, native_price['native_price']]]))
+            elif contract == 'KLAYSWAP':
+                lp_token = klayswap_lps.get(token_address)
+                liq_calls.append(Call(network_route.liqcheck, ['check_liquidity(address,address,address)((uint256,uint256))', getattr(network_route.router, contract), token_in_address, out_token], [[f'{contract}_{token_address}', parsers.parse_liq, {'decimal' : network_route.dnative, 'price' : native_price['native_price']}]]))
+                calls.append(Call(lp_token, ['estimatePos(address,uint256)(uint256)', token_in_address, 1 * 10 ** token_dec], [[f'{contract}_{token_address}', parsers.parse_klayswap, native_price['native_price']]]))       
             else:
                 if token_address.lower() in stable_override and network != 'harmony' and token_address.lower() != '0x6ab6d61428fde76768d7b45d8bfeec19c6ef91a8':
                     override_out = stable_override[token_address]['token']
