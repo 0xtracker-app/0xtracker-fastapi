@@ -8667,6 +8667,22 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0x02703e13b5d3d3056ac9321983b44a2cc065bb22' : {
+        'name' : 'claimswap.org',
+        'displayName' : 'ClaimSwap',
+        'url' : 'https://claimswap.org/',
+        'rewardToken' : '0xcf87f94fd8f6b6f0b479771f10df672f99eada63',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingCla',
+        'masterChef' : '0x02703e13b5d3d3056ac9321983b44a2cc065bb22',
+        'want' : 'lpToken',
+        'perBlock' : 'claPerBlock',
+        'pool_alloc' : 'poolInfo(uint256)((uint256,uint256,uint256))',
+        'alloc_offset' : 2,
+        'featured' : 2,
+        'network' : 'klaytn'
+    },
 }
 
 

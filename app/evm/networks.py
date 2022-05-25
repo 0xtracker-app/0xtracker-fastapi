@@ -38,6 +38,7 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider(os.get
                 'dfk' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("DFK_RPC"))), 'id' : 53935},
                 'evmos' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("EVMOS_RPC"))), 'id' : 9001},
                 'songbird' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("SONGBIRD_RPC"))), 'id' : 19},
+                'klaytn' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("KLAYTN_RPC"))), 'id' : 8217},
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BSC_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56, 'covalent' : True},
@@ -74,6 +75,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'dfk': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("DFK_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 53935, 'covalent' : False},
                 'evmos': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("EVMOS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 9001, 'covalent' : False},
                 'songbird': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("SONGBIRD_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 19, 'covalent' : False},
+                'klaytn': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("KLAYTN_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 8217, 'covalent' : False},
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN"), 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},
@@ -81,4 +83,5 @@ SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN
 'ftm' : {'address' : 'ftmscan.com', 'api_key' : os.getenv("FTM_SCAN"), 'native_token' : '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83_FTM_18', 'cg_name' : 'fantom'},
 'eth' : {'address' : 'etherscan.io', 'api_key' : os.getenv("ETH_SCAN"), 'native_token' : '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2_ETH_18', 'cg_name' : 'ethereum'},
 'arb' : {'address' : 'arbiscan.io', 'api_key' : os.getenv("ARB_SCAN"), 'native_token' : '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', 'cg_name' : 'arbitrum-one'},
+
  }

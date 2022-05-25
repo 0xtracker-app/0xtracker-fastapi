@@ -2465,7 +2465,8 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 '0xC3842B2d35dd249755f170dD8F0f83b8BF967E21',
                 '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063',
                 '0xSynHarmony',
-                '0x067eC87844fBD73eDa4a1059F30039584586e09d'
+                '0x067eC87844fBD73eDa4a1059F30039584586e09d',
+                '0x02703e13b5d3d3056ac9321983b44a2cc065bb22'
                 ]:
                 calls.append(Call(masterchef, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533', '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75']:
