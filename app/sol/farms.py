@@ -12,6 +12,8 @@ class Farms:
         'masterChef' : 'Raydium',
         'featured' : 2,
         'network' : 'solana',
+        'displayName' : None,
+        'url' : None,
         'extraFunctions' : {
             'functions' : [farm_templates.get_farming_from_program, farm_templates.get_farming_from_program_dual, farm_templates.get_farming_from_program_dual],
             'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault, external_contracts.dummy_vault],

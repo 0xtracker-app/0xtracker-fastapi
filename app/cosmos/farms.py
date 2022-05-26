@@ -11,6 +11,8 @@ class Farms:
         'masterChef' : 'CosmosStaking',
         'featured' : 2,
         'network' : 'cosmos',
+        'displayName' : None,
+        'url' : None,
         'extraFunctions' : {
             'functions' : [farm_templates.get_delegations],
             'vaults' : [external_contracts.dummy_vault],
@@ -23,6 +25,8 @@ class Farms:
         'masterChef' : 'Osmosis',
         'featured' : 2,
         'network' : 'cosmos',
+        'displayName' : None,
+        'url' : None,
         'extraFunctions' : {
             'functions' : [farm_templates.get_osmosis_staking],
             'vaults' : [external_contracts.dummy_vault],
@@ -32,6 +36,8 @@ class Farms:
     },
     'Sifchain' : {
         'name' : 'sifchain.finance',
+        'displayName' : None,
+        'url' : None,
         'masterChef' : 'Sifchain',
         'featured' : 2,
         'network' : 'cosmos',
@@ -45,6 +51,8 @@ class Farms:
     'JunoSwap' : {
         'name' : 'junoswap.com',
         'masterChef' : 'JunoSwap',
+        'displayName' : None,
+        'url' : None,
         'featured' : 2,
         'network' : 'cosmos',
         'extraFunctions' : {
@@ -57,6 +65,8 @@ class Farms:
     'Crescent' : {
         'name' : 'crescent.network',
         'masterChef' : 'Crescent',
+        'displayName' : None,
+        'url' : None,
         'featured' : 2,
         'network' : 'cosmos',
         'extraFunctions' : {
