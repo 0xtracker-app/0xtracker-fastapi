@@ -42,7 +42,7 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb
     farm_network = farm_configuraiton['network']
     masterchef_pool_list = [farm_id] + farm_configuraiton['add_chefs'] if 'add_chefs' in farm_configuraiton else [farm_id]
     args = {'wallet' : wallet}
-    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
+    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'displayName' : farm_configuraiton['displayName'], 'url' : farm_configuraiton['url'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
 
     if farm_configuraiton['stakedFunction'] is not None:
         masterchef = await farm_templates.get_traditional_masterchef(wallet, masterchef_pool_list, farm_network, set_farms.farms, returned_object[1])
