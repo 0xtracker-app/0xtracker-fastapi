@@ -8683,6 +8683,78 @@ class Farms:
         'featured' : 2,
         'network' : 'klaytn'
     },
+                '0xMagikFarmFTM' : {
+        'name' : 'magik.farm',
+        'displayName' : 'Magik Farm',
+        'url' : 'https://magik.farm/',
+        'rewardToken' : '0x87a5c9b60a3aaf1064006fe64285018e50e0d020',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xMagikFarmFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_magik_fantom_pools],
+            'args' : [{'farm_id' : '0xMagikFarmFTM', 'network' : 'ftm'}],
+            'vault_args' : [{}]
+        }
+    },
+                '0xMagikFarmFTM' : {
+        'name' : 'magik.farm',
+        'displayName' : 'Magik Farm',
+        'url' : 'https://magik.farm/',
+        'rewardToken' : '0x87a5c9b60a3aaf1064006fe64285018e50e0d020',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xMagikFarmFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_magik_fantom_pools],
+            'args' : [{'farm_id' : '0xMagikFarmFTM', 'network' : 'ftm'}],
+            'vault_args' : [{}]
+        }
+    },
+                '0xMagikFarmBSC' : {
+        'name' : 'magik.farm',
+        'displayName' : 'Magik Farm',
+        'url' : 'https://magik.farm/',
+        'rewardToken' : '0x87a5c9b60a3aaf1064006fe64285018e50e0d020',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xMagikFarmBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_magik_bsc_pools],
+            'args' : [{'farm_id' : '0xMagikFarmBSC', 'network' : 'bsc'}],
+            'vault_args' : [{}]
+        }
+    },
+                '0xMagikFarmAVAX' : {
+        'name' : 'magik.farm',
+        'displayName' : 'Magik Farm',
+        'url' : 'https://magik.farm/',
+        'rewardToken' : '0x87a5c9b60a3aaf1064006fe64285018e50e0d020',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xMagikFarmAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_magik_avax_pools],
+            'args' : [{'farm_id' : '0xMagikFarmAVAX', 'network' : 'avax'}],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

@@ -48,7 +48,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'optimism': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("OPTIMISM_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 10, 'covalent' : False},
                 'eth': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("ETH_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1, 'covalent' : True,},
                 'oke': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("OKE_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 66, 'covalent' : False},
-                'harmony': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("HARMONY_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1666600000, 'covalent' : False},
+                'harmony': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("HARMONY_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1666600000, 'covalent' : True},
                 'avax': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("AVAX_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 43114, 'covalent' : True},
                 'moon': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("MOON_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1285, 'covalent' : True},
                 'arb': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("ARB_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 42161, 'covalent' : True},                
@@ -60,7 +60,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'polis': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("POLIS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 333999, 'covalent' : False},
                 'boba': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BOBA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 288, 'covalent' : False},
                 'theta': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("THETA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 361, 'covalent' : False},
-                'aurora': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("AURORA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1313161554, 'covalent' : False},
+                'aurora': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("AURORA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1313161554, 'covalent' : True},
                 'metis': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("METIS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1088, 'covalent' : False},
                 'moonbeam': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("MOONBEAM_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 1284, 'covalent' : True},
                 'fuse': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("FUSE_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 122, 'covalent' : False},
@@ -75,7 +75,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'dfk': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("DFK_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 53935, 'covalent' : False},
                 'evmos': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("EVMOS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 9001, 'covalent' : False},
                 'songbird': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("SONGBIRD_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 19, 'covalent' : False},
-                'klaytn': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("KLAYTN_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 8217, 'covalent' : False},
+                'klaytn': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("KLAYTN_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 8217, 'covalent' : True},
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN"), 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},
