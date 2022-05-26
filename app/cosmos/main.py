@@ -92,7 +92,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session, client, 
     farm_configuraiton = set_farms.farms[farm_id]
     
     args = {'wallet' : wallet}
-    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
+    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'],'displayName' : farm_configuraiton['displayName'], 'url' : farm_configuraiton['url'], 'wallet' : wallet, 'userData' : {}}})
 
     if 'extraFunctions' in farm_configuraiton:
         

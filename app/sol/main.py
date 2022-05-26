@@ -78,7 +78,7 @@ async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client, 
     farm_configuraiton = set_farms.farms[farm_id]
     
     args = {'wallet' : solana}
-    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'], 'wallet' : solana.wallet, 'userData' : {}}})
+    returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'network' : farm_configuraiton['network'],'displayName' : farm_configuraiton['displayName'], 'url' : farm_configuraiton['url'], 'wallet' : solana.wallet, 'userData' : {}}})
 
     if 'extraFunctions' in farm_configuraiton:
         

@@ -12,6 +12,8 @@ class Farms:
         'decimal' : 6,
         'featured' : 2,
         'network' : 'terra',
+        'displayName' : None,
+        'url' : None,
         'extraFunctions' : {
             'functions' : [farm_templates.get_valkyrie_staking,],
             'vaults' : [external_contracts.dummy_vault],
@@ -30,6 +32,8 @@ class Farms:
         'decimal' : 6,
         'featured' : 2,
         'network' : 'terra',
+        'displayName' : None,
+        'url' : None,
         'extraFunctions' : {
             'functions' : [farm_templates.get_luna_staking,],
             'vaults' : [external_contracts.dummy_vault],
@@ -48,6 +52,8 @@ class Farms:
         'decimal' : 6,
         'featured' : 2,
         'network' : 'terra',
+        'displayName' : None,
+        'url' : None,
         'extraFunctions' : {
             'functions' : [farm_templates.get_spectrum_farms,farm_templates.get_spectrum_staking],
             'vaults' : [external_contracts.spectrum_farm_contract, external_contracts.spectrum_staking_contract],
@@ -69,6 +75,8 @@ class Farms:
     '0xLoopr' : {
         'name' : 'loop.markets',
         'masterChef' : '0xLoopr',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr',
         'decimal' : 6,
         'featured' : 2,
@@ -99,6 +107,8 @@ class Farms:
     '0xMirror' : {
         'name' : 'mirrorprotocol.app',
         'masterChef' : '0xMirror',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra15gwkyepfc6xgca5t5zefzwy42uts8l2m4g40k6',
         'decimal' : 6,
         'featured' : 2,
@@ -120,6 +130,8 @@ class Farms:
     '0xMirrorLending' : {
         'name' : 'mirrorprotocol.app',
         'masterChef' : '0xMirrorLending',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra15gwkyepfc6xgca5t5zefzwy42uts8l2m4g40k6',
         'decimal' : 6,
         'featured' : 2,
@@ -141,6 +153,8 @@ class Farms:
     '0xAstroport' : {
         'name' : 'astroport.fi',
         'masterChef' : '0xAstroport',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3',
         'decimal' : 6,
         'featured' : 2,
@@ -167,6 +181,8 @@ class Farms:
     '0xAnchorLending' : {
         'name' : 'anchorprotocol.com (Lending)',
         'masterChef' : '0xAnchorLending',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76',
         'decimal' : 6,
         'featured' : 2,
@@ -187,6 +203,8 @@ class Farms:
     '0xAnchor' : {
         'name' : 'anchorprotocol.com',
         'masterChef' : '0xAnchor',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76',
         'decimal' : 6,
         'featured' : 2,
@@ -206,6 +224,8 @@ class Farms:
     '0xKujiBlue' : {
         'name' : 'blue.kujira.app',
         'masterChef' : '0xKujiBlue',
+        'displayName' : None,
+        'url' : None,
         'rewardToken' : 'terra1xfsdgcemqwxp4hhnyk4rle6wr22sseq7j07dnn',
         'decimal' : 6,
         'featured' : 2,
