@@ -432,6 +432,45 @@ async def get_beefy_fantom_pools(session):
     return vault_data
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+async def get_magik_fantom_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/fantom_pools.js')
+    s2 = "export const fantomPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+    # vault_data.append({'vault' : '0x49c68eDb7aeBd968F197121453e41b8704AcdE0C', 'want' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'})
+
+    return vault_data
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+async def get_magik_bsc_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/bsc_pools.js')
+    s2 = "export const bscPools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-2]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+    # vault_data.append({'vault' : '0x49c68eDb7aeBd968F197121453e41b8704AcdE0C', 'want' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'})
+
+    return vault_data
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
+async def get_magik_avax_pools(session):
+    r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/avalanche_pools.js')
+    s2 = "export const avalanchePools = "
+    
+    data = r[r.index(s2) + len(s2) :len(r)-1]
+    cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
+
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
+    # vault_data.append({'vault' : '0x49c68eDb7aeBd968F197121453e41b8704AcdE0C', 'want' : '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83'})
+
+    return vault_data
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_moon_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/moonriver_pools.js')
     s2 = "export const moonriverPools = "
