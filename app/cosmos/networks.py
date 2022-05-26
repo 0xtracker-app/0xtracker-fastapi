@@ -17,7 +17,7 @@ class CosmosNetwork:
         'osmosis' : {
             'wallet' : from_atom(wallet,'osmo'),
             'rpc' : 'https://rpc-osmosis.keplr.app',
-            'rest' : 'http://141.95.35.173:1317',
+            'rest' : 'https://rest-osmosis.ecostake.com',
 #            'rest' : 'https://lcd-osmosis.cosmostation.io',
             'chain_id' : 'osmosis-1',
             'chain_name' : 'Osmosis',
