@@ -5,6 +5,7 @@ from web3 import Web3
 from . import template_helpers
 from .thegraph import call_graph
 from .utils import set_pool
+from .user_config import parse_calls, parse_calls_master
 from . import abi
 import asyncio
 import math
@@ -196,7 +197,7 @@ async def get_moonpot_contracts(wallet,farm_id,network_id,vaults):
         else:
             return None
 
-async def get_traderjoe_masterchef(wallet,farm_id,network_id,masterchef, vaults):
+async def get_traderjoe_masterchef(wallet,farm_id,network_id,masterchef, vaults, user_config=False):
         poolKey = farm_id
         calls = []
         network = WEB3_NETWORKS[network_id]
@@ -208,6 +209,10 @@ async def get_traderjoe_masterchef(wallet,farm_id,network_id,masterchef, vaults)
             calls.append(Call(masterchef, [f'poolInfo(uint256)(address)', pid], [[f'{pid}ext_want', None]]))
             calls.append(Call(masterchef, [f'poolInfo(uint256)((address,uint256,uint256,uint256,address))', pid], [[f'{pid}ext_rewarder', None]]))
             calls.append(Call(masterchef, [f'pendingTokens(uint256,address)((uint256,address,uint256,uint256))', pid, wallet], [[f'{pid}ext_pending', None]]))
+
+        if user_config:
+            return await parse_calls(calls)
+
 
         stakes=await Multicall(calls, network)()
 
@@ -627,7 +632,7 @@ async def get_dyp(wallet, vaults, network_id):
     else:
         return None
 
-async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
+async def get_beefy_style_stakes(wallet,vaults,farm_id,network,user_config=False):
 
     poolKey = farm_id
     calls = []
@@ -645,6 +650,10 @@ async def get_beefy_style_stakes(wallet,vaults,farm_id,network):
         want_list.append(want_address)
         want_lookup[vault_address] = want_address
     
+    if user_config:
+        return await parse_calls(calls)
+
+
     if len(calls) > 200:
         chunks = len(calls) / 100
         x = np.array_split(calls, math.ceil(chunks))
@@ -2370,7 +2379,7 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
 
     return poolLengths
 
-async def get_only_staked(wallet, pools, network, farm_info):
+async def get_only_staked(wallet, pools, network, farm_info, user_config=False):
     
     calls = []
     network_conn = WEB3_NETWORKS[network]
@@ -2393,6 +2402,8 @@ async def get_only_staked(wallet, pools, network, farm_info):
                     calls.append(Call(masterchef, ['%s(address,uint256)(uint256)' % (stakedFunction), wallet, i], [['%s_%s' % (pool, i), None]]))
                 else:
                     calls.append(Call(masterchef, ['%s(uint256,address)(uint256)' % (stakedFunction), i, wallet], [['%s_%s' % (pool, i), None]]))
+    if user_config:
+        return await parse_calls_master(calls)
 
     if len(calls) > 200:
         chunks = len(calls) / 100
@@ -2414,9 +2425,12 @@ async def get_only_staked(wallet, pools, network, farm_info):
     
     return filteredStakes, final
 
-async def get_pending_want(wallet, stakes, network, farm_info):
+async def get_pending_want(wallet, stakes, network, farm_info, user_config=False):
 
-    final = stakes[1]
+    if user_config:
+        final = None
+    else:
+        final = stakes[1]
     network_conn = WEB3_NETWORKS[network]
     calls = []
 
@@ -2466,7 +2480,8 @@ async def get_pending_want(wallet, stakes, network, farm_info):
                 '0x182CD0C6F1FaEc0aED2eA83cd0e160c8Bd4cb063',
                 '0xSynHarmony',
                 '0x067eC87844fBD73eDa4a1059F30039584586e09d',
-                '0x02703e13b5d3d3056ac9321983b44a2cc065bb22'
+                '0x02703e13b5d3d3056ac9321983b44a2cc065bb22',
+                '0xD7b0B7a86441397097B71d9D009cc41F5C69F259'
                 ]:
                 calls.append(Call(masterchef, ['lpToken(uint256)(address)', poolID], [['%s_%s_want' % (address, poolID), None]]))
             elif address in ['0x876F890135091381c23Be437fA1cec2251B7c117', '0xBF65023BcF48Ad0ab5537Ea39C9242de499386c9', '0xd54AA6fEeCc289DeceD6cd0fDC54f78079495E79', '0x4dF0dDc29cE92106eb8C8c17e21083D4e3862533', '0xd3ab90ce1eecf9ab3cbae16a00acfbace30ebd75']:
@@ -2483,6 +2498,8 @@ async def get_pending_want(wallet, stakes, network, farm_info):
         if address == '0x89d065572136814230A55DdEeDDEC9DF34EB0B76':
             calls.append(Call(masterchef, ['poolInfo(uint256)((address,uint256,uint256,uint256))', poolID], [['%s_%s_want' % (address, poolID), parsers.parse_wanted_offset, 0]]))
 
+    if user_config:
+        return await parse_calls(calls)
 
     stakes = await Multicall(calls, network_conn)()
         
@@ -2518,11 +2535,18 @@ async def get_pending_want(wallet, stakes, network, farm_info):
         stakes = {}
     return stakes, final
 
-async def get_traditional_masterchef(wallet, pools, network, farm_info, return_obj):
+async def get_traditional_masterchef(wallet, pools, network, farm_info, return_obj, user_config=False):
 
     for farm in pools:
         if farm not in return_obj:
             return_obj[farm] = {'name' : farm_info[farm]['name'], 'network' : farm_info[farm]['network'], 'wallet' : wallet, 'userData' : {}}
+
+    if user_config:
+        pool_lengths = await get_pool_lengths(wallet, pools, network, farm_info)
+        only_staked = await get_only_staked(wallet, (pool_lengths, return_obj), network, farm_info, user_config)
+        #pending_wants = await get_pending_want(wallet, only_staked, network, farm_info, user_config)
+
+        return only_staked
 
     pool_lengths = await get_pool_lengths(wallet, pools, network, farm_info)
     only_staked = await get_only_staked(wallet, (pool_lengths, return_obj), network, farm_info)
@@ -4254,3 +4278,64 @@ async def get_multi_masterchef(wallet,farm_id,network_id,farm_data,vaults,length
             return poolIDs, poolNest    
         else:
             return None
+
+async def kandyland_staking(wallet, vaults, farm_id, network_id, contract):
+
+    poolKey = farm_id
+    calls = []
+
+    network=WEB3_NETWORKS[network_id]
+
+
+    calls.append(Call(contract, [f'lockedBalances(address)(uint256)', wallet], [[f'locked_staked', None]]))
+    calls.append(Call(contract, [f'withdrawableBalance(address)((uint256,uint256))', wallet], [[f'unlocked_staked', None]]))
+    calls.append(Call(contract, [f'claimableRewards(address)((address,uint256)[])', wallet], [[f'pending', None]]))
+    calls.append(Call(contract, [f'stakingToken()(address)'], [[f'want', None]]))
+
+    
+
+    stakes=await Multicall(calls, network)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    reward_tokens = []
+    reward_totals = []
+
+    i = 0
+
+    for x in stakes['pending']:
+
+        reward_tokens.append(x[0])
+        reward_totals.append(x[1])
+        
+    total_staked = stakes['locked_staked'] + stakes['unlocked_staked'][0] + stakes['unlocked_staked'][1]
+
+    token_decimals = await template_helpers.get_token_list_decimals_symbols(reward_tokens + [stakes['want']],network_id)
+
+    if total_staked > 0:
+        token_decimal = 18 if stakes['want'] not in token_decimals else token_decimals[stakes['want']]
+        staked = total_staked
+        want_token = stakes['want']
+        real_staked = parsers.from_custom(staked, token_decimal)
+
+        poolNest[poolKey]['userData']['totalstaked'] = {'want': want_token, 'staked' : real_staked, 'contractAddress' : contract, 'gambitRewards' : []}
+        poolIDs['%s_%s_want' % (poolKey, 'totalstaked')] = want_token
+
+        for i, token in enumerate(reward_tokens):
+            reward_token = token
+
+            reward_token_0 = {
+                'pending': parsers.from_custom(reward_totals[i], token_decimals.get(f'{reward_token}_decimals')),
+                'symbol' : token_decimals.get(f'{reward_token}_symbol'),
+                'token' : reward_token
+                }
+            
+            poolNest[poolKey]['userData']['totalstaked']['gambitRewards'].append(reward_token_0)
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest
+    else:
+        return None

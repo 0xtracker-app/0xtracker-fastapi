@@ -1,3 +1,4 @@
+from numpy import full
 from ..redis.cache import cache_function
 from .farms import Farms
 from .networks import WEB3_NETWORKS
@@ -15,6 +16,8 @@ from web3.auto import w3
 from ..db.crud import delete_user_history
 from .wallet_balance_api import get_native_balance
 from ..redis.cache import getvalue
+import functools
+import operator
 
 INCH_SUPPORTED = ['bsc','matic','eth']
 
@@ -34,7 +37,7 @@ def return_apy_list(parser=None):
         return [{'sendValue' : evm.farms[x]['masterChef'], 'name' : evm.farms[x]['name'], 'network': WEB3_NETWORKS[evm.farms[x]['network']]['id'], 'featured' : evm.farms[x]['featured']} for x in evm.farms]
 
 @cache_function(keyparams=2)
-async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb):
+async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb, user_config=False):
     set_farms = Farms(wallet, farm_id)
     if not farm_id in set_farms.farms.keys():
         return {}
@@ -44,11 +47,42 @@ async def get_evm_positions(wallet, farm_id, mongo_db, http_session, client, pdb
     args = {'wallet' : wallet}
     returned_object = ({},{farm_id : {'name' : farm_configuraiton['name'], 'displayName' : farm_configuraiton['displayName'], 'url' : farm_configuraiton['url'], 'network' : farm_configuraiton['network'], 'wallet' : wallet, 'userData' : {}}})
 
+    if user_config:
+
+        full_user_config = []
+        args['user_config'] = True
+
+        if farm_configuraiton['stakedFunction'] is not None:
+            masterchef = await farm_templates.get_traditional_masterchef(wallet, masterchef_pool_list, farm_network, set_farms.farms, returned_object[1], user_config)
+            if masterchef is not None:
+                full_user_config.append(masterchef)
+        
+        if 'extraFunctions' in farm_configuraiton:
+             
+            if farm_configuraiton['extraFunctions']['vaults'] is not None:
+                vaults = await asyncio.gather(*[v(**farm_configuraiton['extraFunctions']['vault_args'][i], session=http_session) for i, v in enumerate(farm_configuraiton['extraFunctions']['vaults'])])
+
+            farm_infos = await asyncio.gather(*[f(vaults=vaults[i], **{**farm_configuraiton['extraFunctions']['args'][i], **args}) for i, f in enumerate(farm_configuraiton['extraFunctions']['functions'])])
+
+            for farm_info in farm_infos:
+                if farm_info is not None:
+                    full_user_config.append(farm_info)
+        
+        return {
+            'protocol_id' : farm_id,
+            'user' : wallet,
+            'network' : farm_configuraiton['network'],
+            'calls' : functools.reduce(operator.iconcat, full_user_config, [])
+            }
+
+
+
     if farm_configuraiton['stakedFunction'] is not None:
         masterchef = await farm_templates.get_traditional_masterchef(wallet, masterchef_pool_list, farm_network, set_farms.farms, returned_object[1])
         if masterchef is not None:
             returned_object[0].update(masterchef[0])
             returned_object[1][farm_id]['userData'].update(masterchef[1][farm_id]['userData'])
+    
     if 'extraFunctions' in farm_configuraiton:
         
         if farm_configuraiton['extraFunctions']['vaults'] is not None:

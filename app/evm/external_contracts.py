@@ -9,12 +9,13 @@ import cloudscraper
 from requests.sessions import session
 from ..redis.cache import cache_function
 from .utils import make_get, make_get_hson,make_get_json,cf_make_get_json
-from .multicall import parsers
+from .multicall import parsers, Call, Multicall
 from .thegraph import call_graph
 from . import poolext
 from . import bitquery
 import asyncio
 import ast
+from .networks import WEB3_NETWORKS
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -618,7 +619,15 @@ async def get_autoshark_vaults(network, session):
 async def get_solidex_vaults(network, session):
     r = await make_get(session,f'https://api.solidexfinance.com/api/getLPDetails?v={network}')
     r = json.loads(r)['data']['poolDetailsAll']
-    return [x['poolAddress'] for x in r if x['isPoolWhitelisted']]  
+    return [x['poolAddress'] for x in r if x['isPoolWhitelisted']]
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network', 'factory'])
+async def get_pools_from_factory(network, session, factory, pool_length, token_func):
+    network_session = WEB3_NETWORKS[network]
+
+    length = await Call(factory, [f'{pool_length}()(uint256)'], None, network_session)()
+
+    return await Multicall([Call(factory, [f'{token_func}(uint256)(address)', i], None) for i in range(0,length)], network_session, _list=True)()   
 
 async def get_aperocket_vaults(session):
     r = poolext.aperocket.ape_rockets
