@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['meme','crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
+        self.supported_networks = ['evmos', 'meme','crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -447,6 +447,21 @@ class CosmosNetwork:
                 'denom' : 'umeme',
                 'symbol' : 'MEME',
                 'decimals' : 6,
+                'coin_gecko_id' : ''
+            }
+        },
+            'evmos' : {
+            'wallet' : from_atom(wallet,'evmos'),
+            'rpc' : 'https://rpc-evmos-ia.notional.ventures',
+            'rest' : 'https://api-evmos-ia.notional.ventures',
+            'chain_id' : 'evmos_9001-2',
+            'chain_name' : 'evmos',
+            'explorer' : 'https://explorer.meme.sx/meme',
+            'bech_prefix' : 'evmos',
+            'stake_token' : {
+                'denom' : 'aevmos',
+                'symbol' : 'EVMOS',
+                'decimals' : 18,
                 'coin_gecko_id' : ''
             }
         },

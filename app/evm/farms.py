@@ -8291,8 +8291,8 @@ class Farms:
     },
                 '0x067eC87844fBD73eDa4a1059F30039584586e09d' : {
         'name' : 'diffusion.fi',
-        'displayName' : None,
-        'url' : None,
+        'displayName' : 'Diffusion Finance',
+        'url' : 'https://diffusion.fi',
         'rewardToken' : '0x3f75ceabCDfed1aCa03257Dc6Bdc0408E2b4b026',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -8303,6 +8303,18 @@ class Farms:
         'network' : 'evmos',
         'perBlock' : 'diffusionPerSecond',
         'apy_config' : 'second',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sfeed],
+            'vaults' : [external_contracts.get_evmos_staking],
+            'args' : [
+                    {
+                        'farm_id' : '0x067eC87844fBD73eDa4a1059F30039584586e09d',
+                        'network' : 'evmos',
+                        'receipt_token' : '0x75aeE82a16BD1fB98b11879af93AB7CE055f66Da'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
     },
                 '0x5593473e318F0314Eb2518239c474e183c4cBED5' : {
         'name' : 'plutusdao.io',
@@ -8775,6 +8787,174 @@ class Farms:
             'vaults' : [external_contracts.dummy_vault],
             'args' : [{'farm_id' : '0xD7b0B7a86441397097B71d9D009cc41F5C69F259', 'network_id' : 'bsc', 'contract' : '0xef6a9e7815d8b3b555dcc597358d3c579888b193'}],
             'vault_args' : [{}]
+        }
+    },
+                '0xCreamBSC' : {
+        'name' : 'cream.finance',
+        'displayName' : 'C.R.E.A.M',
+        'url' : 'https://cream.finance',
+        'rewardToken' : '0xd4cb328a82bdf5f03eb737f37fa6b370aef3e888',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCreamBSC',
+        'featured' : 2,
+        'network' : 'bsc',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xCreamBSC',
+                        'network' : 'bsc',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'bsc', 'contract' : '0x589DE0F0Ccf905477646599bb3E5C622C84cC0BA'}]
+        }
+    },
+                '0xCreamETH' : {
+        'name' : 'cream.finance',
+        'displayName' : 'C.R.E.A.M',
+        'url' : 'https://cream.finance',
+        'rewardToken' : '0x2ba592F78dB6436527729929AAf6c908497cB200',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCreamETH',
+        'featured' : 2,
+        'network' : 'eth',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xCreamETH',
+                        'network' : 'eth',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'eth', 'contract' : '0x3d5BC3c8d13dcB8bF317092d84783c2697AE9258'}]
+        }
+    },
+                '0xCreamPoly' : {
+        'name' : 'cream.finance',
+        'displayName' : 'C.R.E.A.M',
+        'url' : 'https://cream.finance',
+        'rewardToken' : '0x2ba592F78dB6436527729929AAf6c908497cB200',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCreamPoly',
+        'featured' : 2,
+        'network' : 'matic',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xCreamPoly',
+                        'network' : 'matic',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'matic', 'contract' : '0x20CA53E2395FA571798623F1cFBD11Fe2C114c24'}]
+        }
+    },
+                '0xCreamArb' : {
+        'name' : 'cream.finance',
+        'displayName' : 'C.R.E.A.M',
+        'url' : 'https://cream.finance',
+        'rewardToken' : '0x04f3C4cF2e806da6DF31e80E8A5D121F98eDD61d',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCreamArb',
+        'featured' : 2,
+        'network' : 'arb',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xCreamArb',
+                        'network' : 'arb',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'arb', 'contract' : '0xbadaC56c9aca307079e8B8FC699987AAc89813ee'}]
+        }
+    },
+                '0xIronBankFTM' : {
+        'name' : 'ib.xyz',
+        'displayName' : 'Iron Bank',
+        'url' : 'https://ib.xyz',
+        'rewardToken' : '0x657A1861c15A3deD9AF0B6799a195a249ebdCbc6',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xIronBankFTM',
+        'featured' : 2,
+        'network' : 'ftm',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xIronBankFTM',
+                        'network' : 'ftm',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'ftm', 'contract' : '0x4250A6D3BD57455d7C6821eECb6206F507576cD2'}]
+        }
+    },
+                '0xIronBankAVAX' : {
+        'name' : 'ib.xyz',
+        'displayName' : 'Iron Bank',
+        'url' : 'https://ib.xyz',
+        'rewardToken' : '0x657A1861c15A3deD9AF0B6799a195a249ebdCbc6',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xIronBankAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xIronBankAVAX',
+                        'network' : 'avax',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'avax', 'contract' : '0x2eE80614Ccbc5e28654324a66A396458Fa5cD7Cc'}]
+        }
+    },
+                '0xIronBankETH' : {
+        'name' : 'ib.xyz',
+        'displayName' : 'Iron Bank',
+        'url' : 'https://ib.xyz',
+        'rewardToken' : '0x2ba592F78dB6436527729929AAf6c908497cB200',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xIronBankETH',
+        'featured' : 2,
+        'network' : 'eth',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xIronBankETH',
+                        'network' : 'eth',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'eth', 'contract' : '0xAB1c342C7bf5Ec5F02ADEA1c2270670bCa144CbB'}]
         }
     },
 }
