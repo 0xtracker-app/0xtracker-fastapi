@@ -8755,6 +8755,28 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xD7b0B7a86441397097B71d9D009cc41F5C69F259' : {
+        'name' : 'kandylandprotocol.com',
+        'displayName' : 'Kandyland Finance',
+        'url' : 'https://kandylandprotocol.com/',
+        'rewardToken' : '0x62a6EA190f4343adCBcC5a4161C0CfDCDB90c229',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingReward',
+        'masterChef' : '0xD7b0B7a86441397097B71d9D009cc41F5C69F259',
+        'want' : 'lpToken',
+        'perBlock' : 'rewardPerSecond',
+        'pool_alloc' : 'poolInfo(uint256)((uint256,uint256,uint256))',
+        'alloc_offset' : 2,
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.kandyland_staking],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [{'farm_id' : '0xD7b0B7a86441397097B71d9D009cc41F5C69F259', 'network_id' : 'bsc', 'contract' : '0xef6a9e7815d8b3b555dcc597358d3c579888b193'}],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 

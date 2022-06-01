@@ -138,6 +138,11 @@ async def get_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_
     results = await get_evm_positions(wallet, farm_id, mongo_db, session, None, pdb)
     return results
 
+@app.get('/user-config/{wallet}/{farm_id}')
+async def get_farms(wallet, farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+    results = await get_evm_positions(wallet, farm_id, mongo_db, session, None, pdb, user_config=True)
+    return results
+
 
 @app.get('/apy/{farm_id}')
 async def get_apy(farm_id, mongo_db: AsyncIOMotorClient = Depends(get_database), session: ClientSession = Depends(get_session)):
