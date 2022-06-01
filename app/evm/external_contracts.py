@@ -17,6 +17,8 @@ import asyncio
 import ast
 from .networks import WEB3_NETWORKS
 from dotenv import load_dotenv
+from itertools import chain
+from .native_tokens import NativeToken, NativeDecimal
 
 load_dotenv()
 
@@ -629,6 +631,33 @@ async def get_pools_from_factory(network, session, factory, pool_length, token_f
 
     return await Multicall([Call(factory, [f'{token_func}(uint256)(address)', i], None) for i in range(0,length)], network_session, _list=True)()   
 
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network', 'contract'])
+async def get_lending_config(network, session, contract):
+    network_session = WEB3_NETWORKS[network]
+    native_token = getattr(NativeToken, network.upper())
+    native_decimal = getattr(NativeDecimal, network.upper())
+
+    markets = await Call(contract, [f'getAllMarkets()(address[])'], None, network_session)()
+    market_data = await Multicall(list(chain.from_iterable((Call(i, [f'underlying()(address)'], [[f'{i}_underlying', None]]), Call(contract, [f'markets(address)((bool,uint256))', i], [[f'{i}_collat', None]])) for i in markets)), network_session, _strict=False)() 
+    decimals = await Multicall([Call(market_data[i], [f'decimals()(uint8)'], [[f'{market_data[i]}', None]]) for i in market_data if 'underlying' in i], network_session, _strict=False)()
+
+    lending_config = []
+
+    for m in markets:
+
+        want_token = market_data.get(f'{m}_underlying') if market_data.get(f'{m}_underlying') else native_token
+        want_decimal = decimals.get(f'{want_token}') if decimals.get(f'{want_token}') else native_decimal
+        collat = parsers.from_custom(market_data.get(f'{m}_collat')[1], 18)
+
+        lending_config.append({
+            'address' : m,
+            'decimal' : want_decimal,
+            'want' : want_token,
+            'collat_rate' : collat})
+
+    return lending_config 
+
 async def get_aperocket_vaults(session):
     r = poolext.aperocket.ape_rockets
     return [x['address'] for x in r if x['address'] != '0xd79dc49Ed716832658ec28FE93dd733e0DFB8d58']
@@ -914,6 +943,9 @@ async def get_dk_jewel(session):
 
 async def get_dk_crystal(session):
     return ['0x04b9dA42306B023f3572e106B11D82aAd9D32EBb']
+
+async def get_evmos_staking(session):
+    return ['0x3f75ceabCDfed1aCa03257Dc6Bdc0408E2b4b026']
 
 async def get_snowball_staking(session):
     return ['0xc38f41a296a4493ff429f1238e030924a1542e50']
