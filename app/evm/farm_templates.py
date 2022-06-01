@@ -2110,7 +2110,7 @@ async def get_lending_protocol(wallet,vaults,farm_id,network):
         vault_address = vault['address']
         calls.append(Call(vault_address, [f'getAccountSnapshot(address)((uint256,uint256,uint256,uint256))', wallet], [[f'{vault_address}_accountSnapshot', None ]]))
         
-    stakes=await Multicall(calls, WEB3_NETWORKS[network])()
+    stakes=await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
 
     poolNest = {poolKey: 
     { 'userData': { }
