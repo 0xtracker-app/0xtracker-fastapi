@@ -4159,7 +4159,7 @@ async def get_kyber_chef(wallet,farm_id,network_id,vaults):
         else:
             return None
 
-async def get_simple_balanceof(wallet, vaults, farm_id, network, want_function=None, single_bypass=None):
+async def get_simple_balanceof(wallet, vaults, farm_id, network, want_function=None, single_bypass=None, use_vault=False):
     network_conn = WEB3_NETWORKS[network]
 
     poolKey = farm_id
@@ -4176,6 +4176,9 @@ async def get_simple_balanceof(wallet, vaults, farm_id, network, want_function=N
 
     if single_bypass:
         stakes = {**stakes, **{f'{x}_want' : single_bypass for x in vaults}}
+
+    if use_vault:
+        stakes = {**stakes, **{f'{x}_want' : x for x in vaults}}
 
     poolNest = {poolKey: 
     { 'userData': { } } }
