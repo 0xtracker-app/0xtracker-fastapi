@@ -8957,6 +8957,54 @@ class Farms:
             'vault_args' : [{'network' : 'eth', 'contract' : '0xAB1c342C7bf5Ec5F02ADEA1c2270670bCa144CbB'}]
         }
     },
+                '0xOrbitalSwap' : {
+        'name' : 'orbitalswap.com',
+        'displayName' : 'Orbital Swap',
+        'url' : 'https://orbitalswap.com',
+        'rewardToken' : '0x912F594Fd096E67e0c0A18D496A9f70E3171c330',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xOrbitalSwap',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_pools_from_factory],
+            'args' : [
+                    {
+                        'farm_id' : '0xOrbitalSwap',
+                        'network' : 'bsc',
+                        'use_vault' : True,
+                    },
+                    ],
+            'vault_args' : [{'network' : 'bsc', 'factory' : '0x1A04Afe9778f95829017741bF46C9524B91433fB', 'pool_length' : 'allPairsLength', 'token_func' : 'allPairs'}]
+        }
+    },
+                '0xTytanFinance' : {
+        'name' : 'tytan.finance',
+        'displayName' : 'TYTAN Finance',
+        'url' : 'https://tytan.finance',
+        'rewardToken' : '0x912F594Fd096E67e0c0A18D496A9f70E3171c330',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xTytanFinance',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_tytan],
+            'args' : [
+                    {
+                        'farm_id' : '0xTytanFinance',
+                        'network' : 'bsc',
+                        'use_vault' : True,
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
