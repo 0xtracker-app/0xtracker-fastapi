@@ -4342,3 +4342,88 @@ async def kandyland_staking(wallet, vaults, farm_id, network_id, contract):
         return poolIDs, poolNest
     else:
         return None
+
+async def get_mai_lending(wallet,vaults,farm_id,network):
+
+    lending_vaults = vaults
+    poolKey = farm_id
+    calls = []
+
+    token_balances = Multicall([Call(x, ['balanceOf(address)(uint256)', wallet], None) for x in vaults], WEB3_NETWORKS[network], _list=True)()
+
+    for vault in lending_vaults:
+        vault_address = vault['address']
+        calls.append(Call(vault_address, [f'getAccountSnapshot(address)((uint256,uint256,uint256,uint256))', wallet], [[f'{vault_address}_accountSnapshot', None ]]))
+        
+    stakes=await Multicall(calls, WEB3_NETWORKS[network], _strict=False)()
+
+    poolNest = {poolKey: 
+    { 'userData': { }
+     } }
+
+    poolIDs = {}
+
+    hash_map = {x['address'] : x for x in lending_vaults}
+
+    for stake in stakes:
+        if stakes[stake][1] > 0 or stakes[stake][2] > 0:
+            addPool = stake.split('_')
+            if addPool[0] not in poolNest[poolKey]['userData']:
+
+                snapshot =  stakes[stake]
+                underlying = hash_map[addPool[0]]['want']
+                underlying_decimal = hash_map[addPool[0]]['decimal']           
+                collat = parsers.from_custom(snapshot[1], underlying_decimal)
+                collat_rate = hash_map[addPool[0]]['collat_rate']
+                borrow = parsers.from_custom(snapshot[2], underlying_decimal)
+                rate = parsers.from_wei(snapshot[3])
+                poolNest[poolKey]['userData'][addPool[0]] = {'staked' : collat * rate, 'want': underlying, 'borrowed' : borrow, 'rate' : collat_rate, 'contractAddress' : addPool[0]}
+                poolIDs['%s_%s_want' % (poolKey, addPool[0])] = underlying
+
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
+
+async def get_aalto_bank(wallet, vaults, farm_id, network_id, base_contract, want, decimal):
+
+    poolKey = farm_id
+
+    network=WEB3_NETWORKS[network_id]
+
+    total_bank = await Call(want, ['lockedBalanceOf(address)(uint256)', wallet], None,network)()
+    user_rewards = await Call(base_contract, ['getUserPendingRewards(address)((address,uint256)[])', wallet], None,network)()
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    token_decimals = await template_helpers.get_token_list_decimals_symbols([x[0] for x in user_rewards if x != '0x0000000000000000000000000000000000000000'],network_id)
+
+
+    if total_bank > 0:
+        want_token = want
+        real_staked = parsers.from_custom(total_bank, decimal)
+
+        poolNest[poolKey]['userData'][base_contract] = {'want': want_token, 'staked' : real_staked, 'contractAddress' : base_contract, 'gambitRewards' : []}
+        poolIDs['%s_%s_want' % (poolKey, base_contract)] = want_token
+
+        for r in user_rewards:
+
+            if r[1] > 0:
+                reward_token = r[0]
+
+                reward_token_0 = {
+                    'pending': parsers.from_custom(r[1], token_decimals.get(f'{reward_token}_decimals')),
+                    'symbol' : token_decimals.get(f'{reward_token}_symbol'),
+                    'token' : reward_token
+                    }
+                
+                poolNest[poolKey]['userData'][base_contract]['gambitRewards'].append(reward_token_0)
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
