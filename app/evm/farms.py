@@ -9005,6 +9005,32 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xAalto' : {
+        'name' : 'aalto-protocol.com',
+        'displayName' : 'Aalto',
+        'url' : 'https://aalto-protocol.com',
+        'rewardToken' : '0xcE18FbBAd490D4Ff9a9475235CFC519513Cfb19a',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAalto',
+        'featured' : 2,
+        'network' : 'bsc',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_aalto_bank],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xAalto',
+                        'network_id' : 'bsc',
+                        'base_contract' : '0x5F6D61ADdE8f4cf9079016ADF52438EF9Dfb028E',
+                        'want' : '0xcE18FbBAd490D4Ff9a9475235CFC519513Cfb19a',
+                        'decimal' : 18
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
 }
 
 
