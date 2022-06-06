@@ -68,5 +68,5 @@ class TokenOverride:
             '0xAEf735B1E7EcfAf8209ea46610585817Dc0a2E16'.lower() : [get_price_from_platypus, {'token_in' : '0xAEf735B1E7EcfAf8209ea46610585817Dc0a2E16','swap_address' : '0x66357dcace80431aee0a7507e2e361b7e2402370', 'token_out_index' : '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E', 'decimal' : 6, 'network' : 'avax'}],
             '0x776628A5C37335608DD2a9538807b9bba3869E14'.lower() : [get_price_from_platypus, {'token_in' : '0x776628A5C37335608DD2a9538807b9bba3869E14','swap_address' : '0x66357dcace80431aee0a7507e2e361b7e2402370', 'token_out_index' : '0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7', 'decimal' : 6, 'network' : 'avax'}],
             '0xf8b9facb7b4410f5703eb29093302f2933d6e1aa'.lower() : [get_price_from_router, {'token_in' : '0xf8b9facb7b4410f5703eb29093302f2933d6e1aa', 'network' : 'cro', 'router' : routers.CroRouter.MM, 'native' : True, 'bypass_token' : '0x97749c9B61F878a880DfE312d2594AE07AEd7656', 'bypass_router' : routers.CroRouter.MM}],
-
+            '0x912F594Fd096E67e0c0A18D496A9f70E3171c330'.lower() : [get_price_from_router, {'token_in' : '0x912F594Fd096E67e0c0A18D496A9f70E3171c330', 'network' : 'bsc', 'router' : routers.BSCRouter.ORBITAL, 'decimal': 5, 'return_token' : '0x912F594Fd096E67e0c0A18D496A9f70E3171c330'.lower(), 'native' : True}],
 }
