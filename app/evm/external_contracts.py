@@ -468,7 +468,7 @@ async def get_magik_avax_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/avalanche_pools.js')
     s2 = "export const avalanchePools = "
     
-    data = r[r.index(s2) + len(s2) :len(r)-1]
+    data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
     vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x]
