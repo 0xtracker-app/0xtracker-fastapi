@@ -132,6 +132,7 @@ def get_uniswap_v3_balance(token_data,network,prices):
 
     return {'lpTotal': '%s/%s' % (round(amount_0_adjusted, 2),round(amount_1_adjusted, 2)),
     'lpPrice' : (amount_0_adjusted * prices[token0]) + (amount_1_adjusted * prices[token1]),
+    'lpBalances' : [amount_0_adjusted, amount_1_adjusted],
     'uniswapFee' : get_uniswap_fees(token_data),
     'uniswapData': {
     'priceCurrent': price_current_adjusted,
