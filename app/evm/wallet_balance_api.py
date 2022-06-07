@@ -174,7 +174,8 @@ async def get_wallet_balance(wallet, network, mongodb, session, pdb):
                 if address.lower() not in [
                     '0xe5417af564e4bfda1c483642db72007871397896'.lower(),
                     '0xb9E05B4C168B56F73940980aE6EF366354357009'.lower(),
-                    '0xFa4b16b0f63F5A6D0651592620D585D308F749A4'.lower()
+                    '0xFa4b16b0f63F5A6D0651592620D585D308F749A4'.lower(),
+                    '0x395908aeb53d33a9b8ac35e148e9805d34a555d3'.lower(),
                     ]:
                     price = 0
 
