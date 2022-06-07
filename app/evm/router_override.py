@@ -27,5 +27,6 @@ stable_override = {
     '0xe6d1afea0b76c8f51024683dd27fa446ddaf34b6'.lower() : {'token' : '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664'.lower(), 'decimal' : 6},
     '0xb9E05B4C168B56F73940980aE6EF366354357009'.lower() : {'token' : '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'.lower(), 'decimal' : 18},
     '0xFa4b16b0f63F5A6D0651592620D585D308F749A4'.lower() : {'token' : '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'.lower(), 'decimal' : 18},
+    '0x395908aeb53d33a9b8ac35e148e9805d34a555d3'.lower() : {'token' : '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664'.lower(), 'decimal' : 6},
 
 }
