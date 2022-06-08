@@ -4,6 +4,7 @@ from .multicall import Call, Multicall, parsers
 from .find_token_type import token_router
 from hashlib import sha256
 from .native_tokens import NetworkRoutes
+from .oracles import list_router_prices
 import asyncio
 import math
 import numpy as np
@@ -72,6 +73,8 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
     if stakes.get(f"{farm_info['masterChef']}_points") == 0 or stakes.get(f"{farm_info['masterChef']}_block") == 0 or stakes.get(f"{farm_info['masterChef']}_points") is None or stakes.get(f"{farm_info['masterChef']}_block") is None:
         return {'error' : { 'type' : 'alloc_reward', 'message' : 'Farm failed due to no totalAlloc and rewardPerBlock response.'}}
 
+    unique_tokens_found = {}
+
     for pool in range(0,pool_length):
         if f'{pool}_want' in stakes: # and f'{pool}_balance' in balances:
             want_token = stakes[f'{pool}_want']
@@ -107,13 +110,27 @@ async def get_protocol_apy(farm_id, mongo_db, http_session):
                 'ad' : False,
                 'chain' : WEB3_NETWORKS[farm_info['network']]['id'],
                 'staking_prices': [],
+                'rewards_prices' : [],
                 'total_yearly_rewards' : [ blocks_per_year *  (stakes[f'{pool}_alloc'] / stakes[f"{farm_info['masterChef']}_points"]) ]
             }
 
             pool_data['hash'] = sha256(f"{pool_data['lp_token_address']},{pool_data['pool_id']},{pool_data['master']},{pool},{pool_data['chain']},{pool_data['name']}".lower().encode('utf-8')).hexdigest()
             
+            for i, p in enumerate(pool_data['staking']):
+                if p not in unique_tokens_found:
+                    unique_tokens_found[p] = pool_data['decimals_staking'][i]
+                
+            for i, p in enumerate(pool_data['rewards']):
+                if p not in unique_tokens_found:
+                    unique_tokens_found[p] = pool_data['decimals_rewards'][i]
+
             pools.append(pool_data)
 
+    token_prices = await list_router_prices([{'token' : x.lower(), 'decimal' : unique_tokens_found[x], 'network' : farm_info['network']} for x in unique_tokens_found], farm_info['network'], check_liq=False)
+
+    for i, p in enumerate(pools):
+        pools[i]['staking_prices'] = [token_prices[x.lower()] for x in pools[i]['staking'] ]
+        pools[i]['rewards_prices'] = [token_prices[x.lower()] for x in pools[i]['rewards'] ]
 
 
     return {
