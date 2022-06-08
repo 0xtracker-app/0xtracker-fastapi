@@ -9031,6 +9031,19 @@ class Farms:
             'vault_args' : [{}]
         }
     },
+                '0xDD18d18727bFe6B863387d48872eB4c1B682DEca' : {
+        'name' : 'hunnyswap.com',
+        'displayName' : 'HunnySwap',
+        'url' : 'https://hunnyswap.com/',
+        'rewardToken' : '0xf9430ad8da4af7fb4091c57fe523af1236ff5b2c',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingXoXo',
+        'masterChef' : '0xDD18d18727bFe6B863387d48872eB4c1B682DEca',
+        'perBlock' : 'xoxoPerSecond',
+        'featured' : 2,
+        'network' : 'avax',
+    },
 }
 
 
