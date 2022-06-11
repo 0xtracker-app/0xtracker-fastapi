@@ -6392,14 +6392,38 @@ class Farms:
         'type' : 'lending',
         'extraFunctions' : {
             'functions' : [farm_templates.get_lending_protocol],
-            'vaults' : [external_contracts.get_annex_vaults],
+            'vaults' : [external_contracts.get_lending_config],
             'args' : [
                     {
                         'farm_id' : '0xAnnexBSC',
                         'network' : 'bsc',
                     },
                     ],
-            'vault_args' : [{}]
+            'vault_args' : [{'network' : 'bsc', 'contract' : '0xb13026Db8aAfA2fd6d23355533dcCccbD4442f4c'}]
+        }
+    },
+                '0xAnnexCRO' : {
+        'name' : 'annex.finance (Lending)',
+        'displayName' : None,
+        'url' : None,
+        'rewardToken' : '0x98936Bde1CF1BFf1e7a8012Cee5e2583851f2067',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAnnexCRO',
+        'featured' : 2,
+        'network' : 'cro',
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_lending_protocol],
+            'vaults' : [external_contracts.get_lending_config],
+            'args' : [
+                    {
+                        'farm_id' : '0xAnnexCRO',
+                        'network' : 'cro',
+                    },
+                    ],
+            'vault_args' : [{'network' : 'cro', 'contract' : '0xbC1f72e751DE303Ff545D2E348fef2E84D493645'}]
         }
     },
                 '0xAaveMatic' : {
