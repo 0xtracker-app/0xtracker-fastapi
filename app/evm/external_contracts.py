@@ -29,24 +29,24 @@ async def get_quickswap_lps(wallet, session):
     return x
 
 async def get_voltswap(wallet, session):
-    geysers = await call_graph('https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
-    vault = await call_graph('https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
+    geysers = await call_graph('https://graph-meter.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
+    vault = await call_graph('https://graph-meter.voltswap.finance/subgraphs/name/meter/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
     if vault['data']['user']:
         return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
     else:
         return {'geysers' : [], 'user_vaults' : []}
 
 async def get_voltswap_theta(wallet, session):
-    geysers = await call_graph('https://geyser-graph-on-theta.voltswap.finance/subgraphs/name/theta/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
-    vault = await call_graph('https://geyser-graph-on-theta.voltswap.finance/subgraphs/name/theta/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
+    geysers = await call_graph('https://graph-theta.voltswap.finance/subgraphs/name/theta/geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
+    vault = await call_graph('https://graph-theta.voltswap.finance/subgraphs/name/theta/geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
     if vault['data']['user']:
         return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
     else:
         return {'geysers' : [], 'user_vaults' : []}
 
 async def get_voltswap_moon(wallet, session):
-    geysers = await call_graph('https://geyser-graph-on-moonbeam.voltswap.finance/subgraphs/name/moonbeam/token-geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
-    vault = await call_graph('https://geyser-graph-on-moonbeam.voltswap.finance/subgraphs/name/moonbeam/token-geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
+    geysers = await call_graph('https://graph-moonbeam.voltswap.finance/subgraphs/name/moonbeam/token-geyser-v2', {'operationName' : 'getGeysers', 'query' : bitquery.voltswap.geysers}, session)
+    vault = await call_graph('https://graph-moonbeam.voltswap.finance/subgraphs/name/moonbeam/token-geyser-v2', {'operationName' : 'getUserVault', 'query' : bitquery.voltswap.user_vaults, 'variables' : {'user': wallet.lower()}}, session)
     if vault['data']['user']:
         return {'geysers' : geysers['data']['geysers'], 'user_vaults' : vault['data']['user']['vaults']}
     else:
