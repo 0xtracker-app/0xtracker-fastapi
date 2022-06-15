@@ -52,7 +52,7 @@ class NativeSymbol():
     CELO = 'CELO'
     XDAI = 'XDAI'
     HECO = 'HT'
-    METER = 'MTG'
+    METER = 'MTRG'
     CRO = 'CRO'
     POLIS = 'POLIS'
     BOBA = 'ETH'
