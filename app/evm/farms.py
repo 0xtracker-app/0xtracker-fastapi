@@ -5318,15 +5318,24 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_tranchess],
-            'vaults' : [external_contracts.dummy_vault],
+            'functions' : [farm_templates.get_tranchess, farm_templates.get_tranchess],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
             'args' : [
                     {
                         'farm_id' : '0xTranChess',
                         'network_id' : 'bsc',
                     },
+                    {
+                        'farm_id' : '0xTranChess',
+                        'network_id' : 'bsc',
+                        'balance_call' : 'trancheBalanceOf',
+                        'tranch' : ['Q', 'B', 'R'],
+                        'helper' : ['0x66f9D16dB828D340858b1fD4859c4030247d4b70', '0xaF098f9AAdAd3bD8C9fc17CA16C7148f992Aa1b4', '0xFa7b73009d635b0AB069cBe99C5a5D498F701c76'],
+                        'want_helper'  : ['0x2f40c245c66C5219e0615571a526C93883B456BB', '0x1F18cC2b50575A71dD2EbF58793d4e661a7Ba0e0', '0x7618f37EfE8930d5EE6da34185b3AbB750BD2a34'],
+                        'fee_distribution' : ['0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8', '0x67EB546A69c7e4d83F3c66018Fa549Dff5FED35b', '0xE06F85862af08c1C5F67F96e41eA663E29639DAe']
+                    },
                     ],
-            'vault_args' : [{}]
+            'vault_args' : [{},{}]
         }
     },
                 '0xElkAVAX' : {
@@ -8625,6 +8634,76 @@ class Farms:
                 ],
             'vault_args' : [{}]
         }
+    },
+                '0x1da194f8baf85175519d92322a06b46a2638a530' : {
+        'name' : 'ames-defi.app',
+        'displayName' : 'Ames.defi',
+        'url' : 'https://ames-defi.app/',
+        'rewardToken' : '0xfa4b16b0f63f5a6d0651592620d585d308f749a4',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingShare',
+        'masterChef' : '0x1da194f8baf85175519d92322a06b46a2638a530',
+        'featured' : 2,
+        'network' : 'bsc',
+        'perBlock' : 'tSharePerSecond',
+        'apy_config' : 'second',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.get_ames_board, external_contracts.get_ames_vaults],
+            'args' : [
+                    {
+                        'farm_id' : '0x1da194f8baf85175519d92322a06b46a2638a530',
+                        'network_id' : 'bsc',
+                        'staked' : 'share',
+                        'reward' : 'kitty',
+                        'pending_reward' : 'earned',
+                        'user_info' : 'balanceOf'
+                    },
+                    {
+                        'farm_id' : '0x1da194f8baf85175519d92322a06b46a2638a530',
+                        'network' : 'bsc',
+                        '_pps' : 'getPricePerFullShare',
+                        'want_token' : 'want'
+                    },      
+                ],
+            'vault_args' : [{},{}]
+        }
+    },
+                '0x189F734769cD18099d8a66d1224fef2b1fBf438D' : {
+        'name' : 'goldmint.finance',
+        'displayName' : 'GoldMint Finance',
+        'url' : 'https://goldmint.finance/',
+        'rewardToken' : '0xe61776305003d700fbc8318da97806032a3b08ed',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingShare',
+        'masterChef' : '0x189F734769cD18099d8a66d1224fef2b1fBf438D',
+        'featured' : 2,
+        'network' : 'eth',
+        'perBlock' : 'sGLDMPerSecond',
+        'apy_config' : 'second',
+        # 'extraFunctions' : {
+        #     'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+        #     'vaults' : [external_contracts.get_ames_board, external_contracts.get_ames_vaults],
+        #     'args' : [
+        #             {
+        #                 'farm_id' : '0x189F734769cD18099d8a66d1224fef2b1fBf438D',
+        #                 'network_id' : 'eth',
+        #                 'staked' : 'share',
+        #                 'reward' : 'kitty',
+        #                 'pending_reward' : 'earned',
+        #                 'user_info' : 'balanceOf'
+        #             },
+        #             {
+        #                 'farm_id' : '0x189F734769cD18099d8a66d1224fef2b1fBf438D',
+        #                 'network' : 'eth',
+        #                 '_pps' : 'getPricePerFullShare',
+        #                 'want_token' : 'want'
+        #             },      
+        #         ],
+        #     'vault_args' : [{},{}]
+        # }
     },
                 '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5' : {
         'name' : 'darkcrypto.finance',

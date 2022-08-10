@@ -786,8 +786,9 @@ async def get_beefy_boosts_moon(session):
 @cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['offset'])
 async def get_pcs_pools(offset, session):
     r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.tsx')
-    s2 = "const pools: SerializedPoolConfig[] = "
-    s_end = ".filter((p) => !!p.contractAddress[CHAIN_ID])"
+    s2 = "const livePools: SerializedPoolConfig[] ="
+    #s_end = ".filter((p) => !!p.contractAddress[CHAIN_ID])"
+    s_end = "// known finished pools"
     data = r[r.index(s2) + len(s2) :r.index(s_end)]
     hson = hjson.loads(data)
     t = json.loads(json.dumps(hson))
@@ -1091,6 +1092,18 @@ async def get_walrus_board(session):
     return [
         '0x38B0b6Ef43c4262659523986D731f9465F871439',
         ]
+
+async def get_ames_board(session):
+    return [
+        '0xc183b26ad8c660afa7b388067fd18c1fb28f1bb4',
+        ]
+
+async def get_ames_vaults(session):
+    return [
+    '0x19Ef052BbF1632a054bEFf4D6DD4C01e0e614209',
+    '0x4dA85929f42b8a6485337fA6Ed31Ae52e2f1b518',
+    '0x4688EbF3770072Bebe32dCE89715E9A5a73985B3',
+    ]
 
 async def get_flr_pools(session):
     return [
