@@ -301,8 +301,8 @@ async def get_crescent_farming(wallet, session, vaults, farm_id, mongodb, networ
                 lp_data = pool_data[want_token], supply_data[want_token]
                 staked_position = {'staked' : helpers.from_custom(staked_balanced, 12), 'gambitRewards' : [], 'network' : 'cosmos'}
 
-                token_0 = await TokenMetaData(address=lp_data[0]['pool']['balances'][0]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
-                token_1 = await TokenMetaData(address=lp_data[0]['pool']['balances'][1]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_0 = await TokenMetaData(address=lp_data[0]['pool']['balances']['base_coin']['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_1 = await TokenMetaData(address=lp_data[0]['pool']['balances']['quote_coin']['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
 
                 staked_position.update({
                     'tokenID': want_token,
@@ -315,7 +315,7 @@ async def get_crescent_farming(wallet, session, vaults, farm_id, mongodb, networ
                     'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
                     'all_tokens': [token_0['token0'], token_1['token0']],
                     'total_shares' : helpers.from_custom(int(lp_data[1]['amount']['amount']), 12),
-                    'reserves' : [int(lp_data[0]['pool']['balances'][0]['amount']),int(lp_data[0]['pool']['balances'][1]['amount'])]
+                    'reserves' : [int(lp_data[0]['pool']['balances']['base_coin']['amount']),int(lp_data[0]['pool']['balances']['quote_coin']['amount'])]
                 })
                 poolNest[poolKey]['userData'][want_token] = staked_position
                 poolIDs['%s_%s_want' % (poolKey, want_token)] = want_token
@@ -327,8 +327,8 @@ async def get_crescent_farming(wallet, session, vaults, farm_id, mongodb, networ
                 lp_data = pool_data[want_token], supply_data[want_token]
                 staked_position = {'staked' : helpers.from_custom(staked_balanced, 12), 'gambitRewards' : [], 'network' : 'cosmos'}
 
-                token_0 = await TokenMetaData(address=lp_data[0]['pool']['balances'][0]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
-                token_1 = await TokenMetaData(address=lp_data[0]['pool']['balances'][1]['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_0 = await TokenMetaData(address=lp_data[0]['pool']['balances']['base_coin']['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
+                token_1 = await TokenMetaData(address=lp_data[0]['pool']['balances']['quote_coin']['denom'], mongodb=mongodb, network=net_config, session=session).lookup()
 
                 staked_position.update({
                     'tokenID': want_token,
@@ -341,7 +341,7 @@ async def get_crescent_farming(wallet, session, vaults, farm_id, mongodb, networ
                     'token_decimals': [token_0['tkn0d'], token_1['tkn0d']],
                     'all_tokens': [token_0['token0'], token_1['token0']],
                     'total_shares' : helpers.from_custom(int(lp_data[1]['amount']['amount']), 12),
-                    'reserves' : [int(lp_data[0]['pool']['balances'][0]['amount']),int(lp_data[0]['pool']['balances'][1]['amount'])]
+                    'reserves' : [int(lp_data[0]['pool']['balances']['base_coin']['amount']),int(lp_data[0]['pool']['balances']['quote_coin']['amount'])]
                 })
                 poolNest[poolKey]['userData'][f'queued-{want_token}'] = staked_position
                 poolIDs['%s_%s_want' % (poolKey, f'queued-{want_token}')] = want_token
