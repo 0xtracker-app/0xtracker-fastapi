@@ -2329,6 +2329,8 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
             '0xA51054BDf0910E3cE9B233e6B5BdDc0931b2E2ED'.lower(),
             '0x752feacfda5c3b440fd6d40ecf338a86b568c2d2'.lower(),
             '0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5'.lower(),
+            '0x1da194f8baf85175519d92322a06b46a2638a530'.lower(),
+            '0x189F734769cD18099d8a66d1224fef2b1fBf438D'.lower()
             ]:
             calls.append(Call(masterchef, f'{pool_length}()(uint256)', [[pool, None]]))
         elif pool.lower() in ['0x036DB579CA9A04FA676CeFaC9db6f83ab7FbaAD7'.lower()]:
@@ -2373,6 +2375,16 @@ async def get_pool_lengths(wallet, pools, network, farm_info):
         poolLengths = {
         **await Multicall(calls, network_conn)(),
         **{'0x63Df75d039f7d7A8eE4A9276d6A9fE7990D7A6C5' : 7}
+        }
+    elif '0x1da194f8baf85175519d92322a06b46a2638a530' in pools:
+        poolLengths = {
+        **await Multicall(calls, network_conn)(),
+        **{'0x1da194f8baf85175519d92322a06b46a2638a530' : 10}
+        }
+    elif '0x189F734769cD18099d8a66d1224fef2b1fBf438D' in pools:
+        poolLengths = {
+            **await Multicall(calls, network_conn)(),
+            **{'0x189F734769cD18099d8a66d1224fef2b1fBf438D' : 5}
         }
     else:
         poolLengths = await Multicall(calls, network_conn)()
@@ -2902,20 +2914,30 @@ async def get_gmx(wallet, vaults, farm_id, network_id):
         else:
             return None
 
-async def get_tranchess(wallet, vaults, farm_id, network_id):
+async def get_tranchess(wallet, vaults, farm_id, network_id, tranch=None, helper=None, want_helper=None, fee_distribution=None, balance_call='availableBalanceOf'):
+        
         poolKey = farm_id
         network = WEB3_NETWORKS[network_id]
-        tranch = ['M', 'A', 'B']
-        helper = ['0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6', '0xB13a07C57bA5297506c71e9c958210Fea8bbCEF0', '0x42867df3c1ce62613aae3f4238cbcf3d7630880b']
-        want_helper = ['0xd6B3B86209eBb3C608f3F42Bf52818169944E402', '0x677b7304cb944b413d3c9aebc4d4b5da1a698a6b', '0x629d4562033e432b390d0808b54a82b0c4a0896b']
-        fee_distribution = ['0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8', '0x67EB546A69c7e4d83F3c66018Fa549Dff5FED35b', '0xE06F85862af08c1C5F67F96e41eA663E29639DAe']
-        market = ['0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D', '0x57C8041C6Aa3440843b5E48B16016A95F822195f', '0x15F2FeFcF313d397F9933C1Cb7590ab925d5cb59']
+        
+        if tranch == None:
+            tranch = ['M', 'A', 'B']
+        
+        if helper == None:
+            helper = ['0x1216Be0c4328E75aE9ADF726141C2254c2Dcc1b6', '0xB13a07C57bA5297506c71e9c958210Fea8bbCEF0', '0x42867df3c1ce62613aae3f4238cbcf3d7630880b']
+        
+        if want_helper == None:
+            want_helper = ['0xd6B3B86209eBb3C608f3F42Bf52818169944E402', '0x677b7304cb944b413d3c9aebc4d4b5da1a698a6b', '0x629d4562033e432b390d0808b54a82b0c4a0896b']
+        
+        if fee_distribution == None:
+            fee_distribution = ['0x85ae5e9d510d8723438b0135CBf29d4F2E8BCda8', '0x67EB546A69c7e4d83F3c66018Fa549Dff5FED35b', '0xE06F85862af08c1C5F67F96e41eA663E29639DAe']
+        
+        # market = ['0x19Ca3baAEAf37b857026dfEd3A0Ba63987A1008D', '0x57C8041C6Aa3440843b5E48B16016A95F822195f', '0x15F2FeFcF313d397F9933C1Cb7590ab925d5cb59']
 
         calls = []
         reward_calls = []
         for w,help in enumerate(helper):
             for i,stake in enumerate(tranch):
-                calls.append(Call(help,['availableBalanceOf(uint256,address)(uint256)',i, wallet], [[f'{stake}{w}{i}_staked', parsers.from_wei]]))
+                calls.append(Call(help,[f'{balance_call}(uint256,address)(uint256)',i, wallet], [[f'{stake}{w}{i}_staked', parsers.from_wei]]))
                 calls.append(Call(want_helper[w],[f'token{stake}()(address)'], [[f'{stake}{w}{i}_want', None]]))
 
             reward_calls.append(Call(help,['claimableRewards(address)(uint256)', wallet], [[f'{help}_pending', parsers.from_wei]]))
