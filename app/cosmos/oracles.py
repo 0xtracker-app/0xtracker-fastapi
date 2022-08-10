@@ -117,7 +117,7 @@ async def check_sif_pricing(session, network_data):
     return sif_prices
 
 async def get_crescent_pricing(session, denom):
-    r = await make_get_json(session, 'https://apigw.crescent.network/asset/live')
+    r = await make_get_json(session, 'https://apigw-v2.crescent.network/asset/live')
 
     if 'data' in r:
         for each in r['data']:
