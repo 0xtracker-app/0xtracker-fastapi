@@ -4,7 +4,7 @@ from . import helpers
 
 async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
 
-    is_found = await cosmos_tokens.find_one({'tokenID': token}, {'_id': False})
+    is_found = await cosmos_tokens.find_one({'tokenID': re.compile('^' + re.escape(token) + '$', re.IGNORECASE)}, {'_id': False})
 
     if is_found:
         return is_found
@@ -83,7 +83,7 @@ class TokenMetaData:
             found_trace = await self.cosmos_routes.find_one({'hash' : self.tokenID}, {'_id': False})
             if found_trace:
                 self.denom = found_trace['base_denom']
-                found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
+                found_token = await self.cosmos_tokens.find_one({'tokenID' : re.compile('^' + re.escape(self.denom) + '$', re.IGNORECASE)}, {'_id': False})
                 if found_token:
                     self.token_metadata = found_token
             else:
@@ -91,7 +91,7 @@ class TokenMetaData:
                 if base_denom:
                     await self.cosmos_routes.update_one({'hash' : self.tokenID},{ "$set": base_denom}, upsert=True)
                     self.denom = base_denom['base_denom']
-                    found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
+                    found_token = await self.cosmos_tokens.find_one({'tokenID' : re.compile('^' + re.escape(self.denom) + '$', re.IGNORECASE)}, {'_id': False})
                     if found_token:
                         self.token_metadata = found_token
                 else:
@@ -106,7 +106,7 @@ class TokenMetaData:
                             self.token_metadata = found_token
 
         elif 'gamm/pool' in self.tokenID:
-            found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
+            found_token = await self.cosmos_tokens.find_one({'tokenID' : re.compile('^' + re.escape(self.denom) + '$', re.IGNORECASE)}, {'_id': False})
 
             if found_token:
 
@@ -137,7 +137,7 @@ class TokenMetaData:
                 await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
                 self.token_metadata = get_pool
         else:
-            found_token = await self.cosmos_tokens.find_one({'tokenID' : self.denom}, {'_id': False})
+            found_token = await self.cosmos_tokens.find_one({'tokenID' : re.compile('^' + re.escape(self.denom) + '$', re.IGNORECASE)}, {'_id': False})
             if found_token:
                 self.token_metadata = found_token
             else:
