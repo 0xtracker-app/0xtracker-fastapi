@@ -28,10 +28,12 @@ class Farms:
         'displayName' : None,
         'url' : None,
         'extraFunctions' : {
-            'functions' : [farm_templates.get_osmosis_staking],
-            'vaults' : [external_contracts.dummy_vault],
-            'args' : [{'farm_id' : 'Osmosis', 'network' : 'osmosis'}],
-            'vault_args' : [{}]
+            'functions' : [farm_templates.get_osmosis_staking, farm_templates.get_osmosis_unbonded],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.dummy_vault],
+            'args' : [
+                {'farm_id' : 'Osmosis', 'network' : 'osmosis'},
+                {'farm_id' : 'Osmosis', 'network' : 'osmosis'}],
+            'vault_args' : [{},{}]
         }
     },
     'Sifchain' : {

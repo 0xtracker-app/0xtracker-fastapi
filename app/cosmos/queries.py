@@ -46,6 +46,14 @@ async def get_cresent_farming(network, network_data, session):
 
     return r
 
+async def get_cresent_rewards(network, network_data, session):
+    endpoint = network_data['rest']
+    wallet = network_data['wallet']
+#    r = await make_get_json(session, f'{endpoint}/cosmos/staking/v1beta1/delegators/{wallet}/unbonding_delegations', {'timeout' : 5})
+    r = await make_get_json(session, f'{endpoint}/crescent/farming/v1beta1/rewards/{wallet}')
+
+    return r
+
 async def get_cresent_pool_info(pool, network_data, session):
     endpoint = network_data['rest']
 
