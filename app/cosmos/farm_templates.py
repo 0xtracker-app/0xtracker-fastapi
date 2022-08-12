@@ -350,3 +350,36 @@ async def get_crescent_farming(wallet, session, vaults, farm_id, mongodb, networ
         return poolIDs, poolNest    
     else:
         return None
+
+async def get_osmosis_unbonded(wallet, session, vaults, farm_id, mongodb, network):
+    poolKey = farm_id
+    cosmos = CosmosNetwork(wallet)
+    net_config = cosmos.all_networks[network]
+
+    bank_balance = await queries.get_bank_balances(network, net_config, session)
+
+    poolNest = {
+        poolKey: {
+            'userData': {},
+            }
+        }
+
+    poolIDs = {}
+    if bank_balance.get('tokens'):
+        for i,each in enumerate(bank_balance['tokens']):
+            if 'gamm/' in each['denom']: 
+
+                staked_position = {'staked' : 0, 'gambitRewards' : [], 'network' : 'cosmos'}
+                want_token = each['denom']
+                staked_position.update(await TokenMetaData(address=want_token, mongodb=mongodb, network=net_config, session=session).lookup())
+                staked_position['want'] = want_token
+                staked_position['staked'] = helpers.from_custom(each['amount'], 18)
+                pool_key = f"{want_token.replace('/','-')}-bank"
+
+                poolNest[poolKey]['userData'][pool_key] = staked_position
+                poolIDs['%s_%s_want' % (poolKey, pool_key)] = want_token
+
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
