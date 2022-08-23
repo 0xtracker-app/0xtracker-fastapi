@@ -3507,27 +3507,126 @@ class Farms:
             'vault_args' : [{},{'network' : 'polygon'},{'network' : 'polygon'}]
         }
     },
-                '0xCurvePolygon' : {
+                '0xCurve' : {
         'name' : 'curve.fi',
         'displayName' : None,
         'url' : None,
-        'rewardToken' : '0x172370d5Cd63279eFa6d502DAB29171933a610AF',
+        'rewardToken' : '0xD533a949740bb3306d119CC777fa900bA034cd52',
         'decimal' : 18,
         'stakedFunction' : None,
         'pendingFunction' : None,
-        'masterChef' : '0xCurvePolygon',
+        'masterChef' : '0xCurve',
         'featured' : 2,
-        'network' : 'matic',
+        'network' : 'eth',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_curve_gauage],
-            'vaults' : [external_contracts.get_curve_gauage],
+            'functions' : [farm_templates.get_sfeed, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_vcrv, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_gauages],
             'args' : [
                 {
-                    'farm_id' : '0xCurvePolygon',
-                    'network_id' : 'matic',
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'receipt_token' : '0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2'
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'want_function' : 'lp_token',
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'want_function' : 'lp_token',
+                },
+                {
+                    'farm_id' : '0xCurve',
+                    'network' : 'eth',
+                    'want_function' : 'lp_token',
                 },
                     ],
-            'vault_args' : [{'network' : 'matic'}]
+            'vault_args' : [
+                {},
+                {
+                'network' : 'eth',
+                'registry' : '0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0xB9fC157394Af804a3578134A6585C0dc9cc990d4',
+                'contract' : 'factory',
+                't' : 'pools'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0x8F942C20D02bEfc377D41445793068908E2250D0',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0xF18056Bbd320E96A48e3Fbf8bC061322531aac99',
+                'contract' : 'factory',
+                't' : 'pools'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0x90E00ACe148ca3b23Ac1bC8C240C2a7Dd9c2d7f5',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0xB9fC157394Af804a3578134A6585C0dc9cc990d4',
+                'contract' : 'factory',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0x8F942C20D02bEfc377D41445793068908E2250D0',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'eth',
+                'registry' : '0xF18056Bbd320E96A48e3Fbf8bC061322531aac99',
+                'contract' : 'factory',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'eth',
+                },
+                ]
         }
     },
                 '0xCurveFTM' : {
@@ -3542,16 +3641,274 @@ class Farms:
         'featured' : 2,
         'network' : 'ftm',
         'extraFunctions' : {
-            'functions' : [farm_templates.get_curve_gauage],
-            'vaults' : [external_contracts.get_curve_gauage],
+            'functions' : [farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_gauages],
             'args' : [
                 {
                     'farm_id' : '0xCurveFTM',
-                    'network_id' : 'ftm',
-                    'rewards' : ['0x1E4F97b9f9F913c46F1632781732927B9019C68b', '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83', '0xd8321aa83fb0a4ecd6348d4577431310a6e0814d']
+                    'network' : 'ftm',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveFTM',
+                    'network' : 'ftm',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveFTM',
+                    'network' : 'ftm',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveFTM',
+                    'network' : 'ftm',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurveFTM',
+                    'network' : 'ftm',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurveFTM',
+                    'network' : 'ftm',
+                    'want_function' : 'lp_token',
+                },
+                {
+                    'farm_id' : '0xCurveFTM',
+                    'network' : 'ftm',
+                    'want_function' : 'lp_token',
                 },
                     ],
-            'vault_args' : [{'network' : 'ftm'}]
+            'vault_args' : [
+                {
+                'network' : 'ftm',
+                'registry' : '0x0f854EA9F38ceA4B1c2FC79047E9D0134419D5d6',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'ftm',
+                'registry' : '0x686d67265703D1f124c45E33d47d794c566889Ba',
+                'contract' : 'factory',
+                't' : 'pools'
+                },
+                {
+                'network' : 'ftm',
+                'registry' : '0x4fb93D7d320E8A263F22f62C2059dFC2A8bCbC4c',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'ftm',
+                'registry' : '0x0f854EA9F38ceA4B1c2FC79047E9D0134419D5d6',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'ftm',
+                'registry' : '0x686d67265703D1f124c45E33d47d794c566889Ba',
+                'contract' : 'factory',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'ftm',
+                'registry' : '0x4fb93D7d320E8A263F22f62C2059dFC2A8bCbC4c',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'fantom',
+                },
+                ]
+        }
+    },
+                '0xCurveARB' : {
+        'name' : 'curve.fi',
+        'displayName' : None,
+        'url' : None,
+        'rewardToken' : '0x11cdb42b0eb46d95f990bedd4695a6e3fa034978',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCurveARB',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_gauages],
+            'args' : [
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'want_function' : 'lp_token',
+                },
+                {
+                    'farm_id' : '0xCurveARB',
+                    'network' : 'arb',
+                    'want_function' : 'lp_token',
+                },
+                    ],
+            'vault_args' : [
+                {
+                'network' : 'arb',
+                'registry' : '0x445FE580eF8d70FF569aB36e80c647af338db351',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'arb',
+                'registry' : '0xb17b674D9c5CB2e441F8e196a2f048A81355d031',
+                'contract' : 'factory',
+                't' : 'pools'
+                },
+                {
+                'network' : 'arb',
+                'registry' : '0x0E9fBb167DF83EdE3240D6a5fa5d40c6C6851e15',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'arb',
+                'registry' : '0x445FE580eF8d70FF569aB36e80c647af338db351',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'arb',
+                'registry' : '0xb17b674D9c5CB2e441F8e196a2f048A81355d031',
+                'contract' : 'factory',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'arb',
+                'registry' : '0x0E9fBb167DF83EdE3240D6a5fa5d40c6C6851e15',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'arbitrum',
+                },
+                ]
+        }
+    },
+                '0xCurveAVAX' : {
+        'name' : 'curve.fi',
+        'displayName' : None,
+        'url' : None,
+        'rewardToken' : '0x249848BeCA43aC405b8102Ec90Dd5F22CA513c06',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xCurveAVAX',
+        'featured' : 2,
+        'network' : 'avax',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof, farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_pools, external_contracts.get_curve_gauages],
+            'args' : [
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'use_vault' : True,
+                },
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'want_function' : 'lp_token'
+                },
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'want_function' : 'lp_token',
+                },
+                {
+                    'farm_id' : '0xCurveAVAX',
+                    'network' : 'avax',
+                    'want_function' : 'lp_token',
+                },
+                    ],
+            'vault_args' : [
+                {
+                'network' : 'avax',
+                'registry' : '0x8474DdbE98F5aA3179B3B3F5942D724aFcdec9f6',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'avax',
+                'registry' : '0xb17b674D9c5CB2e441F8e196a2f048A81355d031',
+                'contract' : 'factory',
+                't' : 'pools'
+                },
+                {
+                'network' : 'avax',
+                'registry' : '0x90f421832199e93d01b64DaF378b183809EB0988',
+                'contract' : 'registry',
+                't' : 'pools'
+                },
+                {
+                'network' : 'avax',
+                'registry' : '0x8474DdbE98F5aA3179B3B3F5942D724aFcdec9f6',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'avax',
+                'registry' : '0xb17b674D9c5CB2e441F8e196a2f048A81355d031',
+                'contract' : 'factory',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'avax',
+                'registry' : '0x90f421832199e93d01b64DaF378b183809EB0988',
+                'contract' : 'registry',
+                't' : 'gauges'
+                },
+                {
+                'network' : 'avalanche',
+                },
+                ]
         }
     },
                 '0x2c8CA5aD689E0bf86CBfc444aE1cc174300EA8f6' : {
