@@ -632,7 +632,54 @@ async def get_pools_from_factory(network, session, factory, pool_length, token_f
 
     length = await Call(factory, [f'{pool_length}()(uint256)'], None, network_session)()
 
-    return await Multicall([Call(factory, [f'{token_func}(uint256)(address)', i], None) for i in range(0,length)], network_session, _list=True)()   
+    return await Multicall([Call(factory, [f'{token_func}(uint256)(address)', i], None) for i in range(0,length)], network_session, _list=True)()
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network', 'registry', 'contract', 't'])
+async def get_curve_pools(session, network, registry, contract, t):
+
+    connection = WEB3_NETWORKS[network]
+    length = await Call(registry, 'pool_count()(uint256)', None, connection)()
+    pool_list = await Multicall([Call(registry, ['pool_list(uint256)(address)', i], None) for i in range(0,length)], connection, _list=True)()
+
+    if contract == 'factory':
+        rewarder_list = await Multicall([Call(p, ['rewards_receiver()(address)'], None) for p in pool_list], connection, _strict=False, _list=True)()
+        gauge_list = await Multicall([Call(p, ['base_gauge()(address)'], None) for p in rewarder_list], connection, _strict=False, _list=True)()
+    elif contract == 'registry':
+        gauge_data = await Multicall([Call(registry, ['get_gauges(address)(address[10])', p], None) for p in pool_list], connection, _strict=False, _list=True)()
+        gauge_list = [x for x in list(chain.from_iterable(gauge_data)) if x != '0x0000000000000000000000000000000000000000']
+        
+    else:
+        gauge_list = []
+
+    if t == 'pools':
+        return pool_list
+    elif t == 'gauges':
+        return gauge_list
+    else:
+        return []
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
+async def get_curve_gauages(session, network):
+
+    length = await Call('0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB', 'n_gauges()(uint256)', None, WEB3_NETWORKS['eth'])()
+    names_length = await Call('0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB', 'n_gauge_types()(uint256)', None, WEB3_NETWORKS['eth'])()
+    names = await Multicall([Call('0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB', ['gauge_type_names(int128)(string)', i], [[f'{i}', None]]) for i in range(0,names_length)], WEB3_NETWORKS['eth'])()
+    gauges = await Multicall([Call('0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB', ['gauges(uint256)(address)', i], None) for i in range(0,length)], WEB3_NETWORKS['eth'], _list=True)()
+    gauge_types = await Multicall([Call('0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB', ['gauge_types(address)(int128)', g], [[f'{g}', None]]) for g in gauges], WEB3_NETWORKS['eth'])()
+
+    filtered_gauges = []
+
+    for g in gauges:
+        g_type = names[str(gauge_types[g])]
+
+        if network in g_type.lower():
+            filtered_gauges.append(g)
+
+        if network == 'eth':
+            if g_type == 'Liquidity':
+                filtered_gauges.append(g)
+
+
+    return filtered_gauges   
 
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network', 'contract'])
@@ -941,6 +988,9 @@ async def get_polygonfarm_staking(session):
 
 async def get_polyfund_vault(session):
     return ['0xdcfd912b50904B4d5745DfFe0D4d7a5097c82849']
+
+async def get_vcrv(session):
+    return ['0xD533a949740bb3306d119CC777fa900bA034cd52']
 
 async def get_dk_jewel(session):
     return ['0x72Cb10C6bfA5624dD07Ef608027E366bd690048F']

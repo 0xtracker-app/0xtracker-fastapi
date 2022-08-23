@@ -10,7 +10,7 @@ class CosmosNetwork:
 
     def __init__(self, wallet=None):
         self.cosmos_wallet = wallet
-        self.supported_networks = ['evmos', 'meme','crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
+        self.supported_networks = ['genesis', 'axelar', 'mantle', 'evmos', 'meme','crescent', 'konstellation', 'cheqd', 'dig' ,'stargaze','osmosis', 'cosmos', 'akash', 'regen', 'sentinel', 'persist', 'iris', 'crypto', 'iov', 'secret', 'sif', 'chihuahua', 'comdex', 'lum', 'desmos', 'bostrom', 'emoney', 'juno', 'kava', 'fetchai']
         self.network_wallet = ''
         self.network_config = {}
         self.all_networks = {
@@ -452,8 +452,8 @@ class CosmosNetwork:
         },
             'evmos' : {
             'wallet' : from_atom(wallet,'evmos'),
-            'rpc' : 'https://rpc-evmos-ia.notional.ventures',
-            'rest' : 'https://api-evmos-ia.notional.ventures',
+            'rpc' : 'https://rpc-evmos.whispernode.com',
+            'rest' : 'https://lcd-evmos.whispernode.com',
             'chain_id' : 'evmos_9001-2',
             'chain_name' : 'evmos',
             'explorer' : 'https://explorer.meme.sx/meme',
@@ -462,6 +462,51 @@ class CosmosNetwork:
                 'denom' : 'aevmos',
                 'symbol' : 'EVMOS',
                 'decimals' : 18,
+                'coin_gecko_id' : ''
+            }
+        },
+            'mantle' : {
+            'wallet' : from_atom(wallet,'mantle'),
+            'rpc' : 'https://rpc.assetmantle.one',
+            'rest' : 'https://rest.assetmantle.one',
+            'chain_id' : 'mantle-1',
+            'chain_name' : 'assetmantle',
+            'explorer' : 'https://www.mintscan.io/asset-mantle',
+            'bech_prefix' : 'mantle',
+            'stake_token' : {
+                'denom' : 'mntl',
+                'symbol' : 'MNTL',
+                'decimals' : 6,
+                'coin_gecko_id' : ''
+            }
+        },
+            'genesis' : {
+            'wallet' : from_atom(wallet,'genesis'),
+            'rpc' : 'https://26657.genesisl1.org',
+            'rest' : 'https://api.genesisl1.org',
+            'chain_id' : 'genesis_29-2',
+            'chain_name' : 'genesisl1',
+            'explorer' : 'https://explorer.meme.sx/meme',
+            'bech_prefix' : 'genesis',
+            'stake_token' : {
+                'denom' : 'el1',
+                'symbol' : 'L1',
+                'decimals' : 18,
+                'coin_gecko_id' : ''
+            }
+        },
+            'axelar' : {
+            'wallet' : from_atom(wallet,'axelar'),
+            'rpc' : 'https://rpc-axelar-ia.notional.ventures',
+            'rest' : 'https://api.genesisl1.org',
+            'chain_id' : 'axelar-dojo-1',
+            'chain_name' : 'axelar',
+            'explorer' : 'https://api-axelar-ia.notional.ventures',
+            'bech_prefix' : 'axelar',
+            'stake_token' : {
+                'denom' : 'uaxl',
+                'symbol' : 'AXL',
+                'decimals' : 6,
                 'coin_gecko_id' : ''
             }
         },
