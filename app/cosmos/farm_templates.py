@@ -5,10 +5,10 @@ from . import helpers
 from .token_lookup import TokenMetaData
 import asyncio
 
-async def get_delegations(wallet, session, vaults, farm_id, mongodb):
+async def get_delegations(wallet, session, vaults, farm_id, mongodb, net=None):
     poolKey = farm_id
     cosmos = CosmosNetwork(wallet)
-    net_config = cosmos.all_networks
+    net_config = {net : cosmos.all_networks[net]} if net else cosmos.all_networks
 
     staking = await asyncio.gather(*[queries.get_network_staking(network, net_config[network], session) for network in net_config], return_exceptions=True)
     unbonded = await asyncio.gather(*[queries.get_network_staking_unbonded(network, net_config[network], session) for network in net_config], return_exceptions=True)
