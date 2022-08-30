@@ -35,7 +35,8 @@ async def juno_usd_cg(session):
 
 async def get_price_from_junoswap(token_in, session, swap_address, decimal, native=True):
     if native:
-        juno_price = await juno_usd_cg(session)
+        juno_price = await queries.query_contract_state(session, 'https://rpc-juno.itastakers.com', 'juno1ctsmp54v79x7ea970zejlyws50cj9pkrmw49x46085fn80znjmpqz2n642', {"token1_for_token2_price":{"token1_amount":str(1 * 10 ** 6)}})
+        juno_price = {"juno-network":{"usd": from_custom(int(juno_price['token2_amount']), 6)}}
     else:
         juno_price =  {"juno-network":{"usd": 1}}
 
