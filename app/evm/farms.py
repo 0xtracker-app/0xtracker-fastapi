@@ -9501,8 +9501,78 @@ class Farms:
         'pendingFunction' : 'pendingXoXo',
         'masterChef' : '0xDD18d18727bFe6B863387d48872eB4c1B682DEca',
         'perBlock' : 'xoxoPerSecond',
+        'apy_config' : 'second',
         'featured' : 2,
         'network' : 'avax',
+    },
+                '0x1709b8076F9ecb6b30567A6980754A9E5c33F837' : {
+        'name' : 'kibbleswap.dog',
+        'displayName' : 'KibbleSwap',
+        'url' : 'https://www.kibbleswap.dog/',
+        'rewardToken' : '0x1e1026ba0810e6391b0f86afa8a9305c12713b66',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingKIB',
+        'masterChef' : '0x1709b8076F9ecb6b30567A6980754A9E5c33F837',
+        'perBlock' : 'kibPerSecond',
+        'apy_config' : 'second',
+        'featured' : 2,
+        'network' : 'doge',
+    },
+                '0xf7b1150cb31488bde3eB3201e0FDF1Bd54799712' : {
+        'name' : 'yodeswap.dog',
+        'displayName' : 'YodeSwap',
+        'url' : 'https://yodeswap.dog/',
+        'rewardToken' : '0x6fc4563460d5f45932c473334d5c1c5b4aea0e01',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingYode',
+        'masterChef' : '0xf7b1150cb31488bde3eB3201e0FDF1Bd54799712',
+        'perBlock' : 'yodePerBlock',
+        'featured' : 2,
+        'network' : 'doge',
+    },
+                '0xDogeSwap' : {
+        'name' : 'dogeswap.org',
+        'displayName' : 'DogeSwap',
+        'url' : 'https://dogeswap.org',
+        'rewardToken' : '0xe3fcA919883950c5cD468156392a6477Ff5d18de',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xDogeSwap',
+        'featured' : 2,
+        'network' : 'doge',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_simple_balanceof],
+            'vaults' : [external_contracts.get_pools_from_factory],
+            'args' : [
+                    {
+                        'farm_id' : '0xDogeSwap',
+                        'network' : 'doge',
+                        'use_vault' : True,
+                    },
+                    ],
+            'vault_args' : [{'network' : 'doge', 'factory' : '0xD27D9d61590874Bf9ee2a19b27E265399929C9C3', 'pool_length' : 'allPairsLength', 'token_func' : 'allPairs'}]
+        }
+    },
+                '0xAutoBark' : {
+        'name' : 'autobark.lol',
+        'displayName' : 'AutoBark',
+        'url' : 'https://autobark.lol/',
+        'rewardToken' : '0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xAutoBark',
+        'featured' : 2,
+        'network' : 'doge',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_beefy_style_stakes],
+            'vaults' : [external_contracts.get_beefy_api_pools],
+            'args' : [{'farm_id' : '0xAutoBark', 'network' : 'doge'}],
+            'vault_args' : [{'url' : 'https://api.autobark.lol/vaults'}]
+        }
     },
 }
 
