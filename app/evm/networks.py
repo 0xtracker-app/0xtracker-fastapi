@@ -39,6 +39,7 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider(os.get
                 'evmos' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("EVMOS_RPC"))), 'id' : 9001},
                 'songbird' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("SONGBIRD_RPC"))), 'id' : 19},
                 'klaytn' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("KLAYTN_RPC"))), 'id' : 8217},
+                'doge' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("DOGE_RPC"))), 'id' : 2000},
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BSC_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56, 'covalent' : True},
@@ -76,6 +77,8 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'evmos': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("EVMOS_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 9001, 'covalent' : False},
                 'songbird': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("SONGBIRD_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 19, 'covalent' : False},
                 'klaytn': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("KLAYTN_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 8217, 'covalent' : True},
+                'doge': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("DOGE_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 2000, 'covalent' : False},
+
                 }
 
 SCAN_APIS = {'bsc' : {'address' : 'bscscan.com', 'api_key' : os.getenv("BSC_SCAN"), 'native_token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c_BNB_18', 'cg_name' : 'binance-smart-chain'},

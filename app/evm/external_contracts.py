@@ -25,7 +25,7 @@ load_dotenv()
 CONTRACTS_TTL = os.getenv("CACHE_TTL_CONTRACTS", 86400)
 
 async def get_quickswap_lps(wallet, session):
-    x = await call_graph('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03', {'operationName' : 'liquidityPositions', 'query' : bitquery.quickswap_lps.query, 'variables' : {'user': wallet.lower()}}, session)
+    x = await call_graph('https://api.fura.org/subgraphs/name/quickswap', {'operationName' : 'liquidityPositions', 'query' : bitquery.quickswap_lps.query, 'variables' : {'user': wallet.lower()}}, session)
     return x
 
 async def get_voltswap(wallet, session):
@@ -437,6 +437,13 @@ async def get_beefy_fantom_pools(session):
 
     return vault_data
 
+@cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['url'])
+async def get_beefy_api_pools(session, url):
+    r = await make_get_json(session, url)
+    vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in r if 'tokenAddress' in x]
+
+    return vault_data
+
 @cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_magik_fantom_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/fantom_pools.js')
@@ -563,10 +570,10 @@ async def get_beefy_avax_pools(session):
 @cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_qs_vaults(session):
         scraper = cloudscraper.create_scraper(delay=2)
-        r = scraper.get('https://quickswap.exchange/staking.json')
-        cleaner = r.text[1:-1].replace("\\","")
-        cleaned = json.loads(cleaner)
-        return [each['stakingRewardAddress'] for each in cleaned if each['ended'] == False and each['stakingRewardAddress'] != '0x0000000000000000000000000000000000000000']
+        r = await make_get_json(session, 'https://unpkg.com/quickswap-default-staking-list-address@1.0.15/build/quickswap-default.lpfarms.json')
+        # cleaner = r.text[1:-1].replace("\\","")
+        #cleaned = json.loads(cleaner)
+        return [each['stakingRewardAddress'] for each in r['active'] if each['stakingRewardAddress'] != '0x0000000000000000000000000000000000000000']
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=0)    
 async def get_dfyn_vaults(session):
@@ -835,7 +842,7 @@ async def get_pcs_pools(offset, session):
     r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/src/config/constants/pools.tsx')
     s2 = "const livePools: SerializedPoolConfig[] ="
     #s_end = ".filter((p) => !!p.contractAddress[CHAIN_ID])"
-    s_end = "// known finished pools"
+    s_end = ".map((p) => ({"
     data = r[r.index(s2) + len(s2) :r.index(s_end)]
     hson = hjson.loads(data)
     t = json.loads(json.dumps(hson))

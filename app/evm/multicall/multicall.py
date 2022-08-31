@@ -1,4 +1,5 @@
 from typing import List
+import itertools
 from web3 import Web3, eth
 from .call import Call
 from .constants import MULTICALL_ADDRESSES
@@ -43,7 +44,10 @@ class Multicall:
             chunks = len(self.calls) / 500
             x = np.array_split(self.calls, math.ceil(chunks))
             all_calls=await asyncio.gather(*[execute_multicall(self, call) for call in x])
-            multi = reduce(lambda a, b: dict(a, **b), all_calls)
+            if self.list:
+                multi = list(itertools.chain.from_iterable(all_calls))
+            else:
+                multi = reduce(lambda a, b: dict(a, **b), all_calls)
         else:
             multi=await execute_multicall(self, self.calls)
 
@@ -76,7 +80,7 @@ class Multicall:
 
 async def execute_multicall(self, calls):
 
-        if self.network_id in [53935, 19]:
+        if self.network_id in [53935, 19, 2000]:
             call_string = 'tryAggregate(bool,(address,bytes)[])((bool,bytes)[])'
             args = [self.strict, [[call.target, call.data] for call in calls]]
         else:
@@ -91,7 +95,7 @@ async def execute_multicall(self, calls):
             self.block
         )
         
-        if self.network_id in [53935, 19]:
+        if self.network_id in [53935, 19, 2000]:
             block, outputs = self.block, await aggregate(args)
         else:
             block, outputs = await aggregate(args)
