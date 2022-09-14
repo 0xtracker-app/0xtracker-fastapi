@@ -40,6 +40,7 @@ WEB3_NETWORKS_NON_ASYNC = {'bsc': { 'connection' : Web3(Web3.HTTPProvider(os.get
                 'songbird' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("SONGBIRD_RPC"))), 'id' : 19},
                 'klaytn' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("KLAYTN_RPC"))), 'id' : 8217},
                 'doge' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("DOGE_RPC"))), 'id' : 2000},
+                'kardia' : {'connection' : Web3(Web3.HTTPProvider(os.getenv("KARDIA_RPC"))), 'id' : 24},
                 }
 
 WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("BSC_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 56, 'covalent' : True},
@@ -78,6 +79,7 @@ WEB3_NETWORKS = {'bsc': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("
                 'songbird': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("SONGBIRD_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 19, 'covalent' : False},
                 'klaytn': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("KLAYTN_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 8217, 'covalent' : True},
                 'doge': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("DOGE_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 2000, 'covalent' : False},
+                'kardia': { 'connection' : Web3(Web3.AsyncHTTPProvider(os.getenv("KARDIA_RPC")), modules={'eth': (eth.AsyncEth,)}, middlewares=[]), 'id' : 24, 'covalent' : False},
 
                 }
 

@@ -9574,6 +9574,83 @@ class Farms:
             'vault_args' : [{'url' : 'https://api.autobark.lol/vaults'}]
         }
     },
+                '0xQuickSwapDOGE' : {
+        'name' : 'quickswap.exchange',
+        'displayName' : 'QuickSwap',
+        'url' : 'https://quickswap.exchange',
+        'rewardToken' : '0xb12c13e66AdE1F72f71834f2FC5082Db8C091358',
+        'decimal' : 18,
+        'stakedFunction' : None,
+        'pendingFunction' : None,
+        'masterChef' : '0xQuickSwapDOGE',
+        'featured' : 2,
+        'network' : 'doge',
+        'extraFunctions' : {
+            'functions' : [uniswapv3.get_quickswap_v3_positions],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                    {
+                        'farm_id' : '0xQuickSwapDOGE',
+                        'network' : 'doge',
+                        'uniswap_nft' : '0x82831E9565cb574375596eFc090da465283E22A4',
+                        'uniswap_factory' : '0xd2480162aa7f02ead7bf4c127465446150d58452',
+                        'p_outputs' : '(uint96,address,address,address,int24,int24,uint128,uint256,uint256,uint128,uint128)'
+                    },
+                    ],
+            'vault_args' : [{}]
+        }
+    },
+                '0x20e8Ff1e1d9BC429489dA76B1Fc20A9BFbF3ee7e' : {
+        'name' : 'becoswap.com',
+        'displayName' : 'BecoSwap',
+        'url' : 'https://becoswap.com/',
+        'rewardToken' : '0x2Eddba8b949048861d2272068A94792275A51658',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingBeco',
+        'masterChef' : '0x20e8Ff1e1d9BC429489dA76B1Fc20A9BFbF3ee7e',
+        'perBlock' : 'becoPerBlock',
+        'featured' : 2,
+        'network' : 'kardia',
+    },
+                '0xD82BcB9A6Ded3Abe9e76e2fb038db4aff9b80b58' : {
+        'name' : 'kaidex.io',
+        'displayName' : 'KAIDEX',
+        'url' : 'https://kaidex.io',
+        'rewardToken' : '0xe9cac5d99375d02fb506be890011b2f57fc614e1',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingKDX',
+        'masterChef' : '0xD82BcB9A6Ded3Abe9e76e2fb038db4aff9b80b58',
+        'perBlock' : 'kdxPerBlock',
+        'featured' : 2,
+        'network' : 'kardia',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_sushi_masterchef, farm_templates.get_sfeed],
+            'vaults' : [external_contracts.dummy_vault, external_contracts.get_kaidex_staking],
+            'args' : [
+                {
+                    'farm_id' : '0xD82BcB9A6Ded3Abe9e76e2fb038db4aff9b80b58',
+                    'network_id' : 'kardia',
+                    'pending_function' : 'pendingKDX',
+                    'farm_data' :{
+                        'masterChef' : '0x22df87D60bA2Ce7D76DC3D16c8Dd204e8A9B377F',
+                        'rewarder' : '0xac89c465D7ffEAfF30b09A5e91f4750E00396813',
+                        'r0sym' : 'KDX',
+                        'r1sym' : 'ABOAT',
+                        'r0t' : '0xe9cac5d99375d02fb506be890011b2f57fc614e1',
+                        'r1t' : '0x186B1B6CE63932a34FAa8D08bB11B775591Fd6f4'
+                    }
+                },
+                {
+                    'farm_id' : '0xD82BcB9A6Ded3Abe9e76e2fb038db4aff9b80b58',
+                    'network' : 'kardia',
+                    'receipt_token' : '0x10d9e1386d4035F85381df028279758D74503955'
+                },
+                    ],
+            'vault_args' : [{},{}]
+        }
+    },
 }
 
 
