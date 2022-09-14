@@ -1008,6 +1008,9 @@ async def get_dk_crystal(session):
 async def get_evmos_staking(session):
     return ['0x3f75ceabCDfed1aCa03257Dc6Bdc0408E2b4b026']
 
+async def get_kaidex_staking(session):
+    return ['0xe9cac5d99375d02fb506be890011b2f57fc614e1']
+
 async def get_snowball_staking(session):
     return ['0xc38f41a296a4493ff429f1238e030924a1542e50']
 
