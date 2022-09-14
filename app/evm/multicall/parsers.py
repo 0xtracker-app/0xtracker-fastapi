@@ -38,6 +38,23 @@ def parse_uniswap_positions(data):
 
     return d
 
+def parse_quickswap_positions(data):
+    d = {
+        'nonce' : data[0],
+        'operator' : data[1],
+        'token0' : data[2],
+        'token1' : data[3],
+        'tickLower' : data[4],
+        'tickUpper' : data[5],
+        'liquidity' : data[6],
+        'feeGrowth0' : data[7],
+        'feeGrowth1' : data[8],
+        'tokensOwed0' : data[9],
+        'tokensOwed1' : data[10],
+    }
+
+    return d
+
 def parse_ticks(data):
     d = {
         'liquidityGross' : data[0],

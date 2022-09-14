@@ -38,6 +38,7 @@ class NativeToken():
     SONGBIRD = '0x02f0826ef6aD107Cfc861152B32B52fD11BaB9ED'
     KLAYTN = '0xe4f05a66ec68b54a58b17c22107b02e0232cc817'
     DOGE = '0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101'
+    KARDIA = '0xAF984E23EAA3E7967F3C5E007fbe397D8566D23d'
 
 class NativeSymbol():
     BSC = 'BNB'
@@ -76,6 +77,7 @@ class NativeSymbol():
     SONGBIRD = 'SGB'
     KLAYTN = 'KLAY'
     DOGE = 'WDOGE'
+    KARDIA = 'KAI'
 
 
 class NativeDecimal():
@@ -115,6 +117,7 @@ class NativeDecimal():
     SONGBIRD = 18
     KLAYTN = 18
     DOGE = 18
+    KARDIA = 18
 
 class StableToken():
     BSC = '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -153,6 +156,7 @@ class StableToken():
     SONGBIRD = '0x70Ad7172EF0b131A1428D0c1F66457EB041f2176'
     KLAYTN = '0x5c74070fdea071359b86082bd9f9b3deaafbe32b'
     DOGE = '0x765277EebeCA2e31912C9946eAe1021199B39C61'
+    KARDIA = '0x765277EebeCA2e31912C9946eAe1021199B39C61'
 
 class StableDecimal():
     BSC = 18
@@ -191,6 +195,7 @@ class StableDecimal():
     SONGBIRD = 18
     KLAYTN = 18
     DOGE = 6
+    KARDIA = 6
 
 class DefaultRouter():
     BSC = routers.BSCRouter.PCSV2
@@ -229,6 +234,7 @@ class DefaultRouter():
     SONGBIRD = routers.SongbirdRouter.FLRX
     KLAYTN = routers.KlaytnRouter.KLAYSWAP
     DOGE = routers.DogeRouter.KIBBLE
+    KARDIA = routers.KardiaRouter.KAIDEX
 
 class RouteClass():
     BSC = routers.BSCRouter
@@ -267,6 +273,7 @@ class RouteClass():
     SONGBIRD = routers.SongbirdRouter
     KLAYTN = routers.KlaytnRouter
     DOGE = routers.DogeRouter
+    KARDIA = routers.KardiaRouter
 
 class CoinGecko():
     BSC = 'binance-smart-chain'
@@ -305,6 +312,7 @@ class CoinGecko():
     SONGBIRD = ''
     KLAYTN = ''
     DOGE = ''
+    KARDIA = ''
 
 class LiqCheck():
     BSC = '0xd6aa1dc078e282ecd8e574b3233eed36dc2837c1'
@@ -343,6 +351,7 @@ class LiqCheck():
     SONGBIRD = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
     KLAYTN = '0x0C8be7B6864538b7086bF5611aB6940b510749a4'
     DOGE = '0x97570F38917f2A0063b1f85F920B9e149f7a23ed'
+    KARDIA = '0xB2B4875C40a7403aD6660f7ceCa54B1801CcF0F9'
 
 class MinLiq():
     BSC = 49999
@@ -381,6 +390,7 @@ class MinLiq():
     SONGBIRD = 9999
     KLAYTN = 999
     DOGE = 999
+    KARDIA = 999
 
 class YearlyBlocks():
     BSC = 10407920.792079208
@@ -419,6 +429,7 @@ class YearlyBlocks():
     SONGBIRD = 15785280
     KLAYTN = 31570560
     DOGE = 0
+    KARDIA = 0
 
 class DeadTokens():
     BSC = ['0x000000000000000000000000000000000000dEaD', '0x0000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000001', '0x0000000000000000000000000000000000000002', '0x0000000000000000000000000000000000000003', '0x0000000000000000000000000000000000000004', '0x0000000000000000000000000000000000000005']
@@ -457,6 +468,7 @@ class DeadTokens():
     SONGBIRD = []
     KLAYTN = []
     DOGE = []
+    KARDIA = []
 
 class NetworkRoutes():
 

@@ -9,7 +9,7 @@ x96 = pow(2, 96)
 x128 = pow(2, 128)
 max_amount = pow(2,128)-1
 
-async def get_uniswap_v3_positions(wallet,network,uniswap_nft,uniswap_factory,farm_id,vaults):
+async def get_uniswap_v3_positions(wallet,network,uniswap_nft,uniswap_factory,farm_id,vaults,p_outputs=None,p_parser=None):
 
     chain = WEB3_NETWORKS[network]
     poolKey = farm_id
@@ -24,7 +24,8 @@ async def get_uniswap_v3_positions(wallet,network,uniswap_nft,uniswap_factory,fa
     v3_token_ids = await Multicall(v3_index_calls,chain)()
 
     v3_position_calls = []
-    position_types = '(uint96,address,address,address,uint24,int24,int24,uint128,uint256,uint256,uint128,uint128)'
+
+    position_types = p_outputs if p_outputs else '(uint96,address,address,address,uint24,int24,int24,uint128,uint256,uint256,uint128,uint128)'
     for each in v3_token_ids:
         token_id = v3_token_ids[each]
         v3_position_calls.append(Call(uniswap_nft,[f'positions(uint256)({position_types})',token_id], [[token_id, parsers.parse_uniswap_positions]]))
@@ -52,6 +53,53 @@ async def get_uniswap_v3_positions(wallet,network,uniswap_nft,uniswap_factory,fa
     else:
         return None
 
+async def get_quickswap_v3_positions(wallet,network,uniswap_nft,uniswap_factory,farm_id,vaults,p_outputs=None,p_parser=None):
+
+    chain = WEB3_NETWORKS[network]
+    poolKey = farm_id
+    
+    nft_balance = await Call(uniswap_nft,['balanceOf(address)(uint256)',wallet], None, chain)()
+    position_manager = await Call(uniswap_nft, 'nonfungiblePositionManager()(address)', None, chain)()
+
+    v3_index_calls = []
+
+    for token_index in range(0,nft_balance):
+        v3_index_calls.append(Call(uniswap_nft,['tokenOfOwnerByIndex(address,uint256)(uint256)',wallet,token_index], [[str(token_index), None]]))
+
+    v3_token_ids = await Multicall(v3_index_calls,chain)()
+    v3_l2_nfts = await Multicall([Call(uniswap_nft, ['l2Nfts(uint256)((uint96,address,uint256))', v3_token_ids[each]], [[v3_token_ids[each], None]]) for each in v3_token_ids], chain)()
+
+    v3_position_calls = []
+
+    position_types = p_outputs if p_outputs else '(uint96,address,address,address,uint24,int24,int24,uint128,uint256,uint256,uint128,uint128)'
+    for each in v3_l2_nfts:
+        token_id = v3_l2_nfts[each][2]
+        v3_position_calls.append(Call(position_manager,[f'positions(uint256)({position_types})',token_id], [[token_id, parsers.parse_quickswap_positions]]))
+
+    
+    v3_positions = await Multicall(v3_position_calls, chain)()
+
+    stakes = await get_quickswap_token_data(v3_positions,network,uniswap_factory,uniswap_nft,Web3.toChecksumAddress(wallet))
+
+    poolNest = {poolKey: 
+    { 'userData': { } } }
+
+    poolIDs = {}
+
+    for each in stakes:
+        if stakes[each]['liquidity'] > 0:
+            stakes[each]['staked'] = parsers.from_wei(stakes[each]['liquidity'])
+            poolNest[poolKey]['userData'][each] = stakes[each]
+            poolIDs['%s_%s_want' % (poolKey, each)] = stakes[each]['pooladdress']
+            stakes[each]['pendingfees'] = await Call(uniswap_nft,['collect((uint256,address,uint128,uint128))(uint256,uint256)',(each,wallet,max_amount,max_amount)],None,WEB3_NETWORKS[network])()
+
+                
+    if len(poolIDs) > 0:
+        return poolIDs, poolNest    
+    else:
+        return None
+
+
 async def get_uniswap_token_data(v3_positions, network, uniswap_factory,uniswap_nft,wallet):
 
     chain = WEB3_NETWORKS[network]
@@ -78,6 +126,43 @@ async def get_uniswap_token_data(v3_positions, network, uniswap_factory,uniswap_
             slot_calls.append(Call(pool_address[each], ['ticks(int24)((uint128,int128,uint256,uint256,int56,uint160,uint32,bool))', v3_positions[nft_id]['tickUpper']],[[f'{breakdown[0]}_ticksUpper',parsers.parse_ticks]]))
             slot_calls.append(Call(pool_address[each], 'feeGrowthGlobal0X128()(uint256)',[[f'{breakdown[0]}_feeGrowthGlobal0X128',None]]))
             slot_calls.append(Call(pool_address[each], 'feeGrowthGlobal1X128()(uint256)',[[f'{breakdown[0]}_feeGrowthGlobal1X128',None]]))
+            slot_calls.append(Call(pool_address[each], 'liquidity()(uint128)',[[f'{breakdown[0]}_poolliquidity',None]]))
+
+    slot_call_result = await Multicall(slot_calls,chain)()
+
+    for each in slot_call_result:
+        breakdown = each.split('_')
+        nft_id = int(breakdown[0])
+        v3_positions[nft_id][breakdown[1]] = slot_call_result[each]
+
+    return v3_positions
+
+async def get_quickswap_token_data(v3_positions, network, uniswap_factory,uniswap_nft,wallet):
+
+    chain = WEB3_NETWORKS[network]
+
+    pool_calls =[]
+
+    #Get Pool Address and Token Data
+    for each in v3_positions:
+        pool_calls.append(Call(uniswap_factory,[f'poolByPair(address,address)(address)',v3_positions[each]['token0'],v3_positions[each]['token1']], [[f'{each}_pooladdress', None]]))
+        pool_calls.append(Call(v3_positions[each]['token0'], [f'decimals()(uint256)'], [[f'{each}_tkn0d', None]]))
+        pool_calls.append(Call(v3_positions[each]['token1'], [f'decimals()(uint256)'], [[f'{each}_tkn1d', None]]))
+        pool_calls.append(Call(v3_positions[each]['token0'], [f'symbol()(string)'], [[f'{each}_tkn0s', None]]))
+        pool_calls.append(Call(v3_positions[each]['token1'], [f'symbol()(string)'], [[f'{each}_tkn1s', None]]))
+    pool_address = await Multicall(pool_calls,chain,_strict=False)()
+
+    slot_calls = []
+    for each in pool_address:
+        breakdown = each.split('_')
+        nft_id = int(breakdown[0])
+        v3_positions[nft_id][breakdown[1]] = pool_address[each]
+        if breakdown[1] == 'pooladdress':
+            slot_calls.append(Call(pool_address[each], 'globalState()((uint160,int24,uint16,uint16,uint16,uint8,bool))', [[f'{breakdown[0]}_slot0',parsers.parse_slot_0]]))
+            slot_calls.append(Call(pool_address[each], ['ticks(int24)((uint128,int128,uint256,uint256,int56,uint160,uint32,bool))', v3_positions[nft_id]['tickLower']],[[f'{breakdown[0]}_ticksLower',parsers.parse_ticks]]))
+            slot_calls.append(Call(pool_address[each], ['ticks(int24)((uint128,int128,uint256,uint256,int56,uint160,uint32,bool))', v3_positions[nft_id]['tickUpper']],[[f'{breakdown[0]}_ticksUpper',parsers.parse_ticks]]))
+            slot_calls.append(Call(pool_address[each], 'totalFeeGrowth0Token()(uint256)',[[f'{breakdown[0]}_feeGrowthGlobal0X128',None]]))
+            slot_calls.append(Call(pool_address[each], 'totalFeeGrowth1Token()(uint256)',[[f'{breakdown[0]}_feeGrowthGlobal1X128',None]]))
             slot_calls.append(Call(pool_address[each], 'liquidity()(uint128)',[[f'{breakdown[0]}_poolliquidity',None]]))
 
     slot_call_result = await Multicall(slot_calls,chain)()
@@ -134,6 +219,7 @@ def get_uniswap_v3_balance(token_data,network,prices):
     'lpPrice' : (amount_0_adjusted * prices[token0]) + (amount_1_adjusted * prices[token1]),
     'lpBalances' : [amount_0_adjusted, amount_1_adjusted],
     'uniswapFee' : get_uniswap_fees(token_data),
+    'rewardsEmitted' : get_uniswap_fees(token_data),
     'uniswapData': {
     'priceCurrent': price_current_adjusted,
     'priceUpper' : price_upper_adjusted,
