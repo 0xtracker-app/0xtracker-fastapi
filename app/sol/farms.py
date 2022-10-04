@@ -25,4 +25,21 @@ class Farms:
             'vault_args' : [{},{},{}]
         }
     },
+    'Solend' : {
+        'name' : 'solend.fi',
+        'masterChef' : 'Solend',
+        'featured' : 2,
+        'network' : 'solana',
+        'displayName' : None,
+        'url' : None,
+        'type' : 'lending',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_solend_positions],
+            'vaults' : [external_contracts.dummy_vault],
+            'args' : [
+                {'farm_id' : 'Solend', 'program' : constants.PROGRAMS.SOLEND_PROGRAM, 'offset' : 10},
+                ],
+            'vault_args' : [{}]
+        }
+    },
 }

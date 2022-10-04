@@ -38,3 +38,17 @@ def standard_account_wrapper(struct):
         'close_authority' : PublicKey(struct.close_authority)
     }
     return data
+
+def solend_collateral_exchange_rate(reserve):
+
+    WAD = 1000000000000000000
+    total_borrows_wads = reserve.borrowedAmountWads
+    total_liquidity_wads = reserve.availableAmount * WAD
+    total_deposits_wads = total_borrows_wads + total_liquidity_wads
+    
+    if reserve.collateralMintTotalSupply == 0 or total_deposits_wads == 0:
+        rate = 1 * WAD
+    else:
+        rate = (total_deposits_wads / reserve.collateralMintTotalSupply) / WAD
+    
+    return rate
