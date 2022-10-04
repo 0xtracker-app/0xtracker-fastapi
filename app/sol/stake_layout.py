@@ -7,6 +7,8 @@ from solana._layouts.shared import PUBLIC_KEY_LAYOUT
 from base64 import b64decode, b64encode
 from base58 import b58decode
 from solana.publickey import PublicKey
+# from borsh_construct import CStruct, Int8ul, Int64ul, U128
+
 
 def decode_byte_string(byte_string: str, encoding: str = "base64") -> bytes:
     """Decode a encoded string from an RPC Response."""
@@ -375,3 +377,117 @@ RAYDIUM_AMM = Struct(
   'ammOwner' / Computed(lambda this: convert_public_key(this.rawammOwner)),
   'pnlOwner' / Computed(lambda this: convert_public_key(this.rawpnlOwner)),
 )
+
+DEPOSIT_SCHEMA =  Struct(
+    "depositReserve" / PUBLIC_KEY_LAYOUT,
+    "depositedAmount" / Int64ul,
+    "marketValue" / BytesInteger(16, signed=False, swapped=True),
+    "padding" / Padding(32),
+    "depositReserveKey" / Computed(lambda this: convert_public_key(this.depositReserve))
+)
+
+BORROW_SCHEMA = Struct(
+    "borrowReserve" / PUBLIC_KEY_LAYOUT,
+    "cumulativeBorrowRateWads" / BytesInteger(16, signed=False, swapped=True),
+    "borrowAmountWads" / BytesInteger(16, signed=False, swapped=True),
+    "marketValue" / BytesInteger(16, signed=False, swapped=True),
+    "padding" / Padding(32),
+    "borrowReserveKey" / Computed(lambda this: convert_public_key(this.borrowReserve))
+)
+
+
+SOLEND_OBLIGATION = Struct(
+  'version' / Int8ul,
+  'slot' / Int64ul,
+  'stale' / Int8ul,
+  'lendingMarket' / PUBLIC_KEY_LAYOUT,
+  'owner' / PUBLIC_KEY_LAYOUT,
+  'depositedValue' / BytesInteger(16, signed=False, swapped=True),
+  'borrowedValue' / BytesInteger(16, signed=False, swapped=True),
+  'allowedBorrowValue' / BytesInteger(16, signed=False, swapped=True),
+  'unhealthyBorrowValue' / BytesInteger(16, signed=False, swapped=True),
+  Padding(64),
+  'depositsLen' / Int8ul,
+  'borrowsLen' / Int8ul,
+  "deposits" / DEPOSIT_SCHEMA[lambda this: this.depositsLen],
+  "borrows" / BORROW_SCHEMA[lambda this: this.borrowsLen],
+  "lendingMarketKey" / Computed(lambda this: convert_public_key(this.lendingMarket)),
+  "ownerKey" / Computed(lambda this: convert_public_key(this.owner))
+)
+
+RESERVE_SCHEMA = Struct(
+    "version" / Int8ul,
+    "slot" / Int64ul,
+    "stale" / Int8ul,
+    "lendingMarket" / PUBLIC_KEY_LAYOUT,
+    "liquidityMintPubkey" / PUBLIC_KEY_LAYOUT,
+    "liquidityMintDecimals" / Int8ul,
+    "liquiditySupplyPubkey" / PUBLIC_KEY_LAYOUT,
+    "pythOracle" / PUBLIC_KEY_LAYOUT,
+    "switchboardOracle" / PUBLIC_KEY_LAYOUT,
+    "availableAmount" / Int64ul,
+    "borrowedAmountWads" / BytesInteger(16, signed=False, swapped=True),
+    "cumulativeBorrowRateWads" / BytesInteger(16, signed=False, swapped=True),
+    "marketPrice" / BytesInteger(16, signed=False, swapped=True),
+    "collateralMintPubkey" / PUBLIC_KEY_LAYOUT,
+    "collateralMintTotalSupply" / Int64ul,
+    "collateralSupplyPubkey" / PUBLIC_KEY_LAYOUT,
+    "optimalUtilizationRate" / Int8ul,
+    "loanToValueRatio" / Int8ul,
+    "liquidationBonus" / Int8ul,
+    "liquidationThreshold" / Int8ul,
+    "minBorrowRate" / Int8ul,
+    "optimalBorrowRate" / Int8ul,
+    "maxBorrowRate" / Int8ul,
+    "borrowFeeWad" / Int64ul,
+    "flashLoanFeeWad" / Int64ul,
+    "hostFeePercentage" / Int8ul,
+    "depositLimit" / Int64ul,
+    "borrowLimit" / Int64ul,
+    "feeReceiver" / PUBLIC_KEY_LAYOUT,
+    "lendingMarketKey" / Computed(lambda this: convert_public_key(this.lendingMarket)),
+    "liquidityMintPubkeyKey" / Computed(lambda this: convert_public_key(this.liquidityMintPubkey)),
+    "liquiditySupplyPubkeyKey" / Computed(lambda this: convert_public_key(this.liquiditySupplyPubkey)),
+    "pythOracleKey" / Computed(lambda this: convert_public_key(this.pythOracle)),
+    "switchboardOracleKey" / Computed(lambda this: convert_public_key(this.switchboardOracle)),
+    "collateralMintPubkeyKey" / Computed(lambda this: convert_public_key(this.collateralMintPubkey)),
+    "collateralSupplyPubkeyKey" / Computed(lambda this: convert_public_key(this.collateralSupplyPubkey)),
+    "feeReceiverKey" / Computed(lambda this: convert_public_key(this.feeReceiver))
+)
+
+# DEPOSIT_SCHEMA =  CStruct(
+#     "depositReserve" / PUBLIC_KEY_LAYOUT,
+#     "depositedAmount" / Int64ul,
+#     "marketValue" / U128,
+#     "padding" / Padding(32)
+# )
+
+# BORROW_SCHEMA = CStruct(
+#     "borrowReserve" / PUBLIC_KEY_LAYOUT,
+#     "cumulativeBorrowRateWads" / U128,
+#     "borrowAmountWads" / U128,
+#     "marketValue" / U128,
+#     "padding" / Padding(32)
+# )
+
+# ACCOUNT_SCHEMA = CStruct(
+#     "version" / Int8ul,
+#     "slot" / Int64ul,
+#     "stale" / Int8ul,
+#     "lendingMarket"/ PUBLIC_KEY_LAYOUT,
+#     "owner" / PUBLIC_KEY_LAYOUT,
+#     "depositedValue" / U128,
+#     "borrowedValue" / U128,
+#     "allowedBorrowValue" / U128,
+#     "unhealthyBorrowValue" / U128,
+#     "padding" / Padding(64),
+#     "depositsLen" / Int8ul,
+#     "borrowsLen" / Int8ul,
+#     "deposits" / DEPOSIT_SCHEMA[lambda this: this.depositsLen],
+#     "borrows" / BORROW_SCHEMA[lambda this: this.borrowsLen]
+# )
+
+# LIQUIDATION_TRANSACTION_SCHEMA = CStruct(
+#     "instruction" / Int8ul,
+#     "liquidityAmount" / Int64ul
+# )
