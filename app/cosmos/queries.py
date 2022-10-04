@@ -110,12 +110,12 @@ async def get_gamm_pool(pool,network_data,session):
 
     if 'pool' in r:
         return {
-            'base_denom' : r['pool']['totalShares']['denom'],
-            'total_shares' : from_custom(int(r['pool']['totalShares']['amount']), 18),
-            'reserves' : [r['pool']['poolAssets'][0]['token']['amount'], r['pool']['poolAssets'][1]['token']['amount']], 
-            'token0' : r['pool']['poolAssets'][0]['token']['denom'],
-            'token1' : r['pool']['poolAssets'][1]['token']['denom'],
-            'token_weights' : [int(r['pool']['poolAssets'][0]['weight']) / int(r['pool']['totalWeight']), int(r['pool']['poolAssets'][1]['weight'])/int(r['pool']['totalWeight'])],
+            'base_denom' : r['pool']['total_shares']['denom'],
+            'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+            'reserves' : [r['pool']['pool_assets'][0]['token']['amount'], r['pool']['pool_assets'][1]['token']['amount']], 
+            'token0' : r['pool']['pool_assets'][0]['token']['denom'],
+            'token1' : r['pool']['pool_assets'][1]['token']['denom'],
+            'token_weights' : [int(r['pool']['pool_assets'][0]['weight']) / int(r['pool']['total_weight']), int(r['pool']['pool_assets'][1]['weight'])/int(r['pool']['total_weight'])],
             }
     else:
         return None
@@ -127,8 +127,8 @@ async def get_gamm_balances(pool,network_data,session):
 
     if 'pool' in r:
         return {
-            'total_shares' : from_custom(int(r['pool']['totalShares']['amount']), 18),
-            'reserves' : [int(r['pool']['poolAssets'][0]['token']['amount']),int(r['pool']['poolAssets'][1]['token']['amount'])], 
+            'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+            'reserves' : [int(r['pool']['pool_assets'][0]['token']['amount']),int(r['pool']['pool_assets'][1]['token']['amount'])], 
             }
     else:
         return None
