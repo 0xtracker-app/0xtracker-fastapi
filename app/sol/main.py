@@ -97,6 +97,6 @@ async def get_solana_positions(wallet, farm_id, mongo_db, http_session, client, 
 
     prices = await oracles.get_sonar_pricing(http_session)
 
-    response = await calculate_prices(returned_object[1], prices, wallet, mongo_db, pdb)
+    response = await calculate_prices(returned_object[1], farm_configuraiton, prices, wallet, mongo_db, pdb)
 
     return response

@@ -194,16 +194,29 @@ class TokenMetaData:
                     await self.solana_tokens.update_one({'tokenID': self.tokenID}, {"$set": ray_lp}, upsert=True)
                     self.token_metadata = ray_lp
                 else: 
+                    single_token_data = token_lookup.get(self.tokenID)
 
-                    self.token_metadata = {
-                        "network": "solana",
-                        "tokenID": self.tokenID,
-                        'token_decimal': 6,
-                        "tkn0d": 6,
-                        "tkn0s": 'unknown',
-                        "token0": self.tokenID,
-                        "type": "single"
-                    }
+                    if single_token_data:
+                        self.token_metadata = {
+                            "network": "solana",
+                            "tokenID": self.tokenID,
+                            'token_decimal': single_token_data['decimals'],
+                            "tkn0d": single_token_data['decimals'],
+                            "tkn0s": single_token_data['symbol'],
+                            "token0": self.tokenID,
+                            "type": "single"
+                        }
+                        await self.solana_tokens.update_one({'tokenID': self.tokenID}, {"$set": self.token_metadata}, upsert=True)
+                    else:
+                        self.token_metadata = {
+                            "network": "solana",
+                            "tokenID": self.tokenID,
+                            'token_decimal': 6,
+                            "tkn0d": 6,
+                            "tkn0s": 'unknown',
+                            "token0": self.tokenID,
+                            "type": "single"
+                        }
 
         return self.token_metadata
 
