@@ -684,36 +684,36 @@ class Farms:
         'featured' : 2,
         'network' : 'bsc'
     },
-                '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D' : {
-        'name' : 'wault.finance',
-        'displayName' : None,
-        'url' : None,
-        'rewardToken' : '0xa9c41a46a6b3531d28d5c32f6633dd2ff05dfb90',
-        'decimal' : 18,
-        'stakedFunction' : 'userInfo',
-        'pendingFunction' : 'pendingWex',
-        'masterChef' : '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D',
-        'perBlock' : 'wexPerBlock',
-        'featured' : 2,
-        'network' : 'bsc',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_wault_locked, farm_templates.get_syrup_pools],
-            'vaults' : [external_contracts.get_wault_locked, external_contracts.get_wault_pool_contracts],
-            'args' : [
-                {
-                    'farm_id' : '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D',
-                    'network' : 'bsc'
+    #             '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D' : {
+    #     'name' : 'wault.finance',
+    #     'displayName' : None,
+    #     'url' : None,
+    #     'rewardToken' : '0xa9c41a46a6b3531d28d5c32f6633dd2ff05dfb90',
+    #     'decimal' : 18,
+    #     'stakedFunction' : 'userInfo',
+    #     'pendingFunction' : 'pendingWex',
+    #     'masterChef' : '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D',
+    #     'perBlock' : 'wexPerBlock',
+    #     'featured' : 2,
+    #     'network' : 'bsc',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_wault_locked, farm_templates.get_syrup_pools],
+    #         'vaults' : [external_contracts.get_wault_locked, external_contracts.get_wault_pool_contracts],
+    #         'args' : [
+    #             {
+    #                 'farm_id' : '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D',
+    #                 'network' : 'bsc'
 
-                },
-                {
-                    'farm_id' : '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D',
-                    'network_id' : 'bsc',
-                    'staked' : 'pool',
-                    'pending_reward' : 'pendingRewards'
-                }],
-            'vault_args' : [{'network' : 'bsc'}, {}]
-        }
-    },
+    #             },
+    #             {
+    #                 'farm_id' : '0x22fB2663C7ca71Adc2cc99481C77Aaf21E152e2D',
+    #                 'network_id' : 'bsc',
+    #                 'staked' : 'pool',
+    #                 'pending_reward' : 'pendingRewards'
+    #             }],
+    #         'vault_args' : [{'network' : 'bsc'}, {}]
+    #     }
+    # },
                 '0xF1F8E3ff67E386165e05b2B795097E95aaC899F0' : {
         'name' : 'evodefi.com',
         'displayName' : None,
