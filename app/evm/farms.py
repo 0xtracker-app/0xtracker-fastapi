@@ -406,7 +406,7 @@ class Farms:
                 '0x3F648151f5D591718327aA27d2EE25edF1b435D8' : {
         'name' : 'goosedefi.com (Vaults)',
         'displayName' : 'Goose Defi',
-        'url' : 'https://goosedefi.com/',        
+        'url' : 'https://goosedefi.com/',
         'rewardToken' : '0x5bfE81fCB3708C8fC733BEf60d313CAFCe1FeBEB',
         'decimal' : 18,
         'stakedFunction' : 'stakedWantTokens',
@@ -419,7 +419,7 @@ class Farms:
                 '0x045502ee488806bdf22928b6228bdd162b5056f6' : {
         'name' : 'neonic.finance',
         'displayName' : 'Neonic Finance',
-        'url' : 'https://neonic.finance/',   
+        'url' : 'https://neonic.finance/',
         'rewardToken' : '0x94026f0227ce0c9611e8a228f114f9f19cc3fa87',
         'decimal' : 18,
         'stakedFunction' : 'userInfo',
@@ -1184,7 +1184,7 @@ class Farms:
                         'masterChef' : '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
                         'rewardSymbol' : 'CAKE',
                     }
-                }                
+                }
                 ],
             'vault_args' : [{'offset' : 0}, {'offset' : 1}, {}, {}]
         }
@@ -1591,7 +1591,7 @@ class Farms:
         'perBlock' : 'auroraPerBlock',
         'featured' : 2,
         'network' : 'matic',
-    },                
+    },
                 '0x74284baEDb904486cec0091002b8E6a602977593' : {
         'name' : 'blackswap.finance (Polysolar)',
         'displayName' : None,
@@ -2592,32 +2592,32 @@ class Farms:
         'featured' : 2,
         'network' : 'matic'
     },
-                '0xC8Bd86E5a132Ac0bf10134e270De06A8Ba317BFe' : {
-        'name' : 'wault.finance',
-        'displayName' : None,
-        'url' : None,
-        'rewardToken' : '0x4c4bf319237d98a30a929a96112effa8da3510eb',
-        'decimal' : 18,
-        'stakedFunction' : 'userInfo',
-        'pendingFunction' : 'pendingWex',
-        'perBlock' : 'wexPerBlock',
-        'masterChef' : '0xC8Bd86E5a132Ac0bf10134e270De06A8Ba317BFe',
-        'featured' : 2,
-        'network' : 'matic',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_syrup_pools],
-            'vaults' : [external_contracts.get_wault_pools_matic],
-            'args' : [
-                {
-                    'farm_id' : '0xC8Bd86E5a132Ac0bf10134e270De06A8Ba317BFe',
-                    'network_id' : 'matic',
-                    'staked' : 'pool',
-                    'pending_reward' : 'pendingRewards'
-                },
-                    ],
-            'vault_args' : [{}]
-        }
-    },
+    #             '0xC8Bd86E5a132Ac0bf10134e270De06A8Ba317BFe' : {
+    #     'name' : 'wault.finance',
+    #     'displayName' : None,
+    #     'url' : None,
+    #     'rewardToken' : '0x4c4bf319237d98a30a929a96112effa8da3510eb',
+    #     'decimal' : 18,
+    #     'stakedFunction' : 'userInfo',
+    #     'pendingFunction' : 'pendingWex',
+    #     'perBlock' : 'wexPerBlock',
+    #     'masterChef' : '0xC8Bd86E5a132Ac0bf10134e270De06A8Ba317BFe',
+    #     'featured' : 2,
+    #     'network' : 'matic',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_syrup_pools],
+    #         'vaults' : [external_contracts.get_wault_pools_matic],
+    #         'args' : [
+    #             {
+    #                 'farm_id' : '0xC8Bd86E5a132Ac0bf10134e270De06A8Ba317BFe',
+    #                 'network_id' : 'matic',
+    #                 'staked' : 'pool',
+    #                 'pending_reward' : 'pendingRewards'
+    #             },
+    #                 ],
+    #         'vault_args' : [{}]
+    #     }
+    # },
                 '0x89d065572136814230A55DdEeDDEC9DF34EB0B76' : {
         'name' : 'autofarm.network',
         'displayName' : None,
@@ -2867,8 +2867,8 @@ class Farms:
                     'rewardtoken' : {'token' : '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', 'symbol' : 'WBNB', 'decimal' : 18},
                     'profit_offset' : 2
                 },
-                    
-                    
+
+
                     ],
             'vault_args' : [{}, {}]
         }
@@ -2902,8 +2902,8 @@ class Farms:
                     'rewardtoken' : {'token' : '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', 'symbol' : 'WETH', 'decimal' : 18},
                     'profit_offset' : 2
                 },
-                    
-                    
+
+
                     ],
             'vault_args' : [{}, {}]
         }
@@ -4106,7 +4106,7 @@ class Farms:
                                         'rewardSymbol' : 'GOLDBAR',
                                         'show' : False
                                     }
-                    },                    
+                    },
                     ],
             'vault_args' : [{},{},{}]
         }
@@ -4163,7 +4163,7 @@ class Farms:
                         'reward' : 'cash',
                         'pending_reward' : 'earned',
                         'user_info' : 'balanceOf'
-                    },               
+                    },
                     ],
             'vault_args' : [{'network': 56},{},{}]
         }
@@ -4204,7 +4204,7 @@ class Farms:
                         'reward' : 'cash',
                         'pending_reward' : 'earned',
                         'user_info' : 'balanceOf'
-                    },               
+                    },
                     ],
             'vault_args' : [{'network': 137},{},{}]
         }
@@ -4229,7 +4229,7 @@ class Farms:
                         'network' : 'kcc',
                         '_pps' : 'getPricePerFullShare',
                         '_strict' : True
-                    },     
+                    },
                     ],
             'vault_args' : [{'network': 321}]
         }
@@ -5584,7 +5584,7 @@ class Farms:
                     'network' : 'bsc',
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo'
-                },                
+                },
                 ],
             'vault_args' : [{}]
         }
@@ -5883,7 +5883,7 @@ class Farms:
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo',
                     'want_token' : 'token'
-                },                
+                },
                 ],
             'vault_args' : [{}, {}, {}]
         }
@@ -5909,7 +5909,7 @@ class Farms:
                     'farm_id' : '0xc7dad2e953Dc7b11474151134737A007049f576E',
                     'network_id' : 'ftm',
                     'staked' : 'syrup'
-                },           
+                },
                 ],
             'vault_args' : [{}]
         }
@@ -5999,7 +5999,7 @@ class Farms:
                 {'farm_id' : '0xc7B8285a9E099e8c21CA5516D23348D8dBADdE4a', 'network_id' : 'bsc', 'farm_data' :{'rewardToken' : '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 'decimal' : 18, 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingXMS', 'masterChef' : '0xA53b575F9eC7126ba7b43c8c3171Fe4685F2f8b0', 'wantFunction' : 'poolInfo', 'rewardSymbol' : 'BTCB'}},
                 {'farm_id' : '0xc7B8285a9E099e8c21CA5516D23348D8dBADdE4a', 'network_id' : 'bsc', 'farm_data' :{'rewardToken' : '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 'decimal' : 18, 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingXMS', 'masterChef' : '0x4639d936f0a716f234ead073362c5cb272cc4b70', 'wantFunction' : 'poolInfo', 'rewardSymbol' : 'ETH'}},
                 {'farm_id' : '0xc7B8285a9E099e8c21CA5516D23348D8dBADdE4a', 'network_id' : 'bsc', 'farm_data' :{'rewardToken' : '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', 'decimal' : 18, 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingXMS', 'masterChef' : '0x22d8d50454203bd5a41b49ef515891f1ad9f3e53', 'wantFunction' : 'poolInfo', 'rewardSymbol' : 'CAKE'}},
-                #{'farm_id' : '0xc7B8285a9E099e8c21CA5516D23348D8dBADdE4a', 'network_id' : 'bsc', 'farm_data' :{'rewardToken' : '0xBb0fA2fBE9b37444f5D1dBD22e0e5bdD2afbbE85', 'decimal' : 18, 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingXMS', 'masterChef' : '0x2894786e5292f7F23F6805067Aace92474a226Ee', 'wantFunction' : 'poolInfo', 'rewardSymbol' : 'mUSD'}},            
+                #{'farm_id' : '0xc7B8285a9E099e8c21CA5516D23348D8dBADdE4a', 'network_id' : 'bsc', 'farm_data' :{'rewardToken' : '0xBb0fA2fBE9b37444f5D1dBD22e0e5bdD2afbbE85', 'decimal' : 18, 'stakedFunction' : 'userInfo', 'pendingFunction' : 'pendingXMS', 'masterChef' : '0x2894786e5292f7F23F6805067Aace92474a226Ee', 'wantFunction' : 'poolInfo', 'rewardSymbol' : 'mUSD'}},
             ],
             'vault_args' : [{},{},{},{},{},{}]
         }
@@ -6109,75 +6109,75 @@ class Farms:
             'vault_args' : [{}]
         }
     },
-                '0xVoltSwap' : {
-        'name' : 'voltswap.finance',
-        'displayName' : None,
-        'url' : None,
-        'rewardToken' : '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0',
-        'decimal' : 18,
-        'stakedFunction' : None,
-        'pendingFunction' : None,
-        'masterChef' : '0xVoltSwap',
-        'featured' : 2,
-        'network' : 'meter',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_voltswap],
-            'vaults' : [external_contracts.get_voltswap],
-            'args' : [
-                    {
-                        'farm_id' : '0xVoltSwap',
-                        'network_id' : 'meter',
-                    },
-                    ],
-            'vault_args' : [{'wallet' : wallet}]
-        }
-    },
-                '0xVoltSwapTheta' : {
-        'name' : 'voltswap.finance',
-        'displayName' : None,
-        'url' : None,
-        'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
-        'decimal' : 18,
-        'stakedFunction' : None,
-        'pendingFunction' : None,
-        'masterChef' : '0xVoltSwapTheta',
-        'featured' : 2,
-        'network' : 'theta',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_voltswap],
-            'vaults' : [external_contracts.get_voltswap_theta],
-            'args' : [
-                    {
-                        'farm_id' : '0xVoltSwapTheta',
-                        'network_id' : 'theta',
-                    },
-                    ],
-            'vault_args' : [{'wallet' : wallet}]
-        }
-    },
-                '0xVoltSwapMoon' : {
-        'name' : 'voltswap.finance',
-        'displayName' : None,
-        'url' : None,
-        'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
-        'decimal' : 18,
-        'stakedFunction' : None,
-        'pendingFunction' : None,
-        'masterChef' : '0xVoltSwapMoon',
-        'featured' : 2,
-        'network' : 'moonbeam',
-        'extraFunctions' : {
-            'functions' : [farm_templates.get_voltswap],
-            'vaults' : [external_contracts.get_voltswap_moon],
-            'args' : [
-                    {
-                        'farm_id' : '0xVoltSwapMoon',
-                        'network_id' : 'moonbeam',
-                    },
-                    ],
-            'vault_args' : [{'wallet' : wallet}]
-        }
-    },
+    #             '0xVoltSwap' : {
+    #     'name' : 'voltswap.finance',
+    #     'displayName' : None,
+    #     'url' : None,
+    #     'rewardToken' : '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0',
+    #     'decimal' : 18,
+    #     'stakedFunction' : None,
+    #     'pendingFunction' : None,
+    #     'masterChef' : '0xVoltSwap',
+    #     'featured' : 2,
+    #     'network' : 'meter',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_voltswap],
+    #         'vaults' : [external_contracts.get_voltswap],
+    #         'args' : [
+    #                 {
+    #                     'farm_id' : '0xVoltSwap',
+    #                     'network_id' : 'meter',
+    #                 },
+    #                 ],
+    #         'vault_args' : [{'wallet' : wallet}]
+    #     }
+    # },
+    #             '0xVoltSwapTheta' : {
+    #     'name' : 'voltswap.finance',
+    #     'displayName' : None,
+    #     'url' : None,
+    #     'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
+    #     'decimal' : 18,
+    #     'stakedFunction' : None,
+    #     'pendingFunction' : None,
+    #     'masterChef' : '0xVoltSwapTheta',
+    #     'featured' : 2,
+    #     'network' : 'theta',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_voltswap],
+    #         'vaults' : [external_contracts.get_voltswap_theta],
+    #         'args' : [
+    #                 {
+    #                     'farm_id' : '0xVoltSwapTheta',
+    #                     'network_id' : 'theta',
+    #                 },
+    #                 ],
+    #         'vault_args' : [{'wallet' : wallet}]
+    #     }
+    # },
+    #             '0xVoltSwapMoon' : {
+    #     'name' : 'voltswap.finance',
+    #     'displayName' : None,
+    #     'url' : None,
+    #     'rewardToken' : '0x3050ca9d00559cfbde6d8b796cef2af07e17725f',
+    #     'decimal' : 18,
+    #     'stakedFunction' : None,
+    #     'pendingFunction' : None,
+    #     'masterChef' : '0xVoltSwapMoon',
+    #     'featured' : 2,
+    #     'network' : 'moonbeam',
+    #     'extraFunctions' : {
+    #         'functions' : [farm_templates.get_voltswap],
+    #         'vaults' : [external_contracts.get_voltswap_moon],
+    #         'args' : [
+    #                 {
+    #                     'farm_id' : '0xVoltSwapMoon',
+    #                     'network_id' : 'moonbeam',
+    #                 },
+    #                 ],
+    #         'vault_args' : [{'wallet' : wallet}]
+    #     }
+    # },
                 '0x43d78BA76dc2C5dF8C1cF3423C5b8Db7f476f33a' : {
         'name' : 'towerfinance.io',
         'displayName' : None,
@@ -6616,7 +6616,7 @@ class Farms:
                     'network' : 'cro',
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo'
-                }, 
+                },
                     ],
             'vault_args' : [{}, {}]
         }
@@ -6646,7 +6646,7 @@ class Farms:
                     'network' : 'cro',
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo'
-                }, 
+                },
                     ],
             'vault_args' : [{}, {}]
         }
@@ -7658,7 +7658,7 @@ class Farms:
                     'reward' : 'rewardsToken',
                     'pending_reward' : 'earned',
                     'user_info' : 'balanceOf'
-                },     
+                },
                 ],
             'vault_args' : [{}]
         }
@@ -8571,7 +8571,7 @@ class Farms:
                     '_pps' : 'getPricePerFullShare',
                     '_stake' : 'userInfo',
                     'want_token' : 'token'
-                },                
+                },
                 ],
             'vault_args' : [{}, {}]
         }
@@ -8600,7 +8600,7 @@ class Farms:
                         'reward' : 'svn',
                         'pending_reward' : 'earned',
                         'user_info' : 'balanceOf'
-                    },       
+                    },
                 ],
             'vault_args' : [{}]
         }
@@ -8958,7 +8958,7 @@ class Farms:
                         'reward' : 'rewardToken',
                         'pending_reward' : 'earned',
                         'user_info' : 'balanceOf'
-                    },       
+                    },
                 ],
             'vault_args' : [{}]
         }
@@ -8987,7 +8987,7 @@ class Farms:
                         'reward' : 'wlrs',
                         'pending_reward' : 'earned',
                         'user_info' : 'balanceOf'
-                    },       
+                    },
                 ],
             'vault_args' : [{}]
         }
@@ -9022,7 +9022,7 @@ class Farms:
                         'network' : 'bsc',
                         '_pps' : 'getPricePerFullShare',
                         'want_token' : 'want'
-                    },      
+                    },
                 ],
             'vault_args' : [{},{}]
         }
@@ -9057,7 +9057,7 @@ class Farms:
         #                 'network' : 'eth',
         #                 '_pps' : 'getPricePerFullShare',
         #                 'want_token' : 'want'
-        #             },      
+        #             },
         #         ],
         #     'vault_args' : [{},{}]
         # }
@@ -9134,7 +9134,7 @@ class Farms:
                         'node_manager' : '0xCd5E168dA3456cD2d5A8ab400f9cebdDC453720d',
                         'reward_token' : '0x83a283641C6B4DF383BCDDf807193284C84c5342',
                         'reward_symbol'  : 'VPND',
-                    },       
+                    },
                 ],
             'vault_args' : [{}]
         }
