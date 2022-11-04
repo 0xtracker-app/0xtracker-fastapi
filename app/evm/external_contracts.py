@@ -67,7 +67,7 @@ async def get_mai_graph(wallet, session):
 
 
     x = await call_graph('https://api.thegraph.com/subgraphs/name/gallodasballo/mai-finance-quick', {'query': obj, 'variable' : None}, session)
-    
+
     staked = 0
     pending = 0
 
@@ -109,12 +109,12 @@ async def get_vaporware_vaults(session):
     vault_data = [{'vault' : x['earnedTokenAddress'], 'want' : x['tokenAddress']} for x in cleaned_up if 'tokenAddress' in x if x['status'] == 'active']
 
     return vault_data
- 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=0)        
+
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_beefy_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/bsc_stake.js')
     s2 = "export const bscStakePools = ["
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
     x = f'[{regex}]'.replace('partners: ,','').replace('assets: ,','')
@@ -127,7 +127,7 @@ async def get_beefy_boosts(session):
 async def get_beefy_boosts_fuse(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/fuse_stake.js')
     s2 = "export const fuseStakePools = ["
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
     x = f'[{regex}]'.replace('partners: ,','').replace('assets: ,','')
@@ -140,7 +140,7 @@ async def get_beefy_boosts_fuse(session):
 async def get_beefy_metis_boosts(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/stake/metis_stake.js')
     s2 = "export const metisStakePools = ["
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-3].strip()
     regex = re.sub(r'\[.*?\]', '', data,flags=re.DOTALL)
     x = f'[{regex}]'.replace('partners: ,','').replace('assets: ,','')
@@ -413,7 +413,7 @@ async def lido_contracts_eth(session):
 async def get_beefy_matic_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/polygon_pools.js')
     s2 = "export const polygonPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     data = re.sub(r'\saddLiquidityUrl:\s.+(\,)', " nothing: '',", data)
     data = re.sub(r'\sbuyTokenUrl:\s.+(\,)', " nothing: '',", data)
@@ -428,7 +428,7 @@ async def get_beefy_matic_pools(session):
 async def get_beefy_fantom_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fantom_pools.js')
     s2 = "export const fantomPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -448,7 +448,7 @@ async def get_beefy_api_pools(session, url):
 async def get_magik_fantom_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/fantom_pools.js')
     s2 = "export const fantomPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -461,7 +461,7 @@ async def get_magik_fantom_pools(session):
 async def get_magik_bsc_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/bsc_pools.js')
     s2 = "export const bscPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -474,7 +474,7 @@ async def get_magik_bsc_pools(session):
 async def get_magik_avax_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/magikfinance/magik-farm-fe-master/main/src/features/configure/vault/avalanche_pools.js')
     s2 = "export const avalanchePools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -487,7 +487,7 @@ async def get_magik_avax_pools(session):
 async def get_beefy_moon_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/moonriver_pools.js')
     s2 = "export const moonriverPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -499,7 +499,7 @@ async def get_beefy_moon_pools(session):
 async def get_beefy_metis_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/metis_pools.js')
     s2 = "export const metisPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -511,7 +511,7 @@ async def get_beefy_metis_pools(session):
 async def get_beefy_arb_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/arbitrum_pools.js')
     s2 = "export const arbitrumPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -523,7 +523,7 @@ async def get_beefy_arb_pools(session):
 async def get_beefy_fuse_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/fuse_pools.js')
     s2 = "export const fusePools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -535,7 +535,7 @@ async def get_beefy_fuse_pools(session):
 async def get_beefy_harmony_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/harmony_pools.js')
     s2 = "export const harmonyPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -547,7 +547,7 @@ async def get_beefy_harmony_pools(session):
 async def get_beefy_cronos_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/cronos_pools.js')
     s2 = "export const cronosPools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -559,7 +559,7 @@ async def get_beefy_cronos_pools(session):
 async def get_beefy_avax_pools(session):
     r = await make_get(session, 'https://raw.githubusercontent.com/beefyfinance/beefy-app/master/src/features/configure/vault/avalanche_pools.js')
     s2 = "export const avalanchePools = "
-    
+
     data = r[r.index(s2) + len(s2) :len(r)-2]
     cleaned_up = json.loads(json.dumps(hjson.loads(data.replace("\\",""))))
 
@@ -575,7 +575,7 @@ async def get_qs_vaults(session):
         #cleaned = json.loads(cleaner)
         return [each['stakingRewardAddress'] for each in r['active'] if each['stakingRewardAddress'] != '0x0000000000000000000000000000000000000000']
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=0)    
+@cache_function(ttl=CONTRACTS_TTL, keyparams=0)
 async def get_dfyn_vaults(session):
     tasks = []
     urls = ['https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/ecosystem-farms.js', 'https://raw.githubusercontent.com/dfyn/dfyn-farms-info/main/popular-farms.js']
@@ -591,7 +591,7 @@ async def get_dfyn_vaults(session):
         for contract in each:
             if contract['stakingRewardAddress'] not in ['0x98D7c004C54C47b7e65320Bd679CB897Aae6a6D']:
                 return_list.append(contract['stakingRewardAddress'])
-    
+
     return return_list
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=0)
@@ -602,7 +602,7 @@ async def get_dfyn_dual(session):
 
     for each in maping:
         return_list.append(each['stakingRewardAddress'])
-    
+
     return return_list
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=0)
@@ -654,7 +654,7 @@ async def get_curve_pools(session, network, registry, contract, t):
     elif contract == 'registry':
         gauge_data = await Multicall([Call(registry, ['get_gauges(address)(address[10])', p], None) for p in pool_list], connection, _strict=False, _list=True)()
         gauge_list = [x for x in list(chain.from_iterable(gauge_data)) if x != '0x0000000000000000000000000000000000000000']
-        
+
     else:
         gauge_list = []
 
@@ -686,7 +686,7 @@ async def get_curve_gauages(session, network):
                 filtered_gauges.append(g)
 
 
-    return filtered_gauges   
+    return filtered_gauges
 
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network', 'contract'])
@@ -696,7 +696,7 @@ async def get_lending_config(network, session, contract):
     native_decimal = getattr(NativeDecimal, network.upper())
 
     markets = await Call(contract, [f'getAllMarkets()(address[])'], None, network_session)()
-    market_data = await Multicall(list(chain.from_iterable((Call(i, [f'underlying()(address)'], [[f'{i}_underlying', None]]), Call(contract, [f'markets(address)((bool,uint256))', i], [[f'{i}_collat', None]])) for i in markets)), network_session, _strict=False)() 
+    market_data = await Multicall(list(chain.from_iterable((Call(i, [f'underlying()(address)'], [[f'{i}_underlying', None]]), Call(contract, [f'markets(address)((bool,uint256))', i], [[f'{i}_collat', None]])) for i in markets)), network_session, _strict=False)()
     decimals = await Multicall([Call(market_data[i], [f'decimals()(uint8)'], [[f'{market_data[i]}', None]]) for i in market_data if 'underlying' in i], network_session, _strict=False)()
 
     lending_config = []
@@ -713,7 +713,7 @@ async def get_lending_config(network, session, contract):
             'want' : want_token,
             'collat_rate' : collat})
 
-    return lending_config 
+    return lending_config
 
 async def get_aperocket_vaults(session):
     r = poolext.aperocket.ape_rockets
@@ -855,7 +855,7 @@ async def get_pcs_pools(offset, session):
                 if each['isFinished'] is False and each['sousId'] > 116:
                     pcs_pools.append(contract_address)
                 elif each['isFinished'] is False and each['sousId'] < 116:
-                    pcs_older.append(contract_address)        
+                    pcs_older.append(contract_address)
             elif each['sousId'] > 116:
                 pcs_pools.append(contract_address)
             else:
@@ -889,7 +889,7 @@ async def get_pickle_addresses(network,session):
 @cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['network'])
 async def get_pickle_addresses_uni(network,session):
     r = await make_get_json(session, 'https://api.pickle.finance/prod/protocol/pools')
-    
+
     if r and 'message' not in r:
         return [x['jarAddress'] for x in r if x['network'] == network and 'univ3' in x['identifier']]
     else:
@@ -948,7 +948,7 @@ async def get_curve_gauage(network, session):
         return poolext.curve.ftm_gauges
     else:
         return []
-    
+
 async def get_telx(style, session):
     if style == 'single':
         return poolext.telx.single
@@ -986,7 +986,7 @@ async def get_feeder_auto(session):
 
 async def get_feeder_sfeed(session):
     return poolext.feeder.sfeed
-    
+
 async def get_polygonfarm_pools(session):
     return poolext.polygonfarm.pools
 
@@ -1203,7 +1203,7 @@ async def get_elk_vaults(network, session):
         ROUNDS = 10
         STAKING = {"fuse":{"ELK":"0xA83FF3b61c7b5812d6f0B39d5C7dDD920B2bDa61"},"ftm":{"ELK":"0x6B7E64854e4591f8F8E552b56F612E1Ab11486C3"},"xdai":{"ELK":"0xAd3379b0EcC186ddb842A7895350c4657f151e6e"},"avax":{"ELK":"0xB105D4D17a09397960f2678526A4063A64FAd9bd"},"bsc":{"ELK":"0xD5B9b0DB5f766B1c934B5d890A2A5a4516A97Bc5"},"matic":{"ELK":"0xB8CBce256a713228F690AC36B6A0953EEd58b957"},"heco":{"ELK":"0xdE16c49fA4a4B78071ae0eF04B2E496dF584B2CE"}}
         r = await cf_make_get_json(session, 'https://api.elk.finance/v1/info/farms')
-        
+
         vaults = []
 
         for round in range(0,ROUNDS):
