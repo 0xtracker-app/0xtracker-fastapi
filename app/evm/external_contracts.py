@@ -840,7 +840,7 @@ async def get_beefy_boosts_moon(session):
 @cache_function(ttl=CONTRACTS_TTL, keyparams=[0], kwargsForKey=['offset'])
 async def get_pcs_pools(offset, session):
     r = await make_get(session, 'https://raw.githubusercontent.com/pancakeswap/pancake-frontend/develop/apps/web/src/config/constants/pools.tsx')
-    s2 = "const livePools: SerializedPoolConfig[] ="
+    s2 = "export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] ="
     #s_end = ".filter((p) => !!p.contractAddress[CHAIN_ID])"
     s_end = ".map((p) => ({"
     data = r[r.index(s2) + len(s2) :r.index(s_end)]
