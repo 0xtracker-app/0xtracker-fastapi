@@ -969,7 +969,7 @@ async def get_quickswap_style_multi(wallet, vaults, farm_id, network):
     else:
         return None
 
-async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=None, _strict=None, want_token=None, decimal_from=None):
+async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=None, _strict=None, want_token=None, decimal_from=None, pancake=False):
 
     if _pps == None:
         pps = 'getRatio'
@@ -1001,7 +1001,7 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
     for vault in vaults:
 
         if vault in ['0x45c54210128a065de780C4B0Df3d16664f7f859e']:
-            calls.append(Call(vault, [f'{stake}(address)((uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,uint256))', wallet], [[f'{vault}_staked', parsers.parse_wanted_offset, 8]]))
+            calls.append(Call(vault, [f'{stake}(address)((uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,uint256))', wallet], [[f'{vault}_staked', None]]))
         else:
             calls.append(Call(vault, [f'{stake}(address)(uint256)', wallet], [[f'{vault}_staked', None]]))
         
@@ -1014,7 +1014,10 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
         else:
             calls.append(Call(vault, [f'{want_token}()(address)'], [[f'{vault}_want', None]]))
         
-        calls.append(Call(vault, [f'{pps}()(uint256)'], [[f'{vault}_getPricePerFullShare', parsers.from_wei]]))
+        if vault in ['0x45c54210128a065de780C4B0Df3d16664f7f859e']:
+            calls.append(Call(vault, [f'{pps}()(uint256)'], [[f'{vault}_getPricePerFullShare', None]]))
+        else:
+            calls.append(Call(vault, [f'{pps}()(uint256)'], [[f'{vault}_getPricePerFullShare', parsers.from_wei]]))
 
     if len(calls) > 1000:
         chunks = len(calls) / 500
@@ -1036,20 +1039,27 @@ async def get_vault_style(wallet, vaults, farm_id, network, _pps=None, _stake=No
     
     for each in stakes:
         if 'staked' in each:
-            if stakes[each] > 0:
-                breakdown = each.split('_')
+            breakdown = each.split('_')
 
-                if decimal_from is True:
-                    decimal_lookup = breakdown[0]
-                else:
-                    decimal_lookup = stakes[f'{breakdown[0]}_want']
+            if decimal_from is True:
+                decimal_lookup = breakdown[0]
+            else:
+                decimal_lookup = stakes[f'{breakdown[0]}_want']
 
-                token_decimal = 18 if decimal_lookup not in token_decimals else token_decimals[decimal_lookup]
-                staked = parsers.from_custom(stakes[each], token_decimal)
-                want_token = stakes[f'{breakdown[0]}_want']
-                price_per = stakes[f'{breakdown[0]}_getPricePerFullShare']
-                poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'staked' : staked, 'getPricePerFullShare' : price_per, 'vault_receipt' : breakdown[0], 'contractAddress' : breakdown[0]}
-                poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
+            token_decimal = 18 if decimal_lookup not in token_decimals else token_decimals[decimal_lookup]
+
+            want_token = stakes[f'{breakdown[0]}_want']
+
+            poolNest[poolKey]['userData'][breakdown[0]] = {'want': want_token, 'vault_receipt' : breakdown[0], 'contractAddress' : breakdown[0]}
+            
+            if breakdown[0] == '0x45c54210128a065de780C4B0Df3d16664f7f859e':
+                actual_staked = ((stakes[each][0] * stakes[f'{breakdown[0]}_getPricePerFullShare']) / 1e18) - stakes[each][6]
+                poolNest[poolKey]['userData'][breakdown[0]]['staked'] = parsers.from_custom(actual_staked, token_decimal)
+            else:
+                poolNest[poolKey]['userData'][breakdown[0]]['staked'] = parsers.from_custom(stakes[each], token_decimal)
+                poolNest[poolKey]['userData'][breakdown[0]]['getPricePerFullShare'] = stakes[f'{breakdown[0]}_getPricePerFullShare']
+
+            poolIDs['%s_%s_want' % (poolKey, breakdown[0])] = want_token
     
     if len(poolIDs) > 0:
         return poolIDs, poolNest    
