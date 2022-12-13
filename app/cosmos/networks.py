@@ -152,8 +152,8 @@ class CosmosNetwork:
             },
             'juno': {
                 'wallet': from_atom(wallet, 'juno'),
-                'rpc': 'https://rpc.juno.pupmos.network',
-                'rest': 'https://api.juno.pupmos.network',
+                'rpc': 'https://rpc-juno.itastakers.com',
+                'rest': 'https://lcd-juno.itastakers.com',
                 'chain_id': 'juno-1',
                 'chain_name': 'Juno Mainnet',
                 'explorer': 'https://www.mintscan.io/juno',
