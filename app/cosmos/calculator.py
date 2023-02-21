@@ -24,8 +24,6 @@ def get_balancer_ratio(token_data,quote_price):
 
     return {'type' : 'lp', 'lpTotal': '/'.join([str(round(x,2)) for x in lp_values]), 'lpPrice' : lp_price, 'lpBalances' : lp_values, 'actualStaked' : token_data['staked']}
 
-
-
 async def calculate_prices(lastReturn, prices, wallet, mongo_client, pdb):
 
     finalResponse = lastReturn
@@ -45,7 +43,17 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, pdb):
 
                     finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
                     finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
-                   
+
+            if lastReturn[f]['userData'][x].get('stable_swap') == True:
+
+                    lastReturn[f]['userData'][x].update(get_balancer_ratio(lastReturn[f]['userData'][x], prices))
+
+                    finalResponse[f]['userData'][x]['tokenPair'] = "/".join(lastReturn[f]['userData'][x]['token_symbols'])
+                    finalResponse[f]['userData'][x]['tokenSymbols'] = lastReturn[f]['userData'][x]['token_symbols']
+
+
+
+
             else:
                     quotePrice = prices[lastReturn[f]['userData'][x]['token0'].lower()] if lastReturn[f]['userData'][x]['token0'].lower() in prices else 0
                     singleStake = lastReturn[f]['userData'][x]['staked']
