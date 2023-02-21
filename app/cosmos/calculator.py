@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 def get_balancer_ratio(token_data,quote_price):
 
     userPct = token_data['staked'] / token_data['total_shares']
-
+    
     lp_values = []
     
     for i, each in enumerate(token_data['reserves']):
@@ -44,7 +44,7 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, pdb):
                     finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
                     finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
 
-            if lastReturn[f]['userData'][x].get('stable_swap') == True:
+            elif lastReturn[f]['userData'][x].get('stable_swap') == True:
 
                     lastReturn[f]['userData'][x].update(get_balancer_ratio(lastReturn[f]['userData'][x], prices))
 
