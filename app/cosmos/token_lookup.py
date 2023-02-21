@@ -1,6 +1,7 @@
 from . import queries
 import re
 from . import helpers
+import asyncio
 
 async def get_ibc(token, network, session, cosmos_routes, cosmos_tokens):
 
@@ -115,27 +116,47 @@ class TokenMetaData:
                     await self.cosmos_tokens.update_one({'tokenID': found_token['tokenID']}, {"$set": found_token}, upsert=True)
 
                 get_pool = await queries.get_gamm_balances(self.tokenID, self.network, self.session)
+
                 if get_pool:
                     found_token.update(get_pool)
+
                 self.token_metadata = found_token
+
             else:
                 get_pool = await queries.get_gamm_pool(self.tokenID, self.network, self.session)
-                found_token0 = await get_ibc(get_pool['token0'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
-                found_token1 = await get_ibc(get_pool['token1'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
-                # print(get_pool['token0'], get_pool['token1'], self.network)
-                get_pool.update({
-                    'tokenID': get_pool['base_denom'],
-                    'tkn0s': found_token0['tkn0s'],
-                    'tkn0d': found_token0['tkn0d'],
-                    'tkn1s': found_token1['tkn0s'],
-                    'tkn1d': found_token1['tkn0d'],
-                    'token0' : found_token0['token0'],
-                    'token1' : found_token1['token0'],
-                    'token_decimals': [found_token0['tkn0d'],found_token1['tkn0d']],
-                    'all_tokens': [found_token0['token0'], found_token1['token0']]})
 
-                await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
-                self.token_metadata = get_pool
+                if get_pool.get('stable_swap') == True:
+
+                    found_tokens = await asyncio.gather(*[get_ibc(token, self.network, self.session, self.cosmos_routes, self.cosmos_tokens) for token in get_pool['pool_tokens']])
+
+                    get_pool.update({
+                        'tokenID': get_pool['base_denom'],
+                        'tkn0s': "-".join([x['tkn0s'] for x in found_tokens]),
+                        'tkn0d': 18,
+                        'token0' : get_pool['base_denom'],
+                        'token_decimals': [x['tkn0d'] for x in found_tokens],
+                        'token_symbols' : [x['tkn0s'] for x in found_tokens],
+                        'all_tokens': [x['token0'] for x in found_tokens]})
+
+                    await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
+                    self.token_metadata = get_pool
+                else:
+                    found_token0 = await get_ibc(get_pool['token0'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
+                    found_token1 = await get_ibc(get_pool['token1'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
+
+                    get_pool.update({
+                        'tokenID': get_pool['base_denom'],
+                        'tkn0s': found_token0['tkn0s'],
+                        'tkn0d': found_token0['tkn0d'],
+                        'tkn1s': found_token1['tkn0s'],
+                        'tkn1d': found_token1['tkn0d'],
+                        'token0' : found_token0['token0'],
+                        'token1' : found_token1['token0'],
+                        'token_decimals': [found_token0['tkn0d'],found_token1['tkn0d']],
+                        'all_tokens': [found_token0['token0'], found_token1['token0']]})
+
+                    await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
+                    self.token_metadata = get_pool                    
         else:
             found_token = await self.cosmos_tokens.find_one({'tokenID' : re.compile('^' + re.escape(self.denom) + '$', re.IGNORECASE)}, {'_id': False})
             if found_token:

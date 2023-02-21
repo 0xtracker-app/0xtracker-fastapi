@@ -109,14 +109,28 @@ async def get_gamm_pool(pool,network_data,session):
     r = await make_get_json(session, f'{endpoint}/osmosis/gamm/v1beta1/pools/{pool_id}')
 
     if 'pool' in r:
-        return {
-            'base_denom' : r['pool']['total_shares']['denom'],
-            'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
-            'reserves' : [r['pool']['pool_assets'][0]['token']['amount'], r['pool']['pool_assets'][1]['token']['amount']], 
-            'token0' : r['pool']['pool_assets'][0]['token']['denom'],
-            'token1' : r['pool']['pool_assets'][1]['token']['denom'],
-            'token_weights' : [int(r['pool']['pool_assets'][0]['weight']) / int(r['pool']['total_weight']), int(r['pool']['pool_assets'][1]['weight'])/int(r['pool']['total_weight'])],
-            }
+        if r['pool']['@type'] == '/osmosis.gamm.poolmodels.stableswap.v1beta1.Pool':
+            imperator = await make_get_json(session, f'https://api-osmosis.imperator.co/stream/pool/v1/{pool_id}')
+
+            return {
+                'base_denom' : r['pool']['total_shares']['denom'],
+                'address' : r['pool']['address'],
+                'stable_swap' : True,
+                'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+                'reserves' : [x['amount'] for x in r['pool']['pool_liquidity']], 
+                'pool_tokens' : [x['denom'] for x in r['pool']['pool_liquidity']],
+                'token_weights' : [x['percent'] / 100 for x in imperator['pool_tokens']],
+                }
+        else:
+            return {
+                'base_denom' : r['pool']['total_shares']['denom'],
+                'stable_swap' : False,
+                'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+                'reserves' : [r['pool']['pool_assets'][0]['token']['amount'], r['pool']['pool_assets'][1]['token']['amount']], 
+                'token0' : r['pool']['pool_assets'][0]['token']['denom'],
+                'token1' : r['pool']['pool_assets'][1]['token']['denom'],
+                'token_weights' : [int(r['pool']['pool_assets'][0]['weight']) / int(r['pool']['total_weight']), int(r['pool']['pool_assets'][1]['weight'])/int(r['pool']['total_weight'])],
+                }
     else:
         return None
 
@@ -126,10 +140,16 @@ async def get_gamm_balances(pool,network_data,session):
     r = await make_get_json(session, f'{endpoint}/osmosis/gamm/v1beta1/pools/{pool_id}')
 
     if 'pool' in r:
-        return {
-            'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
-            'reserves' : [int(r['pool']['pool_assets'][0]['token']['amount']),int(r['pool']['pool_assets'][1]['token']['amount'])], 
-            }
+        if r['pool']['@type'] == '/osmosis.gamm.poolmodels.stableswap.v1beta1.Pool':
+            return {
+                'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+                'reserves' : [x['amount'] for x in r['pool']['pool_liquidity']], 
+                }
+        else:
+            return {
+                'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+                'reserves' : [int(r['pool']['pool_assets'][0]['token']['amount']),int(r['pool']['pool_assets'][1]['token']['amount'])], 
+                }            
     else:
         return None
 
