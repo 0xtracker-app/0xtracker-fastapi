@@ -126,3 +126,62 @@ async def get_crescent_pricing(session, denom):
                 token_price = each['priceOracle']
 
     return { denom : token_price }
+
+@cache_function(ttl=3600, keyparams=[])
+async def osmosis_token_registry(session):
+    r = await make_get_json(session, f'https://api-osmosis.imperator.co/tokens/v2/all')
+    ibc_traces = await osmosis_ibc_traces(session)
+    
+    tokens = {}
+
+    if r:
+        for x in r:
+            tokens[x['denom']] = x
+            
+            if 'ibc' in x['denom']:
+                if ibc_traces.get(x['denom']):
+                    tokens[ibc_traces[x['denom']]] = x
+
+    if 'acanto' not in tokens:
+        tokens['acanto'] = {'price': 0.0, 'denom': 'acanto', 'symbol': 'CANTO', 'exponent': 18, 'display': 'canto'}
+
+    return tokens
+
+@cache_function(ttl=3600, keyparams=[])
+async def osmosis_ibc_traces(session):
+    r = await make_get_json(session, f'https://raw.githubusercontent.com/osmosis-labs/assetlists/main/osmosis-1/osmosis-1.assetlist.json')
+    ibc_traces = {}
+
+    if r:
+        for x in r['assets']:
+            if 'traces' in x:
+                for t in x['traces']:
+                    if t['type'] in ['ibc', 'ibc-cw20'] :
+                        ibc_traces[x['base']] = t['counterparty']['base_denom']
+
+    return ibc_traces
+
+@cache_function(ttl=3600, keyparams=[])
+async def check_osmosis_pricing(session):
+    r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
+    osmo_prices = {}
+    ibc_traces = await osmosis_ibc_traces(session)
+    
+    for each in r:
+            osmo_prices[each['denom']] = each['price']
+            is_ibc = ibc_traces.get(each['denom'])
+
+            if is_ibc:
+                osmo_prices[is_ibc] = each['price']
+
+    overide = {
+        'canto' : 'acanto' 
+    }
+
+    coingecko = await make_get_json(session, f'https://api.coingecko.com/api/v3/simple/price?ids={",".join([x for x in overide])}&vs_currencies=usd')
+
+
+    for c in coingecko:
+        osmo_prices[overide[c]] = coingecko[c]['usd']
+        
+    return osmo_prices

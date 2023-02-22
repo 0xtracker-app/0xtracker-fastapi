@@ -61,6 +61,26 @@ async def get_cresent_pool_info(pool, network_data, session):
 
     return r
 
+async def get_cresent_farming_v2(network, network_data, session):
+    endpoint = network_data['rest']
+    wallet = network_data['wallet']
+    r = await make_get_json(session, f'{endpoint}/crescent/farming/v1beta1/positions/{wallet}')
+
+    return r
+
+async def get_cresent_rewards_v2(network, network_data, session):
+    endpoint = network_data['rest']
+    wallet = network_data['wallet']
+    r = await make_get_json(session, f'{endpoint}/crescent/farming/v1beta1/rewards/{wallet}')
+
+    return r
+
+async def get_cresent_pool_info_v2(pool, network_data, session):
+    endpoint = network_data['rest']
+    r = await make_get_json(session, f'{endpoint}/crescent/liquidity/v1beta1/pools/{pool.split("pool")[1]}')
+
+    return r
+
 async def get_denom_total_supply(network, denom, network_data, session):
     endpoint = network_data['rest']
 

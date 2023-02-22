@@ -19,7 +19,8 @@ async def junoswap_locks(session):
 
     for x in r['list']:
         for rewards in x['rewards_tokens']:
-            stake_by_swap[x['swap_address']]['rewards'].append(rewards['rewards_address'])
+            if x['swap_address'] in stake_by_swap:
+                stake_by_swap[x['swap_address']]['rewards'].append(rewards['rewards_address'])
 
 
     return stake_by_swap
