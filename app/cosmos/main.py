@@ -36,7 +36,7 @@ async def get_wallet_balances(wallet, session, mongo_client, pdb):
     cw20_tokens = ['juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr']
     balances = await asyncio.gather(*[queries.get_bank_balances(network, net_config[network], session) for network in net_config])
     traces =  await asyncio.gather(*[queries.get_ibc_tokens(net_config[network['network']], session) for network in balances])
-    prices = await oracles.cosmostation_prices(session, mongo_client, net_config)
+    prices = await oracles.check_osmosis_pricing(session)
     transform_trace = helpers.transform_trace_routes(traces)
     cw20_balances = await asyncio.gather(*[queries.query_contract_state(session, net_config['juno']['rpc'], x, { "balance" : { "address": net_config['juno']['wallet']}}) for x in cw20_tokens])
 
@@ -111,7 +111,7 @@ async def get_cosmos_positions(wallet, farm_id, mongo_db, http_session, client, 
 
 
     token_list = token_list_from_stakes(returned_object[1], farm_configuraiton)
-    prices = await oracles.cosmostation_prices(http_session, mongo_db, CosmosNetwork(wallet).all_networks)
+    prices = await oracles.check_osmosis_pricing(http_session)
     otkn = TokenOverride(http_session).tokens
     
     price_overrides = await asyncio.gather(*[otkn[v['token']][0](**otkn[v['token']][1]) for i, v in enumerate(token_list) if v['token'] in otkn])
