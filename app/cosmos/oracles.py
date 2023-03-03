@@ -180,7 +180,6 @@ async def check_osmosis_pricing(session):
 
     coingecko = await make_get_json(session, f'https://api.coingecko.com/api/v3/simple/price?ids={",".join([x for x in overide])}&vs_currencies=usd')
 
-
     for c in coingecko:
         osmo_prices[overide[c]] = coingecko[c]['usd']
         
