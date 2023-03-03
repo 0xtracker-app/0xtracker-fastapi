@@ -81,30 +81,30 @@ async def get_juno_price(session):
     current_price = float(r['data']['result'][0]['values'][0][1])
     return current_price
 
-@cache_function(ttl=CONTRACTS_TTL, keyparams=[])
-async def check_osmosis_pricing(session, mongo_db, network_data):
-    r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
-    osmo_prices = {}
+# @cache_function(ttl=CONTRACTS_TTL, keyparams=[])
+# async def check_osmosis_pricing(session, mongo_db, network_data):
+#     r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
+#     osmo_prices = {}
 
-    for each in r:
-        if 'ibc' in each['denom']:
-            # if each['denom'] == 'ibc/B9E0A1A524E98BB407D3CED8720EFEFD186002F90C1B1B7964811DD0CCC12228':
-            #     denom = 'uhuahua'
-            #     osmo_prices[denom] = each['price']
-            # else:
-                # route = each['denom'].replace('ibc/', '')
-                # d = await make_get_json(session, f'https://lcd-osmosis.keplr.app/ibc/applications/transfer/v1beta1/denom_traces/{route}')
-                # if 'denom_trace' in d:
-                #     denom = d['denom_trace']['base_denom']
-                #     osmo_prices[denom] = each['price']
-            d = await TokenMetaData(address=each['denom'], mongodb=mongo_db, network=network_data['osmosis'], session=session).lookup()
-            if d:
-                denom = d['token0']
-                osmo_prices[denom] = each['price']
-        else:
-            osmo_prices[each['denom']] = each['price']
+#     for each in r:
+#         if 'ibc' in each['denom']:
+#             # if each['denom'] == 'ibc/B9E0A1A524E98BB407D3CED8720EFEFD186002F90C1B1B7964811DD0CCC12228':
+#             #     denom = 'uhuahua'
+#             #     osmo_prices[denom] = each['price']
+#             # else:
+#                 # route = each['denom'].replace('ibc/', '')
+#                 # d = await make_get_json(session, f'https://lcd-osmosis.keplr.app/ibc/applications/transfer/v1beta1/denom_traces/{route}')
+#                 # if 'denom_trace' in d:
+#                 #     denom = d['denom_trace']['base_denom']
+#                 #     osmo_prices[denom] = each['price']
+#             d = await TokenMetaData(address=each['denom'], mongodb=mongo_db, network=network_data['osmosis'], session=session).lookup()
+#             if d:
+#                 denom = d['token0']
+#                 osmo_prices[denom] = each['price']
+#         else:
+#             osmo_prices[each['denom']] = each['price']
 
-    return osmo_prices
+#     return osmo_prices
 
 @cache_function(ttl=CONTRACTS_TTL, keyparams=[])
 async def check_sif_pricing(session, network_data):
@@ -161,26 +161,39 @@ async def osmosis_ibc_traces(session):
 
     return ibc_traces
 
+# @cache_function(ttl=3600, keyparams=[])
+# async def check_osmosis_pricing(session):
+#     r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
+#     osmo_prices = {}
+#     ibc_traces = await osmosis_ibc_traces(session)
+    
+#     for each in r:
+#             osmo_prices[each['denom']] = each['price']
+#             is_ibc = ibc_traces.get(each['denom'])
+
+#             if is_ibc:
+#                 osmo_prices[is_ibc] = each['price']
+
+#     overide = {
+#         'canto' : 'acanto' 
+#     }
+
+#     coingecko = await make_get_json(session, f'https://api.coingecko.com/api/v3/simple/price?ids={",".join([x for x in overide])}&vs_currencies=usd')
+
+#     for c in coingecko:
+#         osmo_prices[overide[c]] = coingecko[c]['usd']
+        
+#     return osmo_prices
+
 @cache_function(ttl=3600, keyparams=[])
 async def check_osmosis_pricing(session):
-    r = await make_get_json(session, 'https://api-osmosis.imperator.co/tokens/v2/all')
+    r = await make_get_json(session, 'https://serverlessrepo-downloader-bucket-1qsab6s7fy5e1.s3.us-east-1.amazonaws.com/cosmos/osmosis_pricing.json')
     osmo_prices = {}
-    ibc_traces = await osmosis_ibc_traces(session)
     
-    for each in r:
+    for each in r['prices']:
             osmo_prices[each['denom']] = each['price']
-            is_ibc = ibc_traces.get(each['denom'])
 
-            if is_ibc:
-                osmo_prices[is_ibc] = each['price']
-
-    overide = {
-        'canto' : 'acanto' 
-    }
-
-    coingecko = await make_get_json(session, f'https://api.coingecko.com/api/v3/simple/price?ids={",".join([x for x in overide])}&vs_currencies=usd')
-
-    for c in coingecko:
-        osmo_prices[overide[c]] = coingecko[c]['usd']
+            if each['ibc']:
+                osmo_prices[each['ibc']] = each['price']
         
     return osmo_prices
