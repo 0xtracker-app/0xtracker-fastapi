@@ -44,15 +44,12 @@ async def calculate_prices(lastReturn, prices, wallet, mongo_client, pdb):
                     finalResponse[f]['userData'][x]['tokenPair'] = '%s/%s' % (lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s'])
                     finalResponse[f]['userData'][x]['tokenSymbols'] = [lastReturn[f]['userData'][x]['tkn0s'], lastReturn[f]['userData'][x]['tkn1s']]
 
-            elif lastReturn[f]['userData'][x].get('stable_swap') == True:
+            elif lastReturn[f]['userData'][x].get('all_tokens'):
 
                     lastReturn[f]['userData'][x].update(get_balancer_ratio(lastReturn[f]['userData'][x], prices))
 
                     finalResponse[f]['userData'][x]['tokenPair'] = "/".join(lastReturn[f]['userData'][x]['token_symbols'])
                     finalResponse[f]['userData'][x]['tokenSymbols'] = lastReturn[f]['userData'][x]['token_symbols']
-
-
-
 
             else:
                     quotePrice = prices[lastReturn[f]['userData'][x]['token0'].lower()] if lastReturn[f]['userData'][x]['token0'].lower() in prices else 0
