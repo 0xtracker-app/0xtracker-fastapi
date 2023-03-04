@@ -140,6 +140,20 @@ class TokenMetaData:
 
                     await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
                     self.token_metadata = get_pool
+                elif len(get_pool['pool_tokens']) > 2:
+                    found_tokens = await asyncio.gather(*[get_ibc(token, self.network, self.session, self.cosmos_routes, self.cosmos_tokens) for token in get_pool['pool_tokens']])
+
+                    get_pool.update({
+                        'tokenID': get_pool['base_denom'],
+                        'tkn0s': "-".join([x['tkn0s'] for x in found_tokens]),
+                        'tkn0d': 18,
+                        'token0' : get_pool['base_denom'],
+                        'token_decimals': [x['tkn0d'] for x in found_tokens],
+                        'token_symbols' : [x['tkn0s'] for x in found_tokens],
+                        'all_tokens': [x['token0'] for x in found_tokens]})
+
+                    await self.cosmos_tokens.update_one({'tokenID': get_pool['base_denom']}, {"$set": get_pool}, upsert=True)
+                    self.token_metadata = get_pool                    
                 else:
                     found_token0 = await get_ibc(get_pool['token0'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)
                     found_token1 = await get_ibc(get_pool['token1'], self.network, self.session, self.cosmos_routes, self.cosmos_tokens)

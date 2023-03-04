@@ -141,6 +141,16 @@ async def get_gamm_pool(pool,network_data,session):
                 'pool_tokens' : [x['denom'] for x in r['pool']['pool_liquidity']],
                 'token_weights' : [x['percent'] / 100 for x in imperator['pool_tokens']],
                 }
+        elif len(r['pool']['pool_assets']) > 2:
+            return {
+                'base_denom' : r['pool']['total_shares']['denom'],
+                'address' :r['pool']['address'],
+                'stable_swap' : False,
+                'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
+                'reserves' : [x['token']['amount'] for x in r['pool']['pool_assets']], 
+                'pool_tokens' : [x['token']['denom'] for x in r['pool']['pool_assets']],
+                'token_weights' : [int(x['weight']) / int(r['pool']['total_weight']) for x in r['pool']['pool_assets']],
+                }
         else:
             return {
                 'base_denom' : r['pool']['total_shares']['denom'],
@@ -168,7 +178,7 @@ async def get_gamm_balances(pool,network_data,session):
         else:
             return {
                 'total_shares' : from_custom(int(r['pool']['total_shares']['amount']), 18),
-                'reserves' : [int(r['pool']['pool_assets'][0]['token']['amount']),int(r['pool']['pool_assets'][1]['token']['amount'])], 
+                'reserves' : [int(x['token']['amount']) for x in r['pool']['pool_assets']], 
                 }            
     else:
         return None
