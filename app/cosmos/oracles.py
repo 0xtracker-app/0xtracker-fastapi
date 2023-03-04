@@ -185,7 +185,7 @@ async def osmosis_ibc_traces(session):
         
 #     return osmo_prices
 
-@cache_function(ttl=3600, keyparams=[])
+@cache_function(ttl=600, keyparams=[])
 async def check_osmosis_pricing(session):
     r = await make_get_json(session, 'https://serverlessrepo-downloader-bucket-1qsab6s7fy5e1.s3.us-east-1.amazonaws.com/cosmos/osmosis_pricing.json')
     osmo_prices = {}
@@ -195,5 +195,8 @@ async def check_osmosis_pricing(session):
 
             if each['ibc']:
                 osmo_prices[each['ibc']] = each['price']
+
+            if 'gravity' in each['key']:
+                osmo_prices[each['key']] = each['price']
         
     return osmo_prices
