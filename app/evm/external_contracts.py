@@ -296,6 +296,12 @@ async def get_wagmi(session):
 async def panther_jungles(session):
     return ['0x3B5Ed7B0F8bf5D2b485352e15A416092Ca741C2c', '0xf31cbe0b2bb2e704310c90a6f74300b3d4627ce8', '0x85ff09374D1f59288b6978EB9254377a51BE0B7c']
 
+async def onyx_arb_pools(session):
+    return ['0x967BB1281552433BafCaf07A81c6ba0c06c0d73C', '0x3A1e804DE028ebd4Bfe05534D082d7069eeCe603']
+
+async def onyx_auto_arb(session):
+    return ['0x94D2D545bBcb82c18D9B6CA4fd7e07863cEcf8B2']
+
 async def get_thunder_pools(session):
     return poolext.thoreum.thunder_pools
 
