@@ -9651,7 +9651,36 @@ class Farms:
             'vault_args' : [{},{}]
         }
     },
+                '0xF9C83fF6cf1A9bf2584aa2D00A7297cA8F845CcE' : {
+        'name' : 'onyxdao.finance',
+        'displayName' : None,
+        'url' : 'https://www.onyxdao.finance/',
+        'rewardToken' : '0xB7cD6C8C4600AeD9985d2c0Eb174e0BEe56E8854',
+        'decimal' : 18,
+        'stakedFunction' : 'userInfo',
+        'pendingFunction' : 'pendingTokens',
+        'masterChef' : '0xF9C83fF6cf1A9bf2584aa2D00A7297cA8F845CcE',
+        'perBlock' : 'onyxPerSecond',
+        'featured' : 2,
+        'network' : 'arb',
+        'extraFunctions' : {
+            'functions' : [farm_templates.get_syrup_pools, farm_templates.get_vault_style],
+            'vaults' : [external_contracts.onyx_arb_pools, external_contracts.onyx_auto_arb],
+            'args' : [
+                {
+                    'farm_id' : '0xF9C83fF6cf1A9bf2584aa2D00A7297cA8F845CcE',
+                    'network_id' : 'arb',
+                    'staked' : "STAKE_TOKEN",
+                    "reward" : "REWARD_TOKEN"
+                },
+                {
+                    'farm_id' : '0xF9C83fF6cf1A9bf2584aa2D00A7297cA8F845CcE',
+                    'network' : 'arb',
+                    '_pps' : 'getPricePerFullShare',
+                    '_stake' : 'userInfo'
+                },
+                    ],
+            'vault_args' : [{},{}]
+        }
+    },
 }
-
-
-
