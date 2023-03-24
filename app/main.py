@@ -505,4 +505,27 @@ async def user_active_pools(request: Request, mongo_db: AsyncIOMotorClient = Dep
         print(f"Error in user_active_pools {e} {farms}")
         return {"status": "ko", "channel": req_id, 'error': str(e)}
 
+@app.get('/historical-transactions-osmosis/{wallet}/{poolid}')
+async def historical_transactions_osmosis(wallet, poolid, ClientSession = Depends(get_session), pdb: Session = Depends(get_db)):
+    join_pool = await pdb.execute(text(f'''select
+block_height,
+block_timestamp,
+tx_id,
+pool_id,
+token_in,
+amount_in
+FROM public.join_pool_unnest
+where sender = '{wallet}' and pool_id = '{poolid}';'''))
+
+    exit_pool = await pdb.execute(text(f'''select
+block_height,
+block_timestamp,
+tx_id,
+pool_id,
+token_out,
+amount_out
+FROM public.exit_pool_unnest
+where sender = '{wallet}' and pool_id = '{poolid}';'''))
+
+    return {'joins' : join_pool.fetchall(), 'exits' : exit_pool.fetchall()} 
 
